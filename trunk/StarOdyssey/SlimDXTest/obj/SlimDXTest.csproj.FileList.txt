@@ -1,8 +1,0 @@
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\SlimDXTest.Properties.Resources.resources
-obj\Debug\SlimDXTest.csproj.GenerateResource.Cache
-bin\Debug\SlimDXTest.exe
-bin\Debug\SlimDXTest.pdb
-bin\Debug\SlimDX.dll
-obj\Debug\SlimDXTest.exe
-obj\Debug\SlimDXTest.pdb

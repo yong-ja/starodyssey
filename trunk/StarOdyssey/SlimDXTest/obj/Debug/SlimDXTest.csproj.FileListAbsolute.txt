@@ -1,7 +1,0 @@
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\bin\Debug\SlimDXTest.exe
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\bin\Debug\SlimDXTest.pdb
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\obj\Debug\SlimDXTest.Properties.Resources.resources
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\obj\Debug\SlimDXTest.csproj.GenerateResource.Cache
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\obj\Debug\SlimDXTest.exe
-C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\SlimDXTest\obj\Debug\SlimDXTest.pdb

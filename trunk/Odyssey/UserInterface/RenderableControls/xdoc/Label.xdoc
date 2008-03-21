@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?><x.doc><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.Label.ComputeAbsolutePosition"><summary>
-Overrides inherited method. It also computes the parent Size to be able to place
-the label when the user choose the alignment (Left/Center/Right). The parent control
-then acts like a bounding box (for example: a button)
-</summary></x.member><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.Label.Label"><summary>
-Creates an empty label using the default TextStyle.
-</summary></x.member></x.doc>

@@ -1,9 +1,0 @@
-obj\Debug\ResolveAssemblyReference.cache
-bin\Debug\Multiversal Rule System.dll
-bin\Debug\Multiversal Rule System.pdb
-bin\Debug\Odyssey UI.dll
-bin\Debug\Odyssey Utils.dll
-bin\Debug\Odyssey UI.pdb
-bin\Debug\Odyssey Utils.pdb
-obj\Debug\Multiversal Rule System.dll
-obj\Debug\Multiversal Rule System.pdb

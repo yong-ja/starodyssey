@@ -1,5 +1,0 @@
-bin\Debug\Odyssey Utils.dll
-bin\Debug\Odyssey Utils.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\Odyssey Utils.dll
-obj\Debug\Odyssey Utils.pdb
