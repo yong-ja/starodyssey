@@ -1,0 +1,185 @@
+<Configuration>
+  <SharedSolutionDisabledTemplatesManager>
+    <DisabledTemplates />
+  </SharedSolutionDisabledTemplatesManager>
+  <UnitTestRunner>
+    <CustomStartDirectory>
+    </CustomStartDirectory>
+    <UseShadowCopy>True</UseShadowCopy>
+    <UseCustomFolder>False</UseCustomFolder>
+    <Providers />
+  </UnitTestRunner>
+  <UserSolutionDisabledTemplatesManager>
+    <DisabledTemplates />
+  </UserSolutionDisabledTemplatesManager>
+  <FileStructureView>
+    <AutoScrollToSource>False</AutoScrollToSource>
+    <TrackCaretLocation>False</TrackCaretLocation>
+  </FileStructureView>
+  <ReFormatCode>
+    <ReorderMembers>True</ReorderMembers>
+    <OptimizeUsings>True</OptimizeUsings>
+    <RemoveRedundantThis>True</RemoveRedundantThis>
+    <ShortenReferences>True</ShortenReferences>
+  </ReFormatCode>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <EditorManager>
+    <RecentFiles>
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Interfaces/f:ICircularControl.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:PictureBox.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Windows/f:CaptionBar.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Windows/f:DialogBox.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Windows/f:Window.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:FontManager.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:LabelFormatter.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:LabelPage.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:Shading.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:TextStyle.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:TransformedColored.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/f:TextManager.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Xml/f:XmlCommon.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/f:ShapeDescriptor.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:Hud.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:Hud.SlimDX.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:Label.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Helpers/f:DebugManager.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:Hud.MDX.cs" caret="0" scrollPosition="0|0" />
+      <File id="70E0E0DB-F8DB-4412-98CA-809F6C2963D5/f:Program.cs" caret="0" scrollPosition="0|0" />
+      <File id="70E0E0DB-F8DB-4412-98CA-809F6C2963D5/f:StarOdyssey.cs" caret="0" scrollPosition="0|0" />
+      <File id="70E0E0DB-F8DB-4412-98CA-809F6C2963D5/f:GUIDesigner.cs" caret="0" scrollPosition="0|0" />
+      <File id="70E0E0DB-F8DB-4412-98CA-809F6C2963D5/f:ImageRenderer.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:BaseControl.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:ColorOperator.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:Style/f:Shapes.cs" caret="0" scrollPosition="0|0" />
+      <File id="38924D32-845D-453A-A617-AE6BD8929610/f:RenderForm.cs" caret="7177" scrollPosition="0|146" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/f:BaseControl.Events.cs" caret="3469" scrollPosition="0|62" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Interfaces/f:IContainer.cs" caret="0" scrollPosition="0|0" />
+      <File id="DE18678F-8789-41E8-AFA0-EED7FCF3B469/d:RenderableControls/d:Interfaces/f:IControl.cs" caret="0" scrollPosition="0|36" />
+    </RecentFiles>
+  </EditorManager>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.AdapterInformation">
+      <Item value="GetDisplayModes" priority="0" />
+      <Item value="CurrentDisplayMode" priority="0" />
+      <Item value="Details" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.AdapterDetails">
+      <Item value="Description" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.Capabilities">
+      <Item value="DeviceCaps2" priority="0" />
+      <Item value="DeviceCaps" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.PresentParameters">
+      <Item value="DeviceWindowHandle" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.Device">
+      <Item value="SetRenderState" priority="7" />
+      <Item value="SetSamplerState" priority="0" />
+      <Item value="SetStreamSource" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AvengersUtd.Odyssey.Engine.Game.Device">
+      <Item value="SetTransform" priority="0" />
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX">
+      <Item value="Direct3D" priority="0" />
+      <Item value="Direct3D9" priority="8" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D9">
+      <Item value="Font" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D9.PitchAndFamily">
+      <Item value="Roman" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Vector2">
+      <Item value="Equals" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.Font">
+      <Item value="DrawString" priority="0" />
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AvengersUtd.Odyssey.UserInterface.OdysseyUI.CurrentHud">
+      <Item value="SpriteManager" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D9.DrawTextFormat">
+      <Item value="VCenter" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.FontDescription">
+      <Item value="Italic" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl">
+      <Item value="Position" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D9.VertexFormat">
+      <Item value="PositionRhw" priority="0" />
+      <Item value="Diffuse" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Runtime.InteropServices.LayoutKind">
+      <Item value="Sequential" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AvengersUtd.Odyssey.UserInterface.ShapeDescriptor">
+      <Item value="Vertices" priority="1" />
+      <Item value="Indices" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AvengersUTD.Odyssey.UserInterface.Style.TransformedColored[]">
+      <Item value="Length" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:int[]">
+      <Item value="Length" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.DataStream">
+      <Item value="Write" priority="0" />
+      <Item value="Flush" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D10.BlendOperation">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.Sprite">
+      <Item value="Begin" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@">
+      <Item value="InitGame" priority="0" />
+      <Item value="X" priority="3" />
+      <Item value="Y" priority="1" />
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.Application">
+      <Item value="Run" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SlimDX.Direct3D9.Direct3D">
+      <Item value="Initialize" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Drawing.Rectangle">
+      <Item value="IsEmpty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="IsNullOrEmpty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Math">
+      <Item value="Sqrt" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Drawing.Size">
+      <Item value="Empty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AvengersUtd.Odyssey.UserInterface.Style.FontManager.fontCache">
+      <Item value="Values" priority="0" />
+      <Item value="Clear" priority="0" />
+      <Item value="Count" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:AvengersUtd.Odyssey.UserInterface.RenderableControls.Hud">
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AvengersUtd.Odyssey.UserInterface.Helpers.DebugManager.Instance">
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SlimDX.Direct3D9.Texture">
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@AvengersUtd.Odyssey.Engine.Game.CurrentScene">
+      <Item value="Dispose" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

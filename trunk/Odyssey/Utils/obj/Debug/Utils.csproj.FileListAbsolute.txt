@@ -1,0 +1,5 @@
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\Utils\bin\Debug\Odyssey Utils.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\Utils\bin\Debug\Odyssey Utils.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\Utils\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\Utils\obj\Debug\Odyssey Utils.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\Utils\obj\Debug\Odyssey Utils.pdb

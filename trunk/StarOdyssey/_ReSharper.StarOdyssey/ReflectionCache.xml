@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assemblies Version="805306377">
+  <Assembly Name="Microsoft.DirectX.Direct3DX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="fca51d76-afb1-4933-b65e-fe9bfde26190" Timestamp="632320511380000000" XmlDocIndexTimestamp="633196920916930210" />
+  <Assembly Name="Microsoft.DirectX.Direct3DX, Version=1.0.2911.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="c006fd1c-e7d5-4510-b383-089f00b53147" Timestamp="632793940700000000" XmlDocIndexTimestamp="632973140378125000" />
+  <Assembly Name="SlimDX, Version=0.0.0.0, Culture=neutral" Image="b3c5f25e-b8c1-4081-9de8-431025633180" Timestamp="633219288860000000" />
+  <Assembly Name="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="4ebb7764-5801-41e5-9390-73d6398c5473" Timestamp="632467561940000000" XmlDocIndexTimestamp="632970565782500000" />
+  <Assembly Name="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="d8f6f47b-3812-4c78-9515-03271270d8aa" Timestamp="632467561940000000" XmlDocIndexTimestamp="632970565785156250" />
+  <Assembly Name="SlimDX, Version=1.0.2773.31841, Culture=neutral" Image="0f4fd429-4141-4891-bfb5-19d34499cc1a" Timestamp="633253809840000000" XmlDocIndexTimestamp="633254546674843750" />
+  <Assembly Name="SlimDX, Version=1.0.2773.31841, Culture=neutral, PublicKeyToken=null" Image="1ac37353-f989-4390-90f5-f6c19ac23b9c" Timestamp="633253809840000000" XmlDocIndexTimestamp="633254546758593750" />
+  <Assembly Name="SlimDX, Version=1.0.2813.29892, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9" Image="48a77d4f-e26c-427a-b2df-994143f8bd5c" Timestamp="633253809840000000" XmlDocIndexTimestamp="633254546758593750" />
+</Assemblies>

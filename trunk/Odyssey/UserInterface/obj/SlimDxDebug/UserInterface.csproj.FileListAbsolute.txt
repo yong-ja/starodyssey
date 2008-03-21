@@ -1,0 +1,18 @@
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\obj\SlimDxDebug\ResolveAssemblyReference.cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\obj\SlimDxDebug\AvengersUtd.Odyssey.UserInterface.Properties.Exceptions.resources
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\obj\SlimDxDebug\UserInterface.csproj.GenerateResource.Cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\obj\SlimDxDebug\Odyssey UI.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\bin\SlimDxDebug\Odyssey UI.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\bin\SlimDxDebug\Odyssey UI.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\bin\SlimDxDebug\SlimDX.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\obj\SlimDxDebug\Odyssey UI.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\Odyssey\UserInterface\bin\SlimDxDebug\SlimDX.xml
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\bin\SlimDxDebug\Odyssey UI.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\bin\SlimDxDebug\Odyssey UI.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\bin\SlimDxDebug\SlimDX.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\bin\SlimDxDebug\SlimDX.xml
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\obj\SlimDxDebug\ResolveAssemblyReference.cache
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\obj\SlimDxDebug\AvengersUtd.Odyssey.UserInterface.Properties.Exceptions.resources
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\obj\SlimDxDebug\UserInterface.csproj.GenerateResource.Cache
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\obj\SlimDxDebug\Odyssey UI.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\Odyssey\UserInterface\obj\SlimDxDebug\Odyssey UI.pdb

@@ -1,0 +1,24 @@
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\obj\Debug\Game.csproj.GenerateResource.Cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Odyssey Engine.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Odyssey UI.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Odyssey Engine.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Odyssey UI.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\obj\Debug\AvengersUTD.StarOdyssey.Properties.Resources.resources
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Game.exe
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\Game.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\obj\Debug\Game.exe
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\obj\Debug\Game.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\StarOdyssey\Game\bin\Debug\SlimDX.xml
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Game.exe
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Game.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Odyssey Engine.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Odyssey UI.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\SlimDX.xml
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Odyssey Engine.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\bin\Debug\Odyssey UI.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\obj\Debug\AvengersUtd.StarOdyssey.Properties.Resources.resources
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\obj\Debug\Game.csproj.GenerateResource.Cache
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\obj\Debug\Game.exe
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\StarOdyssey\Game\obj\Debug\Game.pdb

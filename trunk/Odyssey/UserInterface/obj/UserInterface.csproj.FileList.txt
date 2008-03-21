@@ -1,0 +1,15 @@
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\AvengersUTD.Odyssey.UserInterface.Properties.Exceptions.resources
+obj\Debug\UserInterface.csproj.GenerateResource.Cache
+bin\Debug\Odyssey UI.dll
+bin\Debug\Odyssey UI.pdb
+obj\Debug\Odyssey UI.dll
+obj\Debug\Odyssey UI.pdb
+obj\SlimDxDebug\ResolveAssemblyReference.cache
+obj\SlimDxDebug\AvengersUTD.Odyssey.UserInterface.Properties.Exceptions.resources
+obj\SlimDxDebug\UserInterface.csproj.GenerateResource.Cache
+bin\SlimDxDebug\Odyssey UI.dll
+bin\SlimDxDebug\Odyssey UI.pdb
+obj\SlimDxDebug\Odyssey UI.dll
+obj\SlimDxDebug\Odyssey UI.pdb
+bin\SlimDxDebug\SlimDX.dll

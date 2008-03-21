@@ -1,0 +1,8 @@
+obj\Debug\ResolveAssemblyReference.cache
+bin\Debug\Odyssey Engine.dll
+bin\Debug\Odyssey Engine.pdb
+bin\Debug\Odyssey UI.dll
+bin\Debug\Odyssey UI.pdb
+obj\Debug\Odyssey Engine.dll
+obj\Debug\Odyssey Engine.pdb
+bin\Debug\SlimDX.dll

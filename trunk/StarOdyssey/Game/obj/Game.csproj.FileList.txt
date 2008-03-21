@@ -1,0 +1,11 @@
+bin\Debug\Game.exe
+bin\Debug\Game.pdb
+bin\Debug\Odyssey Engine.dll
+bin\Debug\Odyssey UI.dll
+bin\Debug\Odyssey Engine.pdb
+bin\Debug\Odyssey UI.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Game.Properties.Resources.resources
+obj\Debug\Game.csproj.GenerateResource.Cache
+obj\Debug\Game.exe
+obj\Debug\Game.pdb

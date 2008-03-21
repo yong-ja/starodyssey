@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?><x.doc><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl.CompareTo"><summary>
+Compares this instance of the <see cref="BaseControl" /> class to another one.
+</summary>
+<param name="other">The other instance to compare to.</param>
+<returns>A value greater than 1 if <b>this</b> control is in the foreground in respect of
+ther <b>other</b> control.<br />
+A value of 0 if they are on the same level.<br />
+A value less than 0 if <b>this</b> control is in the background in respect of the <b>other</b> control.</returns></x.member><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl.FindWindow"><summary>
+Returns the window that this control belongs to, if any.
+</summary>
+<returns>The <see cref="Window" /> reference the control belongs to, <b>null</b> if the control doesn't
+belong to any window.</returns></x.member><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl.BaseControl"><summary>
+This constructors sets to default values all the common parameters shared by all the 
+classes that derive from it. Since BaseControl is an abstract class, this constructor will 
+only be called by deriving classes. 
+</summary>
+<param name="id">A string detailing the ID of the control.</param>
+<param name="textStyleClass">The name of the <see cref="TextStyle" /> class to use.</param></x.member><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl.Focus"><summary>
+Programmatically focuses this <see cref="BaseControl" /> object, <b>if</b> it is focusable.
+</summary></x.member><x.member name="AvengersUtd.Odyssey.UserInterface.RenderableControls.BaseControl"><summary>
+ The Odyssey User Interface recognizes two main abstract types: BaseControl and
+ <see cref="RenderableControl" />.
+<b>BaseControl</b>: it is the soul of this library. All controls have this class as their base type.
+<b>RenderableControl</b>: all controls that are drawn by storing (untextured) vertices inherit from RenderableControl
+(which in turn, inherits directly from BaseControl).
+<para>This abstract class provide inheritors with a comprehensive range of properties and methods common to all controls.</para><remarks>This class also handles mouse and keyboard events, throuh the internal <i>Process[..]</i> methods.</remarks></summary></x.member></x.doc>

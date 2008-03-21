@@ -1,0 +1,16 @@
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Multiversal Rule System.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Multiversal Rule System.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Odyssey UI.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Odyssey Utils.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Odyssey UI.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\bin\Debug\Odyssey Utils.pdb
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\obj\Debug\Multiversal Rule System.dll
+C:\Users\Adal\Documents\Visual Studio 2008\Projects\AvengersUTD\MultiversalRuleSystem\obj\Debug\Multiversal Rule System.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\obj\Debug\Multiversal Rule System.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\bin\Debug\Multiversal Rule System.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\bin\Debug\Multiversal Rule System.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\bin\Debug\Odyssey Utils.dll
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\bin\Debug\Odyssey Utils.pdb
+C:\Users\Avenger\Documents\Visual Studio 2008\Projects\AvengersUtd\MultiversalRuleSystem\obj\Debug\Multiversal Rule System.pdb

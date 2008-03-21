@@ -1,0 +1,80 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0D9B154B-B7D8-4CC8-9245-006F693952D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AvengersUTD.MultiversalRuleSystem</RootNamespace>
+    <AssemblyName>Multiversal Rule System</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Odyssey Utils, Version=0.1.0.40572, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Odyssey\Utils\bin\Debug\Odyssey Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dice.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Space\CelestialObjects\CelestialFeatures.cs" />
+    <Compile Include="Space\CelestialObjects\CelestialObject.cs" />
+    <Compile Include="Space\CelestialObjects\PlanetaryFeatures.cs" />
+    <Compile Include="Space\CelestialObjects\SolarSystem.cs" />
+    <Compile Include="Space\CelestialObjects\Star.cs" />
+    <Compile Include="Space\CelestialObjects\StellarFeatures.cs" />
+    <Compile Include="Space\Common\Vector3.cs" />
+    <Compile Include="Space\Cosmography.cs" />
+    <Compile Include="Space\GalaxyGeneration\DustBand.cs" />
+    <Compile Include="Space\GalaxyGeneration\DustDisc.cs" />
+    <Compile Include="Space\GalaxyGeneration\GalaxyGenerator.cs" />
+    <Compile Include="Space\GalaxyGeneration\GalaxyOptions.cs" />
+    <Compile Include="Space\GalaxyGeneration\GenerationCommon.cs" />
+    <Compile Include="Space\GalaxyGeneration\PlanetGenerator.Computations.cs" />
+    <Compile Include="Space\GalaxyGeneration\PlanetGenerator.cs" />
+    <Compile Include="Space\GalaxyGeneration\PlanetGenerator.RandomEstimates.cs" />
+    <Compile Include="Space\GalaxyGeneration\Protoplanet.cs" />
+    <Compile Include="Space\GalaxyGeneration\Protosystem.cs" />
+    <Compile Include="Space\GalaxyGeneration\StarGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Space\ChemicalElement.cs" />
+    <Compile Include="Space\PhysicalConstants.cs" />
+    <Compile Include="Space\EnhancedRandom.cs" />
+    <Compile Include="Space\SpaceResourceManager.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
