@@ -211,6 +211,11 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         StarColor starColor;
         StarType starType;
 
+        public StarType Type
+        {
+            get { return starType; }
+        }
+
         static StarColor GetStarColor(int type)
         {
             StarColor starColor = StarColor.None;

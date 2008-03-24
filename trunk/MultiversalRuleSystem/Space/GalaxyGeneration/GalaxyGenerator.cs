@@ -11,7 +11,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 {
     public class GalaxyGenerator
     {
-        const double minimumMass = 0.01;
+        const double minimumMass = 0.08;
         List<string> starNames;
         GalaxyOptions galaxyOptions;
         StarGenerator starGen;
@@ -172,6 +172,9 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             Star star = starGen.GenerateSingleStarSystem(systemName, mass, out evolutionResult, out mainSequenceFeatures);
             evolvedFeatures = star.StellarFeatures;
 
+            if (evolvedFeatures.SpectralClass.Type == StarType.Other)
+                return null;
+
             sb.Append(star.ToString());
 
             Protosystem protoSystem = new Protosystem(mainSequenceFeatures);
@@ -185,8 +188,11 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 CelestialFeatures cf = planetGenerator.GeneratePlanet(star.StellarFeatures.Name, index, node.Value);
                 node = node.Next;
                 sb.Append(cf.ToString());
+                sb.AppendLine(planetGenerator.Report);
                 index++;
             }
+
+            
 
             return null;
         }

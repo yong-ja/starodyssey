@@ -114,6 +114,18 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
         #endregion
 
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        public string Report
+        {
+            get
+            {
+                string report = sb.ToString();
+                sb = new System.Text.StringBuilder();
+                
+                return report;  }
+        }
+
         void Reset()
         {
             greenhouseEffect = isGasGiant = false;
@@ -341,8 +353,9 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             if (!isGasGiant)
             {
                 AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration.PlanetClassifier pc = new AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration.PlanetClassifier();
-                pc.Classify(celestialFeatures);
-                System.Diagnostics.Debug.WriteLine(pc.Report);
+                pc.Classify(celestialFeatures,stellarFeatures);
+                sb.AppendLine(pc.Report);
+                
             }
 
             Reset();
@@ -458,7 +471,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         {
             double pressmod = 1 / Math.Sqrt(1 + 20 * surfacePressure / 1000.0);
             double ppmod = 1 / Math.Sqrt(10 + 5 * surfacePressure / 1000.0);
-            double tiltmod = Math.Abs(Math.Cos(axialTilt) * Math.PI / 180) * Math.Pow(1 + eccentricity, 2);
+            double tiltmod = Math.Abs(Math.Cos(axialTilt * Math.PI / 180) * Math.Pow(1 + eccentricity, 2));
             double daymod = 1 / (200 / dayLength + 1);
             double mh = Math.Pow(1 + daymod, pressmod);
             double ml = Math.Pow(1 - daymod, pressmod);
@@ -476,6 +489,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             nightTemp = Soft(lo, max, min);
             maxTemp = Soft(sh, max, min);
             minTemp = Soft(wl, max, min);
+
         }
 
         void CalculateGases()

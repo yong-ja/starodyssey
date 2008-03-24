@@ -732,7 +732,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         static double Lim(double x)
         {
             //double test =  x / Math.Sqrt(Math.Sqrt(1 + x*x*x*x));
-            return x/Math.Pow(1 + x*x*x*x, -1/4);
+            return x/Math.Pow(1.0 + x*x*x*x, 1.0/4.0);
         }
 
         static double Soft(double v, double max, double min)

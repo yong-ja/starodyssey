@@ -218,7 +218,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             this.molecularWeightRetained = molecularWeightRetained;
             this.radius = radius;
             this.nightTemp = nightTemp;
-            this.dayTemp = dayLength;
+            this.dayTemp = dayTemp;
             this.mass = mass;
             this.minTemp = minTemp;
             this.maxTemp = maxTemp;
@@ -235,6 +235,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         public override string ToString()
         {
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(name);
             sb.AppendLine(string.Format("A:{0:F2} AU E:{1:F2} To:{2:F2} Yrs Td: {3:F2} Days", orbitalRadius, eccentricity, orbitalPeriod/365.26,dayLength));

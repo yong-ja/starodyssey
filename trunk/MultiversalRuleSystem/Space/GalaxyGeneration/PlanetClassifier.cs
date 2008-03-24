@@ -12,20 +12,27 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
         const float CataclismicChance = 0.1f;
 
         CelestialFeatures celestialFeatures;
+        StellarFeatures stellarFeatures;
         PlanetSize size;
+        Density density;
         Temperature temperature;
         Gravity gravity;
         AtmosphericDensity atmosphericDensity;
         Climate climate;
 
-        public void Classify(CelestialFeatures celestialFeatures)
+        public void Classify(CelestialFeatures celestialFeatures, StellarFeatures stellarFeatures)
         {
             this.celestialFeatures = celestialFeatures;
+            this.stellarFeatures = stellarFeatures;
             size = ClassifySize(celestialFeatures.Radius);
+            density = ClassifyDensity(celestialFeatures.Density);
             gravity = ClassifyGravity(celestialFeatures.SurfaceGravity);
             temperature = ClassifyTemperature(celestialFeatures.SurfaceTemperature);
             atmosphericDensity = ClassifyAtmosphericDensity(celestialFeatures.SurfacePressure);
-            climate = AssignClimate();
+            if (density == Density.IcyCore)
+                climate = AssignIcyCoreClimate();
+            else
+                climate = AssignIronCoreClimate();
         }
 
         public string Report
@@ -33,8 +40,9 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
             get
             {
                 StringBuilder sb = new StringBuilder();
+                sb.AppendLine(celestialFeatures.Name);
                 sb.AppendLine(string.Format("Climate: {0}", climate));
-                sb.AppendLine(string.Format("Size: {0}", size));
+                sb.AppendLine(string.Format("Size: {0} Density: {1}", size, density));
                 sb.AppendLine(string.Format("Gravity: {0} AtmDensity: {1}", gravity,atmosphericDensity));
                 sb.AppendLine(string.Format("Temperature: {0}", temperature));
                 sb.AppendLine("Composition:");
@@ -63,11 +71,22 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                 return PlanetSize.Medium;
             else if (radius <= 7500.0)
                 return PlanetSize.Large;
-            else if (radius <= 10.000)
+            else if (radius <= 10000.0)
                 return PlanetSize.Huge;
             else
                 return PlanetSize.Immense;
         }
+
+        static Density ClassifyDensity(double density)
+        {
+            density /= PhysicalConstants.EarthDensity;
+            if (density <= 0.65)
+                return Density.IcyCore;
+            else
+                return Density.LargeIronCore;
+
+        }
+
 
         static Gravity ClassifyGravity(double gravity)
         {
@@ -97,7 +116,11 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
         static AtmosphericDensity ClassifyAtmosphericDensity(double pressure)
         {
-            if (pressure <= 0.25)
+            pressure /= 1000;
+
+            if (pressure <= 0.01)
+                return AtmosphericDensity.None;
+            else if (pressure <= 0.25)
                 return AtmosphericDensity.Traces;
             else if (pressure <= 0.5)
                 return AtmosphericDensity.Thin;
@@ -123,12 +146,47 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                 return Temperature.Extreme;
         }
 
-        Climate AssignClimate()
+        Climate AssignIcyCoreClimate()
         {
             switch (temperature)
             {
                 case Temperature.Frozen:
-                    return Climate.Hadean;
+                    switch (atmosphericDensity)
+                    {
+                        case AtmosphericDensity.None:
+                            return Climate.Hadean;
+           
+                        case AtmosphericDensity.Traces:
+                        case AtmosphericDensity.Thin:
+                            return Climate.Volcanic;
+
+                        default:
+                            if (stellarFeatures.Mass <= 0.65 &&
+                                (celestialFeatures.MinTemp >= 140))
+                                return
+                                    Climate.Ammonia;
+                            else
+                                return Climate.Ice;
+                    }
+
+                default:
+                    return Climate.Unknown;
+            }
+        }
+
+        Climate AssignIronCoreClimate()
+        {
+            switch (temperature)
+            {
+                case Temperature.Frozen:
+                    switch (atmosphericDensity)
+                    {
+                        case AtmosphericDensity.None:
+                            return Climate.Hadean;
+
+                        default:
+                            return Climate.Barren;
+                    }
 
                 case Temperature.Cold:
                     switch (atmosphericDensity)
