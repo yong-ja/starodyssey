@@ -29,6 +29,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     #region Using Directives
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -36,12 +37,12 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     {
         #region Private fields
 
-        const int maximumOrbits = 12;
+        const int MaximumStars = 3;
+        const int MaximumOrbits = 12;
 
         int starCount;
         string name;
-        Star primary;
-        CelestialObject[] celestialObjects;
+        List<Star> stars;
 
         double x;
         double y;
@@ -52,7 +53,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         public Star Primary
         {
-            get { return primary; }
+            get { return stars[0]; }
         }
 
         public string Name
@@ -91,21 +92,25 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         #region Constructors
 
-        public SolarSystem(string name, Star primary)
+        public SolarSystem(string name)
         {
             this.name = name;
-            this.primary = primary;
-            celestialObjects = new CelestialObject[maximumOrbits];
+            stars = new List<Star>(MaximumStars);
+       }
+
+        public void AddStars(params Star[] stars)
+        {
+            this.stars.AddRange(stars);
+            foreach (Star star in stars)
+                star.SolarSystem = this;
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(primary.ToString());
-            //foreach (CelestialObject c in celestialObjects)
-            //{
-            //    sb.AppendLine(c.ToString());
-            //}
+
+            foreach (Star s in stars)
+                sb.AppendLine(s.ToString());            
             return sb.ToString();
         }
 

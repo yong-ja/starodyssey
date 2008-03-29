@@ -27,6 +27,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     #region Using Directives
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -36,7 +37,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         SolarSystem solarSystem;
         readonly StellarFeatures stellarFeatures;
-        Star nextCompanion;
+        List<CelestialObject> celestialObjects;
 
         #endregion
 
@@ -51,12 +52,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         public StellarFeatures StellarFeatures
         {
             get { return stellarFeatures; }
-        }
-
-        public Star NextCompanion
-        {
-            get { return nextCompanion; }
-            set { nextCompanion = value; }
         }
 
         #endregion
@@ -74,5 +69,12 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         }
 
         #endregion
+
+        public void AddObjects(params CelestialObject[] celestialObjects)
+        {
+            this.celestialObjects.AddRange(celestialObjects);
+            foreach (CelestialObject celestialObject in celestialObjects)
+                celestialObject.Primary = this;
+        }
     }
 }

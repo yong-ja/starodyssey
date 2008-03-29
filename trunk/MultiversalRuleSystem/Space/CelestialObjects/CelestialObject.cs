@@ -35,6 +35,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         #region Private fields
 
         CelestialFeatures celestialFeatures;
+        Star primary;
 
         #endregion
 
@@ -43,6 +44,12 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         public CelestialFeatures CelestialFeatures
         {
             get { return celestialFeatures; }
+        }
+
+        public Star Primary
+        {
+            get { return primary; }
+            internal set { primary = value; }
         }
 
         #endregion
@@ -55,5 +62,10 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return celestialFeatures.ToString();
+        }
     }
 }

@@ -179,15 +179,16 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
             Protosystem protoSystem = new Protosystem(mainSequenceFeatures);
             LinkedListNode<Protoplanet> node = protoSystem.DistributePlanetaryMasses();
+            
 
             planetGenerator.StellarFeatures = evolvedFeatures;
 
             int index=1;
             while (node != null)
             {
-                CelestialFeatures cf = planetGenerator.GeneratePlanet(star.StellarFeatures.Name, index, node.Value);
+                CelestialObject celestialObject = new CelestialObject(planetGenerator.GeneratePlanet(star.StellarFeatures.Name, index, node.Value));
                 node = node.Next;
-                sb.Append(cf.ToString());
+                sb.Append(celestialObject.ToString());
                 sb.AppendLine(planetGenerator.Report);
                 index++;
             }
