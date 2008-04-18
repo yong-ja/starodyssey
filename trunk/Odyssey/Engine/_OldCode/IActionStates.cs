@@ -1,4 +1,4 @@
-﻿namespace AvengersUtd.Odyssey.Engine.Input
+﻿namespace AvengersUtd.Odyssey.Input
 {
     internal interface IActionStates
     {

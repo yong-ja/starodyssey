@@ -7,7 +7,7 @@
     <ProjectGuid>{38924D32-845D-453A-A617-AE6BD8929610}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvengersUtd.Odyssey.Engine</RootNamespace>
+    <RootNamespace>AvengersUtd.Odyssey</RootNamespace>
     <AssemblyName>Odyssey Engine</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -62,11 +62,30 @@
     <Compile Include="DeviceParameters.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="Input\CameraAction.cs" />
+    <Compile Include="Objects\Effects\EffectFactory.cs" />
+    <Compile Include="Objects\Effects\EffectManager.cs" />
+    <Compile Include="Objects\Effects\EffectParameter.cs" />
+    <Compile Include="Objects\Effects\ParamHandles.cs" />
+    <Compile Include="Objects\Enums.cs" />
+    <Compile Include="Objects\Materials\AbstractMaterial.cs" />
+    <Compile Include="Objects\Meshes\AbstractMesh.cs" />
+    <Compile Include="Objects\Meshes\BaseEntity.cs" />
+    <Compile Include="Objects\Meshes\IEntity.cs" />
+    <Compile Include="Objects\Materials\IMaterialContainer.cs" />
+    <Compile Include="Objects\Materials\SpecularBumpMaterial.cs" />
+    <Compile Include="Objects\Materials\TexturedEffectMaterial.cs" />
+    <Compile Include="Objects\Materials\TexturedMaterial.cs" />
+    <Compile Include="Objects\Effects\EffectDescriptor.cs" />
+    <Compile Include="Objects\Meshes\SimpleMesh.cs" />
+    <Compile Include="Objects\Resources\EntityDescriptor.cs" />
+    <Compile Include="Objects\Materials\MaterialDescriptor.cs" />
+    <Compile Include="Objects\Meshes\MeshDescriptor.cs" />
+    <Compile Include="Objects\Resources\TextureManager.cs" />
+    <Compile Include="_OldCode\CameraAction.cs" />
     <Compile Include="Input\Devices\Keyboard.cs" />
     <Compile Include="Input\Devices\Mouse.cs" />
-    <Compile Include="Input\IActionStates.cs" />
-    <Compile Include="Input\InputEvent.cs" />
+    <Compile Include="_OldCode\IActionStates.cs" />
+    <Compile Include="_OldCode\InputEvent.cs" />
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuaternionCam.cs" />
@@ -80,6 +99,10 @@
     <ProjectReference Include="..\UserInterface\UserInterface.csproj">
       <Project>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</Project>
       <Name>UserInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

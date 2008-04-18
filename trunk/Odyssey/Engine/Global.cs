@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace AvengersUTD.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     /// <summary>
     /// Descrizione di riepilogo per Global.

@@ -1,11 +1,11 @@
 using System.Drawing;
 using System.Windows.Forms;
-using AvengersUTD.Odyssey.Engine;
-using AvengersUtd.Odyssey.Engine.Input;
+using AvengersUtd.Odyssey;
+using AvengersUtd.Odyssey.Input;
 using SlimDX.Direct3D9;
 using Timer=AvengersUtd.Odyssey.UserInterface.Helpers.Timer;
 
-namespace AvengersUtd.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     /// <summary>
     /// Descrizione di riepilogo per Game.

@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace AvengersUtd.Odyssey.Engine.Input
+namespace AvengersUtd.Odyssey.Input
 {
     public class CameraAction : IActionStates
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SlimDX.Direct3D9;
 
-namespace AvengersUTD.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     public struct DeviceParameters
     {

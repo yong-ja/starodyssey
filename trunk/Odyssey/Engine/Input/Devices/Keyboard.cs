@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace AvengersUtd.Odyssey.Engine.Input.Devices
+namespace AvengersUtd.Odyssey.Input.Devices
 {
     public class Keyboard
     {
@@ -29,8 +29,8 @@ namespace AvengersUtd.Odyssey.Engine.Input.Devices
             //if (Game.Input.IsInputEnabled)
             //    OdysseyUI.ProcessKeyDown(sender, e);
 
-            if (Game.Input.IsCameraEnabled)
-                Game.CurrentScene.Camera.States.ProcessEvent(keystate);
+            //if (Game.Input.IsCameraEnabled)
+            //    Game.CurrentScene.Camera.States.ProcessEvent(keystate);
         }
 
         //public void KeyPress(object sender, KeyPressEventArgs e)
@@ -43,8 +43,8 @@ namespace AvengersUtd.Odyssey.Engine.Input.Devices
         {
             keystate[e.KeyValue] = false;
 
-            if (Game.Input.IsCameraEnabled)
-                Game.CurrentScene.Camera.States.ProcessEvent(keystate);
+            //if (Game.Input.IsCameraEnabled)
+            //    Game.CurrentScene.Camera.States.ProcessEvent(keystate);
         }
     }
 }

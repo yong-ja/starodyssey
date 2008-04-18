@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace AvengersUtd.Odyssey.Engine.Input.Devices
+namespace AvengersUtd.Odyssey.Input.Devices
 {
     public class Mouse
     {

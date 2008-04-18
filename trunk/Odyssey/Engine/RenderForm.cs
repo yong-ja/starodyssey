@@ -7,14 +7,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using AvengersUtd.Odyssey.Engine;
+using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using SlimDX.Direct3D9;
 
 #endregion
 
-namespace AvengersUTD.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     /// <summary>
     /// 

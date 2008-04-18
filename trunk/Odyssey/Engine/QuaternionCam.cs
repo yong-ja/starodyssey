@@ -1,10 +1,10 @@
 using System;
-using AvengersUtd.Odyssey.Engine.Input;
+using AvengersUtd.Odyssey.Input;
 using SlimDX;
 using SlimDX.Direct3D9;
 
 
-namespace AvengersUtd.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     public class QuaternionCam
     {
@@ -15,7 +15,6 @@ namespace AvengersUtd.Odyssey.Engine
         Matrix mProjection;
 
         int zoomLevel = 0;
-        CameraAction states;
 
         public const float DefaultSpeed = 20f;
         public const float DefaultRotationSpeed = 0.005f;
@@ -29,11 +28,6 @@ namespace AvengersUtd.Odyssey.Engine
         {
             get { return zoomLevel; }
             set { zoomLevel = value; }
-        }
-
-        public CameraAction States
-        {
-            get { return states; }
         }
 
         public Matrix View
@@ -83,7 +77,6 @@ namespace AvengersUtd.Odyssey.Engine
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, 0.1f, 1000.0f);
             Game.Device.SetTransform(TransformState.Projection, mProjection);
 
-            states = new CameraAction();
             Reset();
         }
 
@@ -101,7 +94,6 @@ namespace AvengersUtd.Odyssey.Engine
 
         public void Update()
         {
-            Process(states);
             device = Game.Device;
 
             Matrix mTranslation = Matrix.Translation(-vPosition.X, -vPosition.Y, -vPosition.Z);
@@ -189,36 +181,5 @@ namespace AvengersUtd.Odyssey.Engine
                 Rotate(-DefaultRotationSpeed, YAxis);
         }
 
-
-        /*	bool CCamera::Slerp(D3DXQUATERNION *pOrientation)
-		{ 
-			bool bSuccess = false;
-
-			if(pOrientation) // This is the orientation of the target
-		{
-
-			if (m_quatOrientation == *pOrientation)
-			return false;
-
-			D3DXQUATERNION quatInterpotedRotation;
-
-			// Calculate SLERP 
-		
-			D3DXQuaternionSlerp( &quatInterpotedRotation , 
-			&m_quatOrientation , 
-			pOrientation , 
-			m_fSlerpSpeed );
-
-			// Apply interpolted rotation
-			m_quatOrientation = quatInterpotedRotation;
-
-			D3DXQuaternionNormalize(&m_quatOrientation , &m_quatOrientation);
-
-			bSuccess = true;
-			m_bNeedUpdated = true;
-		}
-
-			return(bSuccess);
-		}*/
     }
 }

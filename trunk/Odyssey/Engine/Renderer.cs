@@ -2,7 +2,7 @@ using System;
 using SlimDX.Direct3D9;
 
 
-namespace AvengersUtd.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     /// <summary>
     /// Descrizione di riepilogo per Renderer.

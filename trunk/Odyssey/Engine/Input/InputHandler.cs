@@ -1,8 +1,8 @@
 using System.Windows.Forms;
-using AvengersUtd.Odyssey.Engine.Input.Devices;
+using AvengersUtd.Odyssey.Input.Devices;
 using AvengersUtd.Odyssey.UserInterface;
 
-namespace AvengersUtd.Odyssey.Engine.Input
+namespace AvengersUtd.Odyssey.Input
 {
     public class InputHandler
     {

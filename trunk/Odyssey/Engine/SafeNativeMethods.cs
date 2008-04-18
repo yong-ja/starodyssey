@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace AvengersUTD.Odyssey.Engine
+namespace AvengersUtd.Odyssey
 {
     public static class SafeNativeMethods
     {
