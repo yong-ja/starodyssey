@@ -1,5 +1,4 @@
 using System;
-using SlimDX.Direct3D;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Materials;
 

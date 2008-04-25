@@ -161,7 +161,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                     PitchAndFamily.FamilyRoman,
 #else
                     Precision.TrueType,
-                    FontQuality.AntiAliased | FontQuality.ClearTypeNatural,
+                    FontQuality.Antialiased | FontQuality.ClearTypeNatural,
                     PitchAndFamily.Roman,
 #endif
                     fontName

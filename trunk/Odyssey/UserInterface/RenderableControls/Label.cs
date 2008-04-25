@@ -285,7 +285,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             }
             else
             {
-                flags = DrawTextFormat.ExpandTabs | DrawTextFormat.WordBreak;
+                flags = DrawTextFormat.ExpandTabs | DrawTextFormat.Wordbreak;
             }
 
             switch (style.HorizontalAlignment)

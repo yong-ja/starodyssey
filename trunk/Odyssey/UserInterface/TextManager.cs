@@ -42,7 +42,7 @@ namespace AvengersUtd.Odyssey.UserInterface
     public class TextManager
     {
         //private Sprite textSprite; // Used to cache the drawn text
-        int color; // Color to draw the text
+        Color4 color; // Color to draw the text
         bool disposed;
         int lineHeight; // Height of the lines
         Point point; // Where to draw the text
@@ -57,7 +57,7 @@ namespace AvengersUtd.Odyssey.UserInterface
             textFont = f;
             //textSprite = s;
             lineHeight = l;
-            color = unchecked((int) 0xffffffff);
+            color = new Color4(Color.White);
             point = Point.Empty;
             size = Size.Empty;
         }
@@ -141,12 +141,12 @@ namespace AvengersUtd.Odyssey.UserInterface
         /// </summary>
         public void SetForegroundColor(int c)
         {
-            color = c;
+            color = (Color4)c;
         }
 
         public void SetForegroundColor(Color c)
         {
-            color = c.ToArgb();
+            color = (Color4)c;
         }
 
         protected void Dispose(bool disposing)

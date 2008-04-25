@@ -82,7 +82,6 @@
     </Compile>
     <Compile Include="Scenes\GridRenderer.cs" />
     <Compile Include="StarOdyssey.cs">
-      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -111,11 +111,11 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             Device device = OdysseyUI.Device;
             device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
             device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-            device.SetRenderState(RenderState.DestBlend, Blend.InvSourceAlpha);
+            device.SetRenderState(RenderState.DestinationBlend, Blend.InvSourceAlpha);
             device.SetStreamSource(0, vertexBuffer, 0, 20);
 
             device.VertexFormat = TransformedColored.Format;
-            device.SetIndices(indexBuffer);
+            device.Indices = (indexBuffer);
 
             foreach (RenderInfo renderInfo in renderInfoList)
             {
