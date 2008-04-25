@@ -7,6 +7,7 @@ using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Effects;
 using AvengersUtd.Odyssey.Meshes;
 using SlimDX;
+using System.IO;
 
 namespace AvengersUtd.Odyssey.Resources
 {

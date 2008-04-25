@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AvengersUtd.Odyssey.Engine;
-using AvengersUTD.Odyssey.Engine;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.StarOdyssey.Scenes;
+using AvengersUtd.Odyssey;
 
 namespace AvengersUtd.StarOdyssey
 {

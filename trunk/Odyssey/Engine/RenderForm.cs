@@ -241,37 +241,37 @@ namespace AvengersUtd.Odyssey
             //Settings.DeviceInfo = supportedParams;
         }
 
-        void Heartbeat()
-        {
-            //ResultCode result = device.CheckCooperativeLevelResult();
-            CooperativeLevel result;
+        //void Heartbeat()
+        //{
+        //    //ResultCode result = device.CheckCooperativeLevelResult();
+        //    CooperativeLevel result;
 
-            if ((result=device.CheckCooperativeLevel()) == CooperativeLevel.Ok)
-            {
-                //Okay to render
+        //    if ((result=device.CheckCooperativeLevel()) == CooperativeLevel.Ok)
+        //    {
+        //        //Okay to render
 
-                try
-                {
-                    Game.Loop();
-                }
-                catch (DeviceLostException)
-                {
-                    result = CooperativeLevel.DeviceLost;
-                }
-                catch (DeviceNotResetException)
-                {
-                    result = CooperativeLevel.DeviceNotReset;
-                }
-            }
-            if (result == CooperativeLevel.DeviceLost)
-            {
-                Thread.Sleep(500); //Can't Reset yet, wait for a bit
-            }
-            else if (result == CooperativeLevel.DeviceNotReset)
-            {
-                device.Reset(presentParameters);
-            }
-        }
+        //        try
+        //        {
+        //            Game.Loop();
+        //        }
+        //        catch (DeviceLostException)
+        //        {
+        //            result = CooperativeLevel.DeviceLost;
+        //        }
+        //        catch (DeviceNotResetException)
+        //        {
+        //            result = CooperativeLevel.DeviceNotReset;
+        //        }
+        //    }
+        //    if (result == CooperativeLevel.DeviceLost)
+        //    {
+        //        Thread.Sleep(500); //Can't Reset yet, wait for a bit
+        //    }
+        //    else if (result == CooperativeLevel.DeviceNotReset)
+        //    {
+        //        device.Reset(presentParameters);
+        //    }
+        //}
 
         /// <summary>
         /// GoWindowed - Overrides function in base class to set up present parameters
@@ -307,26 +307,26 @@ namespace AvengersUtd.Odyssey
             }
         }
 
-        public void Run()
-        {
-            while (Created)
-            {
-                if (Focused)
-                {
-                    Heartbeat();
-                }
-                else
-                {
-                    Thread.Sleep(100);
+        //public void Run()
+        //{
+        //    while (Created)
+        //    {
+        //        if (Focused)
+        //        {
+        //            Heartbeat();
+        //        }
+        //        else
+        //        {
+        //            Thread.Sleep(100);
 
-                    // Allow the application to handle Windows messages
-                    Application.DoEvents();
+        //            // Allow the application to handle Windows messages
+        //            Application.DoEvents();
 
-                    // Do the next loop
-                    continue;
-                }
-            }
-        }
+        //            // Do the next loop
+        //            continue;
+        //        }
+        //    }
+        //}
 
 
         protected void InitDevice()

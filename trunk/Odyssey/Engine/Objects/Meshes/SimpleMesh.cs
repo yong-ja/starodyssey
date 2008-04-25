@@ -3,6 +3,7 @@ using AvengersUtd.Odyssey.Objects.Materials;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Meshes;
+using AvengersUtd.Odyssey.Objects;
 
 namespace AvengersUtd.Odyssey.Engine.Meshes
 {
@@ -47,10 +48,12 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         public void Init()
         {
+            string filename = entityDescriptor.MeshDescriptor.MeshFilename;
             disposed = false;
             ExtendedMaterial[] list;
 
-            meshObject = EntityManager.LoadMesh(entityDescriptor.MeshDescriptor.MeshFilename, out list);
+            meshObject = EntityManager.LoadMesh(filename);
+            list = EntityManager.LoadMaterials(filename);
 
             //create adiacency buffer
             adiacency = meshObject.GenerateAdjacency(1e-6f);

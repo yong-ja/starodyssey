@@ -4,6 +4,7 @@ using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Input;
 using SlimDX.Direct3D9;
 using Timer=AvengersUtd.Odyssey.UserInterface.Helpers.Timer;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey
 {

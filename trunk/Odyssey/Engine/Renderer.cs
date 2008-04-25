@@ -12,10 +12,16 @@ namespace AvengersUtd.Odyssey
         protected bool disposed;
         protected QuaternionCam qCam;
         protected Device device;
+        LightManager lightManager;
 
         public QuaternionCam Camera
         {
             get { return qCam; }
+        }
+
+        public LightManager LightManager
+        {
+            get { return lightManager; }
         }
 
         public Device Device
@@ -26,6 +32,7 @@ namespace AvengersUtd.Odyssey
         public Renderer()
         {
             device = Game.Device;
+            lightManager = new LightManager();
             qCam = new QuaternionCam();
         }
 

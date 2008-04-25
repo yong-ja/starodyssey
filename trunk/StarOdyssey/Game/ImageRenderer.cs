@@ -1,6 +1,5 @@
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Engine;
-using AvengersUTD.Odyssey.Engine;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using AvengersUtd.Odyssey.UserInterface.RenderableControls;
 using SlimDX.Direct3D9;

@@ -2,6 +2,7 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.Engine;
 using AvengersUtd.Utils.Collections;
 using SlimDX.Direct3D9;
+using System.IO;
 
 namespace AvengersUtd.Odyssey.Resources
 {
@@ -20,7 +21,7 @@ namespace AvengersUtd.Odyssey.Resources
                 Texture texture;
                 try
                 {
-                    texture = TextureLoader.FromFile(Game.Device, filename);
+                    texture = Texture.FromFile(Game.Device, filename);
                     SurfaceDescription desc = texture.GetLevelDescription(0);
 
                     textureCache.Add(filename, new CacheNode<Texture>(32*desc.Width*desc.Height, texture));

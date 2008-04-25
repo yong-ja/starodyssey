@@ -62,11 +62,13 @@
     <Compile Include="DeviceParameters.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="LightManager.cs" />
     <Compile Include="Objects\Effects\EffectFactory.cs" />
     <Compile Include="Objects\Effects\EffectManager.cs" />
     <Compile Include="Objects\Effects\EffectParameter.cs" />
     <Compile Include="Objects\Effects\ParamHandles.cs" />
     <Compile Include="Objects\Enums.cs" />
+    <Compile Include="Objects\IScaleable.cs" />
     <Compile Include="Objects\Materials\AbstractMaterial.cs" />
     <Compile Include="Objects\Meshes\AbstractMesh.cs" />
     <Compile Include="Objects\Meshes\BaseEntity.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Objects\Resources\EntityDescriptor.cs" />
     <Compile Include="Objects\Materials\MaterialDescriptor.cs" />
     <Compile Include="Objects\Meshes\MeshDescriptor.cs" />
+    <Compile Include="Objects\Resources\EntityManager.cs" />
     <Compile Include="Objects\Resources\TextureManager.cs" />
     <Compile Include="_OldCode\CameraAction.cs" />
     <Compile Include="Input\Devices\Keyboard.cs" />

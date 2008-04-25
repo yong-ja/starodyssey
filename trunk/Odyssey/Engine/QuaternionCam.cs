@@ -30,6 +30,11 @@ namespace AvengersUtd.Odyssey
             set { zoomLevel = value; }
         }
 
+        public Matrix World
+        {
+            get { return device.GetTransform(TransformState.World); }
+        }
+
         public Matrix View
         {
             get { return mView; }
