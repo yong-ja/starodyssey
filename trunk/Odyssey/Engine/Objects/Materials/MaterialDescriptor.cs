@@ -12,6 +12,12 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         string label;
         string[] textureFilenames;
 
+        public MaterialDescriptor(string label)
+        {
+            this.label = label;
+            textureFilenames = new string[0];
+        }
+
         public MaterialDescriptor(string label, params string[] texFilenames)
         {
             textureFilenames = texFilenames;

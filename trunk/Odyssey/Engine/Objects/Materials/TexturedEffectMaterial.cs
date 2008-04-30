@@ -4,7 +4,7 @@ using AvengersUtd.Odyssey.Objects.Effects;
 
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
-    public class TexturedEffectMaterial : TexturedMaterial
+    public class TexturedEffectMaterial : TexturedMaterial,IEffectMaterial
     {
         protected EffectDescriptor effectDescriptor;
 

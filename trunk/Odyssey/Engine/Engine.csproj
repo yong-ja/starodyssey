@@ -68,8 +68,9 @@
     <Compile Include="Objects\Effects\EffectParameter.cs" />
     <Compile Include="Objects\Effects\ParamHandles.cs" />
     <Compile Include="Objects\Enums.cs" />
-    <Compile Include="Objects\IScaleable.cs" />
     <Compile Include="Objects\Materials\AbstractMaterial.cs" />
+    <Compile Include="Objects\Materials\DiffuseMaterial.cs" />
+    <Compile Include="Objects\Materials\IEffectMaterial.cs" />
     <Compile Include="Objects\Meshes\AbstractMesh.cs" />
     <Compile Include="Objects\Meshes\BaseEntity.cs" />
     <Compile Include="Objects\Meshes\IEntity.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Objects\Materials\TexturedEffectMaterial.cs" />
     <Compile Include="Objects\Materials\TexturedMaterial.cs" />
     <Compile Include="Objects\Effects\EffectDescriptor.cs" />
+    <Compile Include="Objects\Meshes\IScaleable.cs" />
     <Compile Include="Objects\Meshes\SimpleMesh.cs" />
     <Compile Include="Objects\Resources\EntityDescriptor.cs" />
     <Compile Include="Objects\Materials\MaterialDescriptor.cs" />

@@ -11,8 +11,9 @@ namespace AvengersUtd.StarOdyssey
             Text = "Odyssey UI v0.3.41 SlimDX Demo";
             //ImageRenderer mainMenu = new ImageRenderer();
             GridRenderer mainMenu = new GridRenderer();
-            mainMenu.Init();
             Game.CurrentScene = mainMenu;
+            mainMenu.Init();
+            
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

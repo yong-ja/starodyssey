@@ -8,6 +8,7 @@ using AvengersUtd.Odyssey.Objects.Effects;
 using AvengersUtd.Odyssey.Meshes;
 using SlimDX;
 using System.IO;
+using AvengersUtd.Odyssey.Objects.Meshes;
 
 namespace AvengersUtd.Odyssey.Resources
 {
@@ -48,7 +49,6 @@ namespace AvengersUtd.Odyssey.Resources
                 default:
                 case FXType.Diffuse:
                     fxDescriptor = new EffectDescriptor("Diffuse.fx");
-                    //fxDescriptor.AddStaticParameter(FXParameterType.WorldViewProjection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);

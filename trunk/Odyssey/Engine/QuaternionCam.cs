@@ -87,6 +87,7 @@ namespace AvengersUtd.Odyssey
 
         public void Reset()
         {
+            device = Game.Device;
             vPosition = new Vector3();
             qOrientation = Quaternion.Identity;
             mView = Matrix.Identity;
@@ -99,7 +100,6 @@ namespace AvengersUtd.Odyssey
 
         public void Update()
         {
-            device = Game.Device;
 
             Matrix mTranslation = Matrix.Translation(-vPosition.X, -vPosition.Y, -vPosition.Z);
             Matrix mRotation = Matrix.RotationQuaternion(qOrientation);

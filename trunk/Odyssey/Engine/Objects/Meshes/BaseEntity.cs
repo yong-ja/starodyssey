@@ -38,11 +38,6 @@ namespace AvengersUtd.Odyssey.Meshes
             mesh = new SimpleMesh<MaterialT>(entityDesc);
         }
 
-        public BaseEntity()
-        {
-            mesh = new SimpleMesh<MaterialT>();
-        }
-
         public abstract void Render();
 
         public abstract void Init();

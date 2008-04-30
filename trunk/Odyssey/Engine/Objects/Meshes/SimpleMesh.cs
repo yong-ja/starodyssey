@@ -30,8 +30,9 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         #region Constructors
 
-        public SimpleMesh()
+        public SimpleMesh(Mesh mesh)
         {
+            Init(mesh);
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         #endregion
 
-        public void Init()
+        void Init()
         {
             string filename = entityDescriptor.MeshDescriptor.MeshFilename;
             disposed = false;
@@ -83,19 +84,21 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             meshObject = mesh;
             int[] adjacency = meshObject.GenerateAdjacency(1e-6f);
             
-
-            //original.ComputeNormals(adjacency);
-            //ComputeTangentsAndBinormal();
-            //meshObject.Simplify(original, adjacency, 10, MeshFlags.SimplifyFace);
-
             ComputeTangentsAndBinormal();
-            //meshObject newMesh = meshObject.Clean(CleanType.Simplification, original, adjacency, out adjacency2);
 
-            //meshObject = new ProgressiveMesh(newMesh, adjacency2, 10, MeshFlags.SimplifyFace);
-            //faceCount = original.NumberFaces;
             materials = new MaterialT[1];
             MaterialT material = new MaterialT();
             material.Init(new Material(), matDescriptor);
+            materials[0] = material;
+        }
+
+        public void Init(Mesh mesh)
+        {
+            meshObject = mesh;
+            ComputeTangentsAndBinormal();
+            materials = new MaterialT[1];
+            MaterialT material = new MaterialT();
+            material.Init(new Material(), new MaterialDescriptor(material.GetType().ToString()));
             materials[0] = material;
         }
 
@@ -113,32 +116,35 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         public void ComputeTangentsAndBinormal()
         {
-            /*
-            VertexElement[] decl = meshObject.GetDeclaration();
+            
+            //VertexElement[] elements = meshObject.GetDeclaration();
 
-            decl[3] = new VertexElement(0,
-                                        32,
-                                        DeclarationType.Float3,
-                                        DeclarationMethod.Default,
-                                        DeclarationUsage.Tangent,
-                                        0);
-            decl[4] = new VertexElement(0,
-                                        32,
-                                        DeclarationType.Float3,
-                                        DeclarationMethod.Default,
-                                        DeclarationUsage.Binormal,
-                                        0);
-            decl[5] = VertexElement.VertexDeclarationEnd;
-             */
+            //elements[3] = new VertexElement(0,
+            //                            32,
+            //                            DeclarationType.Float3,
+            //                            DeclarationMethod.Default,
+            //                            DeclarationUsage.Tangent,
+            //                            0);
+            //elements[4] = new VertexElement(0,
+            //                            32,
+            //                            DeclarationType.Float3,
+            //                            DeclarationMethod.Default,
+            //                            DeclarationUsage.Binormal,
+            //                            0);
+            //elements[5] = VertexElement.VertexDeclarationEnd;
+            
             VertexElement[] elements = new VertexElement[]{
                 new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
-				new VertexElement(0, 12, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
-				new VertexElement(0, 24, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0),
-				new VertexElement(0, 36, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Tangent, 0),
-				new VertexElement(0, 48, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
-				VertexElement.VertexDeclarationEnd
+                new VertexElement(0, 12, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
+                new VertexElement(0, 24, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0),
+                new VertexElement(0, 36, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Tangent, 0),
+                new VertexElement(0, 48, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
+                VertexElement.VertexDeclarationEnd
             };
-            meshObject = meshObject.Clone(Game.Device,MeshFlags.Managed, elements);
+            Mesh tempMesh = meshObject.Clone(Game.Device,MeshFlags.Managed, elements);
+            meshObject.Dispose();
+            meshObject = tempMesh;
+
             meshObject.ComputeTangentFrame(TangentOptions.CalculateNormals);
         }
 
