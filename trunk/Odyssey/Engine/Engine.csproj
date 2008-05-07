@@ -71,6 +71,7 @@
     <Compile Include="Objects\Materials\AbstractMaterial.cs" />
     <Compile Include="Objects\Materials\DiffuseMaterial.cs" />
     <Compile Include="Objects\Materials\IEffectMaterial.cs" />
+    <Compile Include="Objects\Materials\SpecularMaterial.cs" />
     <Compile Include="Objects\Meshes\AbstractMesh.cs" />
     <Compile Include="Objects\Meshes\BaseEntity.cs" />
     <Compile Include="Objects\Meshes\IEntity.cs" />
@@ -87,8 +88,6 @@
     <Compile Include="Objects\Resources\EntityManager.cs" />
     <Compile Include="Objects\Resources\TextureManager.cs" />
     <Compile Include="_OldCode\CameraAction.cs" />
-    <Compile Include="Input\Devices\Keyboard.cs" />
-    <Compile Include="Input\Devices\Mouse.cs" />
     <Compile Include="_OldCode\IActionStates.cs" />
     <Compile Include="_OldCode\InputEvent.cs" />
     <Compile Include="Input\InputHandler.cs" />

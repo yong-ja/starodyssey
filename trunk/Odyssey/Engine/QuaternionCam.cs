@@ -141,6 +141,11 @@ namespace AvengersUtd.Odyssey
             //qOrientation.Normalize();
         }
 
+        public void RotateY(float angle)
+        {
+            Rotate(angle, YAxis);
+        }
+
         public Vector3 GetCameraAxis(Vector3 axisVector)
         {
             Vector3 cameraAxis = new Vector3();
