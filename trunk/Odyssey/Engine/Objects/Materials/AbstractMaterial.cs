@@ -9,26 +9,44 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     {
         protected bool disposed;
         protected Material material;
-        protected MaterialDescriptor materialDescriptor;
+        protected TextureDescriptor textureDescriptor;
         protected EffectDescriptor effectDescriptor;
 
-        public virtual void Init() 
+        public Material Material
         {
-            Init(new Material(), null, null);
+            get { return material; }
+            set { material = value; }
         }
 
-        public virtual void Init(Material mat, MaterialDescriptor matDescriptor)
+        public virtual TextureDescriptor TextureDescriptor
         {
-            Init(mat, matDescriptor, null);
+            get { return textureDescriptor; }
+            set { textureDescriptor = value; }
         }
 
-        public virtual void Init(Material mat, MaterialDescriptor matDescriptor, 
-            EffectDescriptor fxDescriptor)
+        public virtual EffectDescriptor EffectDescriptor
         {
-            material = mat;
-            materialDescriptor = matDescriptor;
-            effectDescriptor = fxDescriptor;
+            get { return effectDescriptor; }
+            set { effectDescriptor = value; }
         }
+
+        public AbstractMaterial()
+        {
+            material = new Material();
+        }
+
+        //public virtual void Init(Material mat, MaterialDescriptor matDescriptor)
+        //{
+        //    Init(mat, matDescriptor, null);
+        //}
+
+        //public virtual void Init(Material mat, MaterialDescriptor matDescriptor, 
+        //    EffectDescriptor fxDescriptor)
+        //{
+        //    material = mat;
+        //    materialDescriptor = matDescriptor;
+        //    effectDescriptor = fxDescriptor;
+        //}
 
 
         public abstract void Apply();

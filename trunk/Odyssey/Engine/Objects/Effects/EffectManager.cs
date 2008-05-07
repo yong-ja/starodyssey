@@ -39,8 +39,7 @@ namespace AvengersUtd.Odyssey.Resources
             }
         }
 
-        public static EffectDescriptor CreateEffect<MaterialT>(FXType fxType, BaseEntity<MaterialT> entity)
-            where MaterialT : IMaterialContainer, new()
+        public static EffectDescriptor CreateEffect(FXType fxType, params object[] data)
         {
             EffectDescriptor fxDescriptor;
 
@@ -56,17 +55,28 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
                     return fxDescriptor;
 
+                case FXType.Specular:
+                    fxDescriptor = new EffectDescriptor("Specular.fx");
+                    fxDescriptor.AddDynamicParameter(FXParameterType.World);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.LightDirection);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+                    fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
+                    fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
+                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(ParamHandles.Colors.Diffuse,
+                        fxDescriptor.Effect, (Color4)data[0]));
+                    return fxDescriptor;
+
                 case FXType.SelfAlign:
 
-                    TexturedEffectMaterial teMat = entity.MeshObject.Materials[0] as TexturedEffectMaterial;
                     fxDescriptor = new EffectDescriptor("SelfAlign.fx");
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                                                         ParamHandles.Floats.Scale, fxDescriptor.Effect,
-                                                        ((IScaleable) entity).Scale));
+                                                        (float)data[0]));
 
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                                                         ParamHandles.Textures.Texture1, fxDescriptor.Effect,
-                                                        teMat.Diffuse));
+                                                        data[1] as Texture));
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);
@@ -74,20 +84,24 @@ namespace AvengersUtd.Odyssey.Resources
 
                 case FXType.SpecularBump:
                     fxDescriptor = new EffectDescriptor("SpecularBump.fx");
-                    SpecularBumpMaterial sbMat = entity.MeshObject.Materials[0] as SpecularBumpMaterial;
+                    Texture diffuse = data[0] as Texture;
+                    Texture normal = data[1] as Texture;
+
 
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                                                         ParamHandles.Textures.Texture1, fxDescriptor.Effect,
-                                                        sbMat.Diffuse));
+                                                        diffuse));
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                                                         ParamHandles.Textures.Texture2, fxDescriptor.Effect,
-                                                        sbMat.Normal));
+                                                        normal));
                     fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
                     //fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+
+                    IEntity entity = data[0] as IEntity;
 
                     VectorOp vectorOp = delegate()
                                             {

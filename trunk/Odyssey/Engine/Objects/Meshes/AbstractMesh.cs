@@ -120,8 +120,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
 
         public void DrawWithEffect()
         {
-            IEffectMaterial effectMaterial = materials[0] as IEffectMaterial;
-            Effect effect = effectMaterial.EffectDescriptor.Effect;
+            Effect effect = materials[0].EffectDescriptor.Effect;
 
             int passes = effect.Begin(FX.None);
             for (int pass = 0; pass < passes; pass++)

@@ -4,7 +4,7 @@ namespace AvengersUtd.Odyssey.Resources
     public struct EntityDescriptor
     {
         MeshDescriptor meshDescriptor;
-        MaterialDescriptor[] materialDescriptors;
+        TextureDescriptor[] textureDescriptors;
 
 
         public MeshDescriptor MeshDescriptor
@@ -14,16 +14,16 @@ namespace AvengersUtd.Odyssey.Resources
         }
 
 
-        public MaterialDescriptor[] MaterialDescriptors
+        public TextureDescriptor[] TextureDescriptors
         {
-            get { return materialDescriptors; }
-            set { materialDescriptors = value; }
+            get { return textureDescriptors; }
+            set { textureDescriptors = value; }
         }
 
-        public EntityDescriptor(MeshDescriptor meshDescriptor, params MaterialDescriptor[] materials)
+        public EntityDescriptor(MeshDescriptor meshDescriptor, params TextureDescriptor[] materials)
         {
             this.meshDescriptor = meshDescriptor;
-            materialDescriptors = materials;
+            textureDescriptors = materials;
         }
     }
 }

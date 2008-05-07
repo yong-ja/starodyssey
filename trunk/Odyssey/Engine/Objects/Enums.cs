@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Objects
     {
         None,
         Diffuse,
+        Specular,
         SelfAlign,
         SpecularBump
     }

@@ -1,3 +1,4 @@
+using System;
 namespace AvengersUtd.Odyssey.Objects.Effects
 {
     public struct ParamHandles
@@ -5,6 +6,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         public struct Colors
         {
             public const string Ambient = "cAmbient";
+            public const string Diffuse = "cDiffuse";
         }
 
         public struct Floats
@@ -23,7 +25,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
 
         public struct Vectors
         {
-            public const string EyePosition = "vEye";
+            public const string EyePosition = "vEyePos";
             public const string LightPosition = "vLightPos";
             public const string LightDirection = "vLightDir";
         }
@@ -38,9 +40,12 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             public const string Texture1 = "t1";
             public const string Texture2 = "t2";
             public const string Texture3 = "t3";
+            FXParameterType type;
+
+            
         }
     }
-
+    
     public enum FXParameterType
     {
         World,

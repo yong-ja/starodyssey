@@ -10,7 +10,6 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 {
     public class DiffuseMaterial:AbstractMaterial,IEffectMaterial
     {
-        protected EffectDescriptor effectDescriptor;
         protected Color4 diffuseColor;
 
         public Color4 DiffuseColor
@@ -18,13 +17,12 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             get { return diffuseColor; }
         }
 
-
-        public override void Init(Material mat, MaterialDescriptor descriptor)
+        public DiffuseMaterial()
         {
-            base.Init(mat, descriptor);
-            effectDescriptor = EffectManager.CreateEffect<DiffuseMaterial>(FXType.Diffuse, null);
+            effectDescriptor = EffectManager.CreateEffect(FXType.Diffuse);
             effectDescriptor.UpdateStatic();
         }
+
 
         public override void Apply()
         {

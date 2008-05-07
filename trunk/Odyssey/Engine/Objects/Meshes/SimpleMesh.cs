@@ -66,7 +66,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             materials = new MaterialT[list.Length];
 
             //for each material description initialise the material list
-            if (list.Length != entityDescriptor.MaterialDescriptors.Length)
+            if (list.Length != entityDescriptor.TextureDescriptors.Length)
                 throw new ArgumentException(
                     "Number of materials stored in the meshObject file do not match with the number of materials in the EntityDescriptor");
 
@@ -74,12 +74,13 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             foreach (ExtendedMaterial mate in list)
             {
                 materials[i] = new MaterialT();
-                materials[i].Init(mate.MaterialD3D, entityDescriptor.MaterialDescriptors[i]);
+                materials[i].Material = mate.MaterialD3D;
+                materials[i].TextureDescriptor = entityDescriptor.TextureDescriptors[i];
                 i++;
             }
         }
 
-        public void Init(Mesh mesh, MaterialDescriptor matDescriptor)
+        public void Init(Mesh mesh, TextureDescriptor texDescriptor)
         {
             meshObject = mesh;
             int[] adjacency = meshObject.GenerateAdjacency(1e-6f);
@@ -88,7 +89,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
             materials = new MaterialT[1];
             MaterialT material = new MaterialT();
-            material.Init(new Material(), matDescriptor);
+            material.TextureDescriptor = texDescriptor;
             materials[0] = material;
         }
 
@@ -98,7 +99,6 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             ComputeTangentsAndBinormal();
             materials = new MaterialT[1];
             MaterialT material = new MaterialT();
-            material.Init(new Material(), new MaterialDescriptor(material.GetType().ToString()));
             materials[0] = material;
         }
 

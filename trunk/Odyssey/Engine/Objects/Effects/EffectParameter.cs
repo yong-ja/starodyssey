@@ -125,6 +125,13 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             return new EffectParameter(varName, effect, update);
         }
 
+        public static EffectParameter CreateCustomParameter(String varName, Effect effect, Color4 value)
+        {
+            EffectHandle eH = effect.GetParameter(null, varName);
+            Update update = delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, value); };
+            return new EffectParameter(varName, effect, update);
+        }
+
         public static EffectParameter CreateCustomParameter(String varName, Effect effect, Texture value)
         {
             EffectHandle eH = effect.GetParameter(null, varName);

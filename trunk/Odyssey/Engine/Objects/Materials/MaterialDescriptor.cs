@@ -7,18 +7,18 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     }
 
 
-    public struct MaterialDescriptor
+    public struct TextureDescriptor
     {
         string label;
         string[] textureFilenames;
 
-        public MaterialDescriptor(string label)
+        public TextureDescriptor(string label)
         {
             this.label = label;
             textureFilenames = new string[0];
         }
 
-        public MaterialDescriptor(string label, params string[] texFilenames)
+        public TextureDescriptor(string label, params string[] texFilenames)
         {
             textureFilenames = texFilenames;
             this.label = label;

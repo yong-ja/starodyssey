@@ -13,10 +13,18 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             get { return normal; }
         }
 
-        public override void Init(Material mat, MaterialDescriptor descriptor)
+        public override TextureDescriptor TextureDescriptor
         {
-            base.Init(mat, descriptor);
-            normal = TextureManager.LoadTexture(descriptor.GetTextureFilename(TextureType.Normal));
+            get
+            {
+                return base.TextureDescriptor;
+            }
+            set
+            {
+                base.TextureDescriptor = value;
+                normal = TextureManager.LoadTexture(TextureDescriptor.GetTextureFilename(TextureType.Normal));
+            }
         }
+
     }
 }
