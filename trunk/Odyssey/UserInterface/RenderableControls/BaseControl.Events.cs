@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         static readonly object EventMouseEnter;
         static readonly object EventMouseLeave;
         static readonly object EventMouseMove;
-        static readonly object eventMouseWheel;
+        static readonly object EventMouseWheel;
         static readonly object EventMouseUp;
 
 
@@ -73,8 +73,8 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// </summary>
         public event MouseEventHandler MouseWheel
         {
-            add { eventHandlerList.AddHandler(eventMouseWheel, value); }
-            remove { eventHandlerList.RemoveHandler(eventMouseWheel, value); }
+            add { eventHandlerList.AddHandler(EventMouseWheel, value); }
+            remove { eventHandlerList.RemoveHandler(EventMouseWheel, value); }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         protected virtual void OnMouseWheel(MouseEventArgs e)
         {
-            MouseEventHandler handler = (MouseEventHandler) eventHandlerList[eventMouseWheel];
+            MouseEventHandler handler = (MouseEventHandler) eventHandlerList[EventMouseWheel];
             if (handler != null)
                 handler(this, e);
         }

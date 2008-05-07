@@ -125,7 +125,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             EventMouseDown = new object();
             EventMouseLeave = new object();
             EventMouseMove = new object();
-            eventMouseWheel = new object();
+            EventMouseWheel = new object();
             EventMouseUp = new object();
             EventMove = new object();
             EventSelectedChanged = new object();

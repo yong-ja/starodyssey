@@ -32,6 +32,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
     using Microsoft.DirectX.Direct3D;
 #else
 using SlimDX.Direct3D9;
+using AvengersUtd.Odyssey.UserInterface.Devices;
 #endif 
 	#endregion
 
@@ -143,7 +144,7 @@ namespace AvengersUtd.Odyssey.UserInterface
                 currentHUD.ProcessMouseMovement(e);
         }
 
-        static void ProcessMouseInputPress(object sender, MouseEventArgs e)
+         static void ProcessMouseInputPress(object sender, MouseEventArgs e)
         {
             bool handled = false;
 
@@ -234,6 +235,9 @@ namespace AvengersUtd.Odyssey.UserInterface
             if (target == null)
                 throw new ArgumentNullException("target", "The target control must not be null.");
 
+
+            target.KeyDown += Keyboard.Instance.KeyDown;
+            target.KeyUp += Keyboard.Instance.KeyUp;
 
             target.KeyDown += new
                 KeyEventHandler(ProcessKeyDown);

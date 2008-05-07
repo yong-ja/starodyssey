@@ -57,7 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Devices\Keyboard.cs" />
+    <Compile Include="Devices\Mouse.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="RenderableControls\CameraHostControl.cs" />
     <Compile Include="RenderableControls\Hud.MDX.cs" />
     <Compile Include="RenderableControls\Hud.SlimDX.cs" />
     <Compile Include="RenderableControls\ProgressBar.cs" />
