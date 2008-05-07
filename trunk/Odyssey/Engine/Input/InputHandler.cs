@@ -1,6 +1,6 @@
 using System.Windows.Forms;
-using AvengersUtd.Odyssey.Input.Devices;
 using AvengersUtd.Odyssey.UserInterface;
+using AvengersUtd.Odyssey.UserInterface.Devices;
 
 namespace AvengersUtd.Odyssey.Input
 {
@@ -12,12 +12,6 @@ namespace AvengersUtd.Odyssey.Input
 
         static Mouse mouse;
         static Keyboard keyboard;
-
-        public bool IsCameraEnabled
-        {
-            get { return isCameraEnabled; }
-            set { isCameraEnabled = true; }
-        }
 
         public bool IsInputEnabled
         {
@@ -32,6 +26,7 @@ namespace AvengersUtd.Odyssey.Input
             keyboard = Keyboard.Instance;
 
             OdysseyUI.SetupHooks(ownerForm);
+
 
         }
     }
