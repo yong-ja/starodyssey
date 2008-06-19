@@ -9,9 +9,30 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     public class SpecularMaterial : AbstractMaterial
     {
         Color4 diffuseColor;
+
+
+        public Color4 Diffuse
+        {
+            get
+            {
+                return diffuseColor;
+            }
+            set {
+                if (value != diffuseColor)
+                {
+                    diffuseColor = value;
+                    effectDescriptor = EffectManager.CreateEffect(FXType.Specular, diffuseColor);
+                    effectDescriptor.UpdateStatic();
+                    
+                }
+                
+            }
+        }
+
         public SpecularMaterial()
         {
-            effectDescriptor = EffectManager.CreateEffect(FXType.Specular, new Color4(1.0f,1.0f,0f,0f));
+            diffuseColor = new Color4(0f, 1.0f, 0f);
+            effectDescriptor = EffectManager.CreateEffect(FXType.Specular, diffuseColor);
             effectDescriptor.UpdateStatic();
         }
 

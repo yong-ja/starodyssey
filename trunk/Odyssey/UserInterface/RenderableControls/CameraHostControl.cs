@@ -4,6 +4,8 @@ using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Devices;
 using System.Windows.Forms;
+using SlimDX.XInput;
+using AvengersUtd.Odyssey.UserInterface.Helpers;
 
 namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 {
@@ -19,11 +21,11 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         HoverDown
     }
 
-    public struct CameraBinding
+    public class CameraBinding
     {
-        public delegate void CameraTransform(float amount);
+        public delegate void CameraTransformState(CameraAction action, bool state);
         Keys key;
-        CameraTransform Transform;
+        CameraTransformState TransformState;
         CameraAction action;
         float amount;
 
@@ -32,21 +34,21 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             get { return key; }
         }
 
-        public void Apply()
+        public void Apply(bool state)
         {
-            Transform(amount);
+            TransformState(action,state);
         }
 
-        public CameraBinding(Keys key, CameraAction action, CameraTransform transform, float amount)
+        public CameraBinding(Keys key, CameraAction action, CameraTransformState transform, float amount)
         {
             this.key = key;
             this.action = action;
-            this.Transform = transform;
+            this.TransformState = transform;
             this.amount = amount;
         }
     }
 
-    public abstract class CameraHostControl: ContainerControl
+    public class CameraHostControl: ContainerControl
     {
         static Keyboard keyboard = Keyboard.Instance;
         SortedList<Keys, CameraBinding> keyBindings;
@@ -55,21 +57,33 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         {
             ApplyControlStyle(ControlStyle.EmptyStyle);
             keyBindings = new SortedList<Keys, CameraBinding>();
+            IsFocusable = true;
         }
 
         public void SetBinding(CameraBinding binding)
         {
             if (!keyBindings.ContainsKey(binding.Key))
-                keyBindings.Add(key, binding);
+                keyBindings.Add(binding.Key, binding);
         }
 
-        public void ProcessInput()
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            foreach (CameraBinding binding in keyBindings.Values)
-            {
-                if (keyboard[binding.Key])
-                    binding.Apply();
-            }
+            CameraBinding binding=null;
+            if (keyBindings.ContainsKey(e.KeyCode))
+                binding = keyBindings[e.KeyCode];
+
+            if (binding != null)
+                binding.Apply(true);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            CameraBinding binding = null;
+            if (keyBindings.ContainsKey(e.KeyCode))
+                binding = keyBindings[e.KeyCode];
+
+            if (binding != null)
+                binding.Apply(false);
         }
 
     }

@@ -3,10 +3,11 @@ using AvengersUtd.Odyssey.Resources;
 using SlimDX;
 using AvengersUtd.Odyssey.Objects.Materials;
 using AvengersUtd.Odyssey.Engine.Meshes;
+using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
 
 namespace AvengersUtd.Odyssey.Meshes
 {
-    public abstract class BaseEntity<MaterialT> : IEntity
+    public abstract class BaseEntity<MaterialT> : IEntity,I3dEntity
         where MaterialT : IMaterialContainer, new()
 
     {
@@ -40,8 +41,8 @@ namespace AvengersUtd.Odyssey.Meshes
 
         public abstract void Render();
 
-        public abstract void Init();
-        public abstract void UpdatePosition();
+        //public abstract void Init();
+        //public abstract void UpdatePosition();
 
         #region IEntity Members
 
@@ -77,6 +78,15 @@ namespace AvengersUtd.Odyssey.Meshes
         ~BaseEntity()
         {
             Dispose(false);
+        }
+
+        #endregion
+
+        #region I3dEntity Members
+
+        SlimDX.Direct3D9.Mesh I3dEntity.Mesh
+        {
+            get { return mesh.Mesh; }
         }
 
         #endregion

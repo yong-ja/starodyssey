@@ -23,17 +23,56 @@
 #endregion
 
 using System;
+using System.Threading;
 
 namespace AvengersUtd.Odyssey.UserInterface.Helpers
 {
+    public class ElapsedEventArgs : EventArgs
+    {
+        DateTime signalTime;
+
+        public DateTime SignalTime
+        {
+            get
+            {
+                return signalTime;
+            }
+        }
+
+        public ElapsedEventArgs(DateTime signalTime)
+        {
+            this.signalTime = signalTime;
+        }
+
+        public new static ElapsedEventArgs Empty
+        {
+            get
+            {
+                return new ElapsedEventArgs(new DateTime(0));
+            }
+        }
+    }
+
     /// <summary>
     /// High Precision Timer Class
     /// </summary>
     public class Timer
     {
+        public delegate void ElapsedEventHandler(object sender, ElapsedEventArgs e);
         long baseTime;
         long elapsedTime;
         long ticksPerSecond;
+
+        double interval = 1000;
+        Thread timerThread;
+        bool stop;
+        public event ElapsedEventHandler Elapsed;        
+
+        public double Interval
+        {
+            get { return interval; }
+            set { interval = value; }
+        }
 
         /// <summary>
         /// High Precision Timer Class
@@ -90,6 +129,53 @@ namespace AvengersUtd.Odyssey.UserInterface.Helpers
             double absoluteTime = (double) (time - elapsedTime)/(double) ticksPerSecond;
             elapsedTime = time;
             return absoluteTime;
+        }
+
+        public void Start()
+        {
+            stop = false;
+
+            timerThread = new Thread(new ThreadStart(Run));
+            timerThread.IsBackground = true;
+            timerThread.Start();
+
+        }
+
+        void SleepIntermittently(double totalTime)
+        {
+            int sleptTime = 0;
+            int intermittentSleepIncrement = 10;
+
+            while (!stop && sleptTime < totalTime)
+            {
+                Thread.Sleep(intermittentSleepIncrement);
+                sleptTime += intermittentSleepIncrement;
+            }
+        }
+
+        public void Stop()
+        {
+            // Request the loop to stop
+            stop = true;
+
+        }
+
+        public void Run()
+        {
+            while (true)
+            {
+                // Sleep for the timer interval
+                SleepIntermittently(Interval);
+
+                // Then fire the tick event
+                OnElapsed(new ElapsedEventArgs(DateTime.Now));
+            }
+        }
+
+        protected void OnElapsed(ElapsedEventArgs e)
+        {
+            if (Elapsed != null)
+                Elapsed(this, e);
         }
     }
 }

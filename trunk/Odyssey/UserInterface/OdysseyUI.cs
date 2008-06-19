@@ -213,10 +213,19 @@ namespace AvengersUtd.Odyssey.UserInterface
                 currentHUD.ProcessMouseRelease(e);
         }
 
+        static int i = 0;
         static void ProcessKeyDown(object sender, KeyEventArgs e)
         {
+            i++;
+            DebugManager.LogToScreen("In ProcKD: " + i.ToString());
             if (currentHUD.FocusedControl != null)
                 currentHUD.FocusedControl.ProcessKeyDown(e);
+        }
+
+        static void ProcessKeyUp(object sender, KeyEventArgs e)
+        {
+            if (currentHUD.FocusedControl != null)
+                currentHUD.FocusedControl.ProcessKeyUp(e);
         }
 
         static void ProcessKeyPress(object sender, KeyPressEventArgs e)
@@ -241,6 +250,8 @@ namespace AvengersUtd.Odyssey.UserInterface
 
             target.KeyDown += new
                 KeyEventHandler(ProcessKeyDown);
+            target.KeyUp += new
+                KeyEventHandler(ProcessKeyUp);
             target.KeyPress += new
                 KeyPressEventHandler(ProcessKeyPress);
             target.MouseDown += new

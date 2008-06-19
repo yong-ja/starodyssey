@@ -43,6 +43,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
         {
             //create the meshObject from file
             entityDescriptor = entityDesc;
+            Init(EntityManager.LoadMesh(entityDesc.MeshDescriptor.MeshFilename));
         }
 
         #endregion
@@ -141,11 +142,11 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
                 new VertexElement(0, 48, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
                 VertexElement.VertexDeclarationEnd
             };
-            Mesh tempMesh = meshObject.Clone(Game.Device,MeshFlags.Managed, elements);
+            Mesh tempMesh = meshObject.Clone(Game.Device, MeshFlags.Managed, elements);
             meshObject.Dispose();
             meshObject = tempMesh;
 
-            meshObject.ComputeTangentFrame(TangentOptions.CalculateNormals);
+            meshObject.ComputeNormals();
         }
 
 

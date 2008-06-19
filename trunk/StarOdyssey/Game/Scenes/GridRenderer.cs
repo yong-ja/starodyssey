@@ -11,6 +11,8 @@ using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.UserInterface.Devices;
+using SlimDX.XInput;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
@@ -18,12 +20,23 @@ namespace AvengersUtd.StarOdyssey.Scenes
     {
         Mesh sphere;
         Mesh plane;
-        Mesh grid;
+        Mesh office;
         SimpleMesh<SpecularMaterial> simpleSphere;
         SimpleMesh<SpecularMaterial> simpleGrid;
+        SimpleMesh<SpecularMaterial> simpleOffice;
+
+        Airplane airplane;
+        
         Hud hud;
         CameraHostControl cameraHost;
-        float zDepth = -30f;
+
+        Vector3 vObjPos;
+        Vector3 vAngles;
+        Matrix mTranslation;
+        Matrix mRotation;
+
+        XBox360Controller gamepad;
+        ObjectHostControl objectController;
 
         public override void Init()
         {
@@ -31,29 +44,58 @@ namespace AvengersUtd.StarOdyssey.Scenes
             StyleManager.LoadTextStyles("Odyssey TextStyles.ots");
 
             Game.Input.IsInputEnabled = true;
-
-            sphere = Mesh.FromFile(Game.Device, "Meshes\\Planets\\Large.x", MeshFlags.Managed);
+            airplane = new Airplane();
+            office = Mesh.FromFile(Game.Device, "Meshes\\office.x", MeshFlags.Managed);
+            sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
             plane = Mesh.FromFile(Game.Device, "Meshes\\plane.x", MeshFlags.Managed);
-            grid = Mesh.CreateBox(Game.Device, 10f, 10f, 10f);
             simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
             simpleGrid = new SimpleMesh<SpecularMaterial>(plane);
-            qCam.LookAt(new Vector3(), new Vector3(0, -5, zDepth));
+            simpleOffice = new SimpleMesh<SpecularMaterial>(office);
+            qCam.LookAt(new Vector3(), new Vector3(0, 15, -30f));
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
-
-            //cameraHost = new CameraHostControl();
+            hud.KeyDown += new KeyEventHandler(hud_KeyDown);
+            cameraHost = new CameraHostControl();
             
+            gamepad = XBox360Controller.GetController(0);
+
+            objectController = new ObjectHostControl();
+            objectController.Id = "Airplane";
+            objectController.entity = airplane;
+
+
+
+          
             //hud.BeginDesign();
-            //hud.Add(cameraHost);
-            //cameraHost.Focus();
+            hud.Add(cameraHost);
+            hud.Add(objectController);
+            cameraHost.Focus();
+            SetupCamera();
             //hud.EndDesign();
             
+        }
+        bool value = true;
+        void hud_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                objectController.SwitchPlane(value);
+                value = !value;
+            }
+
+            cameraHost.Focus();
         }
 
         public void SetupCamera()
         {
-            cameraHost.SetBinding(new CameraBinding(Keys.A, CameraAction.StrafeLeft, qCam.Strafe, QuaternionCam.DefaultSpeed));
-            cameraHost.SetBinding(new CameraBinding(Keys.D, CameraAction.StrafeLeft, qCam.Strafe, QuaternionCam.DefaultSpeed);
+            cameraHost.SetBinding(new CameraBinding(Keys.A, CameraAction.StrafeLeft, qCam.SetState, QuaternionCam.DefaultSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.D, CameraAction.StrafeRight, qCam.SetState, -QuaternionCam.DefaultSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.Q, CameraAction.HoverUp, qCam.SetState, QuaternionCam.DefaultSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.E, CameraAction.HoverDown, qCam.SetState, -QuaternionCam.DefaultSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.Z, CameraAction.RotateLeft, qCam.SetState, QuaternionCam.DefaultRotationSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.C, CameraAction.RotateRight, qCam.SetState, -QuaternionCam.DefaultRotationSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.W, CameraAction.MoveForward, qCam.SetState, QuaternionCam.DefaultSpeed));
+            cameraHost.SetBinding(new CameraBinding(Keys.S, CameraAction.MoveBackward, qCam.SetState, -QuaternionCam.DefaultSpeed));
         }
 
         public override void Render()
@@ -61,21 +103,86 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //hud.Render();
             DebugManager.Instance.DisplayStats();
 
-            device.SetTransform(TransformState.World, Matrix.Translation(0,0,0)*Matrix.RotationZ(0));
-                        device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
+            qCam.Update();
+            device.SetTransform(TransformState.World, Matrix.Scaling(new Vector3(0.1f,0.1f,0.1f)));
+            simpleOffice.DrawWithEffect();
+            device.SetTransform(TransformState.World, Matrix.Identity);
+            device.SetTransform(TransformState.World, Matrix.Identity);
+            device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
             simpleGrid.DrawWithEffect();
+            
             //grid.DrawSubset(0);
             device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Solid);
-            device.SetTransform(TransformState.World, Matrix.Translation(0, 0, 50));
-            simpleSphere.DrawWithEffect();
-            qCam.Update();
+            //device.SetTransform(TransformState.World, Matrix.RotationX(-vAngles.Y%360f)*Matrix.RotationY(-vAngles.X%360f)*Matrix.Translation(vObjPos));
+            device.SetTransform(TransformState.World, mRotation * mTranslation);
+            //simpleSphere.DrawWithEffect();
+            airplane.Render();
+
+            
             
             
         }
 
         public override void ProcessInput()
         {
+            //qCam.FirstPersonCameraWithGamepad(XBox360Controller.GetController(0));
+            //return;
 
+            qCam.UpdateStates();
+            return;
+            
+            vObjPos.X += gamepad.LeftThumbstick.X/5;
+            vObjPos.Z += gamepad.LeftThumbstick.Y / 5;
+            if ((gamepad.ActiveButtons & GamepadButtonFlags.LeftThumb) == 0)
+            {
+                vObjPos.X += gamepad.LeftThumbstick.X / 5;
+                vObjPos.Z += gamepad.LeftThumbstick.Y / 5;
+                
+            }
+            else
+            {
+                vObjPos.X += gamepad.LeftThumbstick.X / 5;
+                vObjPos.Y += gamepad.LeftThumbstick.Y / 5;
+                vAngles.X += gamepad.RightThumbstick.X / 20;
+                vAngles.Z += gamepad.RightThumbstick.Y / 20;
+            }
+
+            if ((gamepad.ActiveButtons & GamepadButtonFlags.RightThumb) == 0)
+            {
+                vAngles.X += gamepad.RightThumbstick.X / 20;
+                vAngles.Y += gamepad.RightThumbstick.Y / 20;
+
+            }
+            else
+            {
+                
+                vAngles.Z += gamepad.RightThumbstick.X / 20;
+                vAngles.Y += gamepad.RightThumbstick.Y / 20;
+            }
+            
+            
+            mTranslation = Matrix.Translation(vObjPos);
+
+            //Quaternion qRotationX = new Quaternion(new Vector3(0, 1, 0), -vAngles.X % 360f);
+            //Quaternion qRotationY = new Quaternion(new Vector3(1, 0, 0), -vAngles.Y % 360f);
+            //Quaternion qRotationZ = new Quaternion(new Vector3(0, 0, 1), -vAngles.Z % 360f);
+            ////qRotationX.Normalize(); qRotationY.Normalize(); qRotationZ.Normalize();
+            //Quaternion qRotation = qRotationX * qRotationY;// * qRotationZ;
+            ////qRotation.Normalize();
+
+            //Matrix mRotationX = Matrix.RotationQuaternion(qRotationX);
+            //Matrix mRotationY = Matrix.RotationQuaternion(qRotationY);
+            //mRotation = mRotationX * mRotationY;
+
+            Matrix mRotationX = Matrix.RotationX(-vAngles.Y % 360f);
+            Matrix mRotationY = Matrix.RotationY(-vAngles.X % 360f);
+            Matrix mRotationZ = Matrix.RotationZ(-vAngles.Z % 360f);
+
+            mRotation = mRotationX * mRotationY * mRotationZ;
+
+            mRotation = Matrix.RotationYawPitchRoll(-vAngles.X % 360f, -vAngles.Y % 360f, -vAngles.Z % 360f);
+
+            
         }
 
         public override void Dispose()

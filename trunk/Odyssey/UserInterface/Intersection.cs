@@ -56,5 +56,43 @@ namespace AvengersUtd.Odyssey.UserInterface
             else
                 return false;
         }
+
+
+
+
+        public static bool RayPlaneTest(Ray ray, Plane plane, out Vector3 intersectionPoint)
+        {
+            bool result;
+            intersectionPoint = new Vector3();
+            Vector3 rD = ray.Direction;
+            Vector3 r0 = ray.Position;
+
+            float vD = Vector3.Dot(plane.Normal, rD);
+            if (vD == 0)
+            {
+
+                return false;
+            }
+            float v0 = -(Vector3.Dot(plane.Normal, r0) + plane.D);
+            float t = v0 / vD;
+
+            if (t > 0)
+            {
+                result = true;
+                //intersectionPoint = new Vector3(
+                //    r0.X + rD.X * t,
+                //    r0.Y + rD.X * t,
+                //    r0.Z + rD.Z * t);
+                intersectionPoint = r0 + t * rD;
+            }
+            else
+            {
+                result = false;
+            }
+
+            return result;
+            
+
+        }
     }
 }

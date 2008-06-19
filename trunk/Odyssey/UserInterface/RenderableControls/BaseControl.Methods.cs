@@ -217,8 +217,15 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             }
             else
             {
+                if (isClicked)
+                    isClicked = false;
                 return false;
             }
+        }
+
+        internal virtual void ProcessKeyUp(KeyEventArgs e)
+        {
+            OnKeyUp(e);
         }
 
         internal virtual void ProcessKeyDown(KeyEventArgs e)

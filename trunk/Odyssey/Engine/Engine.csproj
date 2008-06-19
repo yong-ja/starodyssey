@@ -87,7 +87,7 @@
     <Compile Include="Objects\Meshes\MeshDescriptor.cs" />
     <Compile Include="Objects\Resources\EntityManager.cs" />
     <Compile Include="Objects\Resources\TextureManager.cs" />
-    <Compile Include="_OldCode\CameraAction.cs" />
+    <None Include="_OldCode\CameraAction.cs" />
     <Compile Include="_OldCode\IActionStates.cs" />
     <Compile Include="_OldCode\InputEvent.cs" />
     <Compile Include="Input\InputHandler.cs" />

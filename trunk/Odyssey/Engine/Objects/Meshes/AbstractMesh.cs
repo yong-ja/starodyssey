@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         where MeshT : BaseMesh
         where MaterialT : IMaterialContainer, new()
     {
+
         protected bool disposed = false;
 
         //the mesh
@@ -174,6 +175,14 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         public void DrawMesh(int subset)
         {
             meshObject.DrawSubset(subset);
+        }
+
+        public MeshT Mesh
+        {
+            get
+            {
+                return meshObject;
+            }
         }
 
         //TODO: cancellare quad

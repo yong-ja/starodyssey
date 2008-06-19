@@ -57,12 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Devices\IXBox360Controller.cs" />
     <Compile Include="Devices\Keyboard.cs" />
     <Compile Include="Devices\Mouse.cs" />
+    <Compile Include="Devices\XBox360Controller.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="RenderableControls\CameraHostControl.cs" />
+    <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
     <Compile Include="RenderableControls\Hud.MDX.cs" />
     <Compile Include="RenderableControls\Hud.SlimDX.cs" />
+    <Compile Include="RenderableControls\Interfaces\I3dEntity.cs" />
     <Compile Include="RenderableControls\ProgressBar.cs" />
     <Compile Include="Style\FontManager.cs" />
     <Compile Include="Helpers\DebugManager.cs" />

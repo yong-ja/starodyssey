@@ -2,14 +2,19 @@ using System;
 using AvengersUtd.Odyssey.Input;
 using SlimDX;
 using SlimDX.Direct3D9;
+using SlimDX.XInput;
+using AvengersUtd.Odyssey.UserInterface.Devices;
+using AvengersUtd.Odyssey.UserInterface.RenderableControls;
 
 
 namespace AvengersUtd.Odyssey
 {
     public class QuaternionCam
     {
+        bool[] actions;
         Device device;
         Vector3 vPosition;
+
         Quaternion qOrientation;
         Matrix mView;
         Matrix mProjection;
@@ -24,6 +29,7 @@ namespace AvengersUtd.Odyssey
         static Vector3 XAxis = new Vector3(1f, 0f, 0f);
         static Vector3 ZAxis = new Vector3(0f, 0f, 1f);
 
+        #region Properties
         public int ZoomLevel
         {
             get { return zoomLevel; }
@@ -44,7 +50,8 @@ namespace AvengersUtd.Odyssey
         {
             get
             {
-                Vector4 vPos = new Vector4(0, 0, 0, 1f);
+                Vector4 vPos = new Vector4(vPosition.X, vPosition.Y, vPosition.Z, 1f);
+                //Vector4 vPos = new Vector4(0, 0, 0, 1f);
                 //vPos = Vector4.Transform(vPos, Matrix.Invert(mView));
                 return vPos;
             }
@@ -61,6 +68,11 @@ namespace AvengersUtd.Odyssey
             get { return mProjection; }
         }
 
+        Vector3 ViewVector
+        {
+            get { return new Vector3(mView.M13, mView.M23, mView.M33); }
+        }
+        
         Vector3 AxisX
         {
             get { return new Vector3(mView.M11, mView.M21, mView.M31); }
@@ -74,12 +86,14 @@ namespace AvengersUtd.Odyssey
         Vector3 AxisZ
         {
             get { return new Vector3(mView.M13, mView.M23, mView.M33); }
-        }
+        } 
+        #endregion
 
 
         public QuaternionCam()
         {
-            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, 0.1f, 1000.0f);
+            actions = new bool[8];
+            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, 0.01f, 100000.0f);
             Game.Device.SetTransform(TransformState.Projection, mProjection);
 
             Reset();
@@ -96,6 +110,26 @@ namespace AvengersUtd.Odyssey
         public void SetCamera(Vector3 vNewPos)
         {
             vPosition = vNewPos;
+        }
+
+        public void UpdateStates()
+        {
+            if (actions[(int)CameraAction.MoveForward])
+                Move(DefaultSpeed);
+            if (actions[(int)CameraAction.MoveBackward])
+                Move(-DefaultSpeed);
+            if (actions[(int)CameraAction.StrafeLeft])
+                Strafe(-DefaultSpeed);
+            if (actions[(int)CameraAction.StrafeRight])
+                Strafe(DefaultSpeed);
+            if (actions[(int)CameraAction.HoverUp])
+                Hover(-DefaultSpeed);
+            if (actions[(int)CameraAction.HoverDown])
+                Hover(DefaultSpeed);
+            if (actions[(int)CameraAction.RotateLeft])
+                RotateY(DefaultRotationSpeed);
+            if (actions[(int)CameraAction.RotateRight])
+                RotateY(-DefaultRotationSpeed);
         }
 
         public void Update()
@@ -117,12 +151,12 @@ namespace AvengersUtd.Odyssey
 
         public void Move(float distance)
         {
-            vPosition += ZAxis*distance*(float) Game.FrameTime;
+            vPosition += ViewVector * distance * (float)Game.FrameTime;
         }
 
         public void Strafe(float distance)
         {
-            vPosition += XAxis*distance*(float) Game.FrameTime;
+            vPosition +=AxisX * distance * (float)Game.FrameTime;
         }
 
         public void Hover(float distance)
@@ -163,33 +197,25 @@ namespace AvengersUtd.Odyssey
             return cameraAxis;
         }
 
+        public void SetState(CameraAction action, bool state)
+        {
+            actions[(int)action] = state;   
+        }
+
+        public void FirstPersonCameraWithGamepad(XBox360Controller gamepad)
+        {
+            Vector3 vView = ViewVector;
+            Vector3 vDelta = new Vector3(vView.X * gamepad.LeftThumbstick.X,
+                vView.Y, vView.Z* gamepad.LeftThumbstick.Y);
+            vPosition += vDelta * DefaultSpeed *  (float)Game.FrameTime;
+        }
+
         public void Slerp(Quaternion targetOrientation)
         {
             qOrientation = Quaternion.Slerp(qOrientation, targetOrientation, DefaultSlerpSpeed);
             qOrientation = Quaternion.Normalize(qOrientation);
         }
 
-        void Process(CameraAction states)
-        {
-            //System.Diagnostics.Debug.WriteLine("X: " + PositionV4.X + " -Y: " + PositionV4.Y);
-
-            if (states.MoveForward)
-                Move(DefaultSpeed);
-            if (states.MoveBackward)
-                Move(-DefaultSpeed);
-            if (states.StrafeLeft)
-                Strafe(-DefaultSpeed);
-            if (states.StrafeRight)
-                Strafe(DefaultSpeed);
-            if (states.HoverUp)
-                Hover(DefaultSpeed);
-            if (states.HoverDown)
-                Hover(-DefaultSpeed);
-            if (states.RotateLeft)
-                Rotate(DefaultRotationSpeed, YAxis);
-            if (states.RotateRight)
-                Rotate(-DefaultRotationSpeed, YAxis);
-        }
-
+       
     }
 }

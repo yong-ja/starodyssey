@@ -11,7 +11,7 @@ namespace AvengersUtd.Odyssey.Meshes
         EntityDescriptor Descriptor { get; }
         IMaterialContainer[] Materials { get; }
         void Render();
-        void UpdatePosition();
-        void Init();
+        //void UpdatePosition();
+        //void Init();
     }
 }

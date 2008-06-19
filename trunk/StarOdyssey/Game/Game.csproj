@@ -81,6 +81,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Scenes\GridRenderer.cs" />
+    <Compile Include="Airplane.cs" />
     <Compile Include="StarOdyssey.cs">
       <SubType>Form</SubType>
     </Compile>
