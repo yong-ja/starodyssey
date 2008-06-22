@@ -35,7 +35,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                         effect = Effect.FromFile(
                             Game.Device,
                             Global.FXPath + "ColorAdjust.fx",
-                            null, null, ShaderFlags.None, null);
+                            ShaderFlags.None);
                         fxCollection.Add(sType, effect);
                         break;
                 }
@@ -59,8 +59,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                         effect = Effect.FromFile(
                             Game.Device,
                             Global.FXPath + "Downsampling.fx",
-                            null, null,
-                            ShaderFlags.None, null);
+                            ShaderFlags.None);
                         fxCollection.Add(sType, effect);
                         break;
                 }
@@ -100,9 +99,8 @@ namespace AvengersUtd.Odyssey.Objects.Effects
 
                 effect = Effect.FromFile(
                     Game.Device,
-                    Global.FXPath + filename,
-                    null, null,
-                    ShaderFlags.None, null);
+                    Global.FXPath + filename,                   
+                    ShaderFlags.None);
                 fxCollection.Add(sType, effect);
             }
             return effect;
@@ -124,8 +122,8 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                         effect = Effect.FromFile(
                             Game.Device,
                             Global.FXPath + "SobelEdge.fx",
-                            null, null,
-                            ShaderFlags.None, null);
+                            
+                            ShaderFlags.None);
                         fxCollection.Add(sType, effect);
                         break;
                 }
@@ -161,8 +159,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                 effect = Effect.FromFile(
                     Game.Device,
                     Global.FXPath + filename,
-                    null, null,
-                    ShaderFlags.None, null);
+                    ShaderFlags.None);
                 fxCollection.Add(sType, effect);
             }
             return effect;

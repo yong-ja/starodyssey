@@ -27,7 +27,7 @@ namespace AvengersUtd.Odyssey.Resources
                 Effect effect;
                 try
                 {
-                    effect = Effect.FromFile(Game.Device, filename, null, null, ShaderFlags.None, null);
+                    effect = Effect.FromFile(Game.Device, filename, ShaderFlags.None);
                     return effect;
                 }
                 catch (InvalidDataException ex)

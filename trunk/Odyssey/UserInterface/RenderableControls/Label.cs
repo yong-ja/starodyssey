@@ -285,7 +285,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             }
             else
             {
-                flags = DrawTextFormat.ExpandTabs | DrawTextFormat.Wordbreak;
+                flags = DrawTextFormat.ExpandTabs | DrawTextFormat.WordBreak;
             }
 
             switch (style.HorizontalAlignment)
@@ -312,11 +312,9 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                     break;
 
                 case VerticalAlignment.Center:
-#if (!SlimDX)
+
                     flags |= DrawTextFormat.VerticalCenter;
-#else
-                    flags |= DrawTextFormat.VCenter;
-#endif
+
                     break;
 
                 case VerticalAlignment.Bottom:

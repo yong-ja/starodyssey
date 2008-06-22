@@ -45,10 +45,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             Game.Input.IsInputEnabled = true;
             airplane = new Airplane();
-            office = Mesh.FromFile(Game.Device, "Meshes\\office.x", MeshFlags.Managed);
-            sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
-            plane = Mesh.FromFile(Game.Device, "Meshes\\plane.x", MeshFlags.Managed);
-            simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
+            office = Mesh.FromFile(Game.Device, "Meshes\\room.x", MeshFlags.Managed);
+            //sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
+            plane = Mesh.FromFile(Game.Device, "Meshes\\quad.x", MeshFlags.Managed);
+            //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
             simpleGrid = new SimpleMesh<SpecularMaterial>(plane);
             simpleOffice = new SimpleMesh<SpecularMaterial>(office);
             qCam.LookAt(new Vector3(), new Vector3(0, 15, -30f));
@@ -62,9 +62,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
             objectController = new ObjectHostControl();
             objectController.Id = "Airplane";
             objectController.entity = airplane;
-
-
-
           
             //hud.BeginDesign();
             hud.Add(cameraHost);

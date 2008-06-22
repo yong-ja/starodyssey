@@ -111,7 +111,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             Device device = OdysseyUI.Device;
             device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
             device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-            device.SetRenderState(RenderState.DestinationBlend, Blend.InvSourceAlpha);
+            device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
             device.SetStreamSource(0, vertexBuffer, 0, 20);
 
             device.VertexFormat = TransformedColored.Format;
@@ -127,7 +127,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 device.SetRenderState(RenderState.AlphaBlendEnable, false);
                 device.SetTexture(0, null);
 
-                sprite.Begin(SpriteFlags.AlphaBlend | SpriteFlags.Texture);
+                sprite.Begin(SpriteFlags.AlphaBlend | SpriteFlags.SortTexture);
                 for (int i = renderInfo.BaseLabelIndex; i < renderInfo.LabelCount; i++)
                     spriteList[i].Render();
                 sprite.End();
