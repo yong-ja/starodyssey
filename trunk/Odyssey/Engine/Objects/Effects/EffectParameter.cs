@@ -7,6 +7,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
     public delegate void Update(EffectParameter ep);
 
     public delegate Vector4 VectorOp();
+    public delegate float FloatOp();
 
     public class EffectParameter
     {
@@ -145,6 +146,14 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             Update update = delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, value); };
             return new EffectParameter(varName, effect, update);
         }
+
+        public static EffectParameter CreateCustomParameter(String varName, Effect effect, FloatOp floatOp)
+        {
+            EffectHandle eH = effect.GetParameter(null, varName);
+            Update update = delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, floatOp()); };
+            return new EffectParameter(varName, effect, update);
+        }
+
 
         public static EffectParameter CreateCustomParameter(String varName, Effect effect, VectorOp vectorOp)
         {

@@ -67,6 +67,8 @@ namespace AvengersUtd.Odyssey.UserInterface
             Vector3 rD = ray.Direction;
             Vector3 r0 = ray.Position;
 
+            ray.Direction.Normalize();
+
             float vD = Vector3.Dot(plane.Normal, rD);
             if (vD == 0)
             {

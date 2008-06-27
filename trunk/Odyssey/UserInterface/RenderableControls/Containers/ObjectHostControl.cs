@@ -31,9 +31,9 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         public void SwitchPlane(bool xPlane)
         {
             if (xPlane)
-                p = new Plane(planeX.Normal, iP.Y);
+                p = new Plane(planeX.Normal, -iP.Y);
             else
-                p = new Plane(planeY.Normal, iP.Z);
+                p = new Plane(planeY.Normal, -iP.Z);
         }
 
         public override bool IntersectTest(System.Drawing.Point cursorLocation)

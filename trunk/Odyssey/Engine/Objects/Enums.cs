@@ -12,6 +12,7 @@ namespace AvengersUtd.Odyssey.Objects
     public enum FXType
     {
         None,
+        AtmosphericScattering,
         Diffuse,
         Specular,
         SelfAlign,

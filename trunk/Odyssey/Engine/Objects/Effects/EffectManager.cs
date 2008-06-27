@@ -9,6 +9,7 @@ using AvengersUtd.Odyssey.Meshes;
 using SlimDX;
 using System.IO;
 using AvengersUtd.Odyssey.Objects.Meshes;
+using System;
 
 namespace AvengersUtd.Odyssey.Resources
 {
@@ -54,6 +55,82 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
                     fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
                     return fxDescriptor;
+
+                case FXType.AtmosphericScattering:
+                    fxDescriptor = new EffectDescriptor("Atmosphere.fx");
+                    fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+                    fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
+
+                    float innerRadius = 1.0f;
+                    float outerRadius = innerRadius * 1.25f;
+                    float ESun = 15.0f;
+                    float kr = 0.0025f;
+                    float km = 0.0015f;
+                    float scale = 1.0f / (1.25f-1.0f);
+                    float scaleDepth = 0.05f;
+
+                    Vector4 wavelenght = new Vector4(0.650f, 0.570f, 0.450f, 1.0f);
+                    Vector4 invWavelenght = new Vector4(
+                        (float)(1.0/Math.Pow(wavelenght.X,4.0)),
+                        (float)(1.0 / Math.Pow(wavelenght.Y,4.0)),
+                        (float)(1.0 / Math.Pow(wavelenght.Z,4.0)),
+                        1);
+
+          
+                    FloatOp cameraHeight = delegate() {
+                           return Game.CurrentScene.Camera.PositionV3.Length();};
+                    EffectParameter epCameraHeight = EffectParameter.CreateCustomParameter("cameraHeight", fxDescriptor.Effect, cameraHeight);
+                    fxDescriptor.AddDynamicParameter(epCameraHeight);
+
+                    FloatOp cameraHeight2 = delegate()
+                    {
+                           return Game.CurrentScene.Camera.PositionV3.LengthSquared();};
+                    EffectParameter epCameraHeight2 = EffectParameter.CreateCustomParameter("cameraHeight2", fxDescriptor.Effect,cameraHeight2);
+                    fxDescriptor.AddDynamicParameter(epCameraHeight2);
+
+                    EffectParameter epInnerRadius = EffectParameter.CreateCustomParameter("innerRadius", fxDescriptor.Effect, innerRadius);
+                    fxDescriptor.AddStaticParameter(epInnerRadius);
+
+                    EffectParameter epOuterRadius = EffectParameter.CreateCustomParameter("outerRadius", fxDescriptor.Effect, outerRadius);
+                    fxDescriptor.AddStaticParameter(epOuterRadius);
+
+                    EffectParameter epOuterRadius2 = EffectParameter.CreateCustomParameter("outerRadius2", fxDescriptor.Effect, innerRadius * innerRadius);
+                    fxDescriptor.AddStaticParameter(epOuterRadius2);
+
+                    EffectParameter epkrESun = EffectParameter.CreateCustomParameter("krESun", fxDescriptor.Effect, kr*ESun);
+                    fxDescriptor.AddStaticParameter(epkrESun);
+                    
+                    EffectParameter epkmESun = EffectParameter.CreateCustomParameter("kmESun", fxDescriptor.Effect, km * ESun);
+                    fxDescriptor.AddStaticParameter(epkmESun);
+
+                    EffectParameter epkr4Pi = EffectParameter.CreateCustomParameter("kr4PI", fxDescriptor.Effect, (float)(kr * 4 * Math.PI));
+                    fxDescriptor.AddStaticParameter(epkr4Pi);
+
+                    EffectParameter epkm4Pi = EffectParameter.CreateCustomParameter("km4PI", fxDescriptor.Effect, (float)(km * 4 * Math.PI));
+                    fxDescriptor.AddStaticParameter(epkm4Pi);
+
+                    EffectParameter epScale = EffectParameter.CreateCustomParameter("scale", fxDescriptor.Effect, scale);
+                    fxDescriptor.AddStaticParameter(epScale);
+
+                    EffectParameter epScaleDepth = EffectParameter.CreateCustomParameter("scaleDepth", fxDescriptor.Effect, scaleDepth);
+                    fxDescriptor.AddStaticParameter(epScaleDepth);
+
+                    EffectParameter epScaleOverScaleDepth = EffectParameter.CreateCustomParameter("scaleOverScaleDepth", fxDescriptor.Effect, scale/0.05f);
+                    fxDescriptor.AddStaticParameter(epScaleOverScaleDepth);
+
+                    EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, 0.95f);
+                    fxDescriptor.AddStaticParameter(epG);
+
+                    EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, 0.95f*0.95f);
+                    fxDescriptor.AddStaticParameter(epG);
+
+                    EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
+                    fxDescriptor.AddStaticParameter(epInvWavelength);
+                    
+                    return fxDescriptor;
+
+                       
 
                 case FXType.Specular:
                     fxDescriptor = new EffectDescriptor("Specular.fx");
