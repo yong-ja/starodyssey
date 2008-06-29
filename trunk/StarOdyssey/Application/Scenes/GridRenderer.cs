@@ -51,12 +51,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
             airplane = new Airplane();
             widget = new Planet1();
             grid = new Grid();
-            office = Mesh.FromFile(Game.Device, "Meshes\\office.X", MeshFlags.Managed);
+            office = Mesh.FromFile(Game.Device, "Meshes\\planetInner.X", MeshFlags.Managed);
             //sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
             //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
             
             simpleOffice = new SimpleMesh<SpecularMaterial>(office);
-            qCam.LookAt(new Vector3(), new Vector3(0, 15, -30f));
+            //qCam.LookAt(new Vector3(), new Vector3(0, 15, -30f));
+            qCam.LookAt(new Vector3(), new Vector3(0, 0, -25f));
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
             hud.KeyDown += new KeyEventHandler(hud_KeyDown);
@@ -119,14 +120,15 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             qCam.Update();
             //device.SetTransform(TransformState.World, Matrix.Scaling(new Vector3(0.1f,0.1f,0.1f)));
-            ////simpleOffice.DrawWithEffect();
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
             //device.SetTransform(TransformState.World, Matrix.Identity);
             //grid.Render();
             
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Solid);
-
+            //simpleOffice.DrawWithEffect();
             widget.Render();
+            
+            
             //airplane.Render();
 
             //widget.Position = airplane.Position;

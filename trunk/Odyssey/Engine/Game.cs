@@ -104,7 +104,7 @@ namespace AvengersUtd.Odyssey
             if (device.Disposed)
                 return;
 
-            device.Clear(ClearFlags.Target | ClearFlags.ZBuffer,Color.DarkBlue,
+            device.Clear(ClearFlags.Target | ClearFlags.ZBuffer,Color.Black,
                          1.0f, 0);
 
             currentScene.ProcessInput();

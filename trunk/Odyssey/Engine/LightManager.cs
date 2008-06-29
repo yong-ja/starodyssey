@@ -44,8 +44,9 @@ namespace AvengersUtd.Odyssey.Engine
             {
                 case FXParameterType.LightDirection:
                     //Vector3 vTmp = device.GetLight(num).Position;
-                    Vector3 vTmp = new Vector3(0f, 5f, -5f);
+                    Vector3 vTmp = new Vector3(1f, 1f, 1f);
                     vOut = new Vector4(vTmp.X, vTmp.Y, vTmp.Z, 1f);
+                    vOut.Normalize();
                     break;
 
                 case FXParameterType.AmbientColor:
