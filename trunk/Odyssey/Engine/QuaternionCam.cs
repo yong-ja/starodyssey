@@ -93,7 +93,7 @@ namespace AvengersUtd.Odyssey
         public QuaternionCam()
         {
             actions = new bool[8];
-            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, 0.01f, 100000.0f);
+            mProjection = Matrix.PerspectiveFovLH(AvengersUtd.Utils.Utils.MathHelper.DegreeToRadian(45.0f), 4/3f, 0.01f, 10000.0f);
             Game.Device.SetTransform(TransformState.Projection, mProjection);
 
             Reset();
