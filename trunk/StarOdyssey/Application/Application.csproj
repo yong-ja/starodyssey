@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airplane.cs" />
+    <Compile Include="LightWidget.cs" />
+    <Compile Include="Office.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Copy of Widget.cs" />
     <Compile Include="Widget.cs" />
