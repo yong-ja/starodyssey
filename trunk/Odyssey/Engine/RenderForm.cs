@@ -91,6 +91,7 @@ namespace AvengersUtd.Odyssey
 
 
             presentParameters.EnableAutoDepthStencil = true;
+            presentParameters.AutoDepthStencilFormat = Format.D16;
             //presentParameters.AutoDepthStencilFormat = supportedParams.DepthStencilFormat;
 
             //1 Back buffer for double-buffering
