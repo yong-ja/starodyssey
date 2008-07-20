@@ -19,7 +19,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 
         public DiffuseMaterial()
         {
-            effectDescriptor = EffectManager.CreateEffect(FXType.Diffuse);
+            effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.Diffuse);
             effectDescriptor.UpdateStatic();
         }
 
