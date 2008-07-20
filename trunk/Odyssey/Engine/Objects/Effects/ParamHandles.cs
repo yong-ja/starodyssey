@@ -54,6 +54,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         WorldViewProjection,
         EyePosition,
         LightDirection,
+        LightPosition,
         AmbientColor,
         DiffuseColor,
     }
