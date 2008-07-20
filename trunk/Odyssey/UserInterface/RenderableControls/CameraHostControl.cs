@@ -74,7 +74,8 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             if (binding != null)
                 binding.Apply(true);
-        }
+
+       }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
