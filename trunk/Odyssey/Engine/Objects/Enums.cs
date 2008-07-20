@@ -14,6 +14,7 @@ namespace AvengersUtd.Odyssey.Objects
         None,
         AtmosphericScattering,
         Diffuse,
+        DepthMap,
         Specular,
         SelfAlign,
         SpecularBump
