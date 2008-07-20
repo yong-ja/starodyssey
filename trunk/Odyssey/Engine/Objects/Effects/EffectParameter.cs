@@ -8,6 +8,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
 
     public delegate Vector4 VectorOp();
     public delegate float FloatOp();
+    public delegate Matrix MatrixOp();
 
     public class EffectParameter
     {
@@ -79,6 +80,18 @@ namespace AvengersUtd.Odyssey.Objects.Effects
 
                     update =
                         delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, Game.CurrentScene.Camera.Projection); };
+                    break;
+
+                case FXParameterType.LightPosition:
+                    varName = ParamHandles.Vectors.LightPosition;
+                    eH = effect.GetParameter(null, varName);
+
+                    update = delegate(EffectParameter fxParam)
+                    {
+                        fxParam.ownerEffect.SetValue(eH,
+                                                     Game.CurrentScene.LightManager.GetParameter(0,
+                                                                                                 FXParameterType.LightPosition));
+                    };
                     break;
 
                 case FXParameterType.LightDirection:
@@ -154,6 +167,12 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             return new EffectParameter(varName, effect, update);
         }
 
+        public static EffectParameter CreateCustomParameter(String varName, Effect effect, MatrixOp matrixOp)
+        {
+            EffectHandle eH = effect.GetParameter(null, varName);
+            Update update = delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, matrixOp()); };
+            return new EffectParameter(varName, effect, update);
+        }
 
         public static EffectParameter CreateCustomParameter(String varName, Effect effect, VectorOp vectorOp)
         {
