@@ -5,6 +5,8 @@ using AvengersUtd.Odyssey.Engine;
 using AvengersUtd.Odyssey.Objects;
 using SlimDX.Direct3D9;
 using System.IO;
+using AvengersUtd.Odyssey.Meshes;
+using SlimDX;
 
 
 namespace AvengersUtd.Odyssey.Objects
@@ -95,31 +97,64 @@ namespace AvengersUtd.Odyssey.Objects
 
             vb.Unlock();
             return vb;
-        }
+        }*/
 
         
-        public static Texture RenderToTexture(IEntity e, int width, int height)
+        public static Texture RenderToTexture(int width, int height, params IEntity[] entities)
         {
             Device device = Game.Device;
             //TODO: Aggiustare rendertotexture
-            Texture output = new Texture(device, width, height, 0, Usage.RenderTarget | Usage.AutoGenerateMipMap,
+            Surface oldRenderTarget = device.GetRenderTarget(0);
+            Texture output = new Texture(device, width, height, 1, Usage.RenderTarget ,//| Usage.AutoGenerateMipMap,
                                          Format.X8R8G8B8, Pool.Default);
+            Surface renderSurface = output.GetSurfaceLevel(0);
             RenderToSurface renderTarget =
-                new RenderToSurface(device, width, height, Format.X8R8G8B8, true, DepthFormat.D24S8);
+                new RenderToSurface(device, width, height, Format.X8R8G8B8, Format.D16);
+
             Viewport v = new Viewport();
             v.Width = width;
             v.Height = height;
-            v.MaxZ = 1;
+            v.MaxZ = 1.0f;
 
-            renderTarget.BeginScene(output.GetSurfaceLevel(0));
-            device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0f, 0);
-            //e.Renderer.Camera.Update();
-            device.Transform.World = Matrix.Translation(e.Position);
-            e.Render();
+
+          //  device.SetRenderState(RenderState.ZEnable, ZBufferType.UseZBuffer);
+
+            renderTarget.BeginScene(renderSurface, v);
+            renderTarget.Device.Clear(ClearFlags.Target|ClearFlags.ZBuffer , Color.Black, 1.0f, 0);
+            //Game.CurrentScene.Camera.Update();
+            //renderTarget.Device.SetTransform(TransformState.View,
+            //    Game.CurrentScene.Camera.View);
+
+            //renderTarget.Device.SetTransform(TransformState.World, Game.CurrentScene.Camera.World);
+            foreach (IEntity e in entities)
+            {
+                //renderTarget.Device.SetTransform(TransformState.World, Matrix.Translation(e.Position));
+                e.Render();
+            }
+
             renderTarget.EndScene(Filter.None);
             renderTarget.Dispose();
+
+
+            //device.SetRenderTarget(0, output.GetSurfaceLevel(0));
+            ////renderTarget.BeginScene(output.GetSurfaceLevel(0), v);
+            //device.BeginScene();
+            //device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.LightGray, 1.0f, 0);
+            ////device.SetTransform(TransformState.World, Game.CurrentScene.Camera.World);
+            ////device.SetTransform(TransformState.Projection, Game.CurrentScene.Camera.Projection);
+            ////device.SetTransform(TransformState.View, Game.CurrentScene.Camera.View);
+            //device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f,0f, -20f),
+            //    e.Position, new Vector3(0f,1f,0)));
+            //e.Render();
+            //device.EndScene();
+            ////renderTarget.EndScene(Filter.None);
+
+            //renderTarget.Dispose();
+
+            //device.SetRenderTarget(0, oldRenderTarget);
+            //oldRenderTarget.Dispose();
             return output;
         }
-         * */
+         
     }
 }
