@@ -44,6 +44,12 @@ namespace AvengersUtd.Utils.Utils
 
         #endregion
 
+
+        public static float DegreeToRadian(float degrees)
+        {
+            return (float)((Math.PI / 180) * degrees);
+        }
+
         public static double PolynomialFit(double value, double[] coefficients)
         {
             int count = coefficients.Length;
