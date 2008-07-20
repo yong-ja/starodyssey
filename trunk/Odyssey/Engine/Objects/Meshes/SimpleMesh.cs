@@ -4,6 +4,7 @@ using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Meshes;
 using AvengersUtd.Odyssey.Objects;
+using AvengersUtd.Odyssey.Meshes;
 
 namespace AvengersUtd.Odyssey.Engine.Meshes
 {
@@ -16,6 +17,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
     {
         int faceCount;
         int vertexCount;
+        IEntity owningEntity;
         protected EntityDescriptor entityDescriptor;
 
         #region Properties
@@ -26,21 +28,23 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             set { entityDescriptor = value; }
         }
 
+        public IEntity OwningEntity
+        {
+            get { return owningEntity; }
+            set { owningEntity = value; }
+        }
+
         #endregion
 
         #region Constructors
-
-        public SimpleMesh(Mesh mesh)
-        {
-            Init(mesh);
-        }
 
         /// <summary>
         /// Creates a new progressive meshObject.
         /// </summary>
         /// <param name="entityDesc">Contains data on the meshObject and texture file paths</param>
-        public SimpleMesh(EntityDescriptor entityDesc)
+        public SimpleMesh(IEntity entity, EntityDescriptor entityDesc)
         {
+            owningEntity = entity;
             //create the meshObject from file
             entityDescriptor = entityDesc;
             Init(EntityManager.LoadMesh(entityDesc.MeshDescriptor.MeshFilename));
@@ -48,51 +52,53 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         #endregion
 
-        void Init()
-        {
-            string filename = entityDescriptor.MeshDescriptor.MeshFilename;
-            disposed = false;
-            ExtendedMaterial[] list;
+        //void Init()
+        //{
+        //    string filename = entityDescriptor.MeshDescriptor.MeshFilename;
+        //    disposed = false;
+        //    ExtendedMaterial[] list;
 
-            meshObject = EntityManager.LoadMesh(filename);
-            list = EntityManager.LoadMaterials(filename);
+        //    meshObject = EntityManager.LoadMesh(filename);
+        //    list = EntityManager.LoadMaterials(filename);
 
-            //create adiacency buffer
-            adiacency = meshObject.GenerateAdjacency(1e-6f);
+        //    //create adiacency buffer
+        //    adiacency = meshObject.GenerateAdjacency(1e-6f);
             
            
-            ComputeTangentsAndBinormal();
+        //    ComputeTangentsAndBinormal();
 
-            //create material list array
-            materials = new MaterialT[list.Length];
+        //    //create material list array
+        //    materials = new MaterialT[list.Length];
 
-            //for each material description initialise the material list
-            if (list.Length != entityDescriptor.TextureDescriptors.Length)
-                throw new ArgumentException(
-                    "Number of materials stored in the meshObject file do not match with the number of materials in the EntityDescriptor");
+        //    //for each material description initialise the material list
+        //    if (list.Length != entityDescriptor.TextureDescriptors.Length)
+        //        throw new ArgumentException(
+        //            "Number of materials stored in the meshObject file do not match with the number of materials in the EntityDescriptor");
 
-            int i = 0;
-            foreach (ExtendedMaterial mate in list)
-            {
-                materials[i] = new MaterialT();
-                materials[i].Material = mate.MaterialD3D;
-                materials[i].TextureDescriptor = entityDescriptor.TextureDescriptors[i];
-                i++;
-            }
-        }
+        //    int i = 0;
+        //    foreach (ExtendedMaterial mate in list)
+        //    {
+        //        materials[i] = new MaterialT();
+        //        materials[i].Material = mate.MaterialD3D;
+        //        materials[i].TextureDescriptor = entityDescriptor.TextureDescriptors[i];
+        //        materials[i].OwningEntity = owningEntity;
+        //        materials[i].Create();
+        //        i++;
+        //    }
+        //}
 
-        public void Init(Mesh mesh, TextureDescriptor texDescriptor)
-        {
-            meshObject = mesh;
-            int[] adjacency = meshObject.GenerateAdjacency(1e-6f);
+        //public void Init(Mesh mesh, TextureDescriptor texDescriptor)
+        //{
+        //    meshObject = mesh;
+        //    int[] adjacency = meshObject.GenerateAdjacency(1e-6f);
             
-            ComputeTangentsAndBinormal();
+        //    ComputeTangentsAndBinormal();
 
-            materials = new MaterialT[1];
-            MaterialT material = new MaterialT();
-            material.TextureDescriptor = texDescriptor;
-            materials[0] = material;
-        }
+        //    materials = new MaterialT[1];
+        //    MaterialT material = new MaterialT();
+        //    material.TextureDescriptor = texDescriptor;
+        //    materials[0] = material;
+        //}
 
         public void Init(Mesh mesh)
         {
@@ -101,6 +107,8 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             materials = new MaterialT[1];
             MaterialT material = new MaterialT();
             materials[0] = material;
+            materials[0].OwningEntity = owningEntity;
+            materials[0].Create();
         }
 
 

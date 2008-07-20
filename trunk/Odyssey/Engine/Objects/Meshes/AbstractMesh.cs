@@ -123,20 +123,22 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         {
             Effect effect = materials[0].EffectDescriptor.Effect;
 
-            int passes = effect.Begin(FX.None);
-            for (int pass = 0; pass < passes; pass++)
-            {
-                effect.BeginPass(pass);
-                Draw();
-                effect.EndPass();
-            }
-            effect.End();
+            DrawWithEffect(effect, string.Empty);
 
         }
 
-        public void DrawWithEffect(Effect effect)
+        public void DrawWithEffectTechnique(string technique)
+        {
+            DrawWithEffect(materials[0].EffectDescriptor.Effect, technique);
+        }
+
+
+        public void DrawWithEffect(Effect effect, string technique)
         {
             int passes = effect.Begin(FX.None);
+
+            if (!string.IsNullOrEmpty(technique))
+                effect.Technique = new EffectHandle(technique);
 
             for (int pass = 0; pass < passes; pass++)
             {
