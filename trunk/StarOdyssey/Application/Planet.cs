@@ -22,7 +22,7 @@ namespace AvengersUtd.StarOdyssey
 
         public Planet1() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Airplane", "Meshes\\planetOuter15.X")))
+                new MeshDescriptor("Airplane", "Meshes\\planet.X")))
         {
             //mesh.Materials[0].Diffuse = new Color4(0.0f, 0f, 1f);
         }

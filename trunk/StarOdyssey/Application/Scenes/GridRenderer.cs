@@ -25,7 +25,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         Airplane airplane;
         Planet1 planetOuter;
-        PlanetInner planetInner;
+        //PlanetInner planetInner;
         Grid grid;
         Office office;
         LightWidget lightWidget;
@@ -52,14 +52,14 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             //airplane = new Airplane();
             planetOuter = new Planet1();
-            planetInner = new PlanetInner();
+            //planetInner = new PlanetInner();
             grid = new Grid();
             //office = new Office();
             lightWidget = new LightWidget();
             //sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
             //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
             
-            qCam.LookAt(new Vector3(), new Vector3(0, 15, -30f));
+            qCam.LookAt(new Vector3(), new Vector3(30,0, 0f));
             qCam.Update();
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
@@ -151,8 +151,9 @@ namespace AvengersUtd.StarOdyssey.Scenes
             hud.Render();
             
             DebugManager.Instance.DisplayStats();
+            qCam.Update();
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
-            device.SetTransform(TransformState.World, Matrix.Identity);
+            //device.SetTransform(TransformState.World, Matrix.Identity);
             
             planetOuter.Render();
             //planetInner.RenderWithTechnique("Relief");
@@ -178,7 +179,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //airplane.Render();
 
             //widget.Position = airplane.Position;
-            qCam.Update();
+            
             
             
             

@@ -49,11 +49,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Odyssey UI, Version=0.3.4.26693, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Application\bin\Debug\Odyssey UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="SlimDX, Version=2.0.4.38, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Application\bin\Debug\SlimDX.dll</HintPath>
@@ -122,6 +117,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UserInterface\UserInterface.csproj">
+      <Project>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</Project>
+      <Name>UserInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
       <Name>Utils</Name>

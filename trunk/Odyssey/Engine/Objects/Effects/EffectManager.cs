@@ -43,12 +43,12 @@ namespace AvengersUtd.Odyssey.Resources
         static void AtmosphereInit(EffectDescriptor fxDescriptor)
         {
             float innerRadius = 10.0f;
-            float outerRadius = innerRadius * 1.25f;
+            float outerRadius = innerRadius * 1.025f;
             float ESun = 15.0f;
             float kr = 0.0025f;
             float km = 0.0015f;
             float scale = 1.0f / (outerRadius - innerRadius);
-            float scaleDepth = 0.25f;
+            float scaleDepth = 0.025f;
             //float scaleDepth = (outerRadius - innerRadius) / 2.0f;
             float scaleOverScaleDepth = scale / scaleDepth;
             float g = -0.95f;
@@ -201,24 +201,23 @@ namespace AvengersUtd.Odyssey.Resources
 
 
                 case FXType.AtmosphereFromSpace:
+                
                     fxDescriptor = new EffectDescriptor("Atmosphere.fx");
                     fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.ViewInverse);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.World);
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
 
                     float innerRadius = 10.0f;
-                    float outerRadius = innerRadius * 1.5f;
+                    float outerRadius = innerRadius * 1.025f;
+
                     float ESun = 15.0f;
                     float kr = 0.0025f;
                     float km = 0.0015f;
                     float scale = 1.0f / (outerRadius - innerRadius);
-                    float scaleDepth = 0.5f;
+                    float scaleDepth = 0.25f;
                     //float scaleDepth = (outerRadius - innerRadius) / 2.0f;
                     float scaleOverScaleDepth = scale / scaleDepth;
                     float g = -0.95f;
-
 
                     Vector4 wavelenght = new Vector4(0.650f, 0.570f, 0.450f, 1.0f);
                     Vector4 invWavelenght = new Vector4(
@@ -230,16 +229,16 @@ namespace AvengersUtd.Odyssey.Resources
 
                     FloatOp cameraHeight = delegate()
                     {
-                        return Game.CurrentScene.Camera.PositionV3.Length();
+                        return Game.CurrentScene.Camera.PositionV4.Length();
                     };
-
                     EffectParameter epCameraHeight = EffectParameter.CreateCustomParameter("cameraHeight", fxDescriptor.Effect, cameraHeight);
                     fxDescriptor.AddDynamicParameter(epCameraHeight);
 
                     FloatOp cameraHeight2 = delegate()
                     {
-                        return Game.CurrentScene.Camera.PositionV3.LengthSquared();
+                        return Game.CurrentScene.Camera.PositionV4.LengthSquared();
                     };
+
                     EffectParameter epCameraHeight2 = EffectParameter.CreateCustomParameter("cameraHeight2", fxDescriptor.Effect, cameraHeight2);
                     fxDescriptor.AddDynamicParameter(epCameraHeight2);
 
@@ -249,7 +248,7 @@ namespace AvengersUtd.Odyssey.Resources
                     EffectParameter epOuterRadius = EffectParameter.CreateCustomParameter("outerRadius", fxDescriptor.Effect, outerRadius);
                     fxDescriptor.AddStaticParameter(epOuterRadius);
 
-                    EffectParameter epOuterRadius2 = EffectParameter.CreateCustomParameter("outerRadius2", fxDescriptor.Effect, innerRadius * innerRadius);
+                    EffectParameter epOuterRadius2 = EffectParameter.CreateCustomParameter("outerRadius2", fxDescriptor.Effect, outerRadius * outerRadius);
                     fxDescriptor.AddStaticParameter(epOuterRadius2);
 
                     EffectParameter epkrESun = EffectParameter.CreateCustomParameter("krESun", fxDescriptor.Effect, kr * ESun);
@@ -270,19 +269,20 @@ namespace AvengersUtd.Odyssey.Resources
                     EffectParameter epScaleDepth = EffectParameter.CreateCustomParameter("scaleDepth", fxDescriptor.Effect, scaleDepth);
                     fxDescriptor.AddStaticParameter(epScaleDepth);
 
-                    EffectParameter epScaleOverScaleDepth = EffectParameter.CreateCustomParameter("scaleOverScaleDepth", fxDescriptor.Effect, scale / 0.05f);
+                    EffectParameter epScaleOverScaleDepth = EffectParameter.CreateCustomParameter("scaleOverScaleDepth", fxDescriptor.Effect, scaleOverScaleDepth);
                     fxDescriptor.AddStaticParameter(epScaleOverScaleDepth);
 
-                    EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, 0.95f);
+                    EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
                     fxDescriptor.AddStaticParameter(epG);
 
-                    EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, 0.95f * 0.95f);
+                    EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, g * g);
                     fxDescriptor.AddStaticParameter(epG);
 
                     EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
                     fxDescriptor.AddStaticParameter(epInvWavelength);
 
                     return fxDescriptor;
+
 
 
 
