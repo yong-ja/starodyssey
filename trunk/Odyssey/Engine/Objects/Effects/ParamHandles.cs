@@ -18,8 +18,10 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         {
             public const string Projection = "mProj";
             public const string View = "mView";
+            public const string ViewInverse = "mViewInverse";
             public const string WorldView = "mWorldView";
             public const string World = "mWorld";
+            public const string WorldInverse = "mWorldInverse";
             public const string WorldViewProjection = "mWorldViewProj";
         }
 
@@ -41,7 +43,8 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             public const string Texture2 = "t2";
             public const string Texture3 = "t3";
             FXParameterType type;
-
+            public const string DiffuseMap = "tDiffuse";
+            public const string NormalMap = "tNormal";
             
         }
     }
@@ -49,7 +52,9 @@ namespace AvengersUtd.Odyssey.Objects.Effects
     public enum FXParameterType
     {
         World,
+        WorldInverse,
         View,
+        ViewInverse,
         Projection,
         WorldViewProjection,
         EyePosition,
@@ -57,5 +62,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         LightPosition,
         AmbientColor,
         DiffuseColor,
+        DiffuseMap,
+        NormalMap
     }
 }

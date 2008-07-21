@@ -50,12 +50,12 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                     eH = effect.GetParameter(null, varName);
 
                     update = delegate(EffectParameter fxParam)
-                                 {
-                                     fxParam.ownerEffect.SetValue(eH, Game.CurrentScene.Camera.World *
+                    {
+                        fxParam.ownerEffect.SetValue(eH, Game.CurrentScene.Camera.World *
 
-                                                                      Game.CurrentScene.Camera.View*
-                                                                      Game.CurrentScene.Camera.Projection);
-                                 };
+                                                         Game.CurrentScene.Camera.View *
+                                                         Game.CurrentScene.Camera.Projection);
+                    };
                     break;
 
                 case FXParameterType.World:
@@ -66,12 +66,28 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                         delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, Game.CurrentScene.Camera.World); };
                     break;
 
+                case FXParameterType.WorldInverse:
+                    varName = ParamHandles.Matrices.WorldInverse;
+                    eH = effect.GetParameter(null, varName);
+
+                    update =
+                        delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, Matrix.Invert(Game.CurrentScene.Camera.World)); };
+                    break;
+
                 case FXParameterType.View:
                     varName = ParamHandles.Matrices.View;
                     eH = effect.GetParameter(null, varName);
 
                     update =
                         delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, Game.CurrentScene.Camera.View); };
+                    break;
+
+                case FXParameterType.ViewInverse:
+                    varName = ParamHandles.Matrices.ViewInverse;
+                    eH = effect.GetParameter(null, varName);
+
+                    update =
+                        delegate(EffectParameter fxParam) { fxParam.ownerEffect.SetValue(eH, Matrix.Invert(Game.CurrentScene.Camera.View)); };
                     break;
 
                 case FXParameterType.Projection:
@@ -99,19 +115,20 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                     eH = effect.GetParameter(null, varName);
 
                     update = delegate(EffectParameter fxParam)
-                                 {
-                                     fxParam.ownerEffect.SetValue(eH,
-                                                                  Game.CurrentScene.LightManager.GetParameter(0,
-                                                                                                              FXParameterType.LightDirection));                                 };
+                    {
+                        fxParam.ownerEffect.SetValue(eH,
+                                                     Game.CurrentScene.LightManager.GetParameter(0,
+                                                                                                 FXParameterType.LightDirection));
+                    };
                     break;
 
                 case FXParameterType.EyePosition:
                     varName = ParamHandles.Vectors.EyePosition;
                     update = delegate(EffectParameter fxParam)
-                                 {
-                                     fxParam.ownerEffect.SetValue(fxParam.effectHandle,
-                                                                  Game.CurrentScene.Camera.PositionV4);
-                                 };
+                    {
+                        fxParam.ownerEffect.SetValue(fxParam.effectHandle,
+                                                     Game.CurrentScene.Camera.PositionV4);
+                    };
                     break;
 
                 case FXParameterType.AmbientColor:
@@ -119,13 +136,13 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                     eH = effect.GetParameter(null, varName);
 
                     update = delegate(EffectParameter fxParam)
-                                 {                          fxParam.ownerEffect.SetValue(eH,
-                                                                  Game.CurrentScene.LightManager.GetParameter(0,
-                                                                                                              FXParameterType
-                                                                                                                  .
-                                                                                                                  AmbientColor));
-                                 };
+                    {
+                        fxParam.ownerEffect.SetValue(eH,
+                              Game.CurrentScene.LightManager.GetParameter(0,
+                                                                          FXParameterType.AmbientColor));
+                    };
                     break;
+
             }
 
             return new EffectParameter(varName,

@@ -33,8 +33,9 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         public EffectMaterial()
         {
             //diffuseColor = new Color4(0f, 1.0f, 0f);
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.AtmosphericScattering);
-            effectDescriptor.UpdateStatic();
+            fxType = FXType.AtmosphereFromSpace;
+            //effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.AtmosphereFromSpace);
+            //effectDescriptor.UpdateStatic();
         }
 
         public override void Apply()

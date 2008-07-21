@@ -63,8 +63,8 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         //    //create adiacency buffer
         //    adiacency = meshObject.GenerateAdjacency(1e-6f);
-            
-           
+
+
         //    ComputeTangentsAndBinormal();
 
         //    //create material list array
@@ -91,7 +91,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
         //{
         //    meshObject = mesh;
         //    int[] adjacency = meshObject.GenerateAdjacency(1e-6f);
-            
+
         //    ComputeTangentsAndBinormal();
 
         //    materials = new MaterialT[1];
@@ -108,7 +108,11 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             MaterialT material = new MaterialT();
             materials[0] = material;
             materials[0].OwningEntity = owningEntity;
+            if (entityDescriptor.TextureDescriptors.Length > 0)
+                materials[0].TextureDescriptor = entityDescriptor.TextureDescriptors[0];
             materials[0].Create();
+
+            
         }
 
 
@@ -119,13 +123,13 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
         /// <param name="elements">elements description</param>
         public void ChangeVertexFormat(VertexElement[] elements)
         {
-            meshObject = meshObject.Clone(Game.Device,MeshFlags.Managed, elements);
+            meshObject = meshObject.Clone(Game.Device, MeshFlags.Managed, elements);
         }
 
 
         public void ComputeTangentsAndBinormal()
         {
-            
+
             //VertexElement[] elements = meshObject.GetDeclaration();
 
             //elements[3] = new VertexElement(0,
@@ -141,7 +145,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             //                            DeclarationUsage.Binormal,
             //                            0);
             //elements[5] = VertexElement.VertexDeclarationEnd;
-            
+
             VertexElement[] elements = new VertexElement[]{
                 new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
                 new VertexElement(0, 12, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
@@ -154,7 +158,9 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             meshObject.Dispose();
             meshObject = tempMesh;
 
-            meshObject.ComputeNormals();
+            //meshObject.ComputeNormals();
+            
+            SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
         }
 
 

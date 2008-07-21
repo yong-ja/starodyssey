@@ -7,9 +7,8 @@ using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
 
 namespace AvengersUtd.Odyssey.Meshes
 {
-    public abstract class BaseEntity<MaterialT> : IEntity,I3dEntity
+    public abstract class BaseEntity<MaterialT> : IEntity, I3dEntity
         where MaterialT : IMaterialContainer, new()
-
     {
         protected bool disposed = false;
         protected Vector3 position;
@@ -36,7 +35,7 @@ namespace AvengersUtd.Odyssey.Meshes
 
         public BaseEntity(EntityDescriptor entityDesc)
         {
-            mesh = new SimpleMesh<MaterialT>(this,entityDesc);
+            mesh = new SimpleMesh<MaterialT>(this, entityDesc);
         }
 
         public abstract void Render();

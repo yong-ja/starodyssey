@@ -101,7 +101,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// </summary>
         public void GenerateAdiacency()
         {
-            adiacency = meshObject.GenerateAdjacency(1e-6f);            
+            adiacency = meshObject.GenerateAdjacency(1e-6f);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using AvengersUtd.Odyssey.Meshes;
 
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
-    public abstract class AbstractMaterial : IMaterialContainer
+    public abstract class AbstractMaterial : IMaterialContainer, IEffectMaterial
     {
         protected bool disposed;
         protected Material material;

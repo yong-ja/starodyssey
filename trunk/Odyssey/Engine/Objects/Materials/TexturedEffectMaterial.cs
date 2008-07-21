@@ -6,22 +6,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 {
     public class TexturedEffectMaterial : TexturedMaterial,IEffectMaterial
     {
-        protected EffectDescriptor effectDescriptor;
-
-        #region Properties
-
-        public EffectDescriptor EffectDescriptor
-        {
-            get { return effectDescriptor; }
-            set
-            {
-                effectDescriptor = value;
-                effectDescriptor.UpdateStatic();
-            }
-        }
-
-        #endregion
-
+        
         public override void Apply()
         {
             //base.Apply();

@@ -54,6 +54,9 @@ namespace AvengersUtd.Odyssey
                 //Vector4 vPos = new Vector4(0, 0, 0, 1f);
                 //vPos = Vector4.Transform(vPos, Matrix.Invert(mView));
                 return vPos;
+                //Matrix mViewInv = Matrix.Invert(mView);
+                //Vector4 cameraLoc = new Vector4(mViewInv.M41, mViewInv.M42, mViewInv.M43, 1.0f); 
+                //return cameraLoc;
             }
         }
 
@@ -93,7 +96,7 @@ namespace AvengersUtd.Odyssey
         public QuaternionCam()
         {
             actions = new bool[8];
-            mProjection = Matrix.PerspectiveFovLH(AvengersUtd.Utils.Utils.MathHelper.DegreeToRadian(45.0f), 4/3f, 0.01f, 10000.0f);
+            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, 0.01f, 100000.0f);
             Game.Device.SetTransform(TransformState.Projection, mProjection);
 
             Reset();
