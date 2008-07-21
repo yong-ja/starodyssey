@@ -24,7 +24,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
         SimpleMesh<SpecularMaterial> simpleGrid;
 
         Airplane airplane;
-        Planet1 widget;
+        Planet1 planetOuter;
+        PlanetInner planetInner;
         Grid grid;
         Office office;
         LightWidget lightWidget;
@@ -49,10 +50,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Game.Input.IsInputEnabled = true;
 
 
-            airplane = new Airplane();
-            widget = new Planet1();
+            //airplane = new Airplane();
+            planetOuter = new Planet1();
+            planetInner = new PlanetInner();
             grid = new Grid();
-            office = new Office();
+            //office = new Office();
             lightWidget = new LightWidget();
             //sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
             //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
@@ -62,50 +64,50 @@ namespace AvengersUtd.StarOdyssey.Scenes
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
             cameraHost = new CameraHostControl();
-            cameraHost.KeyDown += new KeyEventHandler(hud_KeyDown);
+            hud.KeyDown += new KeyEventHandler(hud_KeyDown);
 
-            tb = new AvengersUtd.Odyssey.UserInterface.RenderableControls.TrackBar();
-            tb.Position = new Vector2(15, 15);
-            tb.MinimumValue = 0;
-            tb.MaximumValue = 100;
+            //tb = new AvengersUtd.Odyssey.UserInterface.RenderableControls.TrackBar();
+            //tb.Position = new Vector2(15, 15);
+            //tb.MinimumValue = 0;
+            //tb.MaximumValue = 100;
             
-            tb.TickFrequency = 1;
-            tb.Size = new System.Drawing.Size(500, tb.Size.Height);
-            tb.ValueChanged += new EventHandler(tb_ValueChanged);
+            //tb.TickFrequency = 1;
+            //tb.Size = new System.Drawing.Size(500, tb.Size.Height);
+            //tb.ValueChanged += new EventHandler(tb_ValueChanged);
             
-            gamepad = XBox360Controller.GetController(0);
+            //gamepad = XBox360Controller.GetController(0);
 
             objectController = new ObjectHostControl();
             objectController.Id = "Airplane";
             objectController.entity = airplane;
           
-            hud.BeginDesign();
+            //hud.BeginDesign();
             hud.Add(cameraHost);
-            hud.Add(objectController);
-            hud.Add(tb);
-            cameraHost.Focus();
+            //hud.Add(objectController);
+            //hud.Add(tb);
+            //cameraHost.Focus();
             SetupCamera();
-            hud.EndDesign();
+            //hud.EndDesign();
 
-            Texture t = AvengersUtd.Odyssey.Objects.EntityManager.RenderToTexture(512, 512, grid,office);
-            Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
-            office.shadowMap = t;
-            grid.shadowMap = t;
+            //Texture t = AvengersUtd.Odyssey.Objects.EntityManager.RenderToTexture(512, 512, grid,office);
+            //Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
+            //office.shadowMap = t;
+            //grid.shadowMap = t;
             
         }
 
         //float fFarView = 100;
-        void tb_ValueChanged(object sender, EventArgs e)
-        {
-            //fFarView += 10;
-            float fFarClip = tb.Value;
-            office.Materials[0].EffectDescriptor.Effect.SetValue(new EffectHandle("fFarClip"), fFarClip);
-            grid.Materials[0].EffectDescriptor.Effect.SetValue(new EffectHandle("fFarClip"), fFarClip);
-            Texture t = AvengersUtd.Odyssey.Objects.EntityManager.RenderToTexture(512, 512, grid, office);
-            //Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
-            office.shadowMap = t;
-            grid.shadowMap = t;
-        }
+        //void tb_ValueChanged(object sender, EventArgs e)
+        //{
+        //    //fFarView += 10;
+        //    float fFarClip = tb.Value;
+        //    office.Materials[0].EffectDescriptor.Effect.SetValue(new EffectHandle("fFarClip"), fFarClip);
+        //    grid.Materials[0].EffectDescriptor.Effect.SetValue(new EffectHandle("fFarClip"), fFarClip);
+        //    Texture t = AvengersUtd.Odyssey.Objects.EntityManager.RenderToTexture(512, 512, grid, office);
+        //    //Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
+        //    office.shadowMap = t;
+        //    grid.shadowMap = t;
+        //}
         bool value = false;
         
         void hud_KeyDown(object sender, KeyEventArgs e)
@@ -151,16 +153,23 @@ namespace AvengersUtd.StarOdyssey.Scenes
             DebugManager.Instance.DisplayStats();
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
             device.SetTransform(TransformState.World, Matrix.Identity);
-            //device.SetTransform (TransformState.World, Matrix.Identity * Matrix.RotationAxis(new Vector3(0, 1, 0), 0));
-            grid.RenderWithTechnique("ShadowMap");
-            //grid.RenderWithTechnique("Scene");
+            
+            planetOuter.Render();
+            //planetInner.RenderWithTechnique("Relief");
+            
+            
+            
 
-            office.RenderWithTechnique("ShadowMap");
+            //device.SetTransform (TransformState.World, Matrix.Identity * Matrix.RotationAxis(new Vector3(0, 1, 0), 0));
+            //grid.RenderWithTechnique("ShadowMap");
+            ////grid.RenderWithTechnique("Scene");
+
+            //office.RenderWithTechnique("ShadowMap");
           
           //office.RenderWithTechnique("Scene");
             
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Solid);
-            lightWidget.Render();
+            //lightWidget.Render();
 
 
             

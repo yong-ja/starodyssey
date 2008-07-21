@@ -47,7 +47,7 @@ namespace AvengersUtd.StarOdyssey
 
         public Office() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Office", "Meshes\\teapot.X")))
+                new MeshDescriptor("Office", "Meshes\\water.X")))
         {
             mesh.Materials[0].Diffuse = new Color4(0.0f, 1f, 0f);
         }
