@@ -118,7 +118,7 @@ AtmosphereFromSpaceVS(float4 vPos : POSITION )
 		float height = length (samplePoint);
 		float depth = exp (scaleOverScaleDepth * (innerRadius - height));
 		float lightAngle = dot (vLightDir, samplePoint) / height;
-		float cameraAngle = dot (-ray, samplePoint) / height;
+		float cameraAngle = dot(-ray, samplePoint) / height;
 		float scatter = (startOffset + depth * (expScale (lightAngle) - expScale (cameraAngle)));
 
 		float3 attenuate = exp (-scatter * (invWavelength.xyz * kr4PI + km4PI));
@@ -162,7 +162,7 @@ AtmosphereFromSpacePS(vpconn IN)
 	float fRayleighPhase = 0.75 * (1.0 + cos*cos);
 
 	OUT.rt0.rgb = (fRayleighPhase * IN.c0 + fMiePhase * IN.c1);
-	float exposure = 1.0;
+	float exposure = 2.0;
 	OUT.rt0.rgb = 1.0 - exp(-exposure * (fRayleighPhase * IN.c0 + fMiePhase * IN.c1));
 	OUT.rt0.a = OUT.rt0.b;
 
@@ -175,9 +175,9 @@ technique AtmosphereFromSpace
 {
 pass P0
 {
-AlphaBlendEnable = true;
-DestBlend = ONE;
-SrcBlend = ONE;
+//AlphaBlendEnable = true;
+//DestBlend = ONE;
+//SrcBlend = ONE;
 CullMode = CW;
 VertexShader = compile vs_3_0 AtmosphereFromSpaceVS();
 PixelShader = compile ps_3_0 AtmosphereFromSpacePS();

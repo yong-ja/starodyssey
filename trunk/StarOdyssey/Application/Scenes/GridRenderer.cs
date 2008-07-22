@@ -25,7 +25,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         Airplane airplane;
         Planet1 planetOuter;
-        //PlanetInner planetInner;
+        PlanetInner planetInner;
         Grid grid;
         Office office;
         LightWidget lightWidget;
@@ -52,7 +52,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             //airplane = new Airplane();
             planetOuter = new Planet1();
-            //planetInner = new PlanetInner();
+            planetInner = new PlanetInner();
             grid = new Grid();
             //office = new Office();
             lightWidget = new LightWidget();
@@ -154,9 +154,15 @@ namespace AvengersUtd.StarOdyssey.Scenes
             qCam.Update();
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
             //device.SetTransform(TransformState.World, Matrix.Identity);
+            device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+            device.SetRenderState(RenderState.SourceBlend, Blend.One);
+            device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+            device.SetRenderState(RenderState.AlphaBlendEnable, true);
+
             
+            planetInner.RenderWithTechnique("Relief");
             planetOuter.Render();
-            //planetInner.RenderWithTechnique("Relief");
+           
             
             
             

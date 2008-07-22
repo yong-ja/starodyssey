@@ -9,26 +9,6 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 {
     public class EffectMaterial : AbstractMaterial, IEffectMaterial
     {
-        //Color4 diffuseColor;
-
-
-        //public Color4 Diffuse
-        //{
-        //    get
-        //    {
-        //        return diffuseColor;
-        //    }
-        //    set {
-        //        if (value != diffuseColor)
-        //        {
-        //            diffuseColor = value;
-        //            effectDescriptor = EffectManager.CreateEffect(FXType.Specular, diffuseColor);
-        //            effectDescriptor.UpdateStatic();
-                    
-        //        }
-                
-        //    }
-        //}
 
         public EffectMaterial()
         {
