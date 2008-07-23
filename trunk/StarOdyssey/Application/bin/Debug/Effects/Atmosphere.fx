@@ -25,8 +25,8 @@ struct vpconn
 	float4 Position : POSITION;
 	float3 t0 : TEXCOORD0;
 	//float DepthBlur : TEXCOORD1;
-	float3 c0 : COLOR; // The Rayleigh color
-	float3 c1 : COLOR1; // The Mie color
+	float3 c0 : TEXCOORD1; // The Rayleigh color
+	float3 c1 : TEXCOORD2; // The Mie color
 };
 
 struct vsconn
@@ -158,11 +158,13 @@ AtmosphereFromSpacePS(vpconn IN)
 	float cos = saturate(dot (vLightDir, IN.t0) / length (IN.t0));
 	float cos2 = cos*cos;
 
-	float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cos*cos) / pow(1.0 + g2 - 2.0*g*cos, 1.5);
-	float fRayleighPhase = 0.75 * (1.0 + cos*cos);
+	//float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cos*cos) / pow(1.0 + g2 - 2.0*g*cos, 1.5);
+	float fMiePhase = getMiePhase(cos,cos2,g,g2);
+	float fRayleighPhase = getRayleighPhase(cos2);
+	//float fRayleighPhase = 0.75 * (1.0 + cos*cos);
 
-	OUT.rt0.rgb = (fRayleighPhase * IN.c0 + fMiePhase * IN.c1);
-	float exposure = 2.0;
+	//OUT.rt0.rgb = (fRayleighPhase * IN.c0 + fMiePhase * IN.c1);
+	float exposure = 1.0;
 	OUT.rt0.rgb = 1.0 - exp(-exposure * (fRayleighPhase * IN.c0 + fMiePhase * IN.c1));
 	OUT.rt0.a = OUT.rt0.b;
 
@@ -174,12 +176,12 @@ AtmosphereFromSpacePS(vpconn IN)
 technique AtmosphereFromSpace
 {
 pass P0
-{
-//AlphaBlendEnable = true;
-//DestBlend = ONE;
-//SrcBlend = ONE;
-CullMode = CW;
-VertexShader = compile vs_3_0 AtmosphereFromSpaceVS();
-PixelShader = compile ps_3_0 AtmosphereFromSpacePS();
-}
+	{
+		//AlphaBlendEnable = true;
+		//DestBlend = ONE;
+		//SrcBlend = ONE;
+		CullMode = CW;
+		VertexShader = compile vs_3_0 AtmosphereFromSpaceVS();
+		PixelShader = compile ps_3_0 AtmosphereFromSpacePS();
+	}
 }
