@@ -31,7 +31,7 @@ using System.IO;
 
 #endregion
 
-namespace AvengersUtd.Utils.Utils.Xml
+namespace AvengersUtd.Odyssey.Utils.Xml
 {
     public static class Data
     {

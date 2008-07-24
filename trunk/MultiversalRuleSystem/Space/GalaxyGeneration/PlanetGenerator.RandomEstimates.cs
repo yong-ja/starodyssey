@@ -63,7 +63,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         /// A unitless 'inventory' calibrated to Earth=1000.
         /// </returns>
         public static double GenerateVolatileGasInventory(double mass, double escapeVelocity, double rmsVelocity,
-                                                  double stellarMass, int zone, bool greenhouseEffect, bool accretedGas)
+                                                  double stellarMass, OrbitalZone zone, bool greenhouseEffect, bool accretedGas)
         {
             double velocityRatio, proportionConst = 1.0, temp1, temp2;
 
@@ -74,13 +74,13 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             {
                 switch (zone)
                 {
-                    case 1:
+                    case OrbitalZone.Snowline:
                         proportionConst = 140000.0;
                         break;
-                    case 2:
+                    case OrbitalZone.Outer:
                         proportionConst = 75000.0;
                         break;
-                    case 3:
+                    case OrbitalZone.External:
                         proportionConst = 250.0;
                         break;
                     default:

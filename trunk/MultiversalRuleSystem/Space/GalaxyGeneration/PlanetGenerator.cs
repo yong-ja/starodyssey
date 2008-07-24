@@ -47,7 +47,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         bool isGasGiant;
 
         int resonantPeriod;
-        int orbitalZone;
+        OrbitalZone orbitalZone;
 
         double albedo;
         double axialTilt;
@@ -130,7 +130,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         {
             greenhouseEffect = isGasGiant = false;
 
-            resonantPeriod = orbitalZone = 0;
+            resonantPeriod = 0;
+
 
             albedo =
                 axialTilt =
@@ -348,6 +349,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 hydrographicCoverage,
                 orbitalPeriod,
                 orbitalRadius,
+                orbitalZone,
                 atmosphere);
 
             if (!isGasGiant)
@@ -427,8 +429,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
                 if (greenhouseEffect && surfacePressure > 0.0)
                     cloudCoverage = 1;
-                if ((dayTemp >= waterBoilingPoint) && ((int) dayLength == (int) (orbitalPeriod * 24.0) ||
-                    resonantPeriod == 1))
+                if ((dayTemp >= waterBoilingPoint) && !(((int) dayLength == (int) (orbitalPeriod * 24.0) ||
+                    resonantPeriod == 1)))
                 {
                     hydrographicCoverage = 0;
                     atmosphereBoiledOff = true;

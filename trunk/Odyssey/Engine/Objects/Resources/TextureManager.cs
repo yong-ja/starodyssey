@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.Engine;
-using AvengersUtd.Utils.Collections;
+using AvengersUtd.Odyssey.Collections;
 using SlimDX.Direct3D9;
 using System.IO;
 

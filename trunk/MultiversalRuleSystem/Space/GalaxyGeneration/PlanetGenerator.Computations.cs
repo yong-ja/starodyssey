@@ -650,13 +650,13 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         /// <param name="isGasGiant"><c>true</c> if planet is a gas giant, <c>false</c> otherwise.</param>
         /// <param name="zone">Orbital zone, 1 to 3.</param>
         /// <returns>Equatorial radius in kilometers</returns>
-        public static double ComputeKothariRadius(double mass, bool isGasGiant, int zone)
+        public static double ComputeKothariRadius(double mass, bool isGasGiant, OrbitalZone zone)
         {
             double temp, temp2, atomicWeight, atomicNum;
 
             if (mass == 0.0) return 0.0;  // for grit belts (see constructor, mass_by_integration)
 
-            if (zone == 1)
+            if (zone == OrbitalZone.Snowline)
             {
                 if (isGasGiant)
                 {
@@ -669,7 +669,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                     atomicNum = 8.0;
                 }
             }
-            else if (zone == 2)
+            else if (zone == OrbitalZone.Outer)
             {
                 if (isGasGiant)
                 {
@@ -713,17 +713,17 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             return temp;
         }
 
-        static int ComputeOrbitalZone(double orbitalRadius, double stellarLuminosity)
+        static OrbitalZone ComputeOrbitalZone(double orbitalRadius, double stellarLuminosity)
         {
             if (orbitalRadius < (4.0 * Math.Sqrt(stellarLuminosity)))
-                return 1;
+                return OrbitalZone.Snowline;
             else
             {
                 if ((orbitalRadius >= (4.0 * Math.Sqrt(stellarLuminosity))) &&
                     (orbitalRadius < (15.0 * Math.Sqrt(stellarLuminosity))))
-                    return 2;
+                    return OrbitalZone.Outer;
                 else
-                    return 3;
+                    return OrbitalZone.External;
             }
         }
 

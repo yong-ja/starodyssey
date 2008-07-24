@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 
 #endregion
 
-namespace AvengersUtd.Utils.Utils.Collections
+namespace AvengersUtd.Odyssey.Utils.Collections
 {
     public class NodeCollection<T> : Collection<Node<T>>
     {

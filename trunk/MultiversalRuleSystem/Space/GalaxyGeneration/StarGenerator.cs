@@ -1,5 +1,6 @@
 using System;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
+using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Utils;
 
 namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
@@ -488,7 +489,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         /// <returns></returns>
         public static double EstimateZamsLuminosity(double mass)
         {
-            return Math.Pow(10.0, MathHelper.PolynomialFit(Math.Log10(mass), lZamsFit));
+            return Math.Pow(10.0, AvengersUtd.Odyssey.MathHelper.PolynomialFit(Math.Log10(mass), lZamsFit));
         }
 
         /// <summary>

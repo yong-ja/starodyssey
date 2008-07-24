@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 #endregion
 
-namespace AvengersUtd.Utils.Collections
+namespace AvengersUtd.Odyssey.Collections
 {
     public interface ICacheable
     {

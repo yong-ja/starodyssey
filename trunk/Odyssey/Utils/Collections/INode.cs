@@ -28,7 +28,7 @@ using System;
 
 #endregion
 
-namespace AvengersUtd.Utils.Utils.Collections
+namespace AvengersUtd.Odyssey.Utils.Collections
 {
     public interface INode
     {

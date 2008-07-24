@@ -28,7 +28,7 @@ using System;
 
 #endregion
 
-namespace AvengersUtd.Utils
+namespace AvengersUtd.Odyssey
 {
     public class MathHelper
     {

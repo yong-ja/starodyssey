@@ -150,7 +150,7 @@ namespace AvengersUtd.Odyssey.Resources
                             new Vector3(0, 1, 0));
 
                         Matrix mLightsProj = Matrix.PerspectiveFovLH(
-                            AvengersUtd.Utils.MathHelper.DegreeToRadian(90f),
+                            AvengersUtd.Odyssey.MathHelper.DegreeToRadian(90f),
                              1f, 0.01f, 10000f);
 
                         return //Matrix.Translation(v3LightPos)*/

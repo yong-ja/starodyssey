@@ -52,6 +52,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         double hydrographicCoverage;
         double orbitalPeriod;
         double orbitalRadius;
+        OrbitalZone orbitalZone;
         Gas[] atmosphere;
         #endregion
 
@@ -175,12 +176,18 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         {
             get { return atmosphere; }
         }
+
+        public OrbitalZone OrbitalZone
+        {
+            get { return orbitalZone; }
+        }
+
         #endregion
 
         #region Constructor
         public CelestialFeatures(
             string name,
-                    double albedo,
+            double albedo,
             double axialTilt,
             double dayLength,
             double cloudCoverage,
@@ -203,6 +210,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             double hydrographicCoverage,
             double orbitalPeriod,
             double orbitalRadius,
+            OrbitalZone orbitalZone,
             Gas[] atmosphere)
         {
             this.name = name;
@@ -229,6 +237,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             this.hydrographicCoverage = hydrographicCoverage;
             this.orbitalPeriod = orbitalPeriod;
             this.orbitalRadius = orbitalRadius;
+            this.orbitalZone = orbitalZone;
             this.atmosphere = atmosphere;
         } 
         #endregion
@@ -240,7 +249,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             sb.AppendLine(name);
             sb.AppendLine(string.Format("A:{0:F2} AU E:{1:F2} To:{2:F2} Yrs Td: {3:F2} Days", orbitalRadius, eccentricity, orbitalPeriod/365.26,dayLength));
             sb.AppendLine(string.Format("M:{0:F2} EM G:{1:F2} EG D: {2:F2} g/cc AT:{3:F2}°", mass, surfaceGravity, density,axialTilt));
-            sb.AppendLine(string.Format("R:{0:F2} ER EV:{1:F2} Km/sec Al:{2:F2}", radius, escapeVelocity, albedo));
+            sb.AppendLine(string.Format("R:{0:F2} ER EV:{1:F2} Km/sec Al:{2:F2} OZ:{3}", radius, escapeVelocity, albedo, orbitalZone.ToString()));
             sb.AppendLine(string.Format("P:{0:F2} mB EA MWR:{1:F2}", surfacePressure, molecularWeightRetained));
             sb.AppendLine(string.Format("T:{0:F2} °K ExoT:{1:F2} °K WBP: {2:F2}", surfaceTemperature, exosphericTemperature, waterBoilingPoint));
             sb.AppendLine(string.Format("mT:{0:F2} °K MT:{1:F2} °K NT:{2:F2} °K DT:{3:F2} °K",minTemp,maxTemp, nightTemp, dayTemp));

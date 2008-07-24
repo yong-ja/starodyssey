@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
-using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
 using AvengersUtd.Odyssey.Utils.Xml;
 
@@ -49,6 +47,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
             int starCount = galaxyOptions.StarCount;
 
+            starCount = 50;
 
 
             SortedDictionary<string, SolarSystem> solarSystems = new SortedDictionary<string, SolarSystem>();

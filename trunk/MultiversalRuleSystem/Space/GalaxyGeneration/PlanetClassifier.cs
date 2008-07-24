@@ -27,10 +27,17 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
             size = ClassifySize(celestialFeatures.Radius);
             density = ClassifyDensity(celestialFeatures.Density);
             gravity = ClassifyGravity(celestialFeatures.SurfaceGravity);
-            temperature = ClassifyTemperature(celestialFeatures.SurfaceTemperature);
+            temperature = ClassifyTemperature(celestialFeatures.SurfaceTemperature, celestialFeatures.MinTemp, celestialFeatures.MaxTemp);
             atmosphericDensity = ClassifyAtmosphericDensity(celestialFeatures.SurfacePressure);
-            if (density == Density.IcyCore)
-                climate = AssignIcyCoreClimate();
+
+
+            //if (density == Density.IcyCore)
+            //    climate = AssignIcyCoreClimate();
+            //else
+            //    climate = AssignIronCoreClimate();
+
+            if (size == PlanetSize.Tiny)
+                climate = AssignPlanetoidalClass();
             else
                 climate = AssignIronCoreClimate();
         }
@@ -82,9 +89,10 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
             density /= PhysicalConstants.EarthDensity;
             if (density <= 0.65)
                 return Density.IcyCore;
+            else if (density <= 1.20)
+                return Density.LargeIronCore;
             else
                 return Density.LargeIronCore;
-
         }
 
 
@@ -132,18 +140,75 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                 return AtmosphericDensity.Superdense;
         }
 
-        static Temperature ClassifyTemperature(double surfaceTemperature)
+        static Temperature ClassifyTemperature(double surfaceTemperature, double minimumTemperature, double maximumTemperature)
         {
-            if (surfaceTemperature <= 240)
-                return Temperature.Frozen;
-            else if (surfaceTemperature <= 280)
-                return Temperature.Cold;
-            else if (surfaceTemperature <= 310)
-                return Temperature.Temperate;
-            else if (surfaceTemperature <= 340)
-                return Temperature.VeryHot;
-            else
+            if (surfaceTemperature > 344)
                 return Temperature.Extreme;
+            if (surfaceTemperature >= 290 && surfaceTemperature <= 344)
+                return Temperature.VeryHot;
+            else if (surfaceTemperature >= 250 && surfaceTemperature <= 340)
+                return Temperature.Temperate;
+            else if (surfaceTemperature >= 140 && surfaceTemperature <= 250)
+                return Temperature.Cold;
+            else if (surfaceTemperature <= 140)
+                return Temperature.Frozen;
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Temperature Error");
+                return Temperature.Extreme;
+            }
+
+
+            //if (surfaceTemperature <= 240)
+            //    return Temperature.Frozen;
+            //else if (surfaceTemperature <= 280)
+            //    return Temperature.Cold;
+            //else if (surfaceTemperature <= 310)
+            //    return Temperature.Temperate;
+            //else if (surfaceTemperature <= 340)
+            //    return Temperature.VeryHot;
+            //else
+            //    return Temperature.Extreme;
+        }
+
+        Climate AssignPlanetoidalClass()
+        {
+            switch (temperature)
+            {
+                case Temperature.Frozen:
+                    switch (atmosphericDensity)
+                    {
+                        case AtmosphericDensity.None:
+                            switch (celestialFeatures.OrbitalZone)
+                            {
+                                case OrbitalZone.Snowline:
+                                    return celestialFeatures.SurfaceTemperature > 80 ? Climate.Cerean : Climate.Hadean;
+
+                                case OrbitalZone.Outer:
+                                    return Climate.Cerean;
+
+                                case OrbitalZone.External:
+                                    return Climate.Kuiperian;
+
+                                default:
+                                    return Climate.Unknown;
+                            }
+
+                        default:
+                            return Climate.Unknown;
+                    }
+
+                default:
+                    switch (celestialFeatures.OrbitalZone)
+                    {
+                        case OrbitalZone.Snowline:
+                            return Climate.Cerean;
+
+                        default:
+                            return Climate.Kuiperian;
+                    }
+
+            }
         }
 
         Climate AssignIcyCoreClimate()
@@ -154,7 +219,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     switch (atmosphericDensity)
                     {
                         case AtmosphericDensity.None:
-                            return Climate.Hadean;
+                            return Climate.Unknown;
            
                         case AtmosphericDensity.Traces:
                         case AtmosphericDensity.Thin:
@@ -182,7 +247,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     switch (atmosphericDensity)
                     {
                         case AtmosphericDensity.None:
-                            return Climate.Hadean;
+                            return Climate.Unknown;
 
                         default:
                             return Climate.Barren;

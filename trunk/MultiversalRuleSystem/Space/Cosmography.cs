@@ -19,6 +19,14 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         AsteroidBelt = 3,
     }
 
+    public enum OrbitalZone
+    {
+        CenterOfMass = 0,
+        Snowline = 1,
+        Outer = 2,
+        External = 3
+    }
+
     public enum GalaxyOption
     {
         Age,
@@ -90,7 +98,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
     {
         GasGiant = 0,
         IcyCore = 1,
-        LargeIronCore = 2
+        RockyCore = 2,
+        LargeIronCore = 3
     }
 
     public enum Temperature : int
@@ -134,6 +143,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
     {
         Unknown,
         Hadean,
+        Cerean,
+        Kuiperian,
         Ice,
         Glacial,
         Ammonia,
