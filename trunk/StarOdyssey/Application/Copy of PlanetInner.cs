@@ -10,7 +10,7 @@ using SlimDX;
 
 namespace AvengersUtd.StarOdyssey
 {
-    public class PlanetInner : BaseEntity<SpecularBumpMaterial>
+    public class PlanetClouds : BaseEntity<SpecularBumpMaterial>
     {
         public override void Render()
         {
@@ -20,9 +20,9 @@ namespace AvengersUtd.StarOdyssey
             
         }
 
-        public PlanetInner() :
+        public PlanetClouds() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Airplane", "Meshes\\planetInner.X"),
+                new MeshDescriptor("Airplane", "Meshes\\cloudCover.X"),
                 new TextureDescriptor("Textures", "Textures\\Planets\\Terra.png",
                     "Textures\\Planets\\TerraNormal.png", "Textures\\Planets\\TerraClouds01.jpg")))
         {
@@ -36,7 +36,7 @@ namespace AvengersUtd.StarOdyssey
             //device.SetTransform(TransformState.World, Matrix.Translation(position)); //* Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
             device.SetTransform(TransformState.World, //Matrix.Scaling(4.0f, 4.0f, 4.0f) *//
                 //Matrix.RotationX(rotation) * 
-                Matrix.Translation(position) * Matrix.RotationZ(MathHelper.DegreeToRadian(-7.25f)) * Matrix.RotationY(MathHelper.DegreeToRadian(290.0f)));
+                Matrix.Translation(position));
 
 
             Effect effect = this.Materials[0].EffectDescriptor.Effect;

@@ -186,6 +186,8 @@ namespace AvengersUtd.Odyssey.Resources
                         ParamHandles.Textures.DiffuseMap, fxDescriptor.Effect, (Texture)data[0]));
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.NormalMap, fxDescriptor.Effect, (Texture)data[1]));
+                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                        ParamHandles.Textures.Texture1, fxDescriptor.Effect, (Texture)data[2]));
 
                     AtmosphereInit(fxDescriptor);
 

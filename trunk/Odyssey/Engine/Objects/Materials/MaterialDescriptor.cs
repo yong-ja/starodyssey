@@ -3,7 +3,8 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     public enum TextureType : int
     {
         Diffuse,
-        Normal
+        Normal,
+        Texture1 
     }
 
 

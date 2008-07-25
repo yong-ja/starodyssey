@@ -38,9 +38,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
             if (size == PlanetSize.Tiny)
                 climate = AssignPlanetoidalClass();
-            else if (size == PlanetSize.Immense)
-                climate = AssignPanthalassicClass();
-            else
+            else 
                 climate = AssignIronCoreClimate();
         }
 
@@ -131,7 +129,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
             if (pressure <= 0.01)
                 return AtmosphericDensity.None;
-            else if (pressure <= 0.25)
+            else if (pressure <= 0.2)
                 return AtmosphericDensity.Traces;
             else if (pressure <= 0.5)
                 return AtmosphericDensity.Thin;
@@ -145,17 +143,17 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
         static Temperature ClassifyTemperature(double surfaceTemperature, double minimumTemperature, double maximumTemperature)
         {
-            if (surfaceTemperature > 344)
+            if (surfaceTemperature > 345)
                 return Temperature.Extreme;
-            if (surfaceTemperature >= 290 && surfaceTemperature <= 344)
+            if (surfaceTemperature >= 315 && surfaceTemperature <= 345)
                 return Temperature.VeryHot;
-            else if (surfaceTemperature >= 250 && surfaceTemperature <= 340)
+            else if (surfaceTemperature >= 250 && surfaceTemperature < 315)
                 return Temperature.Temperate;
-            else if (surfaceTemperature >= 215 && surfaceTemperature <= 250)
+            else if (surfaceTemperature >= 215 && surfaceTemperature < 250)
                 return Temperature.Cold;
-            else if (surfaceTemperature >= 140 && surfaceTemperature <= 215)
+            else if (surfaceTemperature >= 140 && surfaceTemperature < 215)
                 return Temperature.Icy;
-            else if (surfaceTemperature <= 140)
+            else if (surfaceTemperature < 140)
                 return Temperature.Frozen;
             else
             {
@@ -190,7 +188,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
                         default:
                             if (celestialFeatures.IceCoverage >= 0.10)
-                                return Climate.LithicGelidian;
+                                return Climate.Glacial;
                             else
                                 return Climate.Arean;
                     }
@@ -202,7 +200,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     if (celestialFeatures.HydrographicCoverage >= 0.05)
                         return Climate.Ocean;
                     else if (celestialFeatures.IceCoverage >= 0.10)
-                        return Climate.LithicGelidian;
+                        return Climate.Glacial;
                     else
                         return Climate.Arean;
 
@@ -224,7 +222,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     {
                         case AtmosphericDensity.None:
 
-                            if (celestialFeatures.IceCoverage >= 0.10)
+                            if (celestialFeatures.IceCoverage >= 0.10 && density == Density.IcyCore)
                                 return Climate.Kuiperian;
                             else if (celestialFeatures.SurfaceTemperature <= 80.0)
                                 return Climate.Hadean;
@@ -240,7 +238,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     return Climate.Hephaestian;
 
                 default:
-                    if (celestialFeatures.IceCoverage >= 0.10)
+                    if (celestialFeatures.IceCoverage >= 0.10 && density == Density.IcyCore)
                         return Climate.Kuiperian;
                     else
                         return Climate.Cerean;
@@ -261,7 +259,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                             return Climate.Hadean;
 
                         default:
-                            return Climate.LithicGelidian;
+                            return Climate.Glacial;
                     }
 
                 case Temperature.Icy:
@@ -271,7 +269,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                         case AtmosphericDensity.Traces:
                         
                             if (celestialFeatures.IceCoverage >= 0.10)
-                                return Climate.LithicGelidian;
+                                return density == Density.IcyCore ? Climate.Kuiperian : Climate.Glacial;
                             else
                                 return Climate.Arean;
 
@@ -283,7 +281,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                                  (celestialFeatures.MinTemp >= 140))
                                 return Climate.Ammonia;
                             if (celestialFeatures.IceCoverage >= 0.10)
-                                return Climate.LithicGelidian;
+                                return Climate.Glacial;
                             else
                                 return Climate.Arean;
 
@@ -296,38 +294,33 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                     {
                         case AtmosphericDensity.None:
                         case AtmosphericDensity.Traces:
-                        case AtmosphericDensity.Thin:
                             if (celestialFeatures.IceCoverage >= 0.10)
-                                return Climate.LithicGelidian;
+                                return Climate.Glacial;
                             else
                                 return Climate.Arean;
 
-                        case AtmosphericDensity.Standard:
-                        case AtmosphericDensity.Dense:
-                        case AtmosphericDensity.Superdense:
-                            if (celestialFeatures.IceCoverage >= 0.10)
+                        default:
+                            if (celestialFeatures.SurfaceTemperature >= 230)
                                 return Climate.Tundra;
                             else
-                                return Climate.Unknown;
-
-                        default:
-                            return Climate.Unknown;
+                                return Climate.Glacial;
                     }
 
                 case Temperature.Temperate:
                     switch (atmosphericDensity)
                     {
                         case AtmosphericDensity.None:
-                        case AtmosphericDensity.Traces:
                             return Climate.Arean;
 
-                        
-                        case AtmosphericDensity.Thin:
+                        case AtmosphericDensity.Traces:
                             if (Dice.Roll() <= CataclismicChance)
                                 return Climate.Cataclismic;
+                            else if (celestialFeatures.HydrographicCoverage >= 0.1)
+                                return Climate.Arid;
                             else
-                                return AssignEogaianClimate();
-                            
+                                return Climate.Arean;
+
+                        case AtmosphericDensity.Thin:
                         case AtmosphericDensity.Standard:
                         case AtmosphericDensity.Dense:
                             return AssignEogaianClimate();
@@ -336,7 +329,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                             if (Dice.Roll() <= CataclismicChance)
                                 return Climate.Cataclismic;
                             else
-                                return Climate.Cytherean;
+                                return celestialFeatures.HydrographicCoverage > 0 ? Climate.Pelagic : Climate.Cytherean; ;
 
                         default:
                             return Climate.Unknown;
@@ -353,19 +346,20 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                         case AtmosphericDensity.Thin:
                         case AtmosphericDensity.Standard:
                         case AtmosphericDensity.Dense:
-                            if (celestialFeatures.HydrographicCoverage <= (2.0 / 3.0) && 
-                                celestialFeatures.HydrographicCoverage > 0) 
-                                return Climate.Arid;
-                            else if (celestialFeatures.HydrographicCoverage > (2.0 / 3.0))
-                                return Climate.Ocean;
-                            else
+                            if (celestialFeatures.HydrographicCoverage <= 0.2)
                                 return Climate.Desert;
+                            else if (celestialFeatures.HydrographicCoverage > 0.2 &&
+                                celestialFeatures.HydrographicCoverage <= (2.0 / 3.0))
+                                return Climate.Arid;
+                            else
+                                return Climate.Ocean;
+
 
                         case AtmosphericDensity.Superdense:
                             if (Dice.Roll() <= CataclismicChance)
                                 return Climate.Cataclismic;
                             else
-                                return Climate.Cytherean;
+                                return celestialFeatures.HydrographicCoverage > 0 ? Climate.Pelagic : Climate.Cytherean; 
 
                         default:
                             return Climate.Unknown;
@@ -385,7 +379,7 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                             if (Dice.Roll() <= CataclismicChance)
                                 return Climate.Hephaestian;
                             else
-                                return Climate.Cytherean;
+                                return celestialFeatures.HydrographicCoverage > 0? Climate.Pelagic : Climate.Cytherean;
 
                         default:
                             return Climate.Unknown;
@@ -403,25 +397,21 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
 
             double deltaTemp = Math.Abs(Math.Abs(celestialFeatures.NightTemp) - Math.Abs(celestialFeatures.DayTemp));
 
-            if (deltaTemp <= 25)
+            if (celestialFeatures.HydrographicCoverage >= 2.0/3.0)
+                return Climate.Ocean;
+            if (celestialFeatures.HydrographicCoverage >= 0.5 && celestialFeatures.HydrographicCoverage <= 2.0 / 3.0)
+                return Climate.Terran;
+            else if (celestialFeatures.HydrographicCoverage < 0.5 && celestialFeatures.HydrographicCoverage > 0.2)
             {
-                if (celestialFeatures.HydrographicCoverage <= 2.0 / 3.0)
-                    return Climate.Terran;
-                else
-                    return Climate.Ocean;
+                return Climate.Arid;
             }
-            else if (deltaTemp <= 50)
-            {
-                if (celestialFeatures.IceCoverage >= 0.10)
-                    return Climate.Tundra;
-                else
-                    return Climate.Arid;
-            }
-            else
-                return Climate.Unknown;
+            else if (celestialFeatures.HydrographicCoverage <= 0.0)
+                return celestialFeatures.SurfaceTemperature >= 273.0 ? Climate.Desert : Climate.Tundra;
 
+
+            return Climate.Unknown;
         }
 
-        
+
     }
 }

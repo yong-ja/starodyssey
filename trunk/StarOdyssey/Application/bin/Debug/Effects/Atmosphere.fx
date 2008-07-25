@@ -164,7 +164,7 @@ AtmosphereFromSpacePS(vpconn IN)
 	//float fRayleighPhase = 0.75 * (1.0 + cos*cos);
 
 	//OUT.rt0.rgb = (fRayleighPhase * IN.c0 + fMiePhase * IN.c1);
-	float exposure = 1.0;
+	float exposure = 0.850;
 	OUT.rt0.rgb = 1.0 - exp(-exposure * (fRayleighPhase * IN.c0 + fMiePhase * IN.c1));
 	OUT.rt0.a = OUT.rt0.b;
 

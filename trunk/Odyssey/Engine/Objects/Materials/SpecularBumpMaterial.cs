@@ -8,6 +8,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     public class SpecularBumpMaterial : TexturedEffectMaterial
     {
         protected Texture normal;
+        protected Texture clouds;
 
         public Texture Normal
         {
@@ -24,6 +25,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             {
                 base.TextureDescriptor = value;
                 normal = TextureManager.LoadTexture(TextureDescriptor.GetTextureFilename(TextureType.Normal));
+                clouds = TextureManager.LoadTexture(TextureDescriptor.GetTextureFilename(TextureType.Texture1));
 
             }
         }
@@ -31,7 +33,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         public override void Create(params object[] data)
         {
             //base.Create(data);
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, fxType, diffuse, normal);
+            effectDescriptor = EffectManager.CreateEffect(OwningEntity, fxType, diffuse, normal,clouds);
             effectDescriptor.UpdateStatic();
         }
 

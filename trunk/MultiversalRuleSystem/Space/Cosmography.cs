@@ -146,7 +146,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         Cerean,
         Kuiperian,
         Ice,
-        LithicGelidian,
+        Glacial,
         Ammonia,
         Volcanic,
         Arean,
@@ -158,7 +158,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         Hephaestian,
         Cataclismic,
         Cytherean,
-        GasGiant
+        GasGiant,
+        Pelagic
     }
 
     public enum StarType : int

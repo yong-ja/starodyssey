@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airplane.cs" />
+    <Compile Include="Copy of PlanetInner.cs" />
     <Compile Include="PlanetInner.cs" />
     <Compile Include="LightWidget.cs" />
     <Compile Include="Office.cs" />
@@ -84,6 +85,10 @@
     <ProjectReference Include="..\..\Odyssey\UserInterface\UserInterface.csproj">
       <Project>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</Project>
       <Name>UserInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Odyssey\Utils\Utils.csproj">
+      <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
