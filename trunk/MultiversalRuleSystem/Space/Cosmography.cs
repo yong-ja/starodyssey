@@ -106,7 +106,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
     {
         //ZeroKelvin = 0,
         Frozen = 1,
-        //Icy = 2,
+        Icy = 2,
         //VeryCold = 3,
         Cold = 4,
         Temperate = 5,
@@ -146,17 +146,18 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         Cerean,
         Kuiperian,
         Ice,
-        Glacial,
+        LithicGelidian,
         Ammonia,
         Volcanic,
-        Barren,
+        Arean,
         Tundra,
         Terran,
         Ocean,
         Arid,
         Desert,
+        Hephaestian,
         Cataclismic,
-        Radiated,
+        Cytherean,
         GasGiant
     }
 

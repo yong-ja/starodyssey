@@ -41,13 +41,13 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 throw new ArgumentException("Star chances total sum must be equal to 1.0");
 
             double blueDwarf = starChances[StarColor.Blue];
-            double yellowDwarf = starChances[StarColor.Yellow];
+            double yellowDwarf = starChances[StarColor.Red];
             double orangeDwarf = starChances[StarColor.Orange];
             double redDwarf = starChances[StarColor.Red];
 
             int starCount = galaxyOptions.StarCount;
 
-            starCount = 50;
+            starCount = 70;
 
 
             SortedDictionary<string, SolarSystem> solarSystems = new SortedDictionary<string, SolarSystem>();
