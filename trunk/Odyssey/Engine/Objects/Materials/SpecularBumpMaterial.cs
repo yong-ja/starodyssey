@@ -5,42 +5,36 @@ using AvengersUtd.Odyssey.Objects.Effects;
 
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
-    public class SpecularBumpMaterial : TexturedEffectMaterial
+    public class SpecularBumpMaterial : TexturedMaterial
     {
         protected Texture normal;
-        protected Texture clouds;
+        Texture clouds;
+        Texture specular;
 
         public Texture Normal
         {
             get { return normal; }
         }
 
-        public override TextureDescriptor TextureDescriptor
-        {
-            get
-            {
-                return base.TextureDescriptor;
-            }
-            set
-            {
-                base.TextureDescriptor = value;
-                normal = TextureManager.LoadTexture(TextureDescriptor.GetTextureFilename(TextureType.Normal));
-                clouds = TextureManager.LoadTexture(TextureDescriptor.GetTextureFilename(TextureType.Texture1));
-
-            }
-        }
-
         public override void Create(params object[] data)
         {
-            //base.Create(data);
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, fxType, diffuse, normal,clouds);
+            effectDescriptor = EffectManager.CreateEffect(OwningEntity, fxType, 
+                diffuse, normal,clouds, specular);
             effectDescriptor.UpdateStatic();
         }
 
-         public SpecularBumpMaterial()
+        public SpecularBumpMaterial()
         {
             fxType = FXType.GroundFromSpace;
         }
 
+        public override void LoadTextures(MaterialDescriptor materialDescriptor)
+        {
+            base.LoadTextures(materialDescriptor);
+            normal = TextureManager.LoadTexture(materialDescriptor[TextureType.Normal].TextureFilename);
+            clouds = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture1].TextureFilename);
+            specular = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture2].TextureFilename);
+
+        }
     }
 }

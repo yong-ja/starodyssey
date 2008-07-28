@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
+using AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration;
 using AvengersUtd.Odyssey.Utils.Xml;
 
 
@@ -14,6 +15,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         GalaxyOptions galaxyOptions;
         StarGenerator starGen;
         PlanetGenerator planetGenerator;
+        PlanetClassifier planetClassifier;
 
         StringBuilder sb = new StringBuilder();
 
@@ -27,6 +29,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             this.galaxyOptions = galaxyOptions;
             starGen = new StarGenerator(galaxyOptions);
             planetGenerator = new PlanetGenerator();
+            planetClassifier = new PlanetClassifier();
             starNames = SpaceResourceManager.LoadStarNames();
         }
 
@@ -41,7 +44,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 throw new ArgumentException("Star chances total sum must be equal to 1.0");
 
             double blueDwarf = starChances[StarColor.Blue];
-            double yellowDwarf = starChances[StarColor.Red];
+            double yellowDwarf = starChances[StarColor.Yellow];
             double orangeDwarf = starChances[StarColor.Orange];
             double redDwarf = starChances[StarColor.Red];
 
@@ -97,12 +100,13 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 }
 
                 // generates data for that particular star              
-                CreateSingleStarSystem(GetRandomSystemName(), mass);
+                SolarSystem system = CreateSingleStarSystem(GetRandomSystemName(), mass);
+                // populates the star system
+                solarSystems.Add(system.Name, system);
+
                 //SolarSystem system = CreateBinaryStarSystem(GetRandomSystemName(), mass);
 
-                // populates the star system
-                //SolarSystem system = CreateSingleStarSystem(GetRandomSystemName(), star);
-                //solarSystems.Add(system.Name, system);
+                
                 //averageAge += star.StellarFeatures.Age;
 
                 #region Debug Code
@@ -167,12 +171,12 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         public SolarSystem CreateSingleStarSystem(string systemName, double mass)
         {
             EvolutionResult evolutionResult;
-            StellarFeatures mainSequenceFeatures, evolvedFeatures;
+            StellarFeatures mainSequenceFeatures;
             Star star = starGen.GenerateSingleStarSystem(systemName, mass, out evolutionResult, out mainSequenceFeatures);
-            evolvedFeatures = star.StellarFeatures;
+            StellarFeatures evolvedFeatures = star.StellarFeatures;
 
             if (evolvedFeatures.SpectralClass.Type == StarType.Other)
-                return null;
+                return new SolarSystem(systemName);
 
             sb.Append(star.ToString());
 
@@ -182,19 +186,44 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
             planetGenerator.StellarFeatures = evolvedFeatures;
 
-            int index=1;
             while (node != null)
             {
-                CelestialObject celestialObject = new CelestialObject(planetGenerator.GeneratePlanet(star.StellarFeatures.Name, index, node.Value));
+                bool isGasGiant;
+                CelestialFeatures celestialFeatures = planetGenerator.GeneratePlanet(node.Value, out isGasGiant);
+                PlanetaryFeatures planetaryFeatures = 
+                    isGasGiant ? planetClassifier.ClassifyGasGiant(celestialFeatures, evolvedFeatures) :
+                    planetClassifier.ClassifyPlanet(celestialFeatures, evolvedFeatures);
+                CelestialObject celestialObject = new CelestialObject(celestialFeatures, planetaryFeatures);
+                star.AddObjects(celestialObject);
                 node = node.Next;
-                sb.Append(celestialObject.ToString());
-                sb.AppendLine(planetGenerator.Report);
-                index++;
+
+                //if (planetaryFeatures.Size == PlanetSize.SuperJovian)
+                //{
+                //    Protosystem ps = new Protosystem(evolvedFeatures, celestialFeatures);
+                //    LinkedListNode<Protoplanet> node1 = ps.DistributeMoonMasses();
+                //    while (node1 != null)
+                //    {
+                //        CelestialFeatures moon = planetGenerator.GeneratePlanet(node1.Value, out isGasGiant);
+                //        double mass1 = moon.Mass;
+                //        node1 = node1.Next;
+                //    }
+
+                //}
             }
 
-            
+            for (int i = 0; i < star.CelestialObjectsCount; i++ )
+            {
+                CelestialObject celestialObject = star[i];
+                celestialObject.Name = string.Format("{0} {1}", star.Name, i+1);
+                sb.Append(celestialObject.ToString());
+                
+            }
 
-            return null;
+            SolarSystem solarSystem = new SolarSystem(systemName);
+            solarSystem.AddStars(star);
+
+
+            return solarSystem;
         }
 
         public SolarSystem CreateBinaryStarSystem(string systemName, double primaryMass)

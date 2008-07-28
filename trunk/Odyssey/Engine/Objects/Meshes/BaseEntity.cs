@@ -7,16 +7,15 @@ using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
 
 namespace AvengersUtd.Odyssey.Meshes
 {
-    public abstract class BaseEntity<MaterialT> : IEntity, I3dEntity
-        where MaterialT : IMaterialContainer, new()
+    public abstract class BaseEntity: IEntity, I3dEntity
     {
         protected bool disposed = false;
         protected Vector3 position;
-        protected SimpleMesh<MaterialT> mesh;
+        protected SimpleMesh mesh;
 
         #region Properties
 
-        public SimpleMesh<MaterialT> MeshObject
+        public SimpleMesh MeshObject
         {
             get { return mesh; }
         }
@@ -26,19 +25,22 @@ namespace AvengersUtd.Odyssey.Meshes
             get { return mesh.EntityDescriptor; }
         }
 
-        public IMaterialContainer[] Materials
+        public AbstractMaterial[] Materials
         {
-            get { return mesh.Materials as IMaterialContainer[]; }
+            get { return mesh.Materials; }
         }
 
         #endregion
 
         public BaseEntity(EntityDescriptor entityDesc)
         {
-            mesh = new SimpleMesh<MaterialT>(this, entityDesc);
+            mesh = new SimpleMesh(this, entityDesc);
         }
 
-        public abstract void Render();
+        public virtual void Render()
+        {
+            mesh.Render();
+        }
 
         //public abstract void Init();
         //public abstract void UpdatePosition();

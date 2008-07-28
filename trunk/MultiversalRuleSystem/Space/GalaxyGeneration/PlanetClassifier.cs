@@ -18,16 +18,32 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
         Temperature temperature;
         Gravity gravity;
         AtmosphericDensity atmosphericDensity;
+        Composition composition;
         Climate climate;
 
-        public void Classify(CelestialFeatures celestialFeatures, StellarFeatures stellarFeatures)
+        public PlanetaryFeatures ClassifyGasGiant(CelestialFeatures celestialFeatures, StellarFeatures stellarFeatures)
         {
             this.celestialFeatures = celestialFeatures;
             this.stellarFeatures = stellarFeatures;
-            size = ClassifySize(celestialFeatures.Radius);
+
+            size = ClassifyGasGiantSize(celestialFeatures.Mass);
+            density = Density.GasGiant;
+            gravity = ClassifyGravity(celestialFeatures.SurfaceGravity);
+            temperature = ClassifyPlanetTemperature(celestialFeatures.SurfaceTemperature);
+            climate = AssignGasGiantClimate(celestialFeatures.SurfaceTemperature);
+
+            return new PlanetaryFeatures(size, density, gravity, temperature, AtmosphericDensity.Superdense,
+                                         Composition.Unknown, climate);
+        }
+
+        public PlanetaryFeatures ClassifyPlanet(CelestialFeatures celestialFeatures, StellarFeatures stellarFeatures)
+        {
+            this.celestialFeatures = celestialFeatures;
+            this.stellarFeatures = stellarFeatures;
+            size = ClassifyPlanetSize(celestialFeatures.Radius);
             density = ClassifyDensity(celestialFeatures.Density);
             gravity = ClassifyGravity(celestialFeatures.SurfaceGravity);
-            temperature = ClassifyTemperature(celestialFeatures.SurfaceTemperature, celestialFeatures.MinTemp, celestialFeatures.MaxTemp);
+            temperature = ClassifyPlanetTemperature(celestialFeatures.SurfaceTemperature);
             atmosphericDensity = ClassifyAtmosphericDensity(celestialFeatures.SurfacePressure);
 
 
@@ -40,6 +56,8 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                 climate = AssignPlanetoidalClass();
             else 
                 climate = AssignIronCoreClimate();
+
+            return new PlanetaryFeatures(size, density, gravity, temperature, atmosphericDensity, Composition.Unknown, climate);
         }
 
         
@@ -48,7 +66,6 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine(celestialFeatures.Name);
                 sb.AppendLine(string.Format("Climate: {0}", climate));
                 sb.AppendLine(string.Format("Size: {0} Density: {1}", size, density));
                 sb.AppendLine(string.Format("Gravity: {0} AtmDensity: {1}", gravity,atmosphericDensity));
@@ -69,7 +86,20 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
             }
         }
 
-        static PlanetSize ClassifySize(double radius)
+        static PlanetSize ClassifyGasGiantSize(double mass)
+        {
+            // mass in JupiterMasses
+            double massInJm = mass/PhysicalConstants.JupiterMassInEarthMasses;
+
+            if (massInJm <= 0.7)
+                return PlanetSize.SubJovian;
+            else if (massInJm <= 3.5)
+                return PlanetSize.Jovian;
+            else
+                return PlanetSize.SuperJovian;
+        }
+
+        static PlanetSize ClassifyPlanetSize(double radius)
         {
             if (radius <= 1250.0)
                 return PlanetSize.Tiny;
@@ -141,11 +171,30 @@ namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
                 return AtmosphericDensity.Superdense;
         }
 
-        static Temperature ClassifyTemperature(double surfaceTemperature, double minimumTemperature, double maximumTemperature)
+
+        static Climate AssignGasGiantClimate(double exosphericTemperature)
         {
-            if (surfaceTemperature > 345)
+            if (exosphericTemperature > 1500)
+                return Climate.HyperThermicJovian;
+            else if (exosphericTemperature >= 900 && exosphericTemperature < 1500)
+                return Climate.EpistellarJovian;
+            else if (exosphericTemperature >= 350 && exosphericTemperature < 900)
+                return Climate.AzurianJovian;
+            else if (exosphericTemperature >= 150 && exosphericTemperature < 350)
+                return Climate.HydroJovian;
+            else if (exosphericTemperature >= 50 && exosphericTemperature <= 150)
+                return Climate.Jovian;
+            else
+                return Climate.CryoJovian;
+
+
+        }
+
+        static Temperature ClassifyPlanetTemperature(double surfaceTemperature)
+        {
+            if (surfaceTemperature >= 345)
                 return Temperature.Extreme;
-            if (surfaceTemperature >= 315 && surfaceTemperature <= 345)
+            if (surfaceTemperature >= 315 && surfaceTemperature < 345)
                 return Temperature.VeryHot;
             else if (surfaceTemperature >= 250 && surfaceTemperature < 315)
                 return Temperature.Temperate;

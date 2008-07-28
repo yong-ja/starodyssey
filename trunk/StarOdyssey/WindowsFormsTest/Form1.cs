@@ -18,6 +18,7 @@ namespace WindowsFormsTest
             GalaxyGenerator generator = new GalaxyGenerator();
             SortedDictionary<string,SolarSystem> galaxy = generator.GenerateStars();
 
+            int system = galaxy.Values.Count;
             textBox1.Text = generator.Log;
         }
     }

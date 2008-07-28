@@ -25,6 +25,7 @@
 #region Using Directives
 
 using System;
+using System.Text;
 
 #endregion
 
@@ -34,25 +35,17 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     {
         #region Private fields
 
-        string name;
         PlanetSize size;
         Density density;
         Temperature temperature;
         Gravity gravity;
         AtmosphericDensity atmosphericDensity;
         Composition composition;
-        PlanetClass climate;
-        double radius;
+        Climate climate;
 
         #endregion
 
         #region Properties
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
 
         public PlanetSize Size
         {
@@ -90,7 +83,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             set { composition = value; }
         }
 
-        public PlanetClass Climate
+        public Climate Climate
         {
             get { return climate; }
             set { climate = value; }
@@ -100,12 +93,11 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         #region Constructors
 
-        public PlanetaryFeatures(string name, PlanetSize size, Density density, Gravity gravity,
+        public PlanetaryFeatures(PlanetSize size, Density density, Gravity gravity,
                                  Temperature temperature,
                                  AtmosphericDensity atmosphericDensity, Composition composition,
-                                 PlanetClass climate, double radius)
+                                 Climate climate)
         {
-            this.name = name;
             this.size = size;
             this.density = density;
             this.gravity = gravity;
@@ -113,17 +105,20 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             this.atmosphericDensity = atmosphericDensity;
             this.composition = composition;
             this.climate = climate;
-            this.radius = radius;
         }
 
         #endregion
 
         public override string ToString()
         {
-            if (climate != PlanetClass.GasGiant)
-                return string.Format("{0} {1} world", size.ToString(), climate.ToString());
-            else
-                return string.Format("{0} {1}", size.ToString(), climate.ToString());
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(string.Format("Climate: {0}", climate));
+            sb.AppendLine(string.Format("Size: {0} Density: {1}", size, density));
+            sb.AppendLine(string.Format("Gravity: {0} AtmDensity: {1}", gravity, atmosphericDensity));
+            sb.AppendLine(string.Format("Temperature: {0}", temperature));
+            sb.AppendLine();
+
+            return sb.ToString();
         }
     }
 }

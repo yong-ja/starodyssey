@@ -37,7 +37,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     {
         #region Private fields
 
-        string name;
         readonly double mass;
         readonly SpectralClass spectralClass;
         readonly double luminosity;
@@ -56,12 +55,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         #endregion
 
         #region Properties
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
 
         public double Radius
         {
@@ -98,17 +91,17 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             get { return type; }
         }
 
-        public double InnerLimit
+        internal double InnerLimit
         {
             get { return 0.3*Math.Pow(mass, (1.0/3.0)); }
         }
 
-        public double OuterLimit
+        internal double OuterLimit
         {
-            get { return 50.0*Math.Pow(mass, (1.0/3.0)); }
+            get { return 200.0*Math.Pow(mass, (1.0/3.0)); }
         }
 
-        public double StellarDustLimit
+        internal double StellarDustLimit
         {
             get { return 200.0*Math.Pow(mass, (1.0/3.0)); }
         }
@@ -135,10 +128,8 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         #region Constructors
 
-        public StellarFeatures(string name, double magnitude, double mass, double luminosity, double temperature, double radius, double semiMajorAxis, double eccentricity, double orbitalPeriod, double density, double age, SpectralClass spectralClass)
+        public StellarFeatures(double magnitude, double mass, double luminosity, double temperature, double radius, double semiMajorAxis, double eccentricity, double orbitalPeriod, double density, double age, SpectralClass spectralClass)
         {
-            this.name = name;
-            this.type = type;
             this.mass = mass;
             this.magnitude = magnitude;
             this.luminosity = luminosity;
@@ -158,7 +149,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format("{0} - {1}",name,spectralClass.CommonType));
+            sb.AppendLine(string.Format("{0}",spectralClass.CommonType));
             sb.AppendLine(string.Format("{0}: Age:{1:F2} GY", spectralClass.ToString(), age));
             sb.AppendLine(string.Format("A: {0:F2} AU - B: {1:F2} AU - E: {2:F3}", semiMajorAxis, semiMinorAxis, eccentricity));
             sb.AppendLine(string.Format("M: {0:F2} D:{1:F2} Kg/Km3 T:{2:F3} Yrs", mass, density, orbitalPeriod));

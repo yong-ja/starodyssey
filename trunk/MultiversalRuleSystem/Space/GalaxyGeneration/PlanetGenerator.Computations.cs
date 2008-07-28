@@ -713,6 +713,33 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             return temp;
         }
 
+        /// <summary>
+        /// Computes the Hill Sphere Radius: the radius of the sphere where the 
+        /// gravity influence of the first planets outweights that of the primary.
+        /// </summary>
+        /// <param name="semimajorAxis">Orbital Radius of the planet</param>
+        /// <param name="eccentricity">Eccentricity of orbit.</param>
+        /// <param name="massPlanet">Mass of the planet.</param>
+        /// <param name="massPrimary">Mass of the primary.</param>
+        /// <returns>The radius of the Hill sphere in AUs.</returns>
+        public static double ComputeHillSphereRadius(
+            double semimajorAxis, double eccentricity, double massPlanet, double massPrimary)
+        {
+            return semimajorAxis*(1 - eccentricity)*Math.Pow(massPlanet/(3*massPrimary), 1.0/3.0);
+        }
+
+        /// <summary>
+        /// Computes the Roche Limit for rigid satellites.
+        /// </summary>
+        /// <param name="radius">The radius of the planet in Km.</param>
+        /// <param name="densityPlanet">Density of the planet.</param>
+        /// <param name="densitySatellite">Density of the satellite.</param>
+        /// <returns>The radius of the Roche Limit in AUs.</returns>
+        public static double ComputeRocheLimitRigid(double radius, double densityPlanet, double densitySatellite)
+        {
+            return radius*Math.Pow(2*(densityPlanet/densitySatellite), 1.0/3.0) / PhysicalConstants.KmPerAU;
+        }
+
         static OrbitalZone ComputeOrbitalZone(double orbitalRadius, double stellarLuminosity)
         {
             if (orbitalRadius < (4.0 * Math.Sqrt(stellarLuminosity)))

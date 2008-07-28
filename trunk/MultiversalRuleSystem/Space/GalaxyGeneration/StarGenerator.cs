@@ -619,7 +619,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         public Star GenerateSingleStarSystem(string starSystemName, double starMass, 
             out EvolutionResult evolutionResult, out StellarFeatures mainSequenceFeatures)
         {
-            return GenerateStarData(starSystemName, 0, starMass, GetRandomAge(galaxyOptions.Age),
+            return GenerateStarData(starSystemName, -1, starMass, GetRandomAge(galaxyOptions.Age),
                 out evolutionResult, out mainSequenceFeatures);
         }
 
@@ -711,7 +711,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             subType = iValues[1] % 10;
             luminosityClass = LuminosityClass.V;
             
-            starName = GetStarName(starSystemName, starNumber);
+            starName = starNumber == -1 ? starSystemName : GetStarName(starSystemName, starNumber);
             magnitude = rnd.About(MathHelper.CubicInterpolation(bolumetricMagnitudeTable, iValues), 0.005);
             temperature = rnd.About(MathHelper.CubicInterpolation(temperatureTable, iValues), 0.01);
             luminosity = ComputeLuminosity(magnitude);
@@ -722,7 +722,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             age = systemAge;
 
             mainSequenceFeatures = new StellarFeatures(
-                starName,
                 magnitude, mass, luminosity, temperature,
                 radius, semiMajorAxis, eccentricity, orbitalPeriod,
                 density, age,
@@ -810,10 +809,10 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 }
             }
 
-            StellarFeatures evolvedFeatures = new StellarFeatures(starName, magnitude, mass, luminosity, temperature, radius, semiMajorAxis, eccentricity, orbitalPeriod, density, age,
+            StellarFeatures evolvedFeatures = new StellarFeatures(magnitude, mass, luminosity, temperature, radius, semiMajorAxis, eccentricity, orbitalPeriod, density, age,
                 new SpectralClass((SpectralType)spectralType, subType, luminosityClass));
 
-            return new Star(evolvedFeatures);
+            return new Star(starName, evolvedFeatures);
             
         }
 

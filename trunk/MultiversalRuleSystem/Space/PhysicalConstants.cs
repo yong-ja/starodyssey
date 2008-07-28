@@ -77,6 +77,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         public const double ChangeInEarthAngularVelocity = (-1.3E-15); // Units of radians/sec/year
         public const double SolarMassInGrams = (1.9891E33); // Units of grams
         public const double SolarMassInKilograms = 1.9891E30; // Units of Kilograms
+        public const double JupiterMassInEarthMasses = 317.8;
         public const double EarthMassInGrams = (5.9736E27); // Units of grams 
         public const double EarthAverageTemperatureInCelsius = 14.0;
         public const double EarthAverageTempeartureInKelvin = EarthAverageTemperatureInCelsius + FreezingPointOfWater;  

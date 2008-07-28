@@ -1,3 +1,5 @@
+using System.Xml.Serialization;
+
 namespace AvengersUtd.Odyssey.Resources
 {
     public struct MeshDescriptor
@@ -5,12 +7,13 @@ namespace AvengersUtd.Odyssey.Resources
         string label;
         string meshFilename;
 
+        [XmlAttribute]
         public string Label
         {
             get { return label; }
             set { label = value; }
         }
-
+        [XmlAttribute]
         public string MeshFilename
         {
             get { return meshFilename; }

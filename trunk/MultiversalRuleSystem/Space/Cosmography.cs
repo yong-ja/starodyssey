@@ -137,6 +137,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         CarbonDioxide,
         Helium,
         Hydrogen,
+        Unknown
     }
 
     public enum Climate : int
@@ -157,9 +158,15 @@ namespace AvengersUtd.MultiversalRuleSystem.Space
         Desert,
         Hephaestian,
         Cataclismic,
+        Pelagic,
         Cytherean,
-        GasGiant,
-        Pelagic
+        HyperThermicJovian,
+        EpistellarJovian,
+        AzurianJovian,
+        HydroJovian,
+        SubJovian,
+        Jovian,
+        CryoJovian
     }
 
     public enum StarType : int

@@ -21,9 +21,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
                 if (value != diffuseColor)
                 {
                     diffuseColor = value;
-                    effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.Specular, diffuseColor);
-                    effectDescriptor.UpdateStatic();
-                    
+                    Create();
                 }
                 
             }
@@ -32,8 +30,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         public SpecularMaterial()
         {
             diffuseColor = new Color4(0f, 1.0f, 0f);
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.Specular, diffuseColor);
-            effectDescriptor.UpdateStatic();
+            fxType = FXType.Specular;
         }
 
         public override void Apply()
@@ -42,9 +39,10 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             effectDescriptor.Effect.CommitChanges();
         }
 
-        public override bool Disposed
+        public override void Create(params object[] data)
         {
-            get { return false; }
+            base.Create(diffuseColor);
         }
+
     }
 }

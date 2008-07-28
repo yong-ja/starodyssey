@@ -213,11 +213,8 @@ namespace AvengersUtd.Odyssey.UserInterface
                 currentHUD.ProcessMouseRelease(e);
         }
 
-        static int i = 0;
         static void ProcessKeyDown(object sender, KeyEventArgs e)
         {
-            i++;
-            DebugManager.LogToScreen("In ProcKD: " + i.ToString());
             if (currentHUD.FocusedControl != null)
                 currentHUD.FocusedControl.ProcessKeyDown(e);
         }

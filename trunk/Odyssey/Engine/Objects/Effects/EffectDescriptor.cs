@@ -7,9 +7,30 @@ namespace AvengersUtd.Odyssey.Objects.Effects
     public class EffectDescriptor
     {
         string filename;
+        string technique = string.Empty;
+        int pass=0; 
         List<EffectParameter> staticParameters;
         List<EffectParameter> dynamicParameters;
         Effect effect;
+
+        public string Technique
+        {
+            get { return technique; }
+            set
+            {
+                if (technique != value)
+                {
+                    technique = value;
+                    effect.Technique = new EffectHandle(technique);
+                }
+            }
+        }
+
+        public int Pass
+        {
+            get { return pass; }
+            set { pass = value; }
+        }
 
         public Effect Effect
         {

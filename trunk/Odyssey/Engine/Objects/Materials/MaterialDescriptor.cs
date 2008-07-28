@@ -1,45 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
     public enum TextureType : int
     {
         Diffuse,
         Normal,
-        Texture1 
+        Texture1,
+        Texture2
+    }
+
+    public struct MaterialDescriptor
+    {
+        Type effectType;
+        TextureDescriptor[] textureDescriptors;
+        Dictionary<TextureType, int> links;
+
+        public MaterialDescriptor(Type effectType, params TextureDescriptor[] textureDescriptors) : this()
+        {
+            this.effectType = effectType;
+            TextureDescriptors = textureDescriptors;
+        }
+
+
+        public TextureDescriptor[] TextureDescriptors
+        {
+            get { return textureDescriptors; }
+            set
+            {
+                textureDescriptors = value;
+                links = new Dictionary<TextureType, int>();
+                for (int i = 0; i < textureDescriptors.Length; i++)
+                {
+                    TextureDescriptor tDesc = textureDescriptors[i];
+                    links.Add(tDesc.Type, i);
+                }
+                
+            }
+        }
+        
+        [XmlIgnore]
+        public Type EffectType
+        {
+            get { return effectType; }
+            set { effectType = value; }
+        }
+
+        [XmlAttribute(AttributeName="EffecType")]
+        public string XmlEffectType
+        {
+            get
+            {
+                return effectType.ToString();
+            }
+            set { effectType = Type.GetType(value); }
+        }
+
+        public TextureDescriptor this[TextureType type]
+        {
+            get
+            {
+                return textureDescriptors[links[type]];
+            }
+        }
     }
 
 
     public struct TextureDescriptor
     {
-        string label;
-        string[] textureFilenames;
+        TextureType type;
+        string textureFilename;
 
-        public TextureDescriptor(string label)
+      public TextureDescriptor(TextureType type, string texFilename)
         {
-            this.label = label;
-            textureFilenames = new string[0];
+            textureFilename = texFilename;
+            this.type = type;
         }
 
-        public TextureDescriptor(string label, params string[] texFilenames)
+        [XmlAttribute]
+        public TextureType Type
         {
-            textureFilenames = texFilenames;
-            this.label = label;
+            get { return type; }
+            set { type = value; }
         }
 
-        public string Label
+        [XmlAttribute]
+        public string TextureFilename
         {
-            get { return label; }
-            set { label = value; }
+            get { return textureFilename; }
+            set { textureFilename = value; }
         }
 
-        public string[] TextureFilenames
-        {
-            get { return textureFilenames; }
-            set { textureFilenames = value; }
-        }
-
-        public string GetTextureFilename(TextureType type)
-        {
-            return textureFilenames[(int) type];
-        }
     }
 }

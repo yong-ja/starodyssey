@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
 #endregion
 
@@ -37,6 +36,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         #region Private fields
 
         readonly StellarFeatures stellarFeatures;
+        readonly CelestialFeatures celestialFeatures;
         readonly DustDisc disc;
         readonly double bodyInnerLimit;
         readonly double bodyOuterLimit;
@@ -69,6 +69,21 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             protoplanets = new LinkedList<Protoplanet>();
         }
 
+        public Protosystem(StellarFeatures stellarFeatures, CelestialFeatures celestialFeatures)
+        {
+            this.stellarFeatures = stellarFeatures;
+            this.celestialFeatures = celestialFeatures;
+
+            bodyInnerLimit = celestialFeatures.NearestMoon;
+            bodyOuterLimit = celestialFeatures.FarthestMoon;
+
+            disc = new DustDisc(0.0, stellarFeatures.StellarDustLimit,
+                                bodyInnerLimit, bodyOuterLimit);
+            disc.CloudEccentricity = 0.2;
+
+            protoplanets = new LinkedList<Protoplanet>();
+        }
+
         #endregion
 
         /// <summary>
@@ -85,8 +100,39 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 p0 = new Protoplanet(disc.BodyInnerLimit, disc.BodyOuterLimit);
                 if (disc.IsDustAvailable(p0))
                 {
-                    p0.ComputeDustDensity(stellarFeatures.Mass);
-                    p0.ComputeCriticalMass(stellarFeatures.Luminosity);
+                    p0.ComputeStellarDustDensity(stellarFeatures.Mass);
+                    p0.CriticalMass = Protoplanet.ComputeCriticalMass(p0.A, p0.E,stellarFeatures.Luminosity);
+                    disc.AccreteDust(p0);
+                    p0.DustMass += Protoplanet.ProtoplanetMass;
+                    if (p0.Mass != 0.0 && p0.Mass != Protoplanet.ProtoplanetMass)
+                    {
+                        p0.IsGasGiant = p0.Mass >= p0.CriticalMass;
+
+                        if (!CoalescePlanetesimals(p0))
+                            InsertPlanet(p0);
+
+                    }
+                    else
+                    {
+                        //System.out.println(".. failed due to large neighbor.");
+                    }
+                }
+            }
+
+            return protoplanets.First;
+        }
+
+        public LinkedListNode<Protoplanet> DistributeMoonMasses()
+        {
+            Protoplanet p0;
+
+            while (disc.IsDustLeft)
+            {
+                p0 = new Protoplanet(disc.BodyInnerLimit, disc.BodyOuterLimit);
+                if (disc.IsDustAvailable(p0))
+                {
+                    p0.ComputePlanetDustDensity(celestialFeatures.Mass);
+                    p0.CriticalMass = Protoplanet.ComputeCriticalMass(celestialFeatures.OrbitalRadius, celestialFeatures.Eccentricity, stellarFeatures.Luminosity);
                     disc.AccreteDust(p0);
                     p0.DustMass += Protoplanet.ProtoplanetMass;
                     if (p0.Mass != 0.0 && p0.Mass != Protoplanet.ProtoplanetMass)
@@ -186,13 +232,13 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             else
             {
                 LinkedListNode<Protoplanet> node = protoplanets.First;
-                while (node != null && tsml.A < node.Value.A) 
+                while (node != null && tsml.A > node.Value.A) 
                 {
                     node = node.Next;
                 }
                 if (node != null)
-                    protoplanets.AddAfter(node, tsml);
-                else 
+                    protoplanets.AddBefore(node, tsml);
+                else
                     protoplanets.AddLast(tsml);
 
             }

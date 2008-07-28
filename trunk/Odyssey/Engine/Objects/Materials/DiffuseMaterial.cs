@@ -8,7 +8,7 @@ using SlimDX.Direct3D9;
 
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
-    public class DiffuseMaterial:AbstractMaterial,IEffectMaterial
+    public class DiffuseMaterial:AbstractMaterial
     {
         protected Color4 diffuseColor;
 
@@ -19,21 +19,9 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 
         public DiffuseMaterial()
         {
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.Diffuse);
-            effectDescriptor.UpdateStatic();
+            fxType = FXType.Diffuse;
         }
 
-
-        public override void Apply()
-        {
-            effectDescriptor.UpdateDynamic();
-            effectDescriptor.Effect.CommitChanges();
-        }
-
-        public override bool Disposed
-        {
-            get { return false; }
-        }
 
 
         #region IEffectMaterial Members

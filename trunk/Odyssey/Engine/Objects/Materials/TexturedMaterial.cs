@@ -4,45 +4,32 @@ using AvengersUtd.Odyssey.Objects.Materials;
 
 namespace AvengersUtd.Odyssey.Objects.Materials
 {
-    public class TexturedMaterial : AbstractMaterial
+    public interface ITexturedMaterial
+    {
+        void LoadTextures(MaterialDescriptor materialDescriptor);
+    }
+
+    public abstract class TexturedMaterial : AbstractMaterial, ITexturedMaterial
     {
         protected Texture diffuse;
 
         public Texture Diffuse
         {
             get { return diffuse; }
-        }
-
-        public override TextureDescriptor TextureDescriptor
-        {
-            get
-            {
-                return base.TextureDescriptor;
-            }
-            set
-            {
-                base.TextureDescriptor = value;
-                diffuse = TextureManager.LoadTexture(textureDescriptor.GetTextureFilename(TextureType.Diffuse));
-            }
+            set { diffuse = value; }
         }
 
 
-        public override void Apply()
-        {
-            Device device = Game.Device;
-            device.Material = material;
-            device.SetTexture(0, diffuse);
-        }
-
-        public override void Dispose()
+        protected override void OnDisposing()
         {
             if (diffuse != null)
                 diffuse.Dispose();
         }
 
-        public override bool Disposed
+
+        public virtual void LoadTextures(MaterialDescriptor materialDescriptor)
         {
-            get { return diffuse.Disposed; }
+            diffuse = TextureManager.LoadTexture(materialDescriptor[TextureType.Diffuse].TextureFilename);
         }
     }
 }

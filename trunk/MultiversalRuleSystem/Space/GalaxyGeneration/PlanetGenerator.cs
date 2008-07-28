@@ -225,10 +225,9 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         }
 
 
-        public CelestialFeatures GeneratePlanet(string name, int index, Protoplanet p)
+        public CelestialFeatures GeneratePlanet(Protoplanet p, out bool isProtoPlanetGasGiant)
         {
-            this.name = name + ' ' + index;
-            isGasGiant = p.IsGasGiant;
+            isGasGiant = isProtoPlanetGasGiant = p.IsGasGiant;
             mass = p.Mass * PhysicalConstants.SolarMassInEarthMasses;
             dustMass = p.DustMass * PhysicalConstants.SolarMassInEarthMasses;
             gasMass = p.GasMass * PhysicalConstants.SolarMassInEarthMasses;
@@ -287,13 +286,14 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 surfaceGravity = ComputeSurfaceGravityUsingMass(density, radius);
                 volatileGasInventory = double.NaN;
                 surfacePressure = double.NaN;
-                surfaceTemperature = double.NaN;
+                albedo = rnd.About(PhysicalConstants.GasGiantAlbedo, 0.1);
+                surfaceTemperature = ComputeBlackbodyTemperature(orbitalRadius, ecosphereRadius, albedo);
                 waterBoilingPoint = double.NaN;
                 hydrographicCoverage = double.NaN;
 
                 greenhouseEffect = false;
 
-                albedo = rnd.About(PhysicalConstants.GasGiantAlbedo, 0.1);
+                
             }
             else
             {
@@ -325,7 +325,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             //    System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1:F2}",g.Symbol, f));
             //}
 
-            CelestialFeatures celestialFeatures = new CelestialFeatures(name,
+            CelestialFeatures celestialFeatures = new CelestialFeatures(
                     albedo,
                 axialTilt,
                 dayLength,
@@ -351,14 +351,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 orbitalRadius,
                 orbitalZone,
                 atmosphere);
-
-            if (!isGasGiant)
-            {
-                AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration.PlanetClassifier pc = new AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration.PlanetClassifier();
-                pc.Classify(celestialFeatures,stellarFeatures);
-                sb.AppendLine(pc.Report);
-                
-            }
 
             Reset();
             return celestialFeatures;

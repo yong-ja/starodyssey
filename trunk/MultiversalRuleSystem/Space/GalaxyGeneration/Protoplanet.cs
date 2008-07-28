@@ -89,6 +89,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         public double CriticalMass
         {
             get { return criticalMass; }
+            set { criticalMass = value; }
         }
 
         /// <summary>
@@ -239,10 +240,16 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
             return reducedMass;
         }
 
-        public void ComputeDustDensity(double stellarMass)
+        public void ComputeStellarDustDensity(double stellarMass)
         {
             dustDensity = PhysicalConstants.DustDensityCoefficient*Math.Sqrt(stellarMass)
                           *Math.Exp(-PhysicalConstants.Alpha*Math.Pow(a, (1.0/PhysicalConstants.N)));
+        }
+
+        public void ComputePlanetDustDensity(double planetMass)
+        {
+            dustDensity =  PhysicalConstants.DustDensityCoefficient * Math.Sqrt(planetMass /PhysicalConstants.SolarMassInEarthMasses)
+                          * Math.Exp(-PhysicalConstants.Alpha * Math.Pow(a, (1.0 / PhysicalConstants.N)));
         }
 
         /// <summary>
@@ -253,11 +260,12 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
         /// <returns>
         /// Critical mass of protoplanet, in Solar masses.
         /// </returns>
-        public void ComputeCriticalMass(double luminosity)
+        public static double ComputeCriticalMass(double semimajorAxis, double eccentricity, double luminosity)
         {
-            double perihelionDistance = (a - a*e);
+            double perihelionDistance = (semimajorAxis - semimajorAxis * eccentricity);
             double temp = perihelionDistance*Math.Sqrt(luminosity);
-            criticalMass = (PhysicalConstants.B*Math.Pow(temp, -0.75));
+            return (PhysicalConstants.B*Math.Pow(temp, -0.75));
+            
         }
 
         /// <summary>

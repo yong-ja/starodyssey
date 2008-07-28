@@ -22,6 +22,8 @@
 
 #endregion
 
+using System.Text;
+
 namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 {
     #region Using Directives
@@ -31,17 +33,24 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
     #endregion
 
-    public class Star
+    public class Star : IEnumerable<CelestialObject>
     {
         #region Private fields
 
+        string name;
         SolarSystem solarSystem;
         readonly StellarFeatures stellarFeatures;
-        List<CelestialObject> celestialObjects;
+        SortedList<double, CelestialObject> celestialObjects;
 
         #endregion
 
         #region Properties
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
 
         public SolarSystem SolarSystem
         {
@@ -54,27 +63,66 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             get { return stellarFeatures; }
         }
 
+        public int CelestialObjectsCount
+        {
+            get { return celestialObjects.Values.Count; }
+        }
+
+        public CelestialObject this[int index]
+        {
+            get { return celestialObjects.Values[index]; }
+        }
+
+
         #endregion
 
         #region Constructors
 
-        public Star(StellarFeatures stellarFeatures)
+        public Star(string name, StellarFeatures stellarFeatures)
         {
+            this.name = name;
             this.stellarFeatures = stellarFeatures;
+            celestialObjects = new SortedList<double, CelestialObject>();
         }
 
         public override string ToString()
         {
-            return stellarFeatures.ToString();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(name);
+            sb.AppendLine(stellarFeatures.ToString());
+            return sb.ToString();
         }
 
         #endregion
 
         public void AddObjects(params CelestialObject[] celestialObjects)
         {
-            this.celestialObjects.AddRange(celestialObjects);
             foreach (CelestialObject celestialObject in celestialObjects)
+            {
                 celestialObject.Primary = this;
+                this.celestialObjects.Add(celestialObject.CelestialFeatures.OrbitalRadius, celestialObject);
+            }
         }
+
+        #region IEnumerable<CelestialObject> Members
+
+        IEnumerator<CelestialObject> IEnumerable<CelestialObject>.GetEnumerator()
+        {
+            foreach (CelestialObject celestialObject in celestialObjects.Values)
+                yield return celestialObject;
+        }
+
+        #endregion
+
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            foreach (CelestialObject celestialObject in celestialObjects.Values)
+                yield return celestialObject;
+        }
+
+        #endregion
     }
 }

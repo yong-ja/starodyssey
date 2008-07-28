@@ -13,7 +13,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         public EffectMaterial()
         {
             //diffuseColor = new Color4(0f, 1.0f, 0f);
-            fxType = FXType.AtmosphereFromSpace;
+            fxType = FXType.AtmosphericScattering;
             //effectDescriptor = EffectManager.CreateEffect(OwningEntity, FXType.AtmosphereFromSpace);
             //effectDescriptor.UpdateStatic();
         }
@@ -24,9 +24,5 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             effectDescriptor.Effect.CommitChanges();
         }
 
-        public override bool Disposed
-        {
-            get { return false; }
-        }
     }
 }

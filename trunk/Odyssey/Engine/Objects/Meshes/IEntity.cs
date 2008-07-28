@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Meshes
     {
         Vector3 Position { get; set; }
         EntityDescriptor Descriptor { get; }
-        IMaterialContainer[] Materials { get; }
+        AbstractMaterial[] Materials { get; }
         void Render();
         //void UpdatePosition();
         //void Init();

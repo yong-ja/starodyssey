@@ -11,9 +11,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
     /// <summary>
     /// base meshObject class
     /// </summary>
-    /// <typeparam name="MaterialT">material type</typeparam>
-    public class SimpleMesh<MaterialT> : AbstractMesh<Mesh, MaterialT>
-        where MaterialT : IMaterialContainer, new()
+    public class SimpleMesh : AbstractMesh<Mesh>
     {
         int faceCount;
         int vertexCount;
@@ -40,14 +38,16 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         /// <summary>
         /// Creates a new progressive meshObject.
-        /// </summary>
+        /// </summary> 
+        /// <param name="entity">The actual IEntity object this mesh refers to.</param>
         /// <param name="entityDesc">Contains data on the meshObject and texture file paths</param>
         public SimpleMesh(IEntity entity, EntityDescriptor entityDesc)
         {
             owningEntity = entity;
             //create the meshObject from file
             entityDescriptor = entityDesc;
-            Init(EntityManager.LoadMesh(entityDesc.MeshDescriptor.MeshFilename));
+            meshObject = EntityManager.LoadMesh(entityDesc.MeshDescriptor.MeshFilename);
+            Init();
         }
 
         #endregion
@@ -100,17 +100,21 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
         //    materials[0] = material;
         //}
 
-        public void Init(Mesh mesh)
+        public void Init()
         {
-            meshObject = mesh;
             ComputeTangentsAndBinormal();
-            materials = new MaterialT[1];
-            MaterialT material = new MaterialT();
-            materials[0] = material;
-            materials[0].OwningEntity = owningEntity;
-            if (entityDescriptor.TextureDescriptors.Length > 0)
-                materials[0].TextureDescriptor = entityDescriptor.TextureDescriptors[0];
-            materials[0].Create();
+            materials = new AbstractMaterial[entityDescriptor.MaterialDescriptors.Length];
+
+            for (int i=0; i < entityDescriptor.MaterialDescriptors.Length; i++)
+            {
+                MaterialDescriptor mDesc = entityDescriptor.MaterialDescriptors[i];
+                materials[i] = (AbstractMaterial)Activator.CreateInstance(mDesc.EffectType);
+                materials[i].OwningEntity = owningEntity;
+
+                if (materials[i] is ITexturedMaterial)
+                    ((ITexturedMaterial)materials[i]).LoadTextures(entityDescriptor.MaterialDescriptors[i]);
+                materials[i].Create();
+            }
 
             
         }
@@ -161,6 +165,17 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             //meshObject.ComputeNormals();
             
             SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
+        }
+
+        public virtual void Render()
+        {
+            for (int i = 0; i < MaterialCount; i++)
+            {
+                AbstractMaterial material = Materials[i];
+                material.Apply();
+
+                DrawWithEffect(material.EffectDescriptor.Effect,i);
+            }
         }
 
 

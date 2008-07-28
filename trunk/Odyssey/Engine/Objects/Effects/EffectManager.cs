@@ -29,6 +29,7 @@ namespace AvengersUtd.Odyssey.Resources
                 try
                 {
                     effect = Effect.FromFile(Game.Device, filename, ShaderFlags.Debug);
+                    effectCache.Add(filename, effect);
                     return effect;
                 }
                 catch (InvalidDataException ex)
@@ -169,29 +170,115 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);
-                    fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
-                    fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
+                    fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
+                    //fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
+
                     return fxDescriptor;
 
-                case FXType.GroundFromSpace:
-                    fxDescriptor = new EffectDescriptor("GroundFromSpace.fx");
+                case FXType.AtmosphericScattering:
+                    fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+                    fxDescriptor.Pass = 0;
+                    float innerRadius = 10.0f;
+                    float outerRadius = innerRadius * 1.025f;
+                    float ESun = 15.0f;
+                    float kr = 0.0025f;
+                    float km = 0.0015f;
+                    float scale = 1.0f / (outerRadius - innerRadius);
+                    float scaleDepth = 0.25f;
+                    float g = -0.95f;
+                    //float scaleDepth = (outerRadius - innerRadius) / 2.0f;
+                    float scaleOverScaleDepth = scale / scaleDepth;
+
+                    Vector4 wavelenght = new Vector4(0.650f, 0.570f, 0.450f, 1.0f);
+                    Vector4 invWavelenght = new Vector4(
+                        (float)(1.0 / Math.Pow(wavelenght.X, 4.0)),
+                        (float)(1.0 / Math.Pow(wavelenght.Y, 4.0)),
+                        (float)(1.0 / Math.Pow(wavelenght.Z, 4.0)),
+                        1);
+
                     fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.WorldInverse);
                     fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
+                    
+                    EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
+                    fxDescriptor.AddStaticParameter(epG);
+
+                    EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, g * g);
+                    fxDescriptor.AddStaticParameter(epG2);
+
+                    FloatOp cameraHeight = delegate()
+                    {
+                        return Game.CurrentScene.Camera.PositionV3.Length();
+                    };
+
+                    EffectParameter epCameraHeight = EffectParameter.CreateCustomParameter("cameraHeight", fxDescriptor.Effect, cameraHeight);
+                    fxDescriptor.AddDynamicParameter(epCameraHeight);
+
+                    FloatOp cameraHeight2 = delegate()
+                    {
+                        return Game.CurrentScene.Camera.PositionV3.LengthSquared();
+                    };
+                    EffectParameter epCameraHeight2 = EffectParameter.CreateCustomParameter("cameraHeight2", fxDescriptor.Effect, cameraHeight2);
+                    fxDescriptor.AddDynamicParameter(epCameraHeight2);
+
+                    EffectParameter epInnerRadius = EffectParameter.CreateCustomParameter("innerRadius", fxDescriptor.Effect, innerRadius);
+                    fxDescriptor.AddStaticParameter(epInnerRadius);
+
+                    EffectParameter epOuterRadius = EffectParameter.CreateCustomParameter("outerRadius", fxDescriptor.Effect, outerRadius);
+                    fxDescriptor.AddStaticParameter(epOuterRadius);
+
+                    EffectParameter epOuterRadius2 = EffectParameter.CreateCustomParameter("outerRadius2", fxDescriptor.Effect, outerRadius * outerRadius);
+                    fxDescriptor.AddStaticParameter(epOuterRadius2);
+
+                    EffectParameter epkrESun = EffectParameter.CreateCustomParameter("krESun", fxDescriptor.Effect, kr * ESun);
+                    fxDescriptor.AddStaticParameter(epkrESun);
+
+                    EffectParameter epkmESun = EffectParameter.CreateCustomParameter("kmESun", fxDescriptor.Effect, km * ESun);
+                    fxDescriptor.AddStaticParameter(epkmESun);
+
+                    EffectParameter epkr4Pi = EffectParameter.CreateCustomParameter("kr4PI", fxDescriptor.Effect, (float)(kr * 4 * Math.PI));
+                    fxDescriptor.AddStaticParameter(epkr4Pi);
+
+                    EffectParameter epkm4Pi = EffectParameter.CreateCustomParameter("km4PI", fxDescriptor.Effect, (float)(km * 4 * Math.PI));
+                    fxDescriptor.AddStaticParameter(epkm4Pi);
+
+                    EffectParameter epScale = EffectParameter.CreateCustomParameter("scale", fxDescriptor.Effect, scale);
+                    fxDescriptor.AddStaticParameter(epScale);
+
+                    EffectParameter epScaleDepth = EffectParameter.CreateCustomParameter("scaleDepth", fxDescriptor.Effect, scaleDepth);
+                    fxDescriptor.AddStaticParameter(epScaleDepth);
+
+                    EffectParameter epScaleOverScaleDepth = EffectParameter.CreateCustomParameter("scaleOverScaleDepth", fxDescriptor.Effect, scaleOverScaleDepth);
+                    fxDescriptor.AddStaticParameter(epScaleOverScaleDepth);
+
+                    EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
+                    fxDescriptor.AddStaticParameter(epInvWavelength);
+
+                    return fxDescriptor;
+
+                case FXType.GroundFromSpace:
+                    fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+                    //fxDescriptor.Technique = "Relief";
+                    fxDescriptor.Pass = 1;
+                    //fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
+                    //fxDescriptor.AddDynamicParameter(FXParameterType.World);
+                    //fxDescriptor.AddDynamicParameter(FXParameterType.View);
+                    //fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+                    //fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
+                    //fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.DiffuseMap, fxDescriptor.Effect, (Texture)data[0]));
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.NormalMap, fxDescriptor.Effect, (Texture)data[1]));
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.Texture1, fxDescriptor.Effect, (Texture)data[2]));
+                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                        ParamHandles.Textures.Texture2, fxDescriptor.Effect, (Texture)data[3]));
 
-                    AtmosphereInit(fxDescriptor);
-
-
+                    //AtmosphereInit(fxDescriptor);
 
                     return fxDescriptor;
 
@@ -202,14 +289,14 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
-                    float g = -0.95f;
+                    //float g = -0.95f;
                     AtmosphereInit(fxDescriptor);
 
-                    EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
-                    fxDescriptor.AddStaticParameter(epG);
+                    //EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
+                    //fxDescriptor.AddStaticParameter(epG);
 
-                    EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, g * g);
-                    fxDescriptor.AddStaticParameter(epG2);
+                    //EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, g * g);
+                    //fxDescriptor.AddStaticParameter(epG2);
 
 
                     return fxDescriptor;

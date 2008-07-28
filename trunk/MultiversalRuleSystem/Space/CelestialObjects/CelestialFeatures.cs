@@ -22,13 +22,13 @@
 
 #endregion
 
+using System;
 using System.Text;
 namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 {
     public class CelestialFeatures
     {
         #region Private Fields
-        string name;
         double albedo;
         double axialTilt;
         double dayLength;
@@ -57,10 +57,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         #endregion
 
         #region Properties
-        public string Name
-        {
-            get { return name; }
-        }
 
         public double Albedo
         {
@@ -132,6 +128,11 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             get { return minTemp; }
         }
 
+        public double Mass
+        {
+            get { return mass; }
+        }
+
         public double MaxTemp
         {
             get { return maxTemp; }
@@ -186,7 +187,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         #region Constructor
         public CelestialFeatures(
-            string name,
             double albedo,
             double axialTilt,
             double dayLength,
@@ -213,7 +213,6 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             OrbitalZone orbitalZone,
             Gas[] atmosphere)
         {
-            this.name = name;
             this.albedo = albedo;
             this.axialTilt = axialTilt;
             this.dayLength = dayLength;
@@ -242,11 +241,21 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         } 
         #endregion
 
+        internal double NearestMoon
+        {
+            get { return (0.3/40.0*Math.Pow(mass/PhysicalConstants.SolarMassInEarthMasses, (1.0/3.0))); }
+        }
+
+        internal double FarthestMoon
+        {
+            get { return (50.0 / 40.0 * Math.Pow(mass / PhysicalConstants.SolarMassInEarthMasses, (1.0 / 3.0))); }
+        }
+    
+
         public override string ToString()
         {
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(name);
             sb.AppendLine(string.Format("A:{0:F2} AU E:{1:F2} To:{2:F2} Yrs Td: {3:F2} Days", orbitalRadius, eccentricity, orbitalPeriod/365.26,dayLength));
             sb.AppendLine(string.Format("M:{0:F2} EM G:{1:F2} EG D: {2:F2} g/cc AT:{3:F2}°", mass, surfaceGravity, density,axialTilt));
             sb.AppendLine(string.Format("R:{0:F2} ER EV:{1:F2} Km/sec Al:{2:F2} OZ:{3}", radius, escapeVelocity, albedo, orbitalZone.ToString()));
@@ -254,6 +263,14 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             sb.AppendLine(string.Format("T:{0:F2} °K ExoT:{1:F2} °K WBP: {2:F2}", surfaceTemperature, exosphericTemperature, waterBoilingPoint));
             sb.AppendLine(string.Format("mT:{0:F2} °K MT:{1:F2} °K NT:{2:F2} °K DT:{3:F2} °K",minTemp,maxTemp, nightTemp, dayTemp));
             sb.AppendLine(string.Format("H:{0:F2}% K:{1:F2}% I:{2:F2}%",hydrographicCoverage,cloudCoverage,iceCoverage));
+            if (surfacePressure >= 0.05)
+            {
+                foreach (Gas g in atmosphere)
+                {
+                    double f = 100.0 * (g.Pressure / surfacePressure);
+                    sb.AppendLine(string.Format("{0}: {1:F2}", g.Symbol, f));
+                }
+            }
             sb.AppendLine();
             return sb.ToString();
 

@@ -1,3 +1,4 @@
+using System;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Materials;
@@ -10,6 +11,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     {
         protected bool disposed;
         protected Material material;
+        TextureDescriptor[] textureDescriptors;
         protected TextureDescriptor textureDescriptor;
         protected EffectDescriptor effectDescriptor;
 
@@ -40,6 +42,8 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             set { textureDescriptor = value; }
         }
 
+
+
         public virtual EffectDescriptor EffectDescriptor
         {
             get { return effectDescriptor; }
@@ -47,7 +51,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         }
         #endregion
 
-        public AbstractMaterial()
+        protected AbstractMaterial()
         {
             material = new Material();
         }
@@ -58,12 +62,44 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             effectDescriptor.UpdateStatic();
         }
 
-        public abstract void Apply();
-
-        public virtual void Dispose()
+        public virtual void Apply()
         {
+            effectDescriptor.UpdateDynamic();
+            effectDescriptor.Effect.CommitChanges();
         }
 
-        public abstract bool Disposed { get; }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                //if (disposing)
+                //{
+                //    // dispose managed components
+                //}
+
+                // dispose unmanaged components
+                OnDisposing();
+            }
+            disposed = true;
+        }
+
+        protected virtual void OnDisposing()
+        {
+            effectDescriptor.Effect.Dispose();
+        }
+
+
+        ~AbstractMaterial()
+        {
+            Dispose(false);
+        }
+
+        public bool Disposed { get { return disposed; } }
     }
 }

@@ -22,6 +22,8 @@
 
 #endregion
 
+using System.Text;
+
 namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 {
     #region Using Directives
@@ -34,16 +36,29 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
     {
         #region Private fields
 
+        string name;
         CelestialFeatures celestialFeatures;
+        PlanetaryFeatures planetaryFeatures;
         Star primary;
 
         #endregion
 
         #region Properties
 
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
         public CelestialFeatures CelestialFeatures
         {
             get { return celestialFeatures; }
+        }
+
+        public PlanetaryFeatures PlanetaryFeatures
+        {
+            get { return planetaryFeatures; }
         }
 
         public Star Primary
@@ -56,16 +71,22 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         #region Constructors
 
-        public CelestialObject(CelestialFeatures celestialFeatures)
+        public CelestialObject(CelestialFeatures celestialFeatures, PlanetaryFeatures planetaryFeatures)
         {
             this.celestialFeatures = celestialFeatures;
+            this.planetaryFeatures = planetaryFeatures;
         }
 
         #endregion
 
         public override string ToString()
         {
-            return celestialFeatures.ToString();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(name);
+            sb.AppendLine(celestialFeatures.ToString());
+            sb.AppendLine(planetaryFeatures.ToString());
+            sb.AppendLine("---------");
+            return sb.ToString();
         }
     }
 }

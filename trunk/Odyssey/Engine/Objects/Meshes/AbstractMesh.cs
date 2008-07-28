@@ -8,10 +8,8 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
     /// abstract mesh
     /// </summary>
     /// <typeparam name="MeshT">mesh type</typeparam>
-    /// <typeparam name="MaterialT">material type</typeparam>
-    public abstract class AbstractMesh<MeshT, MaterialT>
-        where MeshT : BaseMesh
-        where MaterialT : IMaterialContainer, new()
+    public abstract class AbstractMesh<MeshT>
+        where MeshT : BaseMesh      
     {
 
         protected bool disposed = false;
@@ -20,7 +18,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         protected MeshT meshObject;
 
         //material list
-        protected MaterialT[] materials;
+        protected AbstractMaterial[] materials;
 
         //adiacency buffer
         protected int[] adiacency;
@@ -28,7 +26,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// <summary>
         /// return the number of materials
         /// </summary>
-        public int NumMaterial
+        public int MaterialCount
         {
             get { return materials.Length; }
         }
@@ -36,7 +34,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// <summary>
         /// return a material
         /// </summary>
-        public MaterialT[] Materials
+        public AbstractMaterial[] Materials
         {
             //return a material
             get { return materials; }
@@ -47,7 +45,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// </summary>
         /// <param name="index">index of the array</param>
         /// <param name="material">material</param>
-        public void SetMaterial(int index, MaterialT material)
+        public void SetMaterial(int index, AbstractMaterial material)
         {
             materials[index] = material;
         }
@@ -104,48 +102,24 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
             adiacency = meshObject.GenerateAdjacency(1e-6f);
         }
 
-        /// <summary>
-        /// draw mesh
-        /// </summary>
-        /// <param name="dev"></param>
-        public void Draw()
-        {
-            for (int i = 0; i < materials.Length; i++)
-            {
-                if (materials[i].Disposed)
-                    return;
-                materials[i].Apply();
-                meshObject.DrawSubset(i);
-            }
-        }
 
         public void DrawWithEffect()
         {
             Effect effect = materials[0].EffectDescriptor.Effect;
-
-            DrawWithEffect(effect, string.Empty);
-
+            DrawWithEffect(effect,0);
         }
 
-        public void DrawWithEffectTechnique(string technique)
-        {
-            DrawWithEffect(materials[0].EffectDescriptor.Effect, technique);
-        }
-
-
-        public void DrawWithEffect(Effect effect, string technique)
+        public void DrawWithEffect(Effect effect, int subset)
         {
             int passes = effect.Begin(FX.None);
 
-            if (!string.IsNullOrEmpty(technique))
-                effect.Technique = new EffectHandle(technique);
+            //for (int pass = 0; pass < passes; pass++)
+            //{
 
-            for (int pass = 0; pass < passes; pass++)
-            {
-                effect.BeginPass(pass);
-                Draw();
+                effect.BeginPass(subset);
+                Draw(subset);
                 effect.EndPass();
-            }
+            //}
             effect.End();
         }
 
@@ -156,8 +130,12 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// <param name="subset">subset</param>
         public void Draw(int subset)
         {
-            materials[subset].Apply();
             meshObject.DrawSubset(subset);
+        }
+
+        public void Draw()
+        {
+            Draw(0);
         }
 
         /// <summary>
@@ -165,7 +143,7 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         /// </summary>
         public void DrawMesh()
         {
-            for (int i = 0; i < NumMaterial; i++)
+            for (int i = 0; i < MaterialCount; i++)
                 meshObject.DrawSubset(i);
         }
 
