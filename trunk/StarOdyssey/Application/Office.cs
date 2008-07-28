@@ -20,7 +20,7 @@ namespace AvengersUtd.StarOdyssey
             device.SetTransform(TransformState.World, Matrix.Translation(position));//, Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
 
 
-            MeshObject.DrawWithEffect();
+            base.Render();
 
         }
 
@@ -30,8 +30,6 @@ namespace AvengersUtd.StarOdyssey
             //device.SetTransform(TransformState.World, Matrix.Translation(position) * Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
             device.SetTransform(TransformState.World, Matrix.Translation(position)); //* Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
 
-
-            MeshObject.DrawWithEffect();
             Effect effect = this.Materials[0].EffectDescriptor.Effect;
             effect.Technique = new EffectHandle(technique);
             int passes = effect.Begin(FX.None);
@@ -47,10 +45,11 @@ namespace AvengersUtd.StarOdyssey
 
         public Office() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Office", "Meshes\\office.X"),
+                new MeshDescriptor("Office", "Meshes\\teapot.X"),
                 new MaterialDescriptor(typeof(SpecularMaterial))))
         {
-            ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0.0f, 1f, 0f);
+            ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0.0f, 0f, 1f);
         }
+
     }
 }

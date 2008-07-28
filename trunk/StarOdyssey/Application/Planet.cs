@@ -16,7 +16,7 @@ namespace AvengersUtd.StarOdyssey
         {
             Device device = Game.Device;
             device.SetTransform(TransformState.World, Matrix.Translation(position));
-            MeshObject.DrawWithEffect();
+            base.Render();
             
         }
 

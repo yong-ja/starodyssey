@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
-using AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration;
+using AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration;
 using AvengersUtd.Odyssey.Utils.Xml;
 
 
@@ -197,18 +197,26 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
                 star.AddObjects(celestialObject);
                 node = node.Next;
 
-                //if (planetaryFeatures.Size == PlanetSize.SuperJovian)
-                //{
-                //    Protosystem ps = new Protosystem(evolvedFeatures, celestialFeatures);
-                //    LinkedListNode<Protoplanet> node1 = ps.DistributeMoonMasses();
-                //    while (node1 != null)
-                //    {
-                //        CelestialFeatures moon = planetGenerator.GeneratePlanet(node1.Value, out isGasGiant);
-                //        double mass1 = moon.Mass;
-                //        node1 = node1.Next;
-                //    }
+                if (planetaryFeatures.Size == PlanetSize.Large)
+                {
+                    Protosystem ps = new Protosystem(evolvedFeatures, celestialFeatures);
+                    LinkedListNode<Protoplanet> node1 = ps.DistributeMoonMasses();
+                    while (node1 != null)
+                    {
+                        CelestialFeatures moon = planetGenerator.GeneratePlanet(node1.Value, out isGasGiant);
+                        if (moon.Mass >= 0.01)
+                        {
+                            PlanetaryFeatures moonFeatures =
+                                isGasGiant ? planetClassifier.ClassifyGasGiant(moon, evolvedFeatures) :
+                                        planetClassifier.ClassifyPlanet(moon, evolvedFeatures);
+                            sb.AppendLine("Moon!");
+                            sb.Append(moon.ToString());
+                            sb.Append(moonFeatures.ToString());
+                        }
+                        node1 = node1.Next;
+                    }
 
-                //}
+                }
             }
 
             for (int i = 0; i < star.CelestialObjectsCount; i++ )

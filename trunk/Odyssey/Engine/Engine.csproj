@@ -71,6 +71,7 @@
     <Compile Include="Objects\Effects\ParamHandles.cs" />
     <Compile Include="Objects\Enums.cs" />
     <Compile Include="Objects\Materials\AbstractMaterial.cs" />
+    <Compile Include="Objects\Materials\DepthMaterial.cs" />
     <Compile Include="Objects\Materials\EffectMaterial.cs" />
     <Compile Include="Objects\Materials\DiffuseMaterial.cs" />
     <Compile Include="Objects\Materials\IEffectMaterial.cs" />

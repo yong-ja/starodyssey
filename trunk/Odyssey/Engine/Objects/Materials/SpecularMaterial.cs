@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Objects.Effects;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
 
@@ -33,16 +34,14 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             fxType = FXType.Specular;
         }
 
-        public override void Apply()
-        {
-            effectDescriptor.UpdateDynamic();
-            effectDescriptor.Effect.CommitChanges();
-        }
 
         public override void Create(params object[] data)
         {
-            base.Create(diffuseColor);
+            base.Create(data);
+            AddIndividualParameter(EffectParameter.CreateCustomParameter(ParamHandles.Colors.Diffuse,
+                        effectDescriptor.Effect, diffuseColor));
         }
+
 
     }
 }

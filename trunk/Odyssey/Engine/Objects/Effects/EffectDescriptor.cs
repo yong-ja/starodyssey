@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         List<EffectParameter> dynamicParameters;
         Effect effect;
 
+        #region
         public string Technique
         {
             get { return technique; }
@@ -36,6 +37,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
         {
             get { return effect; }
         }
+        #endregion
 
         public EffectDescriptor(string filename)
         {
@@ -94,5 +96,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             foreach (EffectParameter p in dynamicParameters)
                 p.Apply();
         }
+
+
     }
 }

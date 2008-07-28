@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 
         public override void Create(params object[] data)
         {
-            effectDescriptor = EffectManager.CreateEffect(OwningEntity, fxType, 
+            effectDescriptor = EffectManager.CreateEffect(fxType, 
                 diffuse, normal,clouds, specular);
             effectDescriptor.UpdateStatic();
         }
@@ -35,6 +35,14 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             clouds = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture1].TextureFilename);
             specular = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture2].TextureFilename);
 
+        }
+
+        protected override void OnDisposing()
+        {
+            base.OnDisposing();
+            normal.Dispose();
+            clouds.Dispose();
+            specular.Dispose();
         }
     }
 }

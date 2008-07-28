@@ -248,7 +248,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 
         public void ComputePlanetDustDensity(double planetMass)
         {
-            dustDensity =  PhysicalConstants.DustDensityCoefficient * Math.Sqrt(planetMass /PhysicalConstants.SolarMassInEarthMasses)
+            dustDensity =  100 *PhysicalConstants.DustDensityCoefficient * Math.Sqrt(planetMass /PhysicalConstants.SolarMassInEarthMasses)
                           * Math.Exp(-PhysicalConstants.Alpha * Math.Pow(a, (1.0 / PhysicalConstants.N)));
         }
 

@@ -39,7 +39,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
         string name;
         CelestialFeatures celestialFeatures;
         PlanetaryFeatures planetaryFeatures;
-        Star primary;
+        PrimaryBody primary;
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
             get { return planetaryFeatures; }
         }
 
-        public Star Primary
+        public PrimaryBody Primary
         {
             get { return primary; }
             internal set { primary = value; }

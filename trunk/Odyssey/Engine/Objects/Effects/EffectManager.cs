@@ -50,10 +50,8 @@ namespace AvengersUtd.Odyssey.Resources
             float km = 0.0015f;
             float scale = 1.0f / (outerRadius - innerRadius);
             float scaleDepth = 0.25f;
-            //float scaleDepth = (outerRadius - innerRadius) / 2.0f;
             float scaleOverScaleDepth = scale / scaleDepth;
             
-
 
             Vector4 wavelenght = new Vector4(0.650f, 0.570f, 0.450f, 1.0f);
             Vector4 invWavelenght = new Vector4(
@@ -112,7 +110,7 @@ namespace AvengersUtd.Odyssey.Resources
             fxDescriptor.AddStaticParameter(epInvWavelength);
         }
 
-        public static EffectDescriptor CreateEffect(IEntity entity, FXType fxType, params object[] data)
+        public static EffectDescriptor CreateEffect(FXType fxType, params object[] data)
         {
             EffectDescriptor fxDescriptor;
 
@@ -125,44 +123,31 @@ namespace AvengersUtd.Odyssey.Resources
 
                     fxDescriptor.AddDynamicParameter(FXParameterType.World);
 
-                    Matrix mWorld = Matrix.Identity;// 
-                    ////                        Game.CurrentScene.Camera.World;
-                    //                    MatrixOp moWorld = delegate()
-                    //                    {
-                    //                        return mWorld;
-                    //                    };
-                    //                    EffectParameter eWorld = EffectParameter.CreateCustomParameter("mWorld", fxDescriptor.Effect, moWorld);
-                    //                    fxDescriptor.AddDynamicParameter(eWorld);
-
                     fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
-                    MatrixOp mLightsMatrices = delegate()
-                    {
-                        Vector4 vLightPos = Game.CurrentScene.LightManager.GetParameter(0, FXParameterType.LightPosition);
-                        Vector4 vLightDir = Game.CurrentScene.LightManager.GetParameter(0, FXParameterType.LightDirection);
-                        Vector3 v3LightPos = new Vector3(vLightPos.X, vLightPos.Y, vLightPos.Z);
-                        Vector3 v3LightDir = new Vector3(vLightDir.X, vLightDir.Y, vLightDir.Z);
+                    //MatrixOp mLightsMatrices = delegate()
+                    //{
+                    //    Vector4 vLightPos = Game.CurrentScene.LightManager.GetParameter(0, FXParameterType.LightPosition);
+                    //    Vector4 vLightDir = Game.CurrentScene.LightManager.GetParameter(0, FXParameterType.LightDirection);
+                    //    Vector3 v3LightPos = new Vector3(vLightPos.X, vLightPos.Y, vLightPos.Z);
+                    //    Vector3 v3LightDir = new Vector3(vLightDir.X, vLightDir.Y, vLightDir.Z);
 
-                        Matrix mLightsView = Matrix.LookAtLH(
-                            v3LightPos,
-                            //v3LightDir,
-                            new Vector3(),
-                            new Vector3(0, 1, 0));
+                    //    Matrix mLightsView = Matrix.LookAtLH(
+                    //        v3LightPos,
+                    //        v3LightDir,
+                    //        new Vector3(0, 1, 0));
 
-                        Matrix mLightsProj = Matrix.PerspectiveFovLH(
-                            AvengersUtd.Odyssey.MathHelper.DegreeToRadian(90f),
-                             1f, 0.01f, 10000f);
+                    //    Matrix mLightsProj = Matrix.PerspectiveFovLH(
+                    //        AvengersUtd.Odyssey.MathHelper.DegreeToRadian(90f),
+                    //         1f, 0.01f, 10000f);
 
-                        return //Matrix.Translation(v3LightPos)*/
-                            //Game.CurrentScene.Camera.World *
-                            Matrix.Translation(entity.Position) *
-                            //* Matrix.RotationAxis(new Vector3(0, 1, 0), 0) * 
-                         mLightsView * mLightsProj;
-                    };
-                    EffectParameter eLightMatrices = EffectParameter.CreateCustomParameter(
-                        "mLightsWorldViewProj", fxDescriptor.Effect, mLightsMatrices);
-                    fxDescriptor.AddDynamicParameter(eLightMatrices);
+                    //    return Matrix.Translation(entity.Position) *
+                    //     mLightsView * mLightsProj;
+                    //};
+                    //EffectParameter eLightMatrices = EffectParameter.CreateCustomParameter(
+                    //    ParamHandles.Matrices.WorldViewProjection, fxDescriptor.Effect, mLightsMatrices);
+                    //fxDescriptor.AddDynamicParameter(eLightMatrices);
                     return fxDescriptor;
 
                 case FXType.Diffuse:
@@ -171,7 +156,8 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
-                    //fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
+                    fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
+
 
                     return fxDescriptor;
 
@@ -263,12 +249,6 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
                     //fxDescriptor.Technique = "Relief";
                     fxDescriptor.Pass = 1;
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.World);
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.View);
-                    //fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
-                    //fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
-                    //fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.DiffuseMap, fxDescriptor.Effect, (Texture)data[0]));
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
@@ -278,30 +258,7 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                         ParamHandles.Textures.Texture2, fxDescriptor.Effect, (Texture)data[3]));
 
-                    //AtmosphereInit(fxDescriptor);
-
                     return fxDescriptor;
-
-
-                case FXType.AtmosphereFromSpace:
-                
-                    fxDescriptor = new EffectDescriptor("Atmosphere.fx");
-                    fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
-                    fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
-                    //float g = -0.95f;
-                    AtmosphereInit(fxDescriptor);
-
-                    //EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
-                    //fxDescriptor.AddStaticParameter(epG);
-
-                    //EffectParameter epG2 = EffectParameter.CreateCustomParameter("g2", fxDescriptor.Effect, g * g);
-                    //fxDescriptor.AddStaticParameter(epG2);
-
-
-                    return fxDescriptor;
-
-
 
 
                 case FXType.Specular:
@@ -311,8 +268,7 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddDynamicParameter(FXParameterType.LightDirection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
                     fxDescriptor.AddStaticParameter(FXParameterType.AmbientColor);
-                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(ParamHandles.Colors.Diffuse,
-                        fxDescriptor.Effect, (Color4)data[0]));
+
                     return fxDescriptor;
 
                 case FXType.SelfAlign:
@@ -348,7 +304,7 @@ namespace AvengersUtd.Odyssey.Resources
                     fxDescriptor.AddDynamicParameter(FXParameterType.View);
                     fxDescriptor.AddDynamicParameter(FXParameterType.Projection);
                     fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
-
+                    IEntity entity = (IEntity) data[0];
 
 
                     VectorOp vectorOp = delegate()

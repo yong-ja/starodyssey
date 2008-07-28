@@ -98,7 +98,7 @@ namespace AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects
 
         internal double OuterLimit
         {
-            get { return 200.0*Math.Pow(mass, (1.0/3.0)); }
+            get { return 50.0*Math.Pow(mass, (1.0/3.0)); }
         }
 
         internal double StellarDustLimit

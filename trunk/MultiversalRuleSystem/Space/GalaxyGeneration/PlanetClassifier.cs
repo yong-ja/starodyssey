@@ -5,7 +5,7 @@ using AvengersUtd.MultiversalRuleSystem.Space;
 using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
 using AvengersUtd.MultiversalRuleSystem;
 
-namespace AvengersUTD.MultiversalRuleSystem.Space.GalaxyGeneration
+namespace AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration
 {
     public class PlanetClassifier
     {

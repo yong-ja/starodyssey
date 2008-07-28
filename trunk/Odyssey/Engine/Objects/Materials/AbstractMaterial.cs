@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Materials;
@@ -11,13 +12,11 @@ namespace AvengersUtd.Odyssey.Objects.Materials
     {
         protected bool disposed;
         protected Material material;
-        TextureDescriptor[] textureDescriptors;
-        protected TextureDescriptor textureDescriptor;
         protected EffectDescriptor effectDescriptor;
+        List<EffectParameter> individualParameters = new List<EffectParameter>();
 
         protected FXType fxType;
-        IEntity owningEntity;
-
+        
         #region Properties
         public Material Material
         {
@@ -25,23 +24,11 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             set { material = value; }
         }
 
-        public IEntity OwningEntity
-        {
-            get { return owningEntity; }
-            set { owningEntity = value; }
-        }
 
         public FXType FXType
         {
             get { return fxType; }
         }
-
-        public virtual TextureDescriptor TextureDescriptor
-        {
-            get { return textureDescriptor; }
-            set { textureDescriptor = value; }
-        }
-
 
 
         public virtual EffectDescriptor EffectDescriptor
@@ -58,16 +45,29 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 
         public virtual void Create(params object[] data)
         {
-            effectDescriptor = EffectManager.CreateEffect(owningEntity, fxType, data);
+            effectDescriptor = EffectManager.CreateEffect(fxType, data);
             effectDescriptor.UpdateStatic();
         }
 
         public virtual void Apply()
         {
             effectDescriptor.UpdateDynamic();
+            UpdateIndividual();
             effectDescriptor.Effect.CommitChanges();
         }
 
+
+
+        protected void AddIndividualParameter(EffectParameter effectParameter)
+        {
+            individualParameters.Add(effectParameter);
+        }
+
+        protected void UpdateIndividual()
+        {
+            foreach (EffectParameter p in individualParameters)
+                p.Apply();
+        }
         public void Dispose()
         {
             Dispose(true);
@@ -93,7 +93,6 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         {
             effectDescriptor.Effect.Dispose();
         }
-
 
         ~AbstractMaterial()
         {

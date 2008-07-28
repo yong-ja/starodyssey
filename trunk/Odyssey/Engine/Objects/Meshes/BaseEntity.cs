@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
 using AvengersUtd.Odyssey.Objects.Materials;
 using AvengersUtd.Odyssey.Engine.Meshes;
 using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
+using AvengersUtd.Odyssey.Objects.Effects;
 
 namespace AvengersUtd.Odyssey.Meshes
 {
@@ -12,7 +14,7 @@ namespace AvengersUtd.Odyssey.Meshes
         protected bool disposed = false;
         protected Vector3 position;
         protected SimpleMesh mesh;
-
+       
         #region Properties
 
         public SimpleMesh MeshObject
@@ -40,6 +42,11 @@ namespace AvengersUtd.Odyssey.Meshes
         public virtual void Render()
         {
             mesh.Render();
+        }
+
+        public virtual void Render(AbstractMaterial customMaterial)
+        {
+            mesh.Render(customMaterial);
         }
 
         //public abstract void Init();

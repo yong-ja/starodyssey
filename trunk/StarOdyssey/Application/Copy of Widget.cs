@@ -41,8 +41,7 @@ namespace AvengersUtd.StarOdyssey
                 Matrix.Translation(position));
 
 
-            MeshObject.DrawWithEffect();
-            Effect effect = this.Materials[0].EffectDescriptor.Effect;
+          Effect effect = this.Materials[0].EffectDescriptor.Effect;
             effect.Technique = new EffectHandle(technique);
             int passes = effect.Begin(FX.None);
             for (int pass = 0; pass < passes; pass++)
@@ -61,7 +60,7 @@ namespace AvengersUtd.StarOdyssey
                  new MaterialDescriptor(typeof(SpecularMaterial))))
         {
             
-           //mesh.Materials[0].Diffuse = new Color4(1.0f, 0f, 0f);
+           ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0.0f, 1f, 0f);
         }
     }
 }

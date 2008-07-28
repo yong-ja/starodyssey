@@ -7,7 +7,7 @@
     <ProjectGuid>{0D9B154B-B7D8-4CC8-9245-006F693952D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvengersUTD.MultiversalRuleSystem</RootNamespace>
+    <RootNamespace>AvengersUtd.MultiversalRuleSystem</RootNamespace>
     <AssemblyName>Multiversal Rule System</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -42,7 +42,9 @@
     <Compile Include="Global.cs" />
     <Compile Include="Space\CelestialObjects\CelestialFeatures.cs" />
     <Compile Include="Space\CelestialObjects\CelestialObject.cs" />
+    <Compile Include="Space\CelestialObjects\Planet.cs" />
     <Compile Include="Space\CelestialObjects\PlanetaryFeatures.cs" />
+    <Compile Include="Space\CelestialObjects\PrimaryBody.cs" />
     <Compile Include="Space\CelestialObjects\SolarSystem.cs" />
     <Compile Include="Space\CelestialObjects\Star.cs" />
     <Compile Include="Space\CelestialObjects\StellarFeatures.cs" />

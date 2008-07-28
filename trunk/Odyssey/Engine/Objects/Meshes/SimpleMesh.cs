@@ -109,8 +109,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             {
                 MaterialDescriptor mDesc = entityDescriptor.MaterialDescriptors[i];
                 materials[i] = (AbstractMaterial)Activator.CreateInstance(mDesc.EffectType);
-                materials[i].OwningEntity = owningEntity;
-
+ 
                 if (materials[i] is ITexturedMaterial)
                     ((ITexturedMaterial)materials[i]).LoadTextures(entityDescriptor.MaterialDescriptors[i]);
                 materials[i].Create();
@@ -154,17 +153,17 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
                 new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
                 new VertexElement(0, 12, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
                 new VertexElement(0, 24, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0),
-                new VertexElement(0, 36, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Tangent, 0),
-                new VertexElement(0, 48, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
+                new VertexElement(0, 32, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Tangent, 0),
+                new VertexElement(0, 44, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
                 VertexElement.VertexDeclarationEnd
             };
             Mesh tempMesh = meshObject.Clone(Game.Device, MeshFlags.Managed, elements);
             meshObject.Dispose();
             meshObject = tempMesh;
 
-            //meshObject.ComputeNormals();
-            
-            SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
+            //SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
+            meshObject.ComputeTangent(0, 0, -1, false);
+
         }
 
         public virtual void Render()
@@ -176,6 +175,16 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
                 DrawWithEffect(material.EffectDescriptor.Effect,i);
             }
+        }
+
+        public virtual void Render(AbstractMaterial customMaterial)
+        {
+
+
+            customMaterial.Apply();
+
+            DrawWithEffect(customMaterial.EffectDescriptor.Effect, 0);
+
         }
 
 
