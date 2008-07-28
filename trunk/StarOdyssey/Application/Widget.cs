@@ -10,7 +10,7 @@ using SlimDX;
 
 namespace AvengersUtd.StarOdyssey
 {
-    public class Planet : BaseEntity<SpecularMaterial>
+    public class Planet : BaseEntity
     {
         public override void Render()
         {
@@ -22,9 +22,10 @@ namespace AvengersUtd.StarOdyssey
 
         public Planet() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Airplane", "Meshes\\3dWidget.X")))
+                new MeshDescriptor("Airplane", "Meshes\\plane.X"), 
+                new MaterialDescriptor(typeof(SpecularMaterial))))
         {
-            mesh.Materials[0].Diffuse = new Color4(0.0f, 0f, 1f);
+            ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0.0f, 0f, 1f);
         }
     }
 }

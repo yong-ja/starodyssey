@@ -9,7 +9,6 @@ float cameraHeight2; // fCameraHeight^2
 float outerRadius; // The outer (atmosphere) radius
 float outerRadius2; // fOuterRadius^2
 float innerRadius; // The inner (planetary) radius
-//float innerRadius2; // fInnerRadius^2
 float krESun; // Kr * ESun
 float kmESun; // Km * ESun
 float kr4PI; // Kr * 4 * PI

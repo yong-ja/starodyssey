@@ -10,35 +10,25 @@ using SlimDX;
 
 namespace AvengersUtd.StarOdyssey
 {
-    public class Grid : BaseEntity
+    public class Office : BaseEntity
     {
-
-        float rotation = 0;
         public Texture shadowMap;
 
-        public float Rotation
-        {
-            get { return rotation; }
-            set { rotation = value; }
-        }
         public override void Render()
         {
             Device device = Game.Device;
-            device.SetTransform(TransformState.World, //Matrix.Scaling(2.0f, 2.0f, 2.0f)*Matrix.RotationX(rotation) * 
-                Matrix.Translation(position));
-            //device.SetTransform(TransformState.World, Matrix.Translation(position)); //* Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
-            base.Render();
-            
+            device.SetTransform(TransformState.World, Matrix.Translation(position));//, Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
+
+
+            MeshObject.DrawWithEffect();
+
         }
 
         public void RenderWithTechnique(string technique)
         {
             Device device = Game.Device;
             //device.SetTransform(TransformState.World, Matrix.Translation(position) * Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
-            //device.SetTransform(TransformState.World, Matrix.Translation(position)); //* Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
-            device.SetTransform(TransformState.World, //Matrix.Scaling(4.0f, 4.0f, 4.0f) *//
-                //Matrix.RotationX(rotation) * 
-                Matrix.Translation(position));
+            device.SetTransform(TransformState.World, Matrix.Translation(position)); //* Matrix.Scaling(new Vector3(0.1f, 0.1f, 0.1f)));
 
 
             MeshObject.DrawWithEffect();
@@ -55,13 +45,12 @@ namespace AvengersUtd.StarOdyssey
             effect.End();
         }
 
-        public Grid() :
+        public Office() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Airplane", "Meshes\\plane.X"),
-                 new MaterialDescriptor(typeof(SpecularMaterial))))
+                new MeshDescriptor("Office", "Meshes\\office.X"),
+                new MaterialDescriptor(typeof(SpecularMaterial))))
         {
-            
-           //mesh.Materials[0].Diffuse = new Color4(1.0f, 0f, 0f);
+            ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0.0f, 1f, 0f);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.MultiversalRuleSystem.Space.CelestialObjects;
+using AvengersUtd.MultiversalRuleSystem.Space.GalaxyGeneration;
 using AvengersUtd.Odyssey;
 using SlimDX.Direct3D9;
 using SlimDX;
@@ -18,15 +20,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
 {
     public class GridRenderer : Renderer
     {
-        Mesh sphere;
-        Mesh plane;
-        SimpleMesh<SpecularMaterial> simpleSphere;
-        SimpleMesh<SpecularMaterial> simpleGrid;
+        Body sphere1;
+        Body1 sphere2;
 
         Airplane airplane;
         Planet1 planetOuter;
         PlanetInner planetInner;
-        private PlanetClouds planetClouds;
+
         Grid grid;
         Office office;
         LightWidget lightWidget;
@@ -43,6 +43,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
         ObjectHostControl objectController;
 
         AvengersUtd.Odyssey.UserInterface.RenderableControls.TrackBar tb;
+        Newton n;
         public override void Init()
         {
             StyleManager.LoadControlStyles("Odyssey ControlStyles.ocs");
@@ -51,17 +52,22 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Game.Input.IsInputEnabled = true;
 
 
+
+
             //airplane = new Airplane();
             planetOuter = new Planet1();
             planetInner = new PlanetInner();
-            planetClouds = new PlanetClouds();
             grid = new Grid();
             //office = new Office();
             lightWidget = new LightWidget();
-            //sphere = Mesh.FromFile(Game.Device, "Meshes\\Airplane.x", MeshFlags.Managed);
+            sphere1 = new Body();
+            sphere2 = new Body1();
             //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
+
+            //AvengersUtd.Odyssey.Utils.Xml.Data.Serialize<AvengersUtd.Odyssey.Resources.EntityDescriptor>(planetInner.Descriptor, "Mesh.xml");
             
-            qCam.LookAt(new Vector3(), new Vector3(30,0, 0f));
+            //qCam.LookAt(new Vector3(), new Vector3(30,0, -0f));
+            qCam.LookAt(new Vector3(), new Vector3(0, 100, -0f));
             qCam.Update();
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
@@ -95,7 +101,26 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
             //office.shadowMap = t;
             //grid.shadowMap = t;
+
+            n = new Newton();
+            InitNewton();
             
+        }
+
+        void InitNewton()
+        {
+                        GalaxyGenerator gGen = new GalaxyGenerator();
+            SolarSystem system = gGen.CreateSingleStarSystem("Achenar", 1.0);
+            foreach (CelestialObject co in system.Primary)
+            {
+                Vector3 acc = new Vector3((float)AvengersUtd.MultiversalRuleSystem.Dice.Roll(0.01),
+                                          (float) AvengersUtd.MultiversalRuleSystem.Dice.Roll(0.01),
+                                          (float) AvengersUtd.MultiversalRuleSystem.Dice.Roll(0.01));
+                n.Add_NBody(sphere1, new Vector3((float)co.CelestialFeatures.OrbitalRadius*50, 0, 0),
+                            acc, System.Drawing.Color.Red, (float)co.CelestialFeatures.Radius);
+            }
+            n.Add_NBody(sphere2, new Vector3(), new Vector3(), System.Drawing.Color.Red,
+                        (float)system.Primary.StellarFeatures.Radius *(float)AvengersUtd.MultiversalRuleSystem.Space.PhysicalConstants.SolarRadiusInKilometers);
         }
 
         //float fFarView = 100;
@@ -154,16 +179,16 @@ namespace AvengersUtd.StarOdyssey.Scenes
             
             DebugManager.Instance.DisplayStats();
             qCam.Update();
-            //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
+           
             device.SetTransform(TransformState.World, Matrix.Identity);
-            device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
-            device.SetRenderState(RenderState.SourceBlend, Blend.One);
-            device.SetRenderState(RenderState.DestinationBlend, Blend.One);
-            device.SetRenderState(RenderState.AlphaBlendEnable, true);
-            
-            planetInner.RenderWithTechnique("Relief");
-            planetOuter.Render();
-            //planetClouds.RenderWithTechnique("Clouds");
+            //device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+            //device.SetRenderState(RenderState.SourceBlend, Blend.One);
+            //device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+            //device.SetRenderState(RenderState.AlphaBlendEnable, true);
+
+            //planetInner.Render();
+            //planetOuter.Render();
+            //planetClouds.Render();
             
             //device.SetTransform (TransformState.World, Matrix.Identity * Matrix.RotationAxis(new Vector3(0, 1, 0), 0));
             //grid.RenderWithTechnique("ShadowMap");
@@ -174,6 +199,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
           //office.RenderWithTechnique("Scene");
             
             //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Solid);
+            //device.SetRenderState<FillMode>(RenderState.FillMode, FillMode.Wireframe);
+            //grid.Render();
             //lightWidget.Render();
 
 
@@ -183,9 +210,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //airplane.Render();
 
             //widget.Position = airplane.Position;
-            
-            
-            
+
+
+            n.Update();
+            n.Render(Game.Device);
             
             
         }
@@ -255,7 +283,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public override void Dispose()
         {
-            sphere.Dispose();
+            sphere1.Dispose();
         }
     }
 }

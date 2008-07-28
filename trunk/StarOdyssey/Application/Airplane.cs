@@ -10,22 +10,24 @@ using SlimDX;
 
 namespace AvengersUtd.StarOdyssey
 {
-    public class Planet1 : BaseEntity
+    public class Airplane : BaseEntity
     {
+
+        public Matrix rotation=Matrix.Identity;
         public override void Render()
         {
             Device device = Game.Device;
-            device.SetTransform(TransformState.World, Matrix.Translation(position));
+            device.SetTransform(TransformState.World, rotation * Matrix.Translation(position));
             MeshObject.DrawWithEffect();
             
         }
 
-        public Planet1() :
+        public Airplane() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                new MeshDescriptor("Airplane", "Meshes\\planetOuter.X"),
-                 new MaterialDescriptor(typeof(EffectMaterial))))
+                new MeshDescriptor("Airplane", "Meshes\\mouse.x"),
+                new MaterialDescriptor(typeof(SpecularMaterial))))
         {
-            //mesh.Materials[0].Diffuse = new Color4(0.0f, 0f, 1f);
+            ((SpecularMaterial)mesh.Materials[0]).Diffuse = new Color4(0f, 1.0f, 1.0f);
         }
     }
 }
