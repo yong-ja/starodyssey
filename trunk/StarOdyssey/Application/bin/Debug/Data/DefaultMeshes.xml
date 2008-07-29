@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMeshDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <MeshDescriptor>
+    <Label>Tiny</Label>
+    <MeshFilename>Meshes/Planets/Tiny.x</MeshFilename>
+  </MeshDescriptor>
+
+  <MeshDescriptor>
+    <Label>Small</Label>
+    <MeshFilename>Meshes/Planets/Small.x</MeshFilename>
+  </MeshDescriptor>
+
+  <MeshDescriptor>
+    <Label>Medium</Label>
+    <MeshFilename>Meshes/Planets/Medium.x</MeshFilename>
+  </MeshDescriptor>
+  
+  <MeshDescriptor>
+    <Label>Large</Label>
+    <MeshFilename>Meshes/Planets/Large.x</MeshFilename>
+  </MeshDescriptor>
+  
+  <MeshDescriptor>
+    <Label>Huge</Label>
+    <MeshFilename>Meshes/Planets/Huge.x</MeshFilename>
+  </MeshDescriptor>
+  
+  <MeshDescriptor>
+    <Label>Immense</Label>
+    <MeshFilename>Meshes/Planets/Immense.x</MeshFilename>
+  </MeshDescriptor>
+  
+  <MeshDescriptor>
+    <Label>SubJovian</Label>
+    <MeshFilename>Meshes/Planets/SubJovian.x</MeshFilename>
+  </MeshDescriptor>
+  
+  <MeshDescriptor>
+    <Label>Jovian</Label>
+    <MeshFilename>Meshes/Planets/Jovian.x</MeshFilename>
+  </MeshDescriptor>
+
+  <MeshDescriptor>
+    <Label>SuperJovian</Label>
+    <MeshFilename>Meshes/Planets/SuperJovian.x</MeshFilename>
+  </MeshDescriptor>
+
+  <MeshDescriptor>
+    <Label>Quad</Label>
+    <MeshFilename>Meshes/Quad.x</MeshFilename>
+  </MeshDescriptor>
+
+  <MeshDescriptor>
+    <Label>Skybox</Label>
+    <MeshFilename>Meshes/Skybox.x</MeshFilename>
+  </MeshDescriptor>
+</ArrayOfMeshDescriptor>
