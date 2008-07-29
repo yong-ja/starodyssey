@@ -425,8 +425,11 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             base.OnDisposing(e);
             // dispose managed components
             sprite.Dispose();
-            vertexBuffer.Dispose();
-            indexBuffer.Dispose();
+            if (vertexBuffer != null)
+            {
+                vertexBuffer.Dispose();
+                indexBuffer.Dispose();
+            }
         }
 
         #region Exposed Events
