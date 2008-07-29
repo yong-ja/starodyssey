@@ -21,9 +21,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
     {
 
         Airplane airplane;
-        Planet1 planetOuter;
-        PlanetInner planetInner;
-
+        Planet planet;
         Grid grid;
         Office office;
         LightWidget lightWidget;
@@ -54,13 +52,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             //airplane = new Airplane();
             //planetOuter = new Planet1();
-            planetInner = new PlanetInner();
+            planet = new Planet();
             grid = new Grid();
             office = new Office();
             lightWidget = new LightWidget();
             //simpleSphere = new SimpleMesh<SpecularMaterial>(sphere);
 
-            //AvengersUtd.Odyssey.Utils.Xml.Data.Serialize<AvengersUtd.Odyssey.Resources.EntityDescriptor>(planetInner.Descriptor, "Mesh.xml");
+            //AvengersUtd.Odyssey.Utils.Xml.Data.Serialize<AvengersUtd.Odyssey.Resources.EntityDescriptor>(planet.Descriptor, "Mesh.xml");
             
             qCam.LookAt(new Vector3(), new Vector3(30,5, -0f));
             //qCam.LookAt(new Vector3(), new Vector3(0, 100, -0f));
@@ -168,7 +166,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             device.SetRenderState(RenderState.DestinationBlend, Blend.One);
             //device.SetRenderState(RenderState.AlphaBlendEnable, true);
 
-            //planetInner.Render();
+            //planet.Render();
             //planetOuter.Render();
             //planetClouds.Render();
             

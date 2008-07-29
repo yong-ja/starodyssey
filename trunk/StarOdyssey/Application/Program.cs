@@ -18,6 +18,8 @@ namespace AvengersUtd.StarOdyssey
             so.InitGame();
 
             Application.Run(so);
+            
         }
+
     }
 }
