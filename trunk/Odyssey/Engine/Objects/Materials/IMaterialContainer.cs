@@ -8,11 +8,12 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 {
     public interface IMaterialContainer
     {
-        Material Material { get; set; }
+        Material Material { get; }
         EffectDescriptor EffectDescriptor { get; set; }
+        IEntity OwningEntity { get; }
         void Apply();
         void Dispose();
         bool Disposed { get; }
-        void Create(params object[] data);
+        void CreateEffect(IEntity entity);
     }
 }

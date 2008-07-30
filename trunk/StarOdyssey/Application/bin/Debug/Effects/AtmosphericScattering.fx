@@ -150,9 +150,10 @@ float getFarIntersection(float3 v3Pos, float3 v3Ray, float fDistance2, float fRa
 AtmosphereVSOut
 AtmosphereFromSpaceVS(float4 vPos : POSITION )
 {
-    float3 pos = vPos.xyz;
+    //float3 pos = vPos.xyz;
+	float3 pos = (mul(vPos, mWorld));
 	float3 ray = pos - vEyePos.xyz;
-	pos = normalize(pos);
+	//pos = normalize(pos);
 	
  	float far = length (ray);
 	ray /= far;
@@ -178,14 +179,13 @@ AtmosphereFromSpaceVS(float4 vPos : POSITION )
 	//float startDepth = exp (-(1.0f / 0.25));
 	float startOffset = startDepth * expScale (startAngle);
 
-	float sampleLength = far / 3.0f;
+	float sampleLength = far / 1.0f;
 	float scaledLength = sampleLength * scale;
 	float3 sampleRay = ray * sampleLength;
 	float3 samplePoint = start + sampleRay * 0.5f;
 
 	float3 frontColor = float3 (0,0,0);
-
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		float height = length (samplePoint);
 		float depth = exp (scaleOverScaleDepth * (innerRadius - height));
@@ -205,6 +205,7 @@ AtmosphereFromSpaceVS(float4 vPos : POSITION )
 	OUT.t0 = vEyePos.xyz - vPos.xyz;
 	OUT.Position = mul(vPos, mWorldViewProj);
 	OUT.c0.xyz = frontColor * (invWavelength.xyz * krESun);
+
 	OUT.c1.xyz = frontColor * kmESun;
 
 	return OUT;
@@ -463,16 +464,16 @@ technique AtmosphereFromSpace
 {
 	pass P0
 	{
-		//AlphaBlendEnable = false;
-		//CullMode = CCW;
+		AlphaBlendEnable = false;
+		CullMode = CCW;
 		VertexShader = compile vs_3_0 GroundFromSpaceVS();
 		PixelShader = compile ps_3_0 GroundFromSpacePS(tDiffuse_sampler,tNormal_sampler);
 	}
 	pass P1
 	{
-		//AlphaBlendEnable = true;
-		//DestBlend = ONE;
-		//SrcBlend = ONE;
+		AlphaBlendEnable = true;
+		DestBlend = ONE;
+		SrcBlend = ONE;
 		CullMode = CW;
 		VertexShader = compile vs_3_0 AtmosphereFromSpaceVS();
 		PixelShader = compile ps_3_0 AtmosphereFromSpacePS();

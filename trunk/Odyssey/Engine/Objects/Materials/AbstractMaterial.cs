@@ -14,6 +14,7 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         protected Material material;
         protected EffectDescriptor effectDescriptor;
         List<EffectParameter> individualParameters = new List<EffectParameter>();
+        IEntity owningEntity;
 
         protected FXType fxType;
         
@@ -21,9 +22,12 @@ namespace AvengersUtd.Odyssey.Objects.Materials
         public Material Material
         {
             get { return material; }
-            set { material = value; }
         }
 
+        public IEntity OwningEntity
+        {
+            get { return owningEntity; }
+        }
 
         public FXType FXType
         {
@@ -43,11 +47,16 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             material = new Material();
         }
 
-        public virtual void Create(params object[] data)
+        public void CreateEffect(IEntity entity)
         {
-            effectDescriptor = EffectManager.CreateEffect(fxType, data);
+            owningEntity = entity;
+            effectDescriptor = EffectManager.CreateEffect(fxType);
+            CreateIndividualParameters();
             effectDescriptor.UpdateStatic();
         }
+
+        public abstract void CreateIndividualParameters();
+        
 
         public virtual void Apply()
         {
@@ -55,8 +64,6 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             UpdateIndividual();
             effectDescriptor.Effect.CommitChanges();
         }
-
-
 
         protected void AddIndividualParameter(EffectParameter effectParameter)
         {

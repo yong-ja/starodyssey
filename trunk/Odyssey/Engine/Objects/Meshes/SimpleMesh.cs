@@ -112,7 +112,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
  
                 if (materials[i] is ITexturedMaterial)
                     ((ITexturedMaterial)materials[i]).LoadTextures(entityDescriptor.MaterialDescriptors[i]);
-                materials[i].Create();
+                materials[i].CreateEffect(owningEntity);
             }
 
             
@@ -168,12 +168,12 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         public virtual void Render()
         {
-            for (int i = 0; i < MaterialCount; i++)
+            for (int i = 0; i < 1; i++) //MaterialCount; i++)
             {
                 AbstractMaterial material = Materials[i];
                 material.Apply();
 
-                DrawWithEffect(material.EffectDescriptor.Effect,i);
+                DrawWithEffect(material.EffectDescriptor.Effect, material.EffectDescriptor.Pass, i);
             }
         }
 
@@ -183,7 +183,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
             customMaterial.Apply();
 
-            DrawWithEffect(customMaterial.EffectDescriptor.Effect, 0);
+            DrawWithEffect(customMaterial.EffectDescriptor.Effect, 0,0);
 
         }
 

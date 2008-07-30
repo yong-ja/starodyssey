@@ -9,6 +9,11 @@ namespace AvengersUtd.Odyssey.Objects
         UseShader
     }
 
+    public enum FXOperationType
+    {
+        PointLightDirection
+    }
+
     public enum FXType
     {
         None,

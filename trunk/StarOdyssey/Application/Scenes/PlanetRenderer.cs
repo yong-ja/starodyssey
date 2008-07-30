@@ -25,7 +25,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             StyleManager.LoadTextStyles("Odyssey TextStyles.ots");
 
             Game.Input.IsInputEnabled = true;
-            qCam.LookAt(new Vector3(), new Vector3(30, 5, -0f));
+            qCam.LookAt(new Vector3(), new Vector3(30, 5, -20f));
             qCam.Update();
             hud = new Hud();
             OdysseyUI.CurrentHud = hud;
@@ -35,11 +35,12 @@ namespace AvengersUtd.StarOdyssey.Scenes
             planet = new Planet();
            
 
-            device.SetTransform(TransformState.World, Matrix.Identity);
-            device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
-            device.SetRenderState(RenderState.SourceBlend, Blend.One);
-            device.SetRenderState(RenderState.DestinationBlend, Blend.One);
+           
+            //device.SetRenderState(RenderState.BlendOperation, BlendOperation.Add);
+            //device.SetRenderState(RenderState.SourceBlend, Blend.One);
+            //device.SetRenderState(RenderState.DestinationBlend, Blend.One);
             //device.SetRenderState(RenderState.AlphaBlendEnable, true);
+            device.SetRenderState(RenderState.AlphaTestEnable, false);
 
             SetupCamera();
         }
@@ -63,7 +64,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
         public override void Render()
         {
             hud.Render();
-
+            device.SetTransform(TransformState.World, Matrix.Identity);
             DebugManager.Instance.DisplayStats();
             qCam.Update();
 
@@ -75,7 +76,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public override void ProcessInput()
         {
-            
+            qCam.UpdateStates();
         }
 
         public override void Dispose()

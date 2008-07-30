@@ -106,17 +106,17 @@ namespace AvengersUtd.Odyssey.Objects.Meshes
         protected void DrawWithEffect()
         {
             Effect effect = materials[0].EffectDescriptor.Effect;
-            DrawWithEffect(effect,0);
+            DrawWithEffect(effect,0,0);
         }
 
-        protected void DrawWithEffect(Effect effect, int subset)
+        protected void DrawWithEffect(Effect effect, int pass, int subset)
         {
             int passes = effect.Begin(FX.None);
 
             //for (int pass = 0; pass < passes; pass++)
             //{
 
-                effect.BeginPass(subset);
+                effect.BeginPass(pass);
                 Draw(subset);
                 effect.EndPass();
             //}

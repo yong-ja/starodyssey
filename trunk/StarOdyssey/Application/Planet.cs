@@ -12,17 +12,31 @@ namespace AvengersUtd.StarOdyssey
 {
     public class Planet : BaseEntity
     {
+        float rotation=40;
+        float pos;
+        float h = 0;
+        float k = 0;
+        float t;
+        float a = 30;
         public override void Render()
         {
-            Device device = Game.Device;
-            device.SetTransform(TransformState.World, Matrix.Translation(position));
-            base.Render();
             
+            float x = h + a*(float)Math.Cos(t);
+            float z = k + a*(float) Math.Sin(t);
+            Device device = Game.Device;
+            pos += 1.5f * (float)Game.FrameTime;
+            position = new Vector3(0, 0, 0);
+            device.SetTransform(TransformState.World, Matrix.RotationY(rotation) * Matrix.Translation(position));
+            rotation += -0.5f*(float)Game.FrameTime;
+            //t = rotation;
+            
+            base.Render();
+
         }
 
         public Planet() :
             base(new AvengersUtd.Odyssey.Resources.EntityDescriptor(
-                     new MeshDescriptor("Airplane", "Meshes\\Planets\\Large.X"),
+                     new MeshDescriptor("Airplane", "Meshes\\Planets\\Large01.X"),
                      new[] {
 
                      new MaterialDescriptor(typeof(SpecularBumpMaterial),
@@ -43,6 +57,8 @@ namespace AvengersUtd.StarOdyssey
         {
             //mesh.Materials[0].Diffuse = new Color4(0.0f, 0f, 1f);
         }
+
+
 
         
     }

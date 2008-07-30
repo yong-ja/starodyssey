@@ -1,3 +1,4 @@
+using AvengersUtd.Odyssey.Meshes;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Objects.Materials;
@@ -16,10 +17,21 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             get { return normal; }
         }
 
-        public override void Create(params object[] data)
+        public override void CreateIndividualParameters()
         {
-            effectDescriptor = EffectManager.CreateEffect(fxType, 
-                diffuse, normal,clouds, specular);
+            //base.Create(entity);
+            //effectDescriptor = EffectManager.CreateEffect(fxType, 
+            //    diffuse, normal,clouds, specular);
+
+            effectDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                        ParamHandles.Textures.DiffuseMap, effectDescriptor.Effect, diffuse));
+            effectDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                ParamHandles.Textures.NormalMap, effectDescriptor.Effect, normal));
+            effectDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                ParamHandles.Textures.Texture1, effectDescriptor.Effect, clouds));
+            effectDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
+                ParamHandles.Textures.Texture2, effectDescriptor.Effect, specular));
+
             effectDescriptor.UpdateStatic();
         }
 
@@ -34,8 +46,8 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             normal = TextureManager.LoadTexture(materialDescriptor[TextureType.Normal].TextureFilename);
             clouds = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture1].TextureFilename);
             specular = TextureManager.LoadTexture(materialDescriptor[TextureType.Texture2].TextureFilename);
-
         }
+       
 
         protected override void OnDisposing()
         {

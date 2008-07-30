@@ -11,6 +11,11 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             fxType = FXType.DepthMap;
         }
 
+        public override void CreateIndividualParameters()
+        {
+            throw new NotImplementedException();
+        }
+
 
     }
 }

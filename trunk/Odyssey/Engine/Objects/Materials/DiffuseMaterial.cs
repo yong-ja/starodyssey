@@ -22,6 +22,11 @@ namespace AvengersUtd.Odyssey.Objects.Materials
             fxType = FXType.Diffuse;
         }
 
+        public override void CreateIndividualParameters()
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         #region IEffectMaterial Members

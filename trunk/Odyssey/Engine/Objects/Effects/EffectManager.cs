@@ -109,7 +109,7 @@ namespace AvengersUtd.Odyssey.Resources
             EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
             fxDescriptor.AddStaticParameter(epInvWavelength);
         }
-
+        static float pos = 0;
         public static EffectDescriptor CreateEffect(FXType fxType, params object[] data)
         {
             EffectDescriptor fxDescriptor;
@@ -161,8 +161,15 @@ namespace AvengersUtd.Odyssey.Resources
 
                     return fxDescriptor;
 
+                    
                 case FXType.AtmosphericScattering:
                     fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+                    fxDescriptor.Pass = 1;
+                    return fxDescriptor;
+
+                case FXType.GroundFromSpace:
+                    fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+                    //fxDescriptor.Technique = "Relief";
                     fxDescriptor.Pass = 0;
                     float innerRadius = 10.0f;
                     float outerRadius = innerRadius * 1.025f;
@@ -182,13 +189,10 @@ namespace AvengersUtd.Odyssey.Resources
                         (float)(1.0 / Math.Pow(wavelenght.Z, 4.0)),
                         1);
 
-                    fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.World);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.View);
-                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
-                    fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
+
+                    //fxDescriptor.AddStaticParameter(FXParameterType.LightDirection);
                     fxDescriptor.AddStaticParameter(FXParameterType.LightPosition);
-                    
+
                     EffectParameter epG = EffectParameter.CreateCustomParameter("g", fxDescriptor.Effect, g);
                     fxDescriptor.AddStaticParameter(epG);
 
@@ -243,20 +247,10 @@ namespace AvengersUtd.Odyssey.Resources
                     EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
                     fxDescriptor.AddStaticParameter(epInvWavelength);
 
-                    return fxDescriptor;
-
-                case FXType.GroundFromSpace:
-                    fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
-                    //fxDescriptor.Technique = "Relief";
-                    fxDescriptor.Pass = 1;
-                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
-                        ParamHandles.Textures.DiffuseMap, fxDescriptor.Effect, (Texture)data[0]));
-                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
-                        ParamHandles.Textures.NormalMap, fxDescriptor.Effect, (Texture)data[1]));
-                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
-                        ParamHandles.Textures.Texture1, fxDescriptor.Effect, (Texture)data[2]));
-                    fxDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
-                        ParamHandles.Textures.Texture2, fxDescriptor.Effect, (Texture)data[3]));
+                    fxDescriptor.AddDynamicParameter(FXParameterType.EyePosition);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.WorldViewProjection);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.World);
+                    fxDescriptor.AddDynamicParameter(FXParameterType.View);  
 
                     return fxDescriptor;
 

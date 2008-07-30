@@ -95,7 +95,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //Texture.ToFile(t, "prova.jpg", ImageFileFormat.Jpg);
             //office.shadowMap = t;
             //grid.shadowMap = t;
-            depthMaterial.Create(grid, office);
+            //depthMaterial.Create(grid, office);
 
 
             

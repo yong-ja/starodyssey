@@ -67,6 +67,7 @@
     <Compile Include="LightManager.cs" />
     <Compile Include="Objects\Effects\EffectFactory.cs" />
     <Compile Include="Objects\Effects\EffectManager.cs" />
+    <Compile Include="Objects\Effects\EffectOperation.cs" />
     <Compile Include="Objects\Effects\EffectParameter.cs" />
     <Compile Include="Objects\Effects\ParamHandles.cs" />
     <Compile Include="Objects\Enums.cs" />
