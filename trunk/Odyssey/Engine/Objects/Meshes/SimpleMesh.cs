@@ -168,7 +168,7 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
 
         public virtual void Render()
         {
-            for (int i = 0; i < 1; i++) //MaterialCount; i++)
+            for (int i = 0;i < MaterialCount; i++)  //i < 1; i++)
             {
                 AbstractMaterial material = Materials[i];
                 material.Apply();

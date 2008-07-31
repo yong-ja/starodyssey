@@ -151,7 +151,7 @@ AtmosphereVSOut
 AtmosphereFromSpaceVS(float4 vPos : POSITION )
 {
     //float3 pos = vPos.xyz;
-	float3 pos = (mul(vPos, mWorld));
+	float3 pos = normalize(mul(vPos, mWorld));
 	float3 ray = pos - vEyePos.xyz;
 	//pos = normalize(pos);
 	
@@ -179,13 +179,13 @@ AtmosphereFromSpaceVS(float4 vPos : POSITION )
 	//float startDepth = exp (-(1.0f / 0.25));
 	float startOffset = startDepth * expScale (startAngle);
 
-	float sampleLength = far / 1.0f;
+	float sampleLength = far / 5.0f;
 	float scaledLength = sampleLength * scale;
 	float3 sampleRay = ray * sampleLength;
 	float3 samplePoint = start + sampleRay * 0.5f;
 
 	float3 frontColor = float3 (0,0,0);
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		float height = length (samplePoint);
 		float depth = exp (scaleOverScaleDepth * (innerRadius - height));
@@ -237,7 +237,7 @@ AtmosphereFromSpacePS(AtmosphereVSOut IN)
 	//float fRayleighPhase = 0.75 * (1.0 + cos*cos);
 
 	//OUT.rt0.rgb = (fRayleighPhase * IN.c0 + fMiePhase * IN.c1);
-	float exposure = 0.850;
+	float exposure = 1.850;
 	OUT.rt0.rgb = 1.0 - exp(-exposure * (fRayleighPhase * IN.c0 + fMiePhase * IN.c1));
 	OUT.rt0.a = OUT.rt0.b;
 

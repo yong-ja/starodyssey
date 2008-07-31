@@ -24,10 +24,10 @@ namespace AvengersUtd.StarOdyssey
             float x = h + a*(float)Math.Cos(t);
             float z = k + a*(float) Math.Sin(t);
             Device device = Game.Device;
-            pos += 1.5f * (float)Game.FrameTime;
-            position = new Vector3(0, 0, 0);
+            pos += 1.0f * (float)Game.FrameTime;
+            position = new Vector3(0, 0, pos);
             device.SetTransform(TransformState.World, Matrix.RotationY(rotation) * Matrix.Translation(position));
-            rotation += -0.5f*(float)Game.FrameTime;
+            rotation += -0.05f*(float)Game.FrameTime;
             //t = rotation;
             
             base.Render();
