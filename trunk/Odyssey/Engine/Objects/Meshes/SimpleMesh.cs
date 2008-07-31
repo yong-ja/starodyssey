@@ -161,14 +161,14 @@ namespace AvengersUtd.Odyssey.Engine.Meshes
             meshObject.Dispose();
             meshObject = tempMesh;
 
-            //SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
-            meshObject.ComputeTangent(0, 0, -1, false);
+            SlimDX.Result rs = meshObject.ComputeTangentFrame(TangentOptions.None);
+            //meshObject.ComputeTangent(0, 0, 0, false);
 
         }
 
         public virtual void Render()
         {
-            for (int i = 0;i < MaterialCount; i++)  //i < 1; i++)
+            for (int i = 0; i < 1; i++)//i < MaterialCount; i++)  //
             {
                 AbstractMaterial material = Materials[i];
                 material.Apply();

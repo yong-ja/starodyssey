@@ -276,11 +276,11 @@ GroundFromSpaceVSOut GroundFromSpaceVS(AtmosphereVSIn IN)
 	float fNear =getNearIntersection(vEyePos, v3Ray, cameraHeight2, outerRadius2);
 
 	// Calculate the ray's starting position, then calculate its scattering offset
-	float3 v3Start = vEyePos + v3Ray * fNear;
+	float3 v3Start =  (vEyePos + v3Ray * fNear)+vCenter;
 	fFar -= fNear;
 	float fStartDepth = exp((innerRadius - outerRadius) / scaleDepth);
-	float fCameraAngle = dot(-v3Ray, v3Pos) / length(v3Pos);
-	float fLightAngle = dot(vLightDir, v3Pos) / length(v3Pos);
+	float fCameraAngle = dot(-v3Ray, v3Pos -vCenter) / length(v3Pos-vCenter);
+	float fLightAngle = dot(vLightDir, v3Pos-vCenter) / length(v3Pos-vCenter);
 	float fCameraScale = expScale(fCameraAngle);
 	float fLightScale = expScale(fLightAngle);
 	float fCameraOffset = fStartDepth*fCameraScale;
@@ -370,7 +370,7 @@ PSOut GroundFromSpacePS(
 	float d,a;
 
 	// ray intersect in mView direction
-	p = IN.vpos -vCenter;
+	p = IN.vpos;
 	v = normalize(p);
 	a = dot(IN.normal,-v);
 	s = normalize(float3(dot(v,IN.tangent),dot(v,IN.binormal),a));

@@ -12,10 +12,11 @@ namespace AvengersUtd.Odyssey.Objects.Effects
 
         public static VectorOp CreateCustomOperation(FXOperationType type, IEntity entity)
         {
+            VectorOp vectorOp;
             switch (type)
             {
                 case FXOperationType.PointLightDirection:
-                    VectorOp vectorOp = delegate()
+                    vectorOp = delegate()
                     {
                         Vector4 vLightPos =
                             Game.CurrentScene.LightManager.GetParameter(0,FXParameterType.LightPosition);
@@ -25,6 +26,15 @@ namespace AvengersUtd.Odyssey.Objects.Effects
                         vLightDir.Normalize();
                         return vLightDir;
                     };
+                    return vectorOp;
+
+                case FXOperationType.EntityPosition:
+                    vectorOp = delegate()
+                                            {
+                                                Vector4 vCenter = entity.Position4;
+                                                return vCenter;
+                                            };
+
                     return vectorOp;
 
                 default:

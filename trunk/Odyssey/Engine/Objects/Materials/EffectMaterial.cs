@@ -27,6 +27,8 @@ namespace AvengersUtd.Odyssey.Objects.Materials
 
         public override void CreateIndividualParameters()
         {
+            
+
             AddIndividualParameter(EffectParameter.CreateCustomParameter(
                                        ParamHandles.Vectors.LightDirection, effectDescriptor.Effect,
                                        EffectOperation.CreateCustomOperation(FXOperationType.PointLightDirection,

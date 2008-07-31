@@ -60,6 +60,11 @@ namespace AvengersUtd.Odyssey.Meshes
             set { position = value; }
         }
 
+        public Vector4 Position4
+        {
+            get { return new Vector4(position, 1.0f); }
+        }
+
         #endregion
 
         #region IDisposable Members

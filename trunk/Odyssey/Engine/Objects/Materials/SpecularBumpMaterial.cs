@@ -31,6 +31,8 @@ namespace AvengersUtd.Odyssey.Objects.Materials
                 ParamHandles.Textures.Texture1, effectDescriptor.Effect, clouds));
             effectDescriptor.AddStaticParameter(EffectParameter.CreateCustomParameter(
                 ParamHandles.Textures.Texture2, effectDescriptor.Effect, specular));
+            AddIndividualParameter(EffectParameter.CreateCustomParameter(ParamHandles.Vectors.EntityPosition,
+                effectDescriptor.Effect, EffectOperation.CreateCustomOperation(FXOperationType.EntityPosition, OwningEntity)));
 
             effectDescriptor.UpdateStatic();
         }

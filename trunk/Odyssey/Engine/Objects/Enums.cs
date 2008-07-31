@@ -11,7 +11,8 @@ namespace AvengersUtd.Odyssey.Objects
 
     public enum FXOperationType
     {
-        PointLightDirection
+        PointLightDirection,
+        EntityPosition
     }
 
     public enum FXType

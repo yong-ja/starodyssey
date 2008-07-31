@@ -109,7 +109,7 @@ namespace AvengersUtd.Odyssey.Resources
             EffectParameter epInvWavelength = EffectParameter.CreateCustomParameter("invWavelength", fxDescriptor.Effect, invWavelenght);
             fxDescriptor.AddStaticParameter(epInvWavelength);
         }
-        static float pos = 0;
+        
         public static EffectDescriptor CreateEffect(FXType fxType, params object[] data)
         {
             EffectDescriptor fxDescriptor;

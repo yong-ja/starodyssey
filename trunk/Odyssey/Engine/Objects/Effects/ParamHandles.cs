@@ -30,6 +30,7 @@ namespace AvengersUtd.Odyssey.Objects.Effects
             public const string EyePosition = "vEyePos";
             public const string LightPosition = "vLightPos";
             public const string LightDirection = "vLightDir";
+            public const string EntityPosition = "vCenter";
         }
 
         public struct Techniques
