@@ -7,6 +7,7 @@ float4 invWavelength;
 float4 vLightDir : LIGHTDIRECTION;
 float4 vLightPos : LIGHTPOSITION;
 float4 vEyePos : EYELOCATION;
+float3 vCenter;
 
 float3 cAmbient : LIGHTAMBIENT = {0.2,0.2,0.2};
 float3 cDiffuse : LIGHTDIFFUSE = {1,1,1};
@@ -86,7 +87,6 @@ struct GroundFromSpaceVSOut
 	float3 binormal : TEXCOORD3;
 	float3 normal : TEXCOORD4;
 	float4 lightPosition : TEXCOORD5;
-	float3 normal2 : TEXCOORD6;
 	//float depthBlur : TEXCOORD6;
 	float3 c0 : COLOR;
 	float3 c1 : COLOR1;
@@ -138,21 +138,12 @@ float getNearIntersection(float3 v3Pos, float3 v3Ray, float fDistance2, float fR
 	return 0.5 * (-B - sqrt(fDet));
 }
 
-// Returns the far intersection point of a line and a sphere
-float getFarIntersection(float3 v3Pos, float3 v3Ray, float fDistance2, float fRadius2)
-{
-	float B = 2.0 * dot(v3Pos, v3Ray);
-	float C = fDistance2 - fRadius2;
-	float fDet = max(0.0, B*B - 4.0 * C);
-	return 0.5 * (-B + sqrt(fDet));
-}
-
 AtmosphereVSOut
 AtmosphereFromSpaceVS(float4 vPos : POSITION )
 {
     //float3 pos = vPos.xyz;
-	float3 pos = normalize(mul(vPos, mWorld));
-	float3 ray = pos - vEyePos.xyz;
+	float3 pos = mul(vPos, mWorld);
+	float3 ray = pos - vEyePos.xyz - vCenter;
 	//pos = normalize(pos);
 	
  	float far = length (ray);
@@ -212,18 +203,6 @@ AtmosphereFromSpaceVS(float4 vPos : POSITION )
 }
 
 PSOut
-AtmosphereFromSpacePS1(AtmosphereVSOut IN)
-{
-  float3 color = IN.c0;
-  
-  
-  PSOut OUT;
-  OUT.rt0.rgb = color.rgb;
-  OUT.rt0.a = 1.0f;
-  return OUT;
-}
-
-PSOut
 AtmosphereFromSpacePS(AtmosphereVSOut IN)
 {
 	PSOut OUT;
@@ -276,8 +255,6 @@ GroundFromSpaceVSOut GroundFromSpaceVS(AtmosphereVSIn IN)
 	OUT.binormal = mul(IN.binormal,mWorldViewrot);
 	OUT.normal = mul(IN.normal,mWorldViewrot);
 	
-	OUT.normal2 = normalize(mul(IN.normal, mWorld));
-
 	// begin scattering code
 	float3 v3Pos = mul (IN.pos, mWorld);
 
@@ -299,14 +276,14 @@ GroundFromSpaceVSOut GroundFromSpaceVS(AtmosphereVSIn IN)
 	float fNear =getNearIntersection(vEyePos, v3Ray, cameraHeight2, outerRadius2);
 
 	// Calculate the ray's starting position, then calculate its scattering offset
-	float3 v3Start = vEyePos.xyz + (v3Ray.xyz * fNear);
+	float3 v3Start = vEyePos + v3Ray * fNear;
 	fFar -= fNear;
-	float ffDepth = exp((innerRadius - outerRadius) / scaleDepth);
+	float fStartDepth = exp((innerRadius - outerRadius) / scaleDepth);
 	float fCameraAngle = dot(-v3Ray, v3Pos) / length(v3Pos);
 	float fLightAngle = dot(vLightDir, v3Pos) / length(v3Pos);
 	float fCameraScale = expScale(fCameraAngle);
 	float fLightScale = expScale(fLightAngle);
-	float fCameraOffset = ffDepth*fCameraScale;
+	float fCameraOffset = fStartDepth*fCameraScale;
 	float fTemp = (fLightScale + fCameraScale);
 
 	// Initialize the scattering loop variables
@@ -321,10 +298,10 @@ GroundFromSpaceVSOut GroundFromSpaceVS(AtmosphereVSIn IN)
 	for(int i=0; i<5; i++)
 	{
 		float fHeight = length(v3SamplePoint);
-		float ftfDepth = exp(scaleOverScaleDepth * (innerRadius - fHeight));
-		float fScatter = ftfDepth*fTemp - fCameraOffset;
+		float fDepth = exp(scaleOverScaleDepth * (innerRadius - fHeight));
+		float fScatter = fDepth*fTemp - fCameraOffset;
 		v3Attenuate = exp(-fScatter * (invWavelength.xyz * kr4PI + km4PI));
-		v3FrontColor = v3FrontColor + (v3Attenuate * (ftfDepth * fScaledLength));
+		v3FrontColor = v3FrontColor + (v3Attenuate * (fDepth * fScaledLength));
 		v3SamplePoint = v3SamplePoint + v3SampleRay;
 	}
 
@@ -393,7 +370,7 @@ PSOut GroundFromSpacePS(
 	float d,a;
 
 	// ray intersect in mView direction
-	p = IN.vpos;
+	p = IN.vpos -vCenter;
 	v = normalize(p);
 	a = dot(IN.normal,-v);
 	s = normalize(float3(dot(v,IN.tangent),dot(v,IN.binormal),a));
@@ -447,7 +424,7 @@ PSOut GroundFromSpacePS(
 	finalcolor.xyz=cAmbientColor*c+att*(c*cDiffuse*diff+cSpecularColor.xyz*pow(spec,fShine));
 	finalcolor.w=1.0;
 	
-	float fLuminance = 0.299f*IN.c1.r + 0.587f*IN.c1.g + 0.114f*IN.c1.b;;
+	float fLuminance = 0.299f*IN.c1.r + 0.587f*IN.c1.g + 0.114f*IN.c1.b;
 	float3 vDiff = float3(fLuminance,fLuminance,fLuminance);
 
 	finalcolor.xyz = IN.c0 +finalcolor.xyz * IN.c1;//+ cloudColor.xyz * IN.c1;
@@ -480,3 +457,4 @@ technique AtmosphereFromSpace
 	}
 
 }
+
