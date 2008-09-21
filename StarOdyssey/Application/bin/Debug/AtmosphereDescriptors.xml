@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey Mesh Declaration file, generated on sabato 9 agosto 2008 15.20.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey website at http://www.avengersutd.com/wiki/ for more information.
+!-->
+<ArrayOfAtmosphereDescriptor xmlns:Style="http://www.avengersutd.com">
+  <AtmosphereDescriptor AtmosphericDensity="Thin">
+    <TextureDescriptors>
+      <TextureDescriptor Type="Texture1" Filename="Textures/Planets/Clouds/Thin01.png" />
+    </TextureDescriptors>
+  </AtmosphereDescriptor>
+  <AtmosphereDescriptor AtmosphericDensity="Standard">
+    <TextureDescriptors>
+      <TextureDescriptor Type="Texture1" Filename="Textures/Planets/Clouds/Standard01.png" />
+    </TextureDescriptors>
+  </AtmosphereDescriptor>
+  <AtmosphereDescriptor AtmosphericDensity="Dense">
+    <TextureDescriptors>
+      <TextureDescriptor Type="Texture1" Filename="Textures/Planets/Clouds/Dense01.png" />
+    </TextureDescriptors>
+  </AtmosphereDescriptor>
+  <AtmosphereDescriptor AtmosphericDensity="Superdense">
+    <TextureDescriptors>
+      <TextureDescriptor Type="Texture1" Filename="Textures/Planets/Clouds/SuperDense01.png" />
+    </TextureDescriptors>
+  </AtmosphereDescriptor>
+</ArrayOfAtmosphereDescriptor>

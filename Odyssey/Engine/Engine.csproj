@@ -1,0 +1,183 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38924D32-845D-453A-A617-AE6BD8929610}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AvengersUtd.Odyssey</RootNamespace>
+    <AssemblyName>Odyssey Engine</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Odyssey UI, Version=0.3.4.19194, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\UserInterface\bin\SlimDxDebug\Odyssey UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Odyssey Utils, Version=0.1.0.28379, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Utils\bin\Debug\Odyssey Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=2.0.5.39, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DeviceParameters.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Geometry\BoundingFrustum.cs" />
+    <Compile Include="Geometry\MathHelper.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Graphics\EventArgs.cs" />
+    <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
+    <Compile Include="Graphics\Meshes\IAxisAlignedBox.cs" />
+    <Compile Include="Graphics\Meshes\IMesh.cs" />
+    <Compile Include="Graphics\Meshes\Interface1.cs" />
+    <Compile Include="Graphics\Meshes\MeshPart.cs" />
+    <Compile Include="Graphics\Meshes\MeshPartCollection.cs" />
+    <Compile Include="Graphics\Rendering\CommandList.cs" />
+    <Compile Include="Graphics\Rendering\IRenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\BaseCommand.cs" />
+    <Compile Include="Graphics\Rendering\RenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\ConstantRotationNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\EllipticalOrbitNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\FixedNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\FreeTransformNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\RenderableNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\TransformNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneOrganizer.cs" />
+    <Compile Include="Graphics\Rendering\ShadowCommand.cs" />
+    <Compile Include="LightManager.cs" />
+    <Compile Include="Graphics\Effects\EffectFactory.cs" />
+    <Compile Include="Graphics\Effects\EffectOperation.cs" />
+    <Compile Include="Graphics\Effects\EffectParameter.cs" />
+    <Compile Include="Graphics\Effects\ParamHandles.cs" />
+    <Compile Include="Graphics\Effects\ScreenHelper.cs" />
+    <Compile Include="Objects\Entities\BaseLight.cs" />
+    <Compile Include="Objects\Entities\Platform.cs" />
+    <Compile Include="Objects\Entities\SpotLight.cs" />
+    <Compile Include="Objects\Entities\PointLight.cs" />
+    <Compile Include="Graphics\Enums.cs" />
+    <Compile Include="Graphics\Materials\AbstractMaterial.cs" />
+    <Compile Include="Graphics\Materials\DepthMaterial.cs" />
+    <Compile Include="Graphics\Materials\AtmosphereMaterial.cs" />
+    <Compile Include="Graphics\Materials\DiffuseMaterial.cs" />
+    <Compile Include="Graphics\Materials\IEffectMaterial.cs" />
+    <Compile Include="Graphics\Materials\PhongMaterial.cs" />
+    <Compile Include="Graphics\Materials\SpecularMaterial.cs" />
+    <Compile Include="Graphics\Materials\SurfaceMaterial.cs" />
+    <Compile Include="Graphics\Materials\TexturedBillboardMaterial.cs" />
+    <Compile Include="Graphics\Meshes\AbstractMesh.cs" />
+    <Compile Include="Graphics\Meshes\BaseEntity.cs" />
+    <Compile Include="Objects\Entities\Billboard.cs" />
+    <Compile Include="Graphics\Meshes\IConstantRotation.cs" />
+    <Compile Include="Graphics\Meshes\IRenderable.cs" />
+    <Compile Include="Graphics\Materials\IMaterial.cs" />
+    <Compile Include="Graphics\Materials\SurfaceAtmosphereMaterial.cs" />
+    <Compile Include="Graphics\Materials\TexturedMaterial.cs" />
+    <Compile Include="Graphics\Effects\EffectDescriptor.cs" />
+    <Compile Include="Graphics\Meshes\IBillboard.cs" />
+    <Compile Include="Graphics\Meshes\ISphere.cs" />
+    <Compile Include="Graphics\Meshes\IEntity.cs" />
+    <Compile Include="Graphics\Meshes\SimpleMesh.cs" />
+    <Compile Include="Objects\Entities\Skybox.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\EffectManager.cs" />
+    <Compile Include="Resources\EntityDescriptor.cs" />
+    <Compile Include="Graphics\Materials\MaterialDescriptor.cs" />
+    <Compile Include="Graphics\Meshes\MeshDescriptor.cs" />
+    <Compile Include="Resources\EntityManager.cs" />
+    <Compile Include="Resources\TextureManager.cs" />
+    <Compile Include="Objects\Input\InputHandler.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneNodeCollection.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneGraph.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuaternionCam.cs" />
+    <Compile Include="Renderer.cs" />
+    <Compile Include="RenderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SafeNativeMethods.cs" />
+    <Compile Include="Settings\EngineSettings.cs" />
+    <Compile Include="Settings\VideoSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

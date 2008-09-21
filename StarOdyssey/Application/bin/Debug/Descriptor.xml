@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey Mesh Declaration file, generated on venerdì 8 agosto 2008 15.15.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey website at http://www.avengersutd.com/wiki/ for more information.
+!-->
+<ArrayOfEntityDescriptor xmlns:Style="http://www.avengersutd.com">
+  <EntityDescriptor Label="GasGiant">
+    <MeshDescriptor MeshFilename="Meshes\Planets\Neptunian.X" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.DiffuseMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Planets\Jovian\Jovian01.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+  <EntityDescriptor Label="LargePlanet">
+    <MeshDescriptor MeshFilename="Meshes\Planets\Huge.X" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.SurfaceAtmosphereMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Planets\TerraDiffuse.png" />
+          <TextureDescriptor Type="Normal" Filename="Textures\Planets\TerraNormal.png" />
+          <TextureDescriptor Type="Texture1" Filename="Textures\Planets\TerraClouds.png" />
+          <TextureDescriptor Type="Specular" Filename="Textures\Planets\TerraSpecular.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.AtmosphereMaterial">
+        <TextureDescriptors />
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+  <EntityDescriptor Label="OceanPlanet">
+    <MeshDescriptor MeshFilename="Meshes\Planets\Huge.X" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.SurfaceAtmosphereMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures/Planets/Desert/Desert01Diffuse.png" />
+		  <TextureDescriptor Type="Normal" Filename="Textures/Planets/Desert/Desert01Normal.png" />
+		  <TextureDescriptor Type="Specular" Filename="Textures/Planets/BlackSpecular.png" />
+		  <TextureDescriptor Type="Texture1" Filename="Textures/Planets/Clouds/Thin01.png" />
+		</TextureDescriptors>
+      </MaterialDescriptor>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.AtmosphereMaterial">
+        <TextureDescriptors />
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+  <EntityDescriptor Label="Skybox" >
+    <MeshDescriptor MeshFilename="Meshes\Skybox.X" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	        <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	        <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	        <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	        <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	        <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedMaterial">
+        <TextureDescriptors>
+		  <TextureDescriptor Type="Diffuse" Filename="Textures\StarBackground.png" />
+		</TextureDescriptors>
+	  </MaterialDescriptor>
+	</MaterialDescriptors>
+   </EntityDescriptor>
+   <EntityDescriptor Label="RedMainSequence">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\RedDwarf.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor> 
+   <EntityDescriptor Label="YellowMainSequence">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\YellowDwarf.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+     <EntityDescriptor Label="OrangeMainSequence">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\OrangeDwarf.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+  <EntityDescriptor Label="BlueMainSequence">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\BlueDwarf.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+  <EntityDescriptor Label="RedGiant">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\RedGiant.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+    <EntityDescriptor Label="WhiteWhiteDwarf">
+    <MeshDescriptor MeshFilename="Meshes\quad.x" />
+    <MaterialDescriptors>
+      <MaterialDescriptor Type="AvengersUtd.Odyssey.Graphics.Materials.TexturedBillboardMaterial">
+        <TextureDescriptors>
+          <TextureDescriptor Type="Diffuse" Filename="Textures\Stars\WhiteDwarf.png" />
+        </TextureDescriptors>
+      </MaterialDescriptor>
+    </MaterialDescriptors>
+  </EntityDescriptor>
+</ArrayOfEntityDescriptor>

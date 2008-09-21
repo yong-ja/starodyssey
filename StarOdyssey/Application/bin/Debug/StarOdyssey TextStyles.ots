@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey UI Style Declaration file, generated on lunedì 30 luglio 2007 12.37.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey UI website at http://www.avengersutd.com/wiki/OdysseyUI for more information.
+Thanks for using the Odyssey UI!-->
+<ArrayOfTextStyle xmlns:Style="http://www.avengersutd.com">
+  <TextStyle Name="PlanetInfoName" IsBold="true" IsItalic="false" ApplyShadowing="true" ApplyHighlight="false" IgnoreBounds="false" Size="30" FontName="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="Blue" HexValue="FF7FFFD4" />
+  </TextStyle>
+  <TextStyle Name="PlanetInfoTitle" IsBold="false" IsItalic="true" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="20" FontName="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFFFFFF" />
+  </TextStyle>
+    <TextStyle Name="PlanetInfoHeader" IsBold="true" IsItalic="true" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="16" FontName="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
+  </TextStyle>
+    <TextStyle Name="PlanetInfoValue" IsBold="false" IsItalic="true" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="16" FontName="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="Gray" HexValue="FF808080" />
+  </TextStyle>
+</ArrayOfTextStyle>

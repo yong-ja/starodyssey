@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey UI Style Declaration file, generated on venerdì 3 agosto 2007 14.49.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey UI website at http://www.avengersutd.com/wiki/OdysseyUI for more information.
+Thanks for using the Odyssey UI!-->
+<ArrayOfControlStyle xmlns:Style="http://www.avengersutd.com">
+  <ControlStyle Name="Empty" Shape="None" BorderStyle="None" BorderSize="0" Padding="0 0 0 0">
+    <Shading Type="RectangleFlat">
+      <Values LightFactor="0" DarkFactor="0" />
+    </Shading>
+    <ColorArray>
+      <Color Type="Enabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
+      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Disabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Selected" Name="Empty" HexValue="00000000" />
+      <Color Type="Focused" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderEnabled" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderHighlighted" Name="Empty" HexValue="00000000" />
+    </ColorArray>
+  </ControlStyle>
+  <ControlStyle Name="PlanetInfoPanel" Shape="Rectangle" Size="Width:400 Height:300" BorderStyle="Raised" BorderSize="1" Padding="4 4 4 4">
+    <Shading Type="RectangleTopToBottom">
+      <Values LightFactor="1" DarkFactor="0.5" />
+    </Shading>
+    <ColorArray>
+      <Color Type="Enabled" Name="TransparentCustom" HexValue="AA0096FF" />
+      <Color Type="Highlighted" Name="MediumBlue" HexValue="FF0000CD" />
+      <Color Type="Clicked" Name="TransparentCustom" HexValue="AA0096FF" />
+      <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="Selected" Name="BlueViolet" HexValue="FF8A2BE2" />
+      <Color Type="Focused" Name="TransparentCustom" HexValue="AA0096FF" />
+      <Color Type="BorderEnabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
+    </ColorArray>
+  </ControlStyle>
+  <ControlStyle Name="PlanetInfoTable" Shape="Rectangle" BorderStyle="Flat" BorderSize="2" Padding="2 2 2 2">
+    <Shading Type="RectangleFlat">
+      <Values LightFactor="1" DarkFactor="0.5" />
+    </Shading>
+    <ColorArray>
+      <Color Type="Enabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
+      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Disabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Selected" Name="Empty" HexValue="00000000" />
+      <Color Type="Focused" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderEnabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
+    </ColorArray>
+  </ControlStyle>
+  <ControlStyle Name="PlanetInfoTableRow" Shape="Rectangle" Size="Width:400 Height:35" BorderStyle="Flat" BorderSize="2" Padding="2 2 2 2">
+    <Shading Type="RectangleFlat">
+      <Values LightFactor="1" DarkFactor="0.5" />
+    </Shading>
+    <ColorArray>
+      <Color Type="Enabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
+      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Disabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Selected" Name="Empty" HexValue="00000000" />
+      <Color Type="Focused" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderEnabled" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderHighlighted" Name="Empty" HexValue="00000000" />
+	</ColorArray>
+  </ControlStyle>
+  
+ </ArrayOfControlStyle>
