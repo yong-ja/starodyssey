@@ -1,0 +1,37 @@
+using System;
+using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Resources;
+using SlimDX;
+using SlimDX.Direct3D9;
+
+namespace AvengersUtd.Odyssey.Graphics.Meshes
+{
+    public interface IRenderable : IDisposable, IEntity
+    {
+        EntityDescriptor Descriptor { get; }
+        AbstractMaterial[] Materials { get; }
+        Mesh Mesh { get; }
+
+        bool CastsShadows { get; }
+
+        /// <summary>
+        /// Loads resources and inits object.
+        /// </summary>
+        void Init();
+
+        /// <summary>
+        /// Renders the entity with effects applied.
+        /// </summary>
+        void Render();
+
+        /// <summary>
+        /// Renders just the mesh without applying effects.
+        /// </summary>
+        void DrawMesh();
+
+        /// <summary>
+        /// Updates the position of the entity.
+        /// </summary>
+        void UpdatePosition();
+    }
+}

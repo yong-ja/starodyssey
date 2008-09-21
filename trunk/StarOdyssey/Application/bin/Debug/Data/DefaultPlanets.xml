@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMaterialDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <MaterialDescriptor>
+    <Label>Terra</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Terra.png</string>
+      <string>Textures/Planets/TerraNormal.png</string>
+      <string>Textures/Planets/TerraClouds.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+
+  <MaterialDescriptor>
+    <Label>Mercury</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Mercury.png</string>
+      <string>Textures/Planets/MercuryNormal.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+  <MaterialDescriptor>
+    <Label>Venus</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Venus.png</string>
+      <string>Textures/Planets/VenusNormal.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+  <MaterialDescriptor>
+    <Label>Jupiter</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Jupiter.png</string>
+      <string>Textures/Planets/FlatNormal.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+  <MaterialDescriptor>
+    <Label>Luna</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Luna.png</string>
+      <string>Textures/Planets/LunaNormal.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+
+  <MaterialDescriptor>
+    <Label>Mars</Label>
+    <TextureFilenames>
+      <string>Textures/Planets/Mars.png</string>
+      <string>Textures/Planets/MarsNormal.png</string>
+      <string>Textures/Planets/Clouds01.png</string>
+    </TextureFilenames>
+  </MaterialDescriptor>
+
+</ArrayOfMaterialDescriptor>

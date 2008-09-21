@@ -1,0 +1,183 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AvengersUtd.Odyssey.UserInterface</RootNamespace>
+    <AssemblyName>Odyssey UI</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>AvengersUTD.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SlimDxDebug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\SlimDxDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SlimDX</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SlimDX, Version=2.0.5.39, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Devices\IXBox360Controller.cs" />
+    <Compile Include="Devices\Keyboard.cs" />
+    <Compile Include="Devices\Mouse.cs" />
+    <Compile Include="Devices\XBox360Controller.cs" />
+    <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="RenderableControls\CameraHostControl.cs" />
+    <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
+    <Compile Include="RenderableControls\Hud.MDX.cs" />
+    <Compile Include="RenderableControls\Hud.SlimDX.cs" />
+    <Compile Include="RenderableControls\Interfaces\I3dEntity.cs" />
+    <Compile Include="RenderableControls\ProgressBar.cs" />
+    <Compile Include="RenderableControls\TableCell.cs" />
+    <Compile Include="RenderableControls\TableCellCollection.cs" />
+    <Compile Include="RenderableControls\TableRow.cs" />
+    <Compile Include="RenderableControls\TableRowCollection.cs" />
+    <Compile Include="Style\FontManager.cs" />
+    <Compile Include="Helpers\DebugManager.cs" />
+    <Compile Include="Helpers\DynamicPropertyAccessor.cs" />
+    <Compile Include="Helpers\Error.cs" />
+    <Compile Include="Helpers\IPropertyAccessor.cs" />
+    <Compile Include="Helpers\StaticReflection.cs" />
+    <Compile Include="Helpers\Text.cs" />
+    <Compile Include="Helpers\Timer.cs" />
+    <Compile Include="Helpers\TreeTraversal.cs" />
+    <Compile Include="Intersection.cs" />
+    <Compile Include="OdysseyUI.cs" />
+    <Compile Include="Properties\Exceptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Exceptions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderableControls\BaseControl.cs" />
+    <Compile Include="RenderableControls\BaseControl.Events.cs" />
+    <Compile Include="RenderableControls\BaseControl.Methods.cs" />
+    <Compile Include="RenderableControls\BaseControl.Properties.cs" />
+    <Compile Include="RenderableControls\Buttons\BaseButton.cs" />
+    <Compile Include="RenderableControls\Buttons\Button.cs" />
+    <Compile Include="RenderableControls\Buttons\CheckBox.cs" />
+    <Compile Include="RenderableControls\Buttons\DecoratedButton.cs" />
+    <Compile Include="RenderableControls\Buttons\OptionButton.cs" />
+    <Compile Include="RenderableControls\Containers\Cell.cs" />
+    <Compile Include="RenderableControls\Containers\ContainerControl.cs" />
+    <Compile Include="RenderableControls\Containers\GroupBox.cs" />
+    <Compile Include="RenderableControls\Containers\Panel.cs" />
+    <Compile Include="RenderableControls\Containers\RichTextArea.cs" />
+    <Compile Include="RenderableControls\Containers\TabPage.cs" />
+    <Compile Include="RenderableControls\Containers\TabPanel.cs" />
+    <Compile Include="RenderableControls\ControlCollection.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewer.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerBand.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerCell.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerCellCollection.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerColumn.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerColumnCollection.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerColumnHeaderCell.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerElement.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerEventArgs.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerExceptions.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerHeaderCell.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerLabelCell.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerLabelColumn.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerRow.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerRowCollection.cs" />
+    <Compile Include="RenderableControls\DataViewer\DataViewerRowHeaderCell.cs" />
+    <Compile Include="RenderableControls\Hud.cs" />
+    <Compile Include="RenderableControls\IActivableControl.cs" />
+    <Compile Include="RenderableControls\Input\DropDownList.cs" />
+    <Compile Include="RenderableControls\Input\OptionGroup.cs" />
+    <Compile Include="RenderableControls\Input\TextBox.cs" />
+    <Compile Include="RenderableControls\TrackBar.cs" />
+    <Compile Include="RenderableControls\Interfaces\ICell.cs" />
+    <Compile Include="RenderableControls\Interfaces\ICircularControl.cs" />
+    <Compile Include="RenderableControls\Interfaces\IContainer.cs" />
+    <Compile Include="RenderableControls\Interfaces\IControl.cs" />
+    <Compile Include="RenderableControls\Interfaces\ISpriteControl.cs" />
+    <Compile Include="RenderableControls\Label.cs" />
+    <Compile Include="RenderableControls\PictureBox.cs" />
+    <Compile Include="RenderableControls\SimpleShapeControl.cs" />
+    <Compile Include="RenderableControls\Windows\CaptionBar.cs" />
+    <Compile Include="RenderableControls\Windows\DialogBox.cs" />
+    <Compile Include="RenderableControls\Windows\Window.cs" />
+    <Compile Include="SafeNativeMethods.cs" />
+    <Compile Include="ShapeDescriptor.cs" />
+    <Compile Include="Style\ColorArray.cs" />
+    <Compile Include="Style\ColorOperator.cs" />
+    <Compile Include="Style\ControlStyle.cs" />
+    <Compile Include="Style\DataViewerCellStyle.cs" />
+    <Compile Include="Style\LabelFormatter.cs" />
+    <Compile Include="Style\LabelPage.cs" />
+    <Compile Include="Style\Padding.cs" />
+    <Compile Include="Style\Shading.cs" />
+    <Compile Include="Style\Shapes.cs" />
+    <Compile Include="Style\StyleManager.cs" />
+    <Compile Include="Style\TextStyle.cs" />
+    <Compile Include="Style\TransformedColored.cs" />
+    <Compile Include="RenderableControls\Table.cs" />
+    <Compile Include="TextManager.cs" />
+    <Compile Include="UICommon.cs" />
+    <Compile Include="WindowManager.cs" />
+    <Compile Include="Xml\UIParser.cs" />
+    <Compile Include="Xml\XmlBasicControls.cs" />
+    <Compile Include="Xml\XmlCommon.cs" />
+    <Compile Include="Xml\XmlComplexControls.cs" />
+    <Compile Include="Xml\XmlContainers.cs" />
+    <Compile Include="Xml\XmlControlStyle.cs" />
+    <Compile Include="Xml\XmlTextStyle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Exceptions.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AvengersUTD.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

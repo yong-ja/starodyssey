@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey Mesh Declaration file, generated on sabato 26 luglio 2008 20.11.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey website at http://www.avengersutd.com/wiki/ for more information.
+!-->
+<EntityDescriptor xmlns:Style="http://www.avengersutd.com">
+  <MeshDescriptor Label="Airplane" MeshFilename="Meshes\Planets\Large.X" />
+  <MaterialDescriptors>
+    <MaterialDescriptor EffecType="AvengersUtd.Odyssey.Objects.Materials.SpecularBumpMaterial">
+      <TextureDescriptors>
+        <TextureDescriptor Type="Diffuse" TextureFilename="Textures\Planets\Terra.png" />
+        <TextureDescriptor Type="Normal" TextureFilename="Textures\Planets\TerraNormal.png" />
+        <TextureDescriptor Type="Texture1" TextureFilename="Textures\Planets\TerraClouds.png" />
+      </TextureDescriptors>
+    </MaterialDescriptor>
+    <MaterialDescriptor EffecType="AvengersUtd.Odyssey.Objects.Materials.EffectMaterial">
+      <TextureDescriptors />
+    </MaterialDescriptor>
+  </MaterialDescriptors>
+</EntityDescriptor>
