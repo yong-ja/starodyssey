@@ -32,7 +32,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         public IRenderable RenderableObject
         {
             get { return renderableObject; }
-            set { renderableObject = value; }
         }
 
         public RenderableNode(IRenderable renderableObject) : 
@@ -40,6 +39,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         {
             IsLeaf = true;
             this.renderableObject = renderableObject;
+            renderableObject.ParentNode = this;
         }
 
         public override void Init()

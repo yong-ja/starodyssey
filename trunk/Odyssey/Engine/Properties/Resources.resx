@@ -121,7 +121,7 @@
     <value>Your hardware device does not support shaders version 2.0!</value>
   </data>
   <data name="ERR_Fatal" xml:space="preserve">
-    <value>Fatal Error</value>
+    <value>Fatal Error.</value>
   </data>
   <data name="ERR_FeatureNotSupported" xml:space="preserve">
     <value>This feature is not yet supported in the Odyssey Engine.</value>
@@ -129,7 +129,7 @@
   <data name="ERR_SpotlightParameter" xml:space="preserve">
     <value>This parameter is not applicable to spotlights.</value>
   </data>
-  <data name="ERR_BaseLightParameter" xml:space="preserve">
+  <data name="ERR_UnrecognizedParameter" xml:space="preserve">
     <value>Unrecognized parameter.</value>
   </data>
   <data name="ERR_MaterialParameter" xml:space="preserve">
@@ -140,5 +140,11 @@
   </data>
   <data name="ERR_FtNodeRequiresRNode" xml:space="preserve">
     <value>You can only add one RenderableNode to a FreeTransformNode</value>
+  </data>
+  <data name="ERR_EnumNotValid" xml:space="preserve">
+    <value>: Enum value not valid.</value>
+  </data>
+  <data name="ERR_FilenameNotValid" xml:space="preserve">
+    <value>: Filename not valid.</value>
   </data>
 </root>

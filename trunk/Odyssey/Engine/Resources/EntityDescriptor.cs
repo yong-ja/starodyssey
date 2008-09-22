@@ -9,6 +9,7 @@ namespace AvengersUtd.Odyssey.Resources
         MeshDescriptor meshDescriptor;
         MaterialDescriptor[] materialDescriptors;
 
+        #region Properties
         [XmlAttribute]
         public string Label
         {
@@ -26,12 +27,17 @@ namespace AvengersUtd.Odyssey.Resources
         {
             get { return materialDescriptors; }
             set { materialDescriptors = value; }
-        }
+        } 
+        #endregion
 
         public EntityDescriptor(string label, MeshDescriptor meshDescriptor, MaterialDescriptor materials) :
             this(label, meshDescriptor, new[] {materials})
         {
         }
+
+        public EntityDescriptor(string label, MaterialDescriptor materialDescriptor) :
+            this(label, new MeshDescriptor(label, true), materialDescriptor)
+        {}
 
         public EntityDescriptor(string label, MeshDescriptor meshDescriptor, MaterialDescriptor[] materials)
         {

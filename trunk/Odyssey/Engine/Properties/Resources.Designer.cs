@@ -61,16 +61,16 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized parameter..
+        ///   Looks up a localized string similar to : Enum value not valid..
         /// </summary>
-        internal static string ERR_BaseLightParameter {
+        internal static string ERR_EnumNotValid {
             get {
-                return ResourceManager.GetString("ERR_BaseLightParameter", resourceCulture);
+                return ResourceManager.GetString("ERR_EnumNotValid", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fatal Error.
+        ///   Looks up a localized string similar to Fatal Error..
         /// </summary>
         internal static string ERR_Fatal {
             get {
@@ -84,6 +84,15 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string ERR_FeatureNotSupported {
             get {
                 return ResourceManager.GetString("ERR_FeatureNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to : Filename not valid..
+        /// </summary>
+        internal static string ERR_FilenameNotValid {
+            get {
+                return ResourceManager.GetString("ERR_FilenameNotValid", resourceCulture);
             }
         }
         
@@ -129,6 +138,15 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string ERR_SpotlightParameter {
             get {
                 return ResourceManager.GetString("ERR_SpotlightParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized parameter..
+        /// </summary>
+        internal static string ERR_UnrecognizedParameter {
+            get {
+                return ResourceManager.GetString("ERR_UnrecognizedParameter", resourceCulture);
             }
         }
     }

@@ -157,7 +157,7 @@ namespace AvengersUtd.Odyssey.Objects.Entities
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException(parameter.ToString(), Properties.Resources.ERR_BaseLightParameter);
+                    throw new ArgumentOutOfRangeException(parameter.ToString(), Properties.Resources.ERR_UnrecognizedParameter);
             }
 
             return new EffectParameter(varName, effect, update);
