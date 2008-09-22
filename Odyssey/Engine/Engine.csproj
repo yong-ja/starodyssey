@@ -69,13 +69,14 @@
     <Compile Include="DeviceParameters.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\BoundingFrustum.cs" />
+    <Compile Include="Geometry\Enums.cs" />
+    <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\EventArgs.cs" />
     <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
     <Compile Include="Graphics\Meshes\IAxisAlignedBox.cs" />
     <Compile Include="Graphics\Meshes\IMesh.cs" />
-    <Compile Include="Graphics\Meshes\Interface1.cs" />
     <Compile Include="Graphics\Meshes\MeshPart.cs" />
     <Compile Include="Graphics\Meshes\MeshPartCollection.cs" />
     <Compile Include="Graphics\Rendering\CommandList.cs" />
@@ -98,6 +99,8 @@
     <Compile Include="Graphics\Effects\ParamHandles.cs" />
     <Compile Include="Graphics\Effects\ScreenHelper.cs" />
     <Compile Include="Objects\Entities\BaseLight.cs" />
+    <Compile Include="Objects\Entities\BoundingBoxEntity.cs" />
+    <Compile Include="Objects\Entities\BoundingSphereEntity.cs" />
     <Compile Include="Objects\Entities\Platform.cs" />
     <Compile Include="Objects\Entities\SpotLight.cs" />
     <Compile Include="Objects\Entities\PointLight.cs" />
@@ -114,7 +117,6 @@
     <Compile Include="Graphics\Meshes\AbstractMesh.cs" />
     <Compile Include="Graphics\Meshes\BaseEntity.cs" />
     <Compile Include="Objects\Entities\Billboard.cs" />
-    <Compile Include="Graphics\Meshes\IConstantRotation.cs" />
     <Compile Include="Graphics\Meshes\IRenderable.cs" />
     <Compile Include="Graphics\Materials\IMaterial.cs" />
     <Compile Include="Graphics\Materials\SurfaceAtmosphereMaterial.cs" />

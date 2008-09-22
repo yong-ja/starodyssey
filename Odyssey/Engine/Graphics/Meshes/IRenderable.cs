@@ -1,5 +1,6 @@
 using System;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -13,6 +14,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Mesh Mesh { get; }
 
         bool CastsShadows { get; }
+        RenderableNode ParentNode { get; set; }
 
         /// <summary>
         /// Loads resources and inits object.

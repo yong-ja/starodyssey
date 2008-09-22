@@ -1,4 +1,5 @@
 using System;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
@@ -13,7 +14,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     {
         int faceCount;
         int vertexCount;
-        IRenderable owningEntity;
         protected EntityDescriptor entityDescriptor;
 
         #region Properties
@@ -24,30 +24,28 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             set { entityDescriptor = value; }
         }
 
-        public IRenderable OwningEntity
-        {
-            get { return owningEntity; }
-            set { owningEntity = value; }
-        }
+        public IRenderable OwningEntity { get; set; }
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Creates a new simple mesh object.
+        /// Creates a new simple mesh object from file.
         /// </summary> 
-        /// <param name="entity">The actual IRenderable object this mesh refers to.</param>
-        /// <param name="entityDesc">Contains data on the meshObject and texture file paths</param>
-        public SimpleMesh(IRenderable entity, EntityDescriptor entityDesc)
+        /// <param name="descriptor">Contains data on the meshObject and texture file paths</param>
+        public SimpleMesh(EntityDescriptor descriptor) :
+            this(descriptor, EntityManager.LoadMesh(descriptor.MeshDescriptor.MeshFilename))
         {
-            owningEntity = entity;
-            //create the meshObject from file
-            entityDescriptor = entityDesc;
-            meshObject = EntityManager.LoadMesh(entityDesc.MeshDescriptor.MeshFilename);
         }
 
-        #endregion
+        public SimpleMesh(EntityDescriptor descriptor, Mesh mesh)
+        {
+            entityDescriptor = descriptor;
+            meshObject = mesh;
+        }
+
+       #endregion
 
         public void Init()
         {
@@ -61,7 +59,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
                 if (materials[i] is ITexturedMaterial)
                     ((ITexturedMaterial) materials[i]).LoadTextures(entityDescriptor.MaterialDescriptors[i]);
-                materials[i].CreateEffect(owningEntity);
+                materials[i].CreateEffect(OwningEntity);
             }
 
             meshPartCollection = new MeshPartCollection(this, materials);

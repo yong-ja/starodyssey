@@ -9,6 +9,8 @@ using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using SlimDX.Direct3D9;
+using System.Text.RegularExpressions;
+using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
@@ -16,6 +18,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     {
         bool disposed;
         bool castsShadows;
+        RenderableNode parentNode;
         EventHandlerList eventHandlerList;
         protected Vector3 positionV3;
         protected Vector3 rotationAngles;
@@ -25,7 +28,21 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #region Events
 
+        static readonly object eventPositionChanged;
         static readonly object eventPositionChanging;
+
+        public event EventHandler<PositionEventArgs> PositionChanged
+        {
+            add { eventHandlerList.AddHandler(eventPositionChanged, value); }
+            remove { eventHandlerList.RemoveHandler(eventPositionChanged, value); }
+        }
+
+        protected virtual void OnPositionChanged(PositionEventArgs e)
+        {
+            EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>)eventHandlerList[eventPositionChanged];
+            if (handler != null)
+                handler(this, e);
+        }
 
         public event EventHandler<PositionEventArgs> PositionChanging
         {
@@ -64,17 +81,48 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return meshObject.Materials; }
         }
 
+        public RenderableNode ParentNode
+        {
+            get { return parentNode; }
+        }
+
         #endregion
 
         static BaseEntity()
         {
             eventPositionChanging = new object();
+            eventPositionChanged = new object();
         }
 
-        protected BaseEntity(EntityDescriptor entityDesc)
+        protected BaseEntity(EntityDescriptor descriptor, IAxisAlignedBox box) :
+            this(descriptor, GeometryHelper.CreateParallelepiped(box))
+        {
+        }
+
+        protected BaseEntity(EntityDescriptor descriptor, ISphere sphere) :
+            this(descriptor, GeometryHelper.CreateSphere(sphere))
+        {
+        }
+
+        BaseEntity(EntityDescriptor descriptor, Mesh mesh) :
+            this()
+        {
+            meshObject = new SimpleMesh(descriptor, mesh);
+        }
+
+        protected BaseEntity(EntityDescriptor entityDesc): this()
+        {
+            
+            //TODO: if (checked filename validity)
+                meshObject = new SimpleMesh(entityDesc);
+            //else
+            //    throw new InvalidOperationException(string.Format("{0}{1}", Properties.Resources.ERR_FilenameNotValid));
+
+        }
+
+        BaseEntity()
         {
             eventHandlerList = new EventHandlerList();
-            meshObject = new SimpleMesh(this, entityDesc);
             castsShadows = true;
             CurrentRotation = Quaternion.Identity;
         }
@@ -134,6 +182,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                     PositionEventArgs e = new PositionEventArgs(positionV3, value);
                     OnPositionChanging(e);
                     positionV3 = e.NewValue;
+                    OnPositionChanged(e);
                     
                 }
             }
@@ -168,6 +217,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Mesh IRenderable.Mesh
         {
             get { return meshObject.Mesh; }
+        }
+
+        RenderableNode IRenderable.ParentNode
+        {
+            get { return parentNode; }
+            set { parentNode = value; }
         }
         #endregion
 
