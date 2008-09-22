@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceCreator.cs" />
     <Compile Include="DeviceParameters.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\BoundingFrustum.cs" />

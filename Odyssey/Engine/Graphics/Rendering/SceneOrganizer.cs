@@ -65,6 +65,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             preprocessList.Insert(0, command);
         }
 
+        private BoundingBox TransformBoundingBox(BoundingBox origBox, Matrix matrix)
+        {
+            Vector3 origCorner1 = origBox.Minimum;
+            Vector3 origCorner2 = origBox.Maximum;
+
+            Vector4 transCorner1 = Vector3.Transform(origCorner1, matrix);
+            Vector4 transCorner2 = Vector3.Transform(origCorner2, matrix);
+
+
+            Vector3 newCorner1 = new Vector3(transCorner1.X, transCorner1.Y, transCorner1.Z);
+            Vector3 newCorner2 = new Vector3(transCorner2.X, transCorner2.Y, transCorner2.Z);
+            return new BoundingBox(newCorner1, newCorner2);
+        }
 
         public bool CheckForCollisions(BoundingSphere sphere)
         {
@@ -74,7 +87,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 IAxisAlignedBox iBox = entity as IAxisAlignedBox;
                 if (iBox != null)
                 {
-                    if (BoundingBox.Intersects(iBox.BoundingBox, sphere))
+                    BoundingBox box = iBox.BoundingBox;
+                    if (!rNode.CurrentAbsoluteWorldMatrix.IsIdentity)
+                        box = TransformBoundingBox(box, rNode.CurrentAbsoluteWorldMatrix);
+
+                    if (BoundingBox.Intersects(box, sphere))
                         return true;
                 }
             }
