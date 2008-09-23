@@ -12,11 +12,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         const string nodeTag = "FtN_";
         static int count;
 
-        RenderableNode rNode;
+        public RenderableNode LeadNode { get; set; }
 
         public FreeTransformNode()
             : this((count++).ToString())
-        { }
+        {
+        }
 
         public FreeTransformNode(string label)
             : base(nodeTag + label, true)
@@ -24,55 +25,53 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         }
 
 
-        protected override void OnInsertBefore(INode newChild, INode refNode)
+        public override void Init()
         {
-            if (ChildrenCount == 1 || !(newChild is RenderableNode))
-                throw new InvalidOperationException(Properties.Resources.ERR_FtNodeRequiresRNode);
-            base.OnInsertBefore(newChild, refNode);
+            if (LeadNode == null)
+                foreach (SceneNode sNode in ChildrenNodeIterator)
+                {
+                    RenderableNode rNode = sNode as RenderableNode;
+                    if (rNode == null) continue;
+
+                    LeadNode = rNode;
+                    UpdateLocalWorldMatrix();
+                    return;
+                }
+
+            else
+            {
+                UpdateLocalWorldMatrix();
+                return;
+            }
+
+            throw new InvalidOperationException(Properties.Resources.ERR_FtNodeRequiresRNode);
         }
 
-        protected override void OnInsertAfter(INode newChild, INode refNode)
-        {
-            if (ChildrenCount == 1 || !(newChild is RenderableNode))
-                throw new InvalidOperationException(Properties.Resources.ERR_FtNodeRequiresRNode);
-            base.OnInsertBefore(newChild, refNode);
-        }
-
-        protected override void OnChildAdded(object sender, NodeEventArgs e)
-        {
-            base.OnChildAdded(sender, e);
-            rNode = e.Node as RenderableNode;
-            
-        }
-
-        protected override void OnChildRemoved(object sender, NodeEventArgs e)
-        {
-            base.OnChildRemoved(sender, e);
-            rNode = null;
-        }
-
-        Vector3 previousRotation = new Vector3(0,1,0);
         public override void UpdateLocalWorldMatrix()
         {
-            IRenderable renderableObject = rNode.RenderableObject;
+            IRenderable renderableObject = LeadNode.RenderableObject;
+
+            Matrix mTemp = Matrix.Identity;
+            if (renderableObject.RotationDelta != Vector3.Zero)
+            {
+
+                float yaw = renderableObject.RotationDelta.X;
+                float pitch = renderableObject.RotationDelta.Y;
+                float roll = renderableObject.RotationDelta.Z;
+
+                Quaternion qRotationChange = Quaternion.RotationYawPitchRoll(yaw, pitch, roll);
+                Quaternion qCurrentRotation = qRotationChange*renderableObject.CurrentRotation;
+
+                Matrix mRotation = Matrix.RotationQuaternion(qCurrentRotation);
+                mTemp *= mRotation;
+                renderableObject.CurrentRotation = qCurrentRotation;
+            }
+
             Matrix mTranslation = Matrix.Translation(renderableObject.PositionV3);
-            //Matrix mRotationX = Matrix.RotationX(renderableObject.RotationDelta.X);
-            //Matrix mRotationY = Matrix.RotationY(renderableObject.RotationDelta.Y);
-            //Matrix mRotationZ = Matrix.RotationZ(renderableObject.RotationDelta.Z);
+            mTemp *= mTranslation;
 
-            //LocalWorldMatrix = mRotationZ * mRotationY * mRotationX * mTranslation;
-
-            float yaw = renderableObject.RotationDelta.X;
-            float pitch = renderableObject.RotationDelta.Y;
-            float roll = renderableObject.RotationDelta.Z;
-
-            Quaternion qRotationChange = Quaternion.RotationYawPitchRoll(yaw, pitch, roll);
-            Quaternion qCurrentRotation = qRotationChange*renderableObject.CurrentRotation;
-
-            Matrix mRotation = Matrix.RotationQuaternion(qCurrentRotation);
-            LocalWorldMatrix = mRotation*mTranslation;
-            renderableObject.CurrentRotation = qCurrentRotation;
-
+            LocalWorldMatrix = mTemp;
+            
         }
     }
 }

@@ -139,12 +139,15 @@
     <value>: Variable not found in effect file.</value>
   </data>
   <data name="ERR_FtNodeRequiresRNode" xml:space="preserve">
-    <value>You can only add one RenderableNode to a FreeTransformNode</value>
+    <value>At least a RenderableNode child is required for a FreeTransformNode</value>
   </data>
   <data name="ERR_EnumNotValid" xml:space="preserve">
     <value>: Enum value not valid.</value>
   </data>
   <data name="ERR_FilenameNotValid" xml:space="preserve">
     <value>: Filename not valid.</value>
+  </data>
+  <data name="ERR_TNodeRequired" xml:space="preserve">
+    <value>This node can only be added to a TransformNode.</value>
   </data>
 </root>

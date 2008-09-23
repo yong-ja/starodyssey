@@ -97,7 +97,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can only add one RenderableNode to a FreeTransformNode.
+        ///   Looks up a localized string similar to At least a RenderableNode child is required for a FreeTransformNode.
         /// </summary>
         internal static string ERR_FtNodeRequiresRNode {
             get {
@@ -138,6 +138,15 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string ERR_SpotlightParameter {
             get {
                 return ResourceManager.GetString("ERR_SpotlightParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This node can only be added to a TransformNode..
+        /// </summary>
+        internal static string ERR_TNodeRequired {
+            get {
+                return ResourceManager.GetString("ERR_TNodeRequired", resourceCulture);
             }
         }
         
