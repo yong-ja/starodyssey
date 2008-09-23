@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey.Objects.Entities
             box)
         {
             boundingBox = box.BoundingBox;
-          
+            CastsShadows = false;
         }
 
         public override void Init()

@@ -151,7 +151,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             if (iSphere == null)
                 return true;
 
-            BoundingSphere bSphere = new BoundingSphere(iSphere.Center, iSphere.Radius);
+            BoundingSphere bSphere = iSphere.BoundingSphere;
 
             ContainmentType cType = BoundingFrustum.Contains(Game.CurrentScene.Camera.Frustum, bSphere);
 

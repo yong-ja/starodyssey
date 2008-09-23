@@ -18,6 +18,7 @@ namespace AvengersUtd.Odyssey.Objects.Entities
             sphere)
         {
             boundingSphere = sphere.BoundingSphere ;
+            CastsShadows = false;
           
         }
 
@@ -30,7 +31,7 @@ namespace AvengersUtd.Odyssey.Objects.Entities
         protected override void OnPositionChanged(PositionEventArgs e)
         {
             base.OnPositionChanged(e);
-            boundingSphere = GeometryHelper.TransformBoundingSphere(boundingSphere, ParentNode.CurrentAbsoluteWorldMatrix);
+            boundingSphere = GeometryHelper.TransformBoundingSphere(boundingSphere, e.NewValue);
         }
 
         #region ISphere Members
