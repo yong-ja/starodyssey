@@ -132,6 +132,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RenderPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Resources\EffectManager.cs" />
     <Compile Include="Resources\EntityDescriptor.cs" />
     <Compile Include="Graphics\Materials\MaterialDescriptor.cs" />

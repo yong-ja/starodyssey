@@ -106,7 +106,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified style was not found..
+        ///   Looks up a localized string similar to The specified style file was not found..
         /// </summary>
         internal static string ERR_StyleNotFound {
             get {

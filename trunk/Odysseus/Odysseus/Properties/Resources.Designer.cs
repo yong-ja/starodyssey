@@ -59,5 +59,23 @@ namespace AvengersUtd.Odysseus.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BaseButton.
+        /// </summary>
+        internal static string ControlCategory_Button {
+            get {
+                return ResourceManager.GetString("ControlCategory_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContainerControl.
+        /// </summary>
+        internal static string ControlCategory_Containers {
+            get {
+                return ResourceManager.GetString("ControlCategory_Containers", resourceCulture);
+            }
+        }
     }
 }

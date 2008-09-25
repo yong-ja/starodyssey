@@ -136,6 +136,6 @@
     <value>The DataSource object does not implement the IList interface.</value>
   </data>
   <data name="ERR_StyleNotFound" xml:space="preserve">
-    <value>The specified style was not found.</value>
+    <value>The specified style file was not found.</value>
   </data>
 </root>

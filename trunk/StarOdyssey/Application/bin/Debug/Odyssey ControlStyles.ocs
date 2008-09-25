@@ -18,6 +18,21 @@ Thanks for using the Odyssey UI!-->
       <Color Type="BorderHighlighted" Name="Orange" HexValue="FFFFA500" />
     </ColorArray>
   </ControlStyle>
+    <ControlStyle Name="SelectorRectangle" Shape="Rectangle" BorderStyle="Flat" BorderSize="2">
+    <Shading Type="RectangleFlat">
+      <Values LightFactor="0" DarkFactor="0" />
+    </Shading>
+    <ColorArray>
+      <Color Type="Enabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
+      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Disabled" Name="Empty" HexValue="00000000" />
+      <Color Type="Selected" Name="Empty" HexValue="00000000" />
+      <Color Type="Focused" Name="Empty" HexValue="00000000" />
+      <Color Type="BorderEnabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
+    </ColorArray>
+  </ControlStyle>
   <ControlStyle Name="RichTextArea" Shape="None" BorderStyle="None" BorderSize="0" Padding="8 8 8 8" TextStyleClass="RichTextArea">
     <Shading Type="RectangleFlat">
       <Values LightFactor="0" DarkFactor="0" />
