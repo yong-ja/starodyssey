@@ -28,21 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OdysseusForm));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.sidePanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.renderPanel = new AvengersUtd.Odyssey.RenderPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.menu.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.sidePanel.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -81,6 +80,25 @@
             this.sidePanel.Size = new System.Drawing.Size(271, 768);
             this.sidePanel.TabIndex = 0;
             // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.propertyGrid);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 7);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(271, 761);
+            this.panel1.TabIndex = 1;
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(269, 759);
+            this.propertyGrid.TabIndex = 0;
+            // 
             // toolStrip1
             // 
             this.toolStrip1.AllowMerge = false;
@@ -90,17 +108,16 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(271, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(271, 7);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "controlStrip";
             // 
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 4);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
             // renderPanel
@@ -109,25 +126,6 @@
             this.renderPanel.Name = "renderPanel";
             this.renderPanel.Size = new System.Drawing.Size(1024, 768);
             this.renderPanel.TabIndex = 1;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoSize = true;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.propertyGrid);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 39);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(271, 729);
-            this.panel1.TabIndex = 1;
-            // 
-            // propertyGrid
-            // 
-            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(269, 727);
-            this.propertyGrid.TabIndex = 0;
             // 
             // OdysseusForm
             // 
@@ -139,14 +137,15 @@
             this.MainMenuStrip = this.menu;
             this.Name = "OdysseusForm";
             this.Text = "Odysseus";
+            this.Load += new System.EventHandler(this.OdysseusForm_Load);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.sidePanel.ResumeLayout(false);
             this.sidePanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

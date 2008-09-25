@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using SlimDX.Direct3D9;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey.Settings
 {
@@ -54,6 +55,11 @@ namespace AvengersUtd.Odyssey.Settings
         public int ScreenHeight
         {
             get { return screenHeight; }
+        }
+
+        public Size ScreenSize
+        {
+            get { return new Size(screenWidth, screenHeight); }
         }
 
         public ShaderQuality ShaderQuality

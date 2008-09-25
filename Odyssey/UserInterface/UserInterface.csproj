@@ -65,6 +65,7 @@
     <Compile Include="RenderableControls\Hud.SlimDX.cs" />
     <Compile Include="RenderableControls\Interfaces\I3dEntity.cs" />
     <Compile Include="RenderableControls\ProgressBar.cs" />
+    <Compile Include="RenderableControls\SelectionRectangle.cs" />
     <Compile Include="RenderableControls\TableCell.cs" />
     <Compile Include="RenderableControls\TableCellCollection.cs" />
     <Compile Include="RenderableControls\TableRow.cs" />
