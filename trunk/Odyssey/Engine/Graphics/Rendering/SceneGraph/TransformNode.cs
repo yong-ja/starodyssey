@@ -8,10 +8,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 {
     public abstract class TransformNode : SceneNode
     {
+        static readonly Vector3 DefaultScaling = new Vector3(1, 1, 1);
         bool isDynamic;
         Matrix localWorldMatrix;
         Matrix absoluteWorldMatrix;
-        Quaternion rotation;
+        Quaternion qRotation;
+        protected Vector3 position;
+        protected Vector3 rotation;
+        protected Vector3 scaling;
 
         #region Events
 
@@ -39,6 +43,47 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         public bool IsDynamic
         {
             get { return isDynamic; }
+        }
+
+
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set
+            {
+                if (position != value)
+                {
+                    position = value;
+                    UpdateLocalWorldMatrix();
+                }
+            }
+        }
+
+        public Vector3 Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                if (rotation != value)
+                {
+                    rotation = value;
+                    UpdateLocalWorldMatrix();
+                }
+            }
+        }
+
+        public Vector3 Scaling
+        {
+            get { return scaling; }
+            set
+            {
+                if (scaling != value)
+                {
+                    scaling = value;
+                    UpdateLocalWorldMatrix();
+                }
+            }
         }
 
         /// <summary>
@@ -77,6 +122,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         protected TransformNode(string label, bool isDynamic) : base(label, SceneNodeType.Transform)
         {
             this.isDynamic = isDynamic;
+            scaling = DefaultScaling;
         }
         #endregion
 

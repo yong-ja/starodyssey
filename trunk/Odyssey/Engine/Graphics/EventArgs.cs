@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics
@@ -25,6 +26,32 @@ namespace AvengersUtd.Odyssey.Graphics
         {
             this.previousValue = previousValue;
             this.NewValue = newValue;
+        }
+    }
+
+    public class CollisionEventArgs : EventArgs
+    {
+        public IRenderable CollidingObject
+        {
+            get;
+            private set;
+        }
+        public IRenderable CollidedObject
+        {
+            get;
+            private set;
+        }
+
+        public bool AllowMovement
+        {
+            get;
+            set;
+        }
+
+        public CollisionEventArgs(IRenderable collidingObject, IRenderable collidedObject)
+        {
+            CollidingObject = collidingObject;
+            CollidedObject = collidedObject;
         }
     }
 }

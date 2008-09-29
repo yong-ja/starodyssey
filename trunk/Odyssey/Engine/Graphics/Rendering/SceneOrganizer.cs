@@ -68,23 +68,30 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         
 
-        public bool CheckForCollisions(BoundingSphere sphere)
+        public IRenderable CheckForCollisions(IRenderable collidingObject, BoundingSphere sphere)
         {
+            RenderableNode cNode = collidingObject.ParentNode;
+
             foreach (RenderableNode rNode in nodes)
             {
+                if (cNode == rNode || !rNode.RenderableObject.IsCollidable)
+                    continue;
+
                 IRenderable entity = rNode.RenderableObject;
                 IAxisAlignedBox iBox = entity as IAxisAlignedBox;
                 if (iBox != null)
                 {
                     BoundingBox box = iBox.BoundingBox;
-                    if (!rNode.CurrentAbsoluteWorldMatrix.IsIdentity)
-                        box = GeometryHelper.TransformBoundingBox(box, rNode.CurrentAbsoluteWorldMatrix);
+                    //if (!rNode.CurrentAbsoluteWorldMatrix.IsIdentity)
+                    //    box = GeometryHelper.TransformBoundingBox(box, rNode.CurrentAbsoluteWorldMatrix);
 
                     if (BoundingBox.Intersects(box, sphere))
-                        return true;
+                    {
+                        return rNode.RenderableObject;
+                    }
                 }
             }
-            return false;
+            return null;
         }
     }
 }
