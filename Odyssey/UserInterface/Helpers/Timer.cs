@@ -65,8 +65,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Helpers
 
         double interval = 1000;
         Thread timerThread;
-        bool stop;
-        public event ElapsedEventHandler Elapsed;        
+        public event ElapsedEventHandler Elapsed;
+
+        public bool IsStopped { get; private set; }
 
         public double Interval
         {
@@ -133,7 +134,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Helpers
 
         public void Start()
         {
-            stop = false;
+            IsStopped = false;
 
             timerThread = new Thread(new ThreadStart(Run));
             timerThread.IsBackground = true;
@@ -146,7 +147,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Helpers
             int sleptTime = 0;
             int intermittentSleepIncrement = 10;
 
-            while (!stop && sleptTime < totalTime)
+            while (!IsStopped && sleptTime < totalTime)
             {
                 Thread.Sleep(intermittentSleepIncrement);
                 sleptTime += intermittentSleepIncrement;
@@ -156,7 +157,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Helpers
         public void Stop()
         {
             // Request the loop to stop
-            stop = true;
+            IsStopped = true;
 
         }
 

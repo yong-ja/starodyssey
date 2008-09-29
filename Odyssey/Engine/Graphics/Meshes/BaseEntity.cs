@@ -28,31 +28,45 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #region Events
 
-        static readonly object eventPositionChanged;
-        static readonly object eventPositionChanging;
+        static readonly object EventPositionChanged;
+        static readonly object EventPositionChanging;
+        static readonly object EventCollision;
+
+        public event EventHandler<CollisionEventArgs> Collision
+        {
+            add { eventHandlerList.AddHandler(EventCollision, value); }
+            remove { eventHandlerList.RemoveHandler(EventCollision, value); }
+        }
 
         public event EventHandler<PositionEventArgs> PositionChanged
         {
-            add { eventHandlerList.AddHandler(eventPositionChanged, value); }
-            remove { eventHandlerList.RemoveHandler(eventPositionChanged, value); }
+            add { eventHandlerList.AddHandler(EventPositionChanged, value); }
+            remove { eventHandlerList.RemoveHandler(EventPositionChanged, value); }
+        }
+
+        protected virtual void OnCollision(CollisionEventArgs e)
+        {
+            EventHandler<CollisionEventArgs> handler = (EventHandler<CollisionEventArgs>)eventHandlerList[EventCollision];
+            if (handler != null)
+                handler(this, e);
         }
 
         protected virtual void OnPositionChanged(PositionEventArgs e)
         {
-            EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>)eventHandlerList[eventPositionChanged];
+            EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>)eventHandlerList[EventPositionChanged];
             if (handler != null)
                 handler(this, e);
         }
 
         public event EventHandler<PositionEventArgs> PositionChanging
         {
-            add { eventHandlerList.AddHandler(eventPositionChanging, value); }
-            remove { eventHandlerList.RemoveHandler(eventPositionChanging, value); }
+            add { eventHandlerList.AddHandler(EventPositionChanging, value); }
+            remove { eventHandlerList.RemoveHandler(EventPositionChanging, value); }
         }
 
         protected virtual void OnPositionChanging(PositionEventArgs e)
         {
-            EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>) eventHandlerList[eventPositionChanging];
+            EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>) eventHandlerList[EventPositionChanging];
             if (handler != null)
                 handler(this, e);
         }
@@ -86,12 +100,18 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return parentNode; }
         }
 
+        public bool IsCollidable
+        {
+            get; set;
+        }
+
         #endregion
 
         static BaseEntity()
         {
-            eventPositionChanging = new object();
-            eventPositionChanged = new object();
+            EventCollision = new object();
+            EventPositionChanging = new object();
+            EventPositionChanged = new object();
         }
 
         protected BaseEntity(EntityDescriptor descriptor, IAxisAlignedBox box) :
@@ -124,6 +144,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             eventHandlerList = new EventHandlerList();
             castsShadows = true;
+            IsCollidable = true;
             CurrentRotation = Quaternion.Identity;
         }
 
@@ -170,6 +191,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
         }
 
+        #region Collision Methods
+        public void CollideWith(IRenderable collidedObject)
+        {
+            OnCollision(new CollisionEventArgs(this, collidedObject));
+        }
+        #endregion
+
         #region IEntity Members
 
         public Vector3 PositionV3
@@ -181,9 +209,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 {
                     PositionEventArgs e = new PositionEventArgs(positionV3, value);
                     OnPositionChanging(e);
-                    positionV3 = e.NewValue;
-                    OnPositionChanged(e);
-                    
+                    if (positionV3 != e.NewValue)
+                    {
+                        positionV3 = e.NewValue;
+                        OnPositionChanged(e);
+                    }
                 }
             }
         }

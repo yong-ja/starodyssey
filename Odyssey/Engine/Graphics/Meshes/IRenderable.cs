@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         AbstractMaterial[] Materials { get; }
         Mesh Mesh { get; }
 
+        bool IsCollidable { get; }
         bool CastsShadows { get; }
         RenderableNode ParentNode { get; set; }
 
@@ -35,5 +36,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// Updates the position of the entity.
         /// </summary>
         void UpdatePosition();
+
+        /// <summary>
+        /// Programmatically causes a collision event involving this object with
+        /// another entity.
+        /// </summary>
+        void CollideWith(IRenderable collidedObject);
     }
 }
