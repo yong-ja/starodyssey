@@ -61,6 +61,7 @@
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="RenderableControls\CameraHostControl.cs" />
     <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
+    <Compile Include="RenderableControls\ControlSelector.cs" />
     <Compile Include="RenderableControls\Hud.MDX.cs" />
     <Compile Include="RenderableControls\Hud.SlimDX.cs" />
     <Compile Include="RenderableControls\Interfaces\I3dEntity.cs" />

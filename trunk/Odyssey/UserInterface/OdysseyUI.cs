@@ -24,7 +24,8 @@
 
 #region Using directives
 		using System;
-using System.Windows.Forms;
+		using System.Drawing;
+		using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using AvengersUtd.Odyssey.UserInterface.RenderableControls;
 using AvengersUtd.Odyssey.UserInterface.Style;
@@ -103,6 +104,7 @@ namespace AvengersUtd.Odyssey.UserInterface
             set { currentHUD = value; }
         }
 
+        #region UI Input
         static void MouseMovementHandler(object sender, MouseEventArgs e)
         {
             bool handled = false;
@@ -257,6 +259,18 @@ namespace AvengersUtd.Odyssey.UserInterface
                 MouseEventHandler(ProcessMouseInputRelease);
             target.MouseMove += new
                 MouseEventHandler(MouseMovementHandler);
+        }
+        #endregion
+
+        public static BaseControl FindControl(Point cursorLocation)
+        {
+             foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(currentHUD))
+             {
+                 if (control.IntersectTest(cursorLocation))
+                     return control;
+             }
+
+             return null;
         }
 
         public static void ReleaseResources()

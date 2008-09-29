@@ -265,5 +265,33 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         }
 
         #endregion
+
+        #region Static Methods
+        /// <summary>
+        /// Computes the eight points bounding this control.
+        /// <remarks>Index 0 is northwest corner.<br>Index 7 is west point.</br></remarks>
+        /// </summary>
+        /// <param name="control">The control whose bounds to compute.</param>
+        /// <returns>The array of points, stored in clockwise order.</returns>
+        public Vector2[] ComputeBounds(BaseControl control)
+        {
+            Vector2 cornerNE = control.AbsolutePosition;
+            int width = control.Size.Width;
+            int height = control.Size.Height;
+
+            return new Vector2[]
+                       {
+                           cornerNE,
+                           new Vector2(cornerNE.X + width/2f, cornerNE.Y),
+                           new Vector2(cornerNE.X + width, cornerNE.Y),
+                           new Vector2(cornerNE.X + width, cornerNE.Y + height/2f),
+                           new Vector2(cornerNE.X + width, cornerNE.Y + height),
+                           new Vector2(cornerNE.X + width/2f, cornerNE.Y + height),
+                           new Vector2(cornerNE.X, cornerNE.Y + height),
+                           new Vector2(cornerNE.X, cornerNE.Y + height/2f)
+                       };
+        }
+
+        #endregion
     }
 }
