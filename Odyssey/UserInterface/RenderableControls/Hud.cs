@@ -236,6 +236,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             focusedControl = enteredControl = this;
             IsInside = true;
+            IsFocusable = true;
             windowManager = new WindowManager();
         }
 
