@@ -77,7 +77,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public bool CastsShadows
         {
             get { return castsShadows; }
-            set { castsShadows = false; }
+            set { castsShadows = value; }
         }
 
         public SimpleMesh MeshObject

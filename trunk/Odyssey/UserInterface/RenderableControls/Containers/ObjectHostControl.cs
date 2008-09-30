@@ -12,15 +12,16 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
     public class ObjectHostControl : SimpleShapeControl
         
     {
+        bool axisSwitched;
         bool isDragging;
         I3dEntity entity;
 
         Vector2 dragStartPosition;
         Plane p=planeX;
 
-        
         static Plane planeX = new Plane(new Vector3(0, 1, 0), 0);
         static Plane planeY = new Plane(new Vector3(0, 0, 1), 0);
+        bool mode;
 
         public I3dEntity Entity
         {
@@ -35,8 +36,15 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             ApplyControlStyle(StyleManager.GetControlStyle(ControlStyle.Empty));
         }
 
+        public void SwitchMode(bool value)
+        {
+            mode = value;
+        }
+
         public void SwitchPlane(bool xPlane)
         {
+            axisSwitched = !axisSwitched;
+
             if (xPlane)
                 p = new Plane(planeX.Normal, -iP.Y);
             else
@@ -107,38 +115,57 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         {
             base.OnMouseMove(e);
 
-            if (isDragging)
+            if (!isDragging) return;
+
+            if (!mode)
             {
-                
                 Vector3 vNear = new Vector3(e.X, e.Y, 0);
                 Vector3 vFar = new Vector3(e.X, e.Y, 1);
 
                 vNear = //Vector3.
                     MathHelper.Unproject(
-                    vNear,
-                    OdysseyUI.Device.Viewport,
-                    OdysseyUI.Device.GetTransform(TransformState.Projection),
-                    OdysseyUI.Device.GetTransform(TransformState.View),
-                    OdysseyUI.Device.GetTransform(TransformState.World));
+                        vNear,
+                        OdysseyUI.Device.Viewport,
+                        OdysseyUI.Device.GetTransform(TransformState.Projection),
+                        OdysseyUI.Device.GetTransform(TransformState.View),
+                        OdysseyUI.Device.GetTransform(TransformState.World));
 
                 vFar = //Vector3.
                     MathHelper.Unproject(
-                    vFar,
-                    OdysseyUI.Device.Viewport,
-                    OdysseyUI.Device.GetTransform(TransformState.Projection),
-                    OdysseyUI.Device.GetTransform(TransformState.View),
-                    OdysseyUI.Device.GetTransform(TransformState.World));
+                        vFar,
+                        OdysseyUI.Device.Viewport,
+                        OdysseyUI.Device.GetTransform(TransformState.Projection),
+                        OdysseyUI.Device.GetTransform(TransformState.View),
+                        OdysseyUI.Device.GetTransform(TransformState.World));
 
- 
+
                 Vector3 vDir = vFar - vNear;
-  
+
                 Ray r = new Ray(vNear, vDir);
                 //Plane p = new Plane(new Vector3(0, 1, 0), 0);
                 iP = new Vector3();
                 bool result = Intersection.RayPlaneTest(r, p, out iP);
                 DebugManager.LogToScreen(string.Format("X: {4} Y:{5} - MM - X:{0:f2} Y:{1:f2} Z:{2:f2} - {3}",
-                iP.X, iP.Y, iP.Z, result,e.X,e.Y));
+                                                       iP.X,
+                                                       iP.Y,
+                                                       iP.Z,
+                                                       result,
+                                                       e.X,
+                                                       e.Y));
                 entity.PositionV3 = iP;
+            }
+            else
+            {
+                const float k = 10f;
+                float x = 2 * ((float)e.X/OdysseyUI.CurrentHud.Size.Width) -1;
+                float y = 2*((float)e.Y / OdysseyUI.CurrentHud.Size.Height)-1;
+                x *= -k;
+                y *= -k;
+
+                if (axisSwitched)
+                    entity.RotationDelta = new Vector3(x, y, 0);
+                else
+                    entity.RotationDelta = new Vector3(x, 0, y);
             }
         }
     }

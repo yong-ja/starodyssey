@@ -9,6 +9,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces
     public interface I3dEntity
     {
         Vector3 PositionV3 { get; set; }
+        Vector3 RotationDelta { get; set; }
         Mesh Mesh { get; }
 
         bool Intersects(Ray ray);
