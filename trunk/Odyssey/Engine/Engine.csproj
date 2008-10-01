@@ -74,6 +74,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\BoundingFrustum.cs" />
     <Compile Include="Geometry\Enums.cs" />
+    <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Global.cs" />

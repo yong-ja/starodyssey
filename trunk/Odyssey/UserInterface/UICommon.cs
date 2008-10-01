@@ -82,43 +82,6 @@ namespace AvengersUtd.Odyssey.UserInterface
         All = Top | Bottom | Left | Right
     }
 
-    public enum LabelSize
-    {
-        Small,
-        Normal,
-        Large,
-        VeryLarge,
-        Huge
-    }
-
-    public enum ControlType
-    {
-        Button,
-        CheckBox,
-        DecoratedButton,
-        DropDownList,
-        GroupBox,
-        Hud,
-        Label,
-        OptionGroup,
-        OptionButton,
-        Panel,
-        PictureBox,
-        Table,
-        TabPanel,
-        TextBox,
-        TrackBar,
-        Window
-    }
-
-    public enum ControlStatusFlags
-    {
-        Enabled = 0,
-        IsSubComponent = 1,
-        IsVisible = 2,
-        CanRaiseEvents = 4,
-    }
-
     public class ControlEventArgs : EventArgs
     {
         IControl control;
