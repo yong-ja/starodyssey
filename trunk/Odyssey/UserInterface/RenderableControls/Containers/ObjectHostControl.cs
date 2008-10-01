@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
+using System.Windows.Forms;
 
 namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 {
@@ -111,6 +113,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         }
 
         Vector3 iP;
+        Point previousMousePosition= new Point(OdysseyUI.CurrentHud.Size.Width / 2, OdysseyUI.CurrentHud.Size.Height / 2);
         protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -156,12 +159,15 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             }
             else
             {
-                const float k = 10f;
-                float x = 2 * ((float)e.X/OdysseyUI.CurrentHud.Size.Width) -1;
-                float y = 2*((float)e.Y / OdysseyUI.CurrentHud.Size.Height)-1;
-                x *= -k;
-                y *= -k;
-
+                const float k = 0.010f;
+                Point delta = new Point(e.X - previousMousePosition.X, e.Y - previousMousePosition.Y);
+                //float x = 2 * ((float)delta.X / (OdysseyUI.CurrentHud.Size.Width)) - 1;
+                //float y = 2 * ((float)delta.Y / (OdysseyUI.CurrentHud.Size.Height)) - 1;
+                float x = delta.X * k;
+                float y = delta.Y * k;
+                DebugManager.LogToScreen(string.Format("R - X:{0:f2} Y:{1:f2}", x, y));
+                //previousMousePosition = e.Location;
+                Cursor.Position = dragStartPosition;
                 if (axisSwitched)
                     entity.RotationDelta = new Vector3(x, y, 0);
                 else
