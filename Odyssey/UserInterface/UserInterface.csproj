@@ -59,6 +59,7 @@
     <Compile Include="Devices\Mouse.cs" />
     <Compile Include="Devices\XBox360Controller.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="HitManager.cs" />
     <Compile Include="RenderableControls\CameraHostControl.cs" />
     <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
     <Compile Include="RenderableControls\ControlSelector.cs" />

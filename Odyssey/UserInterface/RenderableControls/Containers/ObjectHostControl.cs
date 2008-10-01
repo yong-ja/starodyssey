@@ -167,7 +167,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 float y = delta.Y * k;
                 DebugManager.LogToScreen(string.Format("R - X:{0:f2} Y:{1:f2}", x, y));
                 //previousMousePosition = e.Location;
-                Cursor.Position = dragStartPosition;
+                Cursor.Position = new Point((int) dragStartPosition.X, (int) dragStartPosition.Y);
                 if (axisSwitched)
                     entity.RotationDelta = new Vector3(x, y, 0);
                 else
