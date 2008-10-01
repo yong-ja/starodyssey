@@ -52,8 +52,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             renderableObject.PositionV3 = new Vector3(tParent.AbsoluteWorldMatrix.M41,
                                                       tParent.AbsoluteWorldMatrix.M42,
                                                       tParent.AbsoluteWorldMatrix.M43);
-            renderableObject.CurrentRotation = Quaternion.RotationYawPitchRoll(
-                tParent.Rotation.X, tParent.Rotation.Y, tParent.Rotation.Z);
+            //renderableObject.CurrentRotation = Quaternion.RotationYawPitchRoll(
+            //    tParent.Rotation.X, tParent.Rotation.Y, tParent.Rotation.Z);
         }
 
         public void Render()

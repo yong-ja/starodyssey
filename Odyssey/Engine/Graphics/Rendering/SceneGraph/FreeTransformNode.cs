@@ -60,12 +60,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 float roll = renderableObject.RotationDelta.Z;
 
                 Quaternion qRotationChange = Quaternion.RotationYawPitchRoll(yaw, pitch, roll);
-                Quaternion qCurrentRotation = qRotationChange*renderableObject.CurrentRotation;
+                Quaternion qCurrentRotation = qRotationChange * renderableObject.CurrentRotation;
 
                 Matrix mRotation = Matrix.RotationQuaternion(qCurrentRotation);
                 mTemp *= mRotation;
                 renderableObject.CurrentRotation = qCurrentRotation;
+                renderableObject.RotationDelta = Vector3.Zero;
             }
+            else
+                mTemp *= Matrix.RotationQuaternion(renderableObject.CurrentRotation);
 
             Matrix mTranslation = Matrix.Translation(renderableObject.PositionV3);
             mTemp *= mTranslation;
