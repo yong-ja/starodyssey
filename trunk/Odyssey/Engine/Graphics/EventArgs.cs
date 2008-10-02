@@ -54,4 +54,22 @@ namespace AvengersUtd.Odyssey.Graphics
             CollidedObject = collidedObject;
         }
     }
+
+    public class RotationEventArgs : EventArgs
+    {
+        public Vector3 RotationDelta
+        {
+            get;
+            private set;
+        }
+
+        public Quaternion CurrentRotation
+        { get; private set; }
+
+        public RotationEventArgs(Quaternion currentRotation, Vector3 rotationDelta)
+        {
+            CurrentRotation = currentRotation;
+            RotationDelta = rotationDelta;
+        }
+    }
 }

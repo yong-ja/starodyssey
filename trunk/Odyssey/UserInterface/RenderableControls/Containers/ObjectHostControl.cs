@@ -100,6 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             isDragging = true;
             OdysseyUI.CurrentHud.CaptureControl = this;
             dragStartPosition = new Vector2(e.X, e.Y);
+            previousMousePosition = new Point((int)dragStartPosition.X, (int)dragStartPosition.Y);
         }
 
         protected override void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
@@ -113,7 +114,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         }
 
         Vector3 iP;
-        Point previousMousePosition= new Point(OdysseyUI.CurrentHud.Size.Width / 2, OdysseyUI.CurrentHud.Size.Height / 2);
+        Point previousMousePosition;
         protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -160,18 +161,21 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             else
             {
                 const float k = 0.010f;
+                //Point delta = new Point(e.X - (int)dragStartPosition.X, e.Y - (int)dragStartPosition.Y);
                 Point delta = new Point(e.X - previousMousePosition.X, e.Y - previousMousePosition.Y);
                 //float x = 2 * ((float)delta.X / (OdysseyUI.CurrentHud.Size.Width)) - 1;
                 //float y = 2 * ((float)delta.Y / (OdysseyUI.CurrentHud.Size.Height)) - 1;
                 float x = delta.X * k;
                 float y = delta.Y * k;
                 DebugManager.LogToScreen(string.Format("R - X:{0:f2} Y:{1:f2}", x, y));
-                //previousMousePosition = e.Location;
-                Cursor.Position = new Point((int) dragStartPosition.X, (int) dragStartPosition.Y);
+                previousMousePosition = e.Location;
+               
                 if (axisSwitched)
-                    entity.RotationDelta = new Vector3(x, y, 0);
+                    entity.RotationDelta = new Vector3(-x, -y, 0);
                 else
-                    entity.RotationDelta = new Vector3(x, 0, y);
+                    entity.RotationDelta = new Vector3(-x, 0, -y);
+                //Cursor.Position =
+                //   Form.ActiveForm.PointToScreen(new Point((int)dragStartPosition.X, (int)dragStartPosition.Y));
             }
         }
     }

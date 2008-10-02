@@ -24,6 +24,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected Vector3 rotationAngles;
         protected Vector3 scalingValues;
         protected SimpleMesh meshObject;
+        Quaternion currentRotation;
 
 
         #region Events
@@ -31,6 +32,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         static readonly object EventPositionChanged;
         static readonly object EventPositionChanging;
         static readonly object EventCollision;
+        static readonly object EventRotationChanged;
 
         public event EventHandler<CollisionEventArgs> Collision
         {
@@ -67,6 +69,19 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected virtual void OnPositionChanging(PositionEventArgs e)
         {
             EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>) eventHandlerList[EventPositionChanging];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        public event EventHandler<RotationEventArgs> RotationChanged
+        {
+            add { eventHandlerList.AddHandler(EventRotationChanged, value); }
+            remove { eventHandlerList.RemoveHandler(EventRotationChanged, value); }
+        }
+
+        protected virtual void OnRotationChanged(RotationEventArgs e)
+        {
+            EventHandler<RotationEventArgs> handler = (EventHandler<RotationEventArgs>)eventHandlerList[EventRotationChanged];
             if (handler != null)
                 handler(this, e);
         }
@@ -112,6 +127,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             EventCollision = new object();
             EventPositionChanging = new object();
             EventPositionChanged = new object();
+            EventRotationChanged = new object();
         }
 
         protected BaseEntity(EntityDescriptor descriptor, IAxisAlignedBox box) :
@@ -239,8 +255,21 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             set { scalingValues = value; }
         }
 
-        public Quaternion CurrentRotation { get; set; }
-
+        public Quaternion CurrentRotation
+        {
+            get
+            {
+                return currentRotation;
+            }
+            set
+            {
+                if (currentRotation != value)
+                {
+                    currentRotation = value;
+                    OnRotationChanged(new RotationEventArgs(currentRotation, rotationAngles));
+                }
+            }
+        }
         #endregion
 
         #region IRenderable Members
