@@ -26,6 +26,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         /// </summary>
         public void BuildRenderScene(SceneGraph.SceneGraph sceneGraph)
         {
+            renderList.Clear();
             SceneNodeCollection nodeCollection = new SceneNodeCollection();
             foreach (SceneNode node in Node.PreOrderVisit(sceneGraph.RootNode))
             {
@@ -64,6 +65,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     throw new ArgumentOutOfRangeException("commandType", "Command not supported");
             }
             preprocessList.Insert(0, command);
+        }
+
+        public void ClearPreprocessEffects()
+        {
+            preprocessList.Clear();
         }
 
         

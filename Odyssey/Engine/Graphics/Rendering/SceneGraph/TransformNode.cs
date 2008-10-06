@@ -128,6 +128,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         public override void Init()
         {
+            base.Init();
             UpdateLocalWorldMatrix();
         }
 

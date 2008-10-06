@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         AbstractMaterial[] Materials { get; }
         Mesh Mesh { get; }
 
+        bool Inited { get; }
         bool IsCollidable { get; }
         bool CastsShadows { get; }
         RenderableNode ParentNode { get; set; }

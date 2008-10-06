@@ -13,7 +13,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public class DepthMaterial : AbstractMaterial
     {
         Format format;
-        
 
         public Format Format
         {

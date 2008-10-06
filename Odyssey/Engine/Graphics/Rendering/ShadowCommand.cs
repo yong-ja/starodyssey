@@ -27,7 +27,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             depthMappingMaterial = new DepthMaterial();
             depthMappingMaterial.CreateEffect(((RenderableNode)Items[0]).RenderableObject);
 
-            shadowMap = new Texture(Game.Device, 512, 512, 0, Usage.RenderTarget | Usage.AutoGenerateMipMap,
+            shadowMap = new Texture(Game.Device, 256, 256, 0, Usage.RenderTarget | Usage.AutoGenerateMipMap,
                                          Format.X8R8G8B8, Pool.Default);
             TextureManager.Add(commandTag, shadowMap);
             PurgeNonShadowCasters();
@@ -47,7 +47,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public override void Execute()
         {
-            ScreenHelper.RenderToTexture(512, 512, depthMappingMaterial.Format, shadowMap, new SlimDX.Color4(1f, 1f, 1f, 1f), this);
+            //Provvisorio
+            ScreenHelper.RenderToTexture(256, 256, depthMappingMaterial.Format, shadowMap, new SlimDX.Color4(1f, 1f, 1f, 1f), this);
             //BaseTexture.ToFile(shadowMap, "prova.jpg", ImageFileFormat.Jpg);
             foreach (RenderableNode rNode in Items)
             {
@@ -66,6 +67,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             Items.RenderWithMaterial(depthMappingMaterial);
         }
 
-
+        protected override void OnDispose()
+        {
+            shadowMap.Dispose();
+        }
     }
 }
