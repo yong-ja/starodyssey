@@ -7,8 +7,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public abstract class BaseCommand : IRenderCommand
     {
+        bool disposed;
         CommandType renderCommandType;
         SceneNodeCollection nodeCollection;
+
+        public bool Disposed
+        {
+            get { return disposed; }
+        }
 
         public SceneNodeCollection Items
         {
@@ -26,10 +32,40 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         /// </summary>
         public abstract void PerformRender();
 
+        protected abstract void OnDispose();
+
         protected BaseCommand(CommandType renderCommandType, SceneNodeCollection nodeCollection)
         {
             this.renderCommandType = renderCommandType;
             this.nodeCollection = nodeCollection;
         }
+
+         #region IDisposable Members
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // dispose managed components
+                    OnDispose();
+                }
+            }
+            disposed = true;
+        }
+
+        ~BaseCommand()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

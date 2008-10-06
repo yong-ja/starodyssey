@@ -17,7 +17,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     public abstract class BaseEntity : IRenderable, I3dEntity
     {
         bool disposed;
+        bool inited;
         bool castsShadows;
+        bool isVisible;
         RenderableNode parentNode;
         EventHandlerList eventHandlerList;
         protected Vector3 positionV3;
@@ -95,6 +97,17 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             set { castsShadows = value; }
         }
 
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set { isVisible = value; }
+        }
+
+        public bool Inited
+        {
+            get { return inited; }
+        }
+
         public SimpleMesh MeshObject
         {
             get { return meshObject; }
@@ -167,6 +180,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public virtual void Init()
         {
             meshObject.Init();
+            inited = true;
         }
 
         /// <summary>

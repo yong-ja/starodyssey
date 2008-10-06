@@ -121,7 +121,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update =
                         (fxParam => fxParam.ownerEffect.SetValue(
                                         eH,
-                                        BaseLight.CreateTextureBiasMatrix(512, 0.001f))
+                                        BaseLight.CreateTextureBiasMatrix(256, 0.001f))
                                         );
                     break;
 

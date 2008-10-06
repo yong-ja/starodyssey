@@ -22,5 +22,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             foreach (RenderableNode rNode in Items)
                 rNode.Render();
         }
+
+        protected override void OnDispose()
+        {
+            
+        }
     }
 }

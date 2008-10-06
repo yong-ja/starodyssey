@@ -44,7 +44,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         public override void Init()
         {
-            renderableObject.Init();
+            base.Init();
+            if (!renderableObject.Inited)
+                renderableObject.Init();
         }
 
         public override void Update()

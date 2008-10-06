@@ -27,6 +27,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         public override void Init()
         {
+            Inited = true;
             if (LeadNode == null)
                 foreach (SceneNode sNode in ChildrenNodeIterator)
                 {

@@ -28,7 +28,11 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         public I3dEntity Entity
         {
             get { return entity; }
-            set { entity = value; }
+            set
+            {
+                entity = value;
+                p.D = -entity.PositionV3.Y;
+            }
         }
 
         public ObjectHostControl()

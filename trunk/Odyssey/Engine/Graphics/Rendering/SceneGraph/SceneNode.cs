@@ -30,17 +30,29 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             get { return nodeType; }
         }
 
+        public bool Inited
+        {
+            get;
+            protected set;
+        }
+
         #endregion
 
         #region Methods
 
-        public abstract void Init();
+        public virtual void Init()
+        {
+            Inited = true;
+        }
+
         public abstract void Update();
 
         protected override void OnChildAdded(object sender, NodeEventArgs e)
         {
             base.OnChildAdded(sender, e);
-            ((SceneNode)(e.Node)).Init();
+            SceneNode sNode = ((SceneNode) e.Node);
+            if (!sNode.Inited)
+                sNode.Init();
         }
 
 

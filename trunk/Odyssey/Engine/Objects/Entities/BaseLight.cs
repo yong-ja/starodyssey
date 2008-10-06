@@ -74,6 +74,7 @@ namespace AvengersUtd.Odyssey.Objects.Entities
             ambientColor = DefaultAmbientColor;
             isActive = true;
             castsShadows = true;
+            hasMoved = true;
         }
 
         public Vector3 PositionV3
