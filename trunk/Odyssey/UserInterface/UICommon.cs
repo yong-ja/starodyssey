@@ -98,4 +98,18 @@ namespace AvengersUtd.Odyssey.UserInterface
             set { control = value; }
         }
     }
+
+    public enum IntersectionLocation
+    {
+        None,
+        Inner,
+        CornerNW,
+        Top,
+        CornerNE,
+        Right,
+        CornerSE,
+        Bottom,
+        CornerSW,
+        Left
+    }
 }
