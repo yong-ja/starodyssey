@@ -103,8 +103,30 @@ namespace AvengersUtd.Odyssey.UserInterface
                                 Width = bottom.Width,
                                 Height = left.Height
                             };
+        }
 
-
+        public IntersectionLocation FindIntersection(Point location)
+        {
+            if (innerArea.Contains(location))
+                return IntersectionLocation.Inner;
+            else if (cornerNW.Contains(location))
+                return IntersectionLocation.CornerNW;
+            else if (top.Contains(location))
+                return IntersectionLocation.Top;
+            else if (cornerNE.Contains(location))
+                return IntersectionLocation.CornerNE;
+            else if (right.Contains(location))
+                return IntersectionLocation.Right;
+            else if (cornerSE.Contains(location))
+                return IntersectionLocation.CornerSE;
+            else if (bottom.Contains(location))
+                return IntersectionLocation.Bottom;
+            else if (cornerSW.Contains(location))
+                return IntersectionLocation.CornerSW;
+            else if (left.Contains(location))
+                return IntersectionLocation.Left;
+            else
+                return IntersectionLocation.None;
         }
     }
 }
