@@ -61,7 +61,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         public void Render()
         {
             Game.Device.SetTransform(TransformState.World, tParent.AbsoluteWorldMatrix);
-            if (renderableObject.IsInViewFrustum())
+            if (renderableObject.IsVisible && renderableObject.IsInViewFrustum())
                 renderableObject.Render();
         }
 

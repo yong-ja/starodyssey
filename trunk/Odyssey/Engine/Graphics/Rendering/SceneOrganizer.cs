@@ -28,6 +28,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             renderList.Clear();
             SceneNodeCollection nodeCollection = new SceneNodeCollection();
+            renderList.Clear();
             foreach (SceneNode node in Node.PreOrderVisit(sceneGraph.RootNode))
             {
                 RenderableNode rNode = node as RenderableNode;

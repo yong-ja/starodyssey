@@ -171,7 +171,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 //float y = 2 * ((float)delta.Y / (OdysseyUI.CurrentHud.Size.Height)) - 1;
                 float x = delta.X * k;
                 float y = delta.Y * k;
-                DebugManager.LogToScreen(string.Format("R - X:{0:f2} Y:{1:f2}", x, y));
+                //DebugManager.LogToScreen(string.Format("R - X:{0:f2} Y:{1:f2}", x, y));
                 previousMousePosition = e.Location;
                
                 if (axisSwitched)

@@ -15,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         bool Inited { get; }
         bool IsCollidable { get; }
+        bool IsVisible { get; }
         bool CastsShadows { get; }
         RenderableNode ParentNode { get; set; }
 
