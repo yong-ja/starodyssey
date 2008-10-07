@@ -174,6 +174,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             eventHandlerList = new EventHandlerList();
             castsShadows = true;
             IsCollidable = true;
+            isVisible = true;
             CurrentRotation = Quaternion.Identity;
         }
 
