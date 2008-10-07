@@ -103,6 +103,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             set { isVisible = value; }
         }
 
+        public bool IsTrigger
+        {
+            get;
+            set;
+        }
+
         public bool Inited
         {
             get { return inited; }
@@ -231,7 +237,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #region IEntity Members
 
-        public Vector3 PositionV3
+        public virtual Vector3 PositionV3
         {
             get { return positionV3; }
             set
@@ -240,7 +246,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 {
                     PositionEventArgs e = new PositionEventArgs(positionV3, value);
                     OnPositionChanging(e);
-                    if (positionV3 != e.NewValue)
+                    if (!e.CancelEvent && positionV3 != e.NewValue)
                     {
                         positionV3 = e.NewValue;
                         OnPositionChanged(e);
@@ -278,10 +284,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
             set
             {
-                if (currentRotation != value)
+                RotationEventArgs e = new RotationEventArgs(currentRotation, rotationAngles);
+                
+                
+                if (!e.CancelEvent && currentRotation != value)
                 {
+                    OnRotationChanged(e);
                     currentRotation = value;
-                    OnRotationChanged(new RotationEventArgs(currentRotation, rotationAngles));
                 }
             }
         }

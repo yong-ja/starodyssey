@@ -97,6 +97,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                         return rNode.RenderableObject;
                     }
                 }
+                else
+                {
+                    IPlane iPlane = entity as IPlane;
+                    if (iPlane != null)
+                    {
+                        Plane p = iPlane.BoundingPlane;
+                        if (Plane.Intersects(p, sphere) == PlaneIntersectionType.Intersecting
+                            && Vector3.Distance(rNode.RenderableObject.PositionV3, cNode.RenderableObject.PositionV3) <= 5)
+                            return rNode.RenderableObject;
+                    }
+                }
             }
             return null;
         }
