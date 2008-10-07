@@ -24,6 +24,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         static Plane planeX = new Plane(new Vector3(0, 1, 0), 0);
         static Plane planeY = new Plane(new Vector3(0, 0, 1), 0);
         bool mode;
+        bool xPlane;
 
         public I3dEntity Entity
         {
@@ -33,6 +34,14 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 entity = value;
                 p.D = -entity.PositionV3.Y;
             }
+        }
+
+        public void UpdatePlane()
+        {
+            if (xPlane)
+                p.D = -entity.PositionV3.Y;
+            else
+                p.D = -entity.PositionV3.Z;
         }
 
         public ObjectHostControl()
@@ -55,6 +64,8 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 p = new Plane(planeX.Normal, -iP.Y);
             else
                 p = new Plane(planeY.Normal, -iP.Z);
+
+            this.xPlane = xPlane;
         }
 
         public override bool IntersectTest(System.Drawing.Point cursorLocation)
@@ -123,7 +134,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         {
             base.OnMouseMove(e);
 
-            if (!isDragging) return;
+            if (!isDragging || !CanRaiseEvents) return;
 
             if (!mode)
             {

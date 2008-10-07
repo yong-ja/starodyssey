@@ -8,12 +8,8 @@ namespace AvengersUtd.Odyssey.Graphics
 {
     public class PositionEventArgs : EventArgs
     {
-        Vector3 previousValue;
-
-        public Vector3 PreviousValue
-        {
-            get { return previousValue; }
-        }
+        public bool CancelEvent { get; set; }
+        public Vector3 PreviousValue { get; set; }
 
         public Vector3 NewValue { get; set; }
 
@@ -24,7 +20,7 @@ namespace AvengersUtd.Odyssey.Graphics
 
         public PositionEventArgs(Vector3 previousValue, Vector3 newValue)
         {
-            this.previousValue = previousValue;
+            this.PreviousValue = previousValue;
             this.NewValue = newValue;
         }
     }
@@ -57,6 +53,11 @@ namespace AvengersUtd.Odyssey.Graphics
 
     public class RotationEventArgs : EventArgs
     {
+        public bool CancelEvent
+        {
+            get;
+            set;
+        }
         public Vector3 RotationDelta
         {
             get;

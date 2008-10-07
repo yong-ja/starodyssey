@@ -82,6 +82,7 @@
     <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
     <Compile Include="Graphics\Meshes\IAxisAlignedBox.cs" />
     <Compile Include="Graphics\Meshes\IMesh.cs" />
+    <Compile Include="Graphics\Meshes\IPlane.cs" />
     <Compile Include="Graphics\Meshes\MeshPart.cs" />
     <Compile Include="Graphics\Meshes\MeshPartCollection.cs" />
     <Compile Include="Graphics\Rendering\CommandList.cs" />
