@@ -9,8 +9,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Devices
 {
     public class XBox360Controller : AvengersUtd.Odyssey.UserInterface.Devices.IXBox360Controller
     {
-        Controller controller;
-        Timer timer;
+        readonly Controller controller;
+        readonly Timer timer;
         Vector2 vLeftThumbstick;
         Vector2 vRightThumbstick;
         GamepadButtonFlags activeButtons;
@@ -28,8 +28,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Devices
             get { return activeButtons; }
         }
 
+        public bool IsLeftThumbstickPressed
+        {
+            get { return (activeButtons & GamepadButtonFlags.LeftThumb) == 0; }
+        }
 
-        static XBox360Controller[] controllers = new XBox360Controller[4];
+        public bool IsRightThumbstickPressed
+        {
+            get { return (activeButtons & GamepadButtonFlags.RightThumb) == 0; }
+        }
+
+        static readonly XBox360Controller[] controllers = new XBox360Controller[4];
 
         XBox360Controller(int index)
         {
