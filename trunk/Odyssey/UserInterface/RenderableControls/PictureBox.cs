@@ -53,7 +53,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
         public void Render()
         {
-            OdysseyUI.CurrentHud.SpriteManager.Draw(texture, Rectangle.Empty, new Vector3(),
+            OdysseyUI.CurrentHud.SpriteManager.Draw(texture, new Rectangle(Point.Empty, Size), new Vector3(),
                                                     new Vector3(AbsolutePosition.X, AbsolutePosition.Y, 0), Color.White);
         }
 
