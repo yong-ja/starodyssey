@@ -28,7 +28,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected SimpleMesh meshObject;
         Quaternion currentRotation;
 
-
         #region Events
 
         static readonly object EventPositionChanged;
@@ -124,7 +123,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return meshObject.EntityDescriptor; }
         }
 
-        public AbstractMaterial[] Materials
+        public MaterialCollection Materials
         {
             get { return meshObject.Materials; }
         }
@@ -134,9 +133,19 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return parentNode; }
         }
 
+        public MaterialNode MaterialNode
+        {
+            get { return meshObject.MaterialNode; }
+        }
+
         public bool IsCollidable
         {
             get; set;
+        }
+
+        public bool Disposed
+        {
+            get { return disposed; }
         }
 
         #endregion
@@ -186,6 +195,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public virtual void Init()
         {
+            meshObject.OwningEntity = this;
             meshObject.Init();
             inited = true;
         }

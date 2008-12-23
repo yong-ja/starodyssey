@@ -12,6 +12,13 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public class PhongMaterial : AbstractMaterial, ITexturedMaterial, ICastsShadows
     {
         Texture shadowMap;
+        Texture diffuseMap;
+
+        public Texture DiffuseMap
+        {
+            get { return diffuseMap; }
+            set { diffuseMap = value; }
+        }
 
         public Texture ShadowMap
         {
@@ -30,7 +37,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             lightingTechnique |= LightingTechnique.Shadows;
         }
 
-        public override void CreateEffect(IEntity entity)
+        public override void CreateEffect(IRenderable entity)
         {
             DiffuseColor = new SlimDX.Color4(0, 0, 1);
             OwningEntity = entity;
@@ -79,12 +86,46 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             }
         }
 
+        public override EffectParameter CreateEffectParameter(MaterialParameter parameter, Effect effect)
+        {
+            string varName;
+            EffectHandle eh;
+            Update update;
+
+            switch (parameter)
+            {
+                case MaterialParameter.DiffuseMap:
+                    varName = ParamHandles.Textures.DiffuseMap;
+                    eh = new EffectHandle(varName);
+                    update = (fxParam => fxParam.OwnerEffect.SetTexture(eh, diffuseMap));
+                    break;
+
+                default:
+                    return base.CreateEffectParameter(parameter, effect);
+            }
+
+            return new EffectParameter(varName, effect, update);
+        }
+
 
         #region ITexturedMaterial Members
 
         public void LoadTextures(MaterialDescriptor materialDescriptor)
         {
             
+            foreach (TextureDescriptor tDesc in materialDescriptor.TextureDescriptors)
+            {
+                switch (tDesc.Type)
+                {
+                    case TextureType.Diffuse:
+                        SetLightingTechnique(LightingTechnique.Diffuse, false);
+                        SetLightingTechnique(LightingTechnique.DiffuseMap, true);
+                        diffuseMap = TextureManager.LoadTexture(tDesc.TextureFilename);
+                        SetIndividualParameter(CreateEffectParameter(MaterialParameter.DiffuseMap, effectDescriptor.Effect));
+                        break;
+                }
+            }
+            ChooseTechnique();
         }
 
         #endregion

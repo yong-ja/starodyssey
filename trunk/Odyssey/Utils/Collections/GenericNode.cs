@@ -332,6 +332,15 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             firstChild = lastChild = null;
         }
 
+        public bool Contains(INode child)
+        {
+            foreach (INode node in ChildrenNodeIterator)
+                if (node == child)
+                    return true;
+
+            return false;
+        }
+
         #endregion
 
         #region Visit algorithms

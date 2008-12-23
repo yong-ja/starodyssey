@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     {
         bool disposed;
         SortedList<string, EffectParameter> individualParameters;
-        IEntity owningEntity;
+        IRenderable owningEntity;
 
         protected FXType fxType;
         protected EffectDescriptor effectDescriptor;
@@ -104,7 +104,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// <summary>
         /// Returns a reference to the entity that uses this Material.
         /// </summary>
-        public IEntity OwningEntity
+        public IRenderable OwningEntity
         {
             get { return owningEntity; }
             set { owningEntity = value; }
@@ -128,6 +128,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             get { return effectDescriptor; }
         }
 
+        public LightingTechnique LightingTechnique
+        {
+            get { return lightingTechnique; }
+        }
+
         #endregion
 
         /// <summary>
@@ -136,7 +141,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// needed by the shader, it will be able to obtain information about the entity.
         /// </summary>
         /// <param name="entity">The entity that uses this material.</param>
-        public virtual void CreateEffect(IEntity entity)
+        public virtual void CreateEffect(IRenderable entity)
         {
             OwningEntity = entity;
             InitParameters();
@@ -222,8 +227,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
                 lightingTechnique |= technique;
             else
                 lightingTechnique ^= technique;
-
-            ChooseTechnique();
         }
 
         /// <summary>
@@ -249,8 +252,12 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
             if ((lightingTechnique & LightingTechnique.Diffuse) != LightingTechnique.None)
                 effects += LightingTechnique.Diffuse;
+            else if ((lightingTechnique & LightingTechnique.DiffuseMap) != LightingTechnique.None)
+                effects += LightingTechnique.DiffuseMap;
+
             if ((lightingTechnique & LightingTechnique.Specular) != LightingTechnique.None)
                 effects += LightingTechnique.Specular;
+
             if ((lightingTechnique & LightingTechnique.Shadows) != LightingTechnique.None)
                 effects += EngineSettings.Video.ShadowAlgorithmTag;
 
@@ -298,7 +305,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             }
         }
 
-      public EffectParameter CreateEffectParameter(MaterialParameter parameter, Effect effect)
+      public virtual EffectParameter CreateEffectParameter(MaterialParameter parameter, Effect effect)
       {
           string varName;
           EffectHandle eh;

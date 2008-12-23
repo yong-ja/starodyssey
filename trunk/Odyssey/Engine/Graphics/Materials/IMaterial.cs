@@ -9,8 +9,8 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public interface IMaterial
     {
         EffectDescriptor EffectDescriptor { get; }
-        IEntity OwningEntity { get; }
+        IRenderable OwningEntity { get; }
         void ApplyDynamicParameters();
-        void CreateEffect(IEntity entity);
+        void CreateEffect(IRenderable entity);
     }
 }

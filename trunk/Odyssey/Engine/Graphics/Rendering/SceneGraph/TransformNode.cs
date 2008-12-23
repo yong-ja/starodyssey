@@ -27,7 +27,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             remove { eventHandlerList.RemoveHandler(EventLocalWorldMatrixChanged, value); }
         }
 
-        protected virtual void OnLocalWorldMatrixChanged(object sender, EventArgs e)
+        protected virtual void OnLocalWorldMatrixChanged(EventArgs e)
         {
             UpdateAbsoluteWorldMatrix();
             
@@ -102,7 +102,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 if (localWorldMatrix != value)
                 {
                     localWorldMatrix = value;
-                    OnLocalWorldMatrixChanged(this, EventArgs.Empty);
+                    OnLocalWorldMatrixChanged(EventArgs.Empty);
                 }
             }
         }

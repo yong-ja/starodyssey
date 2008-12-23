@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     public interface IRenderable : IDisposable, IEntity
     {
         EntityDescriptor Descriptor { get; }
-        AbstractMaterial[] Materials { get; }
+        MaterialCollection Materials { get; }
         Mesh Mesh { get; }
 
         bool Inited { get; }
@@ -19,6 +19,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         bool IsVisible { get; }
         bool CastsShadows { get; }
         RenderableNode ParentNode { get; set; }
+        MaterialNode MaterialNode { get; }
 
         /// <summary>
         /// Loads resources and inits object.

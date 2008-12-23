@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Utils.Collections;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Settings;
@@ -21,8 +22,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             get { return shadowMap; }
         }
 
-        public ShadowMappingCommand(SceneNodeCollection nodeCollection) :
-            base(CommandType.ComputeShadows, nodeCollection)
+        public ShadowMappingCommand(SceneNodeCollection sceneNodeCollection) :
+            base(CommandType.ComputeShadows, sceneNodeCollection)
         {
             depthMappingMaterial = new DepthMaterial();
             depthMappingMaterial.CreateEffect(((RenderableNode)Items[0]).RenderableObject);
@@ -36,13 +37,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         void PurgeNonShadowCasters()
         {
             SceneNodeCollection newCollection = new SceneNodeCollection();
-            foreach (RenderableNode rNode in Items )
+            foreach (RenderableNode rNode in Items)
             {
                 if (rNode.RenderableObject.CastsShadows)
                     newCollection.Add(rNode);
             }
 
             Items = newCollection;
+
         }
 
         public override void Execute()

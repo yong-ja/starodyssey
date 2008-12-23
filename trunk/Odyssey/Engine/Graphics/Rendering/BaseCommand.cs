@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -8,18 +9,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public abstract class BaseCommand : IRenderCommand
     {
         bool disposed;
-        CommandType renderCommandType;
-        SceneNodeCollection nodeCollection;
+        SceneNodeCollection sceneNodeCollection;
 
         public bool Disposed
         {
             get { return disposed; }
         }
 
+        public CommandType RenderCommandType { get; private set; }
+
         public SceneNodeCollection Items
         {
-            get { return nodeCollection; }
-            internal set { nodeCollection = value; }
+            get { return sceneNodeCollection; }
+            internal set { sceneNodeCollection = value; }
         }
 
         /// <summary>
@@ -34,10 +36,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected abstract void OnDispose();
 
-        protected BaseCommand(CommandType renderCommandType, SceneNodeCollection nodeCollection)
+        protected BaseCommand(CommandType renderCommandType, SceneNodeCollection sceneNodeCollection)
         {
-            this.renderCommandType = renderCommandType;
-            this.nodeCollection = nodeCollection;
+            this.RenderCommandType = renderCommandType;
+            this.sceneNodeCollection = sceneNodeCollection;
         }
 
          #region IDisposable Members

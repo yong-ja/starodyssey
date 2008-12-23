@@ -22,7 +22,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         /// </summary>
         public SceneGraph()
         {
+            rootNode = new DummyNode();
         }
+        
 
         public SceneGraph(SceneNode rootNode)
         {

@@ -14,7 +14,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// <summary>
         /// Returns the material array.
         /// </summary>
-        AbstractMaterial[] Materials { get; }
+        MaterialCollection Materials { get; }
 
         BaseMesh Mesh { get; }
 

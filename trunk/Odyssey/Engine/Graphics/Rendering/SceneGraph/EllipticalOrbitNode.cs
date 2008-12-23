@@ -76,5 +76,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
             LocalWorldMatrix = Matrix.Translation(position);
         }
+
+        protected override object OnClone()
+        {
+            return new EllipticalOrbitNode(Label,
+                                           semiMajorAxis, semiMinorAxis, eccentricity, orbitalDelta);
+        }
     }
 }

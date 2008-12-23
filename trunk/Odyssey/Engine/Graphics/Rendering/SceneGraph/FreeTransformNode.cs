@@ -29,7 +29,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         {
             Inited = true;
             if (LeadNode == null)
-                foreach (SceneNode sNode in ChildrenNodeIterator)
+                foreach (SceneNode sNode in ChildrenIterator)
                 {
                     RenderableNode rNode = sNode as RenderableNode;
                     if (rNode == null) continue;
@@ -76,6 +76,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
             LocalWorldMatrix = mTemp;
             
+        }
+
+        protected override object OnClone()
+        {
+            FreeTransformNode ftNode = new FreeTransformNode(Label) {LeadNode = LeadNode};
+            return ftNode;
         }
     }
 }

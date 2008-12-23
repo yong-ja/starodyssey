@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{38924D32-845D-453A-A617-AE6BD8929610}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -79,6 +79,7 @@
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\EventArgs.cs" />
+    <Compile Include="Graphics\Materials\MaterialCollection.cs" />
     <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
     <Compile Include="Graphics\Meshes\IAxisAlignedBox.cs" />
     <Compile Include="Graphics\Meshes\IMesh.cs" />
@@ -89,10 +90,13 @@
     <Compile Include="Graphics\Rendering\IRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\BaseCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\RenderMapper.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\ConstantRotationNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\DummyNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\EllipticalOrbitNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\FixedNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\FreeTransformNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\MaterialNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\RenderableNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\SceneNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\TransformNode.cs" />
@@ -107,17 +111,14 @@
     <Compile Include="Objects\Entities\BaseLight.cs" />
     <Compile Include="Objects\Entities\BoundingBoxEntity.cs" />
     <Compile Include="Objects\Entities\BoundingSphereEntity.cs" />
-    <Compile Include="Objects\Entities\Platform.cs" />
     <Compile Include="Objects\Entities\SpotLight.cs" />
     <Compile Include="Objects\Entities\PointLight.cs" />
     <Compile Include="Graphics\Enums.cs" />
     <Compile Include="Graphics\Materials\AbstractMaterial.cs" />
     <Compile Include="Graphics\Materials\DepthMaterial.cs" />
     <Compile Include="Graphics\Materials\AtmosphereMaterial.cs" />
-    <Compile Include="Graphics\Materials\DiffuseMaterial.cs" />
     <Compile Include="Graphics\Materials\IEffectMaterial.cs" />
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
-    <Compile Include="Graphics\Materials\SpecularMaterial.cs" />
     <Compile Include="Graphics\Materials\SurfaceMaterial.cs" />
     <Compile Include="Graphics\Materials\TexturedBillboardMaterial.cs" />
     <Compile Include="Graphics\Meshes\AbstractMesh.cs" />

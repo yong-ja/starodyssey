@@ -16,15 +16,26 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         #region Constructors
         public FixedNode()
-            : base((count++).ToString(), false)
+            : this(nodeTag + (count++))
         {
         }
+
+        public FixedNode(string label)
+            : base(label, false)
+        {}
         #endregion
 
         public override void Init()
         {
             base.Init();
             UpdateLocalWorldMatrix();
+        }
+
+        protected override object OnClone()
+        {
+            FixedNode fNode = new FixedNode {LocalWorldMatrix = this.LocalWorldMatrix};
+            return fNode;
+
         }
 
         public override void UpdateLocalWorldMatrix()

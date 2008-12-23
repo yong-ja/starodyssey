@@ -150,4 +150,7 @@
   <data name="ERR_TNodeRequired" xml:space="preserve">
     <value>This node can only be added to a TransformNode.</value>
   </data>
+  <data name="ERR_TechniqueNotFound" xml:space="preserve">
+    <value>The desired technique was not found in the RenderMapper object.</value>
+  </data>
 </root>

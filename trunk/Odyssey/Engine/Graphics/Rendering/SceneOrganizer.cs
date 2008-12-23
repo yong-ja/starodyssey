@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Utils.Collections;
@@ -12,33 +13,91 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class SceneOrganizer
     {
         SceneNodeCollection nodes; // temp;
+        SceneNodeCollection materials;
         CommandList<BaseCommand> preprocessList;
         CommandList<RenderCommand> renderList;
+        RenderMapper renderMapper;
+        SceneGraph.SceneGraph sceneGraph, renderGraph;
 
         public SceneOrganizer()
         {
             preprocessList = new CommandList<BaseCommand>();
             renderList = new CommandList<RenderCommand>();
+            renderMapper = new RenderMapper();
+            materials = new SceneNodeCollection();
+        }
+
+        public void BuildRenderScene3(SceneGraph.SceneGraph graph)
+        {
+            renderList.Clear();
+            renderMapper.Clear();
+
+            sceneGraph = graph;
+            renderGraph = new SceneGraph.SceneGraph();
+            
+            foreach (SceneNode node in Node.PostOrderVisit(graph.RootNode))
+            {
+                RenderableNode rNode = node as RenderableNode;
+                if (rNode != null)
+                {
+                    IRenderable entity = rNode.RenderableObject;
+                    MaterialNode currentNode = entity.MaterialNode;
+                    if (!renderMapper.ContainsKey(currentNode.Technique))
+                    {
+                        renderMapper.Add(currentNode, new SceneNodeCollection());
+                        materials.Add(currentNode);
+                    }
+                    renderMapper[currentNode.Technique].Add(rNode);
+                }
+            }
+
+            foreach (MaterialNode mNode in renderMapper.Keys)
+                renderList.Add(new RenderCommand(mNode, renderMapper[mNode]));
+
+            //Predicate<RenderableNode> p = rNode => rNode.RenderableObject.CastsShadows;
+            nodes = graph.RootNode.SelectNodes<RenderableNode>();
         }
 
         /// <summary>
         /// Provvisorio.
         /// </summary>
-        public void BuildRenderScene(SceneGraph.SceneGraph sceneGraph)
-        {
-            renderList.Clear();
-            SceneNodeCollection nodeCollection = new SceneNodeCollection();
-            renderList.Clear();
-            foreach (SceneNode node in Node.PreOrderVisit(sceneGraph.RootNode))
-            {
-                RenderableNode rNode = node as RenderableNode;
-                if (rNode != null)
-                    nodeCollection.Add(rNode);
-            }
+        //public void BuildRenderScene2(SceneGraph.SceneGraph sceneGraph)
+        //{
+        //    renderList.Clear();
+        //    MaterialCollection materialCollection = new MaterialCollection();
+        //    foreach (SceneNode node in Node.PreOrderVisit(sceneGraph.RootNode))
+        //    {
+        //        RenderableNode rNode = node as RenderableNode;
+        //        if (rNode != null)
+        //            materialCollection.AddRange(rNode.RenderableObject.Materials);
+        //    }
+        //    materialCollection.SortBy(MaterialCollection.CompareNodesByTechnique);
+        //    materials = materialCollection;
 
-            renderList.Add(new RenderCommand(nodeCollection));
-            nodes = nodeCollection;
-        }
+        //    MaterialCollection[] materialGroups = materialCollection.SplitByTechnique();
+        //    foreach (MaterialCollection materialGroup in materialGroups)
+        //    {
+        //        renderList.Add(new RenderCommand(materialGroup));
+        //    }
+            
+        //}
+        
+        /// 
+        //public void BuildRenderScene(SceneGraph.SceneGraph sceneGraph)
+        //{
+        //    renderList.Clear();
+        //    SceneNodeCollection nodeCollection = new SceneNodeCollection();
+        //    renderList.Clear();
+        //    foreach (SceneNode node in Node.PreOrderVisit(sceneGraph.RootNode))
+        //    {
+        //        RenderableNode rNode = node as RenderableNode;
+        //        if (rNode != null)
+        //            nodeCollection.Add(rNode);
+        //    }
+
+        //    renderList.Add(new RenderCommand(nodeCollection));
+        //    nodes = nodeCollection;
+        //}
 
         public void Process()
         {
@@ -52,6 +111,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             {
                 rCommand.PerformRender();
             }
+            //renderList[1].PerformRender();
         }
 
         public void AddPreprocessEffect(CommandType commandType)
@@ -60,6 +120,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             switch (commandType)
             {
                 case CommandType.ComputeShadows:
+                    //Predicate<RenderableNode> p = rNode => rNode.RenderableObject.CastsShadows;
+                    //command = new ShadowMappingCommand(sceneGraph.SelectNodes(p));
                     command = new ShadowMappingCommand(nodes);
                     break;
                 default:
