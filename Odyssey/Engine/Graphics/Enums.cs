@@ -14,6 +14,8 @@ namespace AvengersUtd.Odyssey.Graphics
     {
         Transform,
         Renderable,
+        Material,
+        Dummy
     }
 
     public enum CommandType
@@ -46,6 +48,7 @@ namespace AvengersUtd.Odyssey.Graphics
         Ambient,
         Diffuse,
         DiffuseCoefficient,
+        DiffuseMap,
         Specular,
         SpecularCoefficient
         
@@ -63,9 +66,10 @@ namespace AvengersUtd.Odyssey.Graphics
     {
         None = 0,
         Diffuse = 1,
-        Specular = 2,
-        Normal = 4,
-        Shadows = 8,
+        DiffuseMap = 2,
+        Specular = 4,
+        Normal = 8,
+        Shadows = 16,
     }
 
     public enum FXType

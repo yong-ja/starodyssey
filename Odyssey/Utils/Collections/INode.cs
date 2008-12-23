@@ -23,7 +23,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         int Level { get; set; }
         int ChildrenCount { get; }
         bool IsLeaf { get; }
-
+        
         void AppendChild(INode newChild);
         void InsertBefore(INode newChild, INode refNode);
         void InsertAfter(INode newChild, INode refNode);
@@ -31,8 +31,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         void RemoveAll();
         void ReplaceChild(INode newChild, INode oldChild);
         void PrependChild(INode newChild);
-
-       
+        bool Contains(INode child);
 
     }
 

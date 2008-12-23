@@ -41,8 +41,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         }
         #endregion
 
-        public ConstantRotationNode(Vector3 axis, float rotationDelta) :
-            base(nodeTag + count++, false)
+        public ConstantRotationNode(Vector3 axis, float rotationDelta):
+            this(nodeTag+count++, axis, rotationDelta)
+        {
+            
+        }
+
+
+        public ConstantRotationNode(string label, Vector3 axis, float rotationDelta) :
+            base(label, false)
         {
             this.rotationDelta = rotationDelta;
             this.axis = axis;
@@ -54,5 +61,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             LocalWorldMatrix = Matrix.RotationAxis(axis, (float)currentRotation % 360.0f);
         }
 
+
+        protected override object OnClone()
+        {
+            return new ConstantRotationNode(Label, axis, rotationDelta);
+        }
     }
 }

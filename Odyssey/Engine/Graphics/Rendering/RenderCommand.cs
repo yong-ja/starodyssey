@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RenderCommand : BaseCommand
     {
-        public RenderCommand(SceneNodeCollection nodeCollection) : 
-            base(CommandType.RenderScene, nodeCollection)
+        readonly MaterialNode materialNode;
+
+        public RenderCommand(MaterialNode mNode, SceneNodeCollection sceneNodeCollection) :
+            base(CommandType.RenderScene, sceneNodeCollection)
         {
+            materialNode = mNode;
         }
 
         public override void Execute()
@@ -19,8 +23,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public override void PerformRender()
         {
-            foreach (RenderableNode rNode in Items)
-                rNode.Render();
+            Items.RenderGroup(materialNode);
         }
 
         protected override void OnDispose()

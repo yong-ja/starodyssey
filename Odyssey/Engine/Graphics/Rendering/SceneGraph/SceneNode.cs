@@ -7,7 +7,7 @@ using AvengersUtd.Odyssey.Utils.Collections;
 namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 {
   
-    public abstract class SceneNode : Node
+    public abstract class SceneNode : Node, ICloneable
     {
        
         #region Private Fields
@@ -85,6 +85,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             get { return LastChildNode as SceneNode; }
         }
 
+        public SceneNodeCollection ChildrenCollection
+        {
+            get
+            {
+                SceneNodeCollection nodeCollection = new SceneNodeCollection();
+                foreach (SceneNode node in ChildrenIterator)
+                    nodeCollection.Add(node);
+                return nodeCollection;
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -155,6 +166,55 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             OnPrependChild(newChild);
         }
 
+        public bool Contains(string label)
+        {
+            foreach (SceneNode node in ChildrenIterator)
+                if (node.label == label)
+                    return true;
+            return false;
+        }
+
+        public SceneNode Find(string label)
+        {
+            SceneNode result = null;
+
+            foreach (SceneNode node in ChildrenIterator)
+                if (node.label == label)
+                {
+                    result = node;
+                }
+
+            return result;
+        }
+
+        public SceneNodeCollection SelectNodes<T>(Predicate<T> predicate)
+            where T : SceneNode
+        {
+            SceneNodeCollection nodeCollection = new SceneNodeCollection();
+            foreach (INode node in Node.PreOrderVisit(this))
+            {
+                T nodeT = node as T;
+                if (nodeT != null && predicate(nodeT))
+                    nodeCollection.Add(nodeT);
+            }
+
+            return nodeCollection;
+        }
+
+        public SceneNodeCollection SelectNodes<T>()
+            where T : SceneNode
+        {
+            SceneNodeCollection nodeCollection = new SceneNodeCollection();
+            foreach (INode node in Node.PreOrderVisit(this))
+            {
+                T nodeT = node as T;
+                if (nodeT != null)
+                    nodeCollection.Add(nodeT);
+            }
+
+            return nodeCollection;
+        }
+
         #endregion
 
         #region Static Methods
@@ -199,6 +259,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             return null;
 
         }
+        #endregion
+
+        #region ICloneable Members
+
+        protected abstract object OnClone();
+
+        public object Clone()
+        {
+            return OnClone();
+        }
+
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -50,19 +51,23 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public void Init()
         {
 
-            materials = new AbstractMaterial[entityDescriptor.MaterialDescriptors.Length];
+            AbstractMaterial[] materials = new AbstractMaterial[entityDescriptor.MaterialDescriptors.Length];
 
             for (int i = 0; i < entityDescriptor.MaterialDescriptors.Length; i++)
             {
                 MaterialDescriptor mDesc = entityDescriptor.MaterialDescriptors[i];
                 materials[i] = (AbstractMaterial) Activator.CreateInstance(mDesc.MaterialType);
 
-                if (materials[i] is ITexturedMaterial)
-                    ((ITexturedMaterial) materials[i]).LoadTextures(entityDescriptor.MaterialDescriptors[i]);
+                ITexturedMaterial texturedMaterial = materials[i] as ITexturedMaterial;
+                if (texturedMaterial != null)
+                {
+                    texturedMaterial.LoadTextures(entityDescriptor.MaterialDescriptors[i]);
+                }
                 materials[i].CreateEffect(OwningEntity);
             }
 
-            meshPartCollection = new MeshPartCollection(this, materials);
+            materialNode = new MaterialNode(materials[0].EffectDescriptor.Technique, materials);
+            meshPartCollection = new MeshPartCollection(this, materialNode);
 
         }
 

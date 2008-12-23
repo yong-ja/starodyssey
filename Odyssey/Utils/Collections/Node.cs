@@ -36,7 +36,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
     }
 
     [DebuggerDisplay("{GetType().Name} = {ToString()}")]
-    public abstract class Node : INode
+    public abstract class Node : INode, IEnumerable<INode>
     {
         public delegate void NodeEventHandler(object sender, NodeEventArgs e);
 
@@ -138,15 +138,13 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             get
             {
                 int count=0;
-                foreach (Node node in ChildrenNodeIterator)
+                foreach (Node node in ChildrenIterator)
                     count++;
                 return count;
             }
         }
-        #endregion
-      
-        #region Protected INode Properties
-        protected IEnumerable<INode> ChildrenNodeIterator
+
+        public IEnumerable<INode> ChildrenIterator
         {
             get
             {
@@ -158,6 +156,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                 }
             }
         }
+
+        #endregion
+      
+        #region Protected INode Properties
+        
 
         protected INode ParentNode
         {
@@ -238,7 +241,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             {
                 INode previousNode = null;
                 INode nextNode = null;
-                foreach (Node children in ChildrenNodeIterator)
+                foreach (Node children in ChildrenIterator)
                 {
                     if (children == oldChild)
                     {
@@ -299,7 +302,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             {
                 INode previousNode = null;
                 INode nextNode = null;
-                foreach (Node children in ChildrenNodeIterator)
+                foreach (Node children in ChildrenIterator)
                 {
                     if (children == oldChild)
                     {
@@ -431,6 +434,15 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         public void RemoveAll()
         {
             firstChild = lastChild = null;
+        }
+
+        public bool Contains(INode child)
+        {
+            foreach (INode node in ChildrenIterator)
+                if (node == child)
+                    return true;
+
+            return false;
         }
 
         public override string ToString()
@@ -616,7 +628,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             get
             {
-                return ChildrenNodeIterator;
+                return ChildrenIterator;
             }
         }
 
@@ -652,7 +664,26 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         #endregion
 
-        
 
+
+
+        #region IEnumerable<INode> Members
+
+        IEnumerator<INode> IEnumerable<INode>.GetEnumerator()
+        {
+            foreach (INode node in ((INode) this).ChildrenIterator)
+                yield return node;
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+           return ((IEnumerable<INode>) this).GetEnumerator();
+        }
+
+        #endregion
     }
 }

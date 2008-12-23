@@ -19,7 +19,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         {
             get
             {
-                return tParent.AbsoluteWorldMatrix;
+                if (tParent == null)
+                    return Matrix.Identity;
+                else
+                    return tParent.AbsoluteWorldMatrix;
             }
         }
 
@@ -65,5 +68,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 renderableObject.Render();
         }
 
+
+        protected override object OnClone()
+        {
+            return new RenderableNode(renderableObject);
+        }
     }
 }

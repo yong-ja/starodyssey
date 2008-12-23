@@ -1,6 +1,8 @@
 using System;
+using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
@@ -14,7 +16,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected bool disposed;
 
         protected MeshT meshObject;
-        protected AbstractMaterial[] materials;
+        protected MaterialNode materialNode;
 
         protected MeshPartCollection meshPartCollection;
 
@@ -24,13 +26,18 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #region Properties
         public int MaterialCount
         {
-            get { return materials.Length; }
+            get { return materialNode.Materials.Count; }
         }
 
-        public AbstractMaterial[] Materials
+        public MaterialNode MaterialNode
+        {
+            get { return materialNode; }
+        }
+
+        public MaterialCollection Materials
         {
             //return a material
-            get { return materials; }
+            get { return materialNode.Materials; }
         }
 
         public MeshT Mesh
@@ -41,22 +48,22 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public void SetMaterial(int index, AbstractMaterial material)
         {
-            materials[index] = material;
+            materialNode.Materials[index] = material;
         }
 
-        /*
+
+        #region Lock/Unlock methods
         /// <summary>
         /// lock vertex buffer
         /// </summary>
         /// <typeparam name="K">vertex type</typeparam>
         /// <returns>graphics buffer that contains vertices</returns>
-        public K[] LockVertexBuffer<K>() where K : struct
+        public DataStream LockVertexBuffer<K>() where K : struct
         {
             //lock vertex buffer and return graphics buffer
-            //blocca il vertex buffer e restituisce il graphics buffer
-            return (K[]) meshObject.LockVertexBuffer(typeof (K), LockFlags.None, new int[] {meshObject.VertexCount});
+            return meshObject.LockVertexBuffer(LockFlags.None);
         }
-        */
+
 
         /// <summary>
         /// release vertex buffer
@@ -64,29 +71,29 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public void UnlockVertexBuffer()
         {
             //release vertex buffer
-            //libera il vertex buffer
             meshObject.UnlockVertexBuffer();
         }
 
-        /*
+
         /// <summary>
         /// lock index buffer
         /// </summary>
         /// <typeparam name="K">index type</typeparam>
         /// <returns>graphics buffer that contain index</returns>
-        public K[] LockIndexBuffer<K>() where K : struct
+        public DataStream LockIndexBuffer<K>() where K : struct
         {
-            return (K[]) meshObject.LockIndexBuffer(typeof (K), LockFlags.None, new int[] {meshObject.FaceCount*3});
+            return meshObject.LockIndexBuffer(LockFlags.None);
         }
-        */
+
 
         /// <summary>
-        /// lock index buffer
+        /// unlock index buffer
         /// </summary>
         public void UnlockIndexBuffer()
         {
             meshObject.UnlockIndexBuffer();
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// generate adiacency
@@ -103,7 +110,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             if (meshPartCollection.AreMaterialsEqual)
             {
-                DrawMeshWithMaterial(materials[0]);
+                DrawMeshWithMaterial(Materials[0]);
             }
             else
             {
@@ -138,14 +145,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public void DrawMeshWithMaterial(AbstractMaterial material)
         {
-            materials[0].Apply();
+            material.Apply();
             Effect effect = material.EffectDescriptor.Effect;
             int pass = material.EffectDescriptor.Pass;
 
             effect.Begin(FX.None);
             effect.BeginPass(pass);
 
-            for (int i = 0; i < MaterialCount; i++)
+            for (int i = 0; i < meshPartCollection.Count; i++)
                 Draw(i);
             effect.EndPass();
             effect.End();

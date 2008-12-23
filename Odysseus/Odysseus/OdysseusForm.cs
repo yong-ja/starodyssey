@@ -131,5 +131,15 @@ namespace AvengersUtd.Odysseus
                 renderPanel.Cursor = Cursors.Arrow;
         }
 
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void renderPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
     }
 }

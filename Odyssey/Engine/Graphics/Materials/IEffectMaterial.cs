@@ -13,6 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
     public interface ITexturedMaterial
     {
+        Texture DiffuseMap { get; set; }
         void LoadTextures(MaterialDescriptor materialDescriptor);
     }
 }
