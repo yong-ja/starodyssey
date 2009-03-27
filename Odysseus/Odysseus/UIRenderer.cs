@@ -9,6 +9,7 @@ using AvengersUtd.Odyssey.Settings;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Windows.Forms;
+using SlimDX;
 
 
 namespace AvengersUtd.Odysseus
@@ -20,7 +21,7 @@ namespace AvengersUtd.Odysseus
         SelectionRectangle selectionRectangle;
         ControlSelector controlSelector;
 
-        public OdysseusForm OdysseusForm
+        public static OdysseusForm OdysseusForm
         {
             get;
             set;
@@ -72,13 +73,15 @@ namespace AvengersUtd.Odysseus
             StyleManager.LoadTextStyles("Odyssey TextStyles.ots");
             VideoSettings currentVideoSettings = EngineSettings.Video;
             hud = new Hud
-            {
-                Id = "CurrentForm",
-                Size = currentVideoSettings.ScreenSize
+                      {
+                          Id = "CurrentForm",
+                          Size = OdysseusForm.RenderPanel.Size
             };
 
 
             OdysseyUI.CurrentHud = hud;
+            Grid grid = new Grid();
+            hud.Add(grid);
         }
 
         public override void Init()
@@ -86,7 +89,8 @@ namespace AvengersUtd.Odysseus
             hud.BeginDesign();
             selectionRectangle = new SelectionRectangle
                                      {
-                                         Id = "Selector"
+                                         Id = "Selector",
+                                         Offset = new Vector2(OdysseusForm.RenderPanel.Location.X, 0)
                                      };
             selectionRectangle.SelectionFinalized += selectionRectangle_SelectionFinalized;
             controlSelector = new ControlSelector

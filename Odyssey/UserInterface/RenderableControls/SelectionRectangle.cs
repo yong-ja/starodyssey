@@ -36,6 +36,12 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         Vector2 selectionStart;
         Vector2 selectionEnd;
 
+        public Vector2 Offset
+        {
+            get;
+            set;
+        }
+
         readonly static object EventSelectionFinalized;
 
         public event EventHandler<SelectionEventArgs> SelectionFinalized
@@ -73,7 +79,6 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             Size = new Size(width, height);
 
-
             int finalStartX = (int)Math.Min(selectionStart.X, selectionEnd.X);
             int finalStartY = (int) Math.Min(selectionStart.Y, selectionEnd.Y);
             int finalEndX = (int)Math.Max(selectionStart.X, selectionEnd.X);
@@ -83,12 +88,14 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             selectionEnd = new Vector2(finalEndX, finalEndY);
 
         }
+
         public void StartSelection(object sender, MouseEventArgs e)
         {
             isDragging = true;
             selectionStart = new Vector2(e.X, e.Y);
             
             Position = selectionStart;
+            IsVisible = true;
             Size = Size.Empty;
         }
 

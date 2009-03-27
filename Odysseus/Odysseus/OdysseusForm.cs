@@ -18,6 +18,7 @@ namespace AvengersUtd.Odysseus
     {
         ToolStripToggleButton pointerButton;
         readonly UIRenderer uiRenderer;
+        internal readonly int SidePanelOffset;
 
         public ToolStripButton SelectedButton
         {
@@ -32,9 +33,13 @@ namespace AvengersUtd.Odysseus
         public OdysseusForm()
         {
             InitializeComponent();
-            uiRenderer = new UIRenderer {OdysseusForm = this};
+            renderPanel.Create();
+            UIRenderer.OdysseusForm = this;
+            uiRenderer = new UIRenderer();
             uiRenderer.Init();
             Game.CurrentScene = uiRenderer;
+
+            SidePanelOffset = renderPanel.Location.X;
         }
 
         void FillControlToolstrip()
@@ -117,6 +122,7 @@ namespace AvengersUtd.Odysseus
         private void OdysseusForm_Load(object sender, EventArgs e)
         {
             FillControlToolstrip();
+
             OdysseyUI.SetupHooks(renderPanel);
         }
 
@@ -131,15 +137,6 @@ namespace AvengersUtd.Odysseus
                 renderPanel.Cursor = Cursors.Arrow;
         }
 
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void renderPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
     }
 }

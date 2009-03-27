@@ -24,7 +24,7 @@ namespace AvengersUtd.Odyssey
         PresentParameters presentParameters;
         Direct3D direct3D;
 
-        protected readonly Size size = new Size(1024, 768);
+        //protected readonly Size size = new Size(1024, 768);
 
         static bool AppStillIdle
         {
@@ -37,10 +37,15 @@ namespace AvengersUtd.Odyssey
 
         public RenderPanel()
         {
-            ClientSize = size;
+            //ClientSize = Size;
             Application.Idle += ApplicationIdle;
 
             direct3D = new Direct3D();
+
+        }
+
+        public void Create()
+        {
             CreateDevice();
             InitDevice();
         }
@@ -77,8 +82,8 @@ namespace AvengersUtd.Odyssey
                                         Windowed = true,
                                         Multisample = supportedParams.MultisampleType,
                                         MultisampleQuality = supportedParams.MultisampleQuality-1,
-                                        BackBufferHeight = size.Height,
-                                        BackBufferWidth = size.Width
+                                        BackBufferHeight = Size.Height,
+                                        BackBufferWidth = Size.Width
                                     };
 
 
@@ -107,7 +112,7 @@ namespace AvengersUtd.Odyssey
             ShaderQuality shaderQuality = DeviceCreator.GetHighestSupportedShaderModel(caps);
             VideoSettings videoSettings = new VideoSettings(supportedParams,
                                                             shaderQuality,
-                                                            size.Width, size.Height, supportedTextureFormats);
+                                                            Size.Width, Size.Height, supportedTextureFormats);
 
             EngineSettings.Video = videoSettings;
         }

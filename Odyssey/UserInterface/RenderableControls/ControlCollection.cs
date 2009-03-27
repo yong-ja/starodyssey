@@ -106,7 +106,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             int windowLayer = depth.WindowLayer;
             int componentLayer = depth.ComponentLayer;
-            int zOrder = depth.ZOrder;
+            int zOrder = Count;
 
             Window window = control as Window;
             if (window != null)
