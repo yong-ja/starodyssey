@@ -7,6 +7,7 @@ using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX.Direct3D9;
 using SlimDX;
+using System.Windows.Forms;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 {
@@ -23,7 +24,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         }
 
-
         public void RenderGroup(MaterialNode mNode)
         {
             string technique = mNode.Technique;
@@ -31,7 +31,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
             Effect effect = material.EffectDescriptor.Effect;
             if (effect.Technique != technique)
-                effect.Technique = technique;
+            {
+                try
+                {
+                    effect.Technique = technique;
+                }
+                catch (Direct3D9Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
 
             int passes = effect.Begin(FX.None);
             effect.BeginPass(0);
@@ -44,6 +53,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 if (rNode != null && rNode.RenderableObject.IsVisible)
                 {
                     Game.Device.SetTransform(TransformState.World, rNode.CurrentAbsoluteWorldMatrix);
+                    
                     rNode.RenderableObject.Materials[0].Apply();
 
                     IRenderable entity = rNode.RenderableObject;
@@ -70,7 +80,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 RenderableNode rNode = node as RenderableNode;
                 if (rNode != null)
                 {
-                    Game.Device.SetTransform(TransformState.World, rNode.CurrentAbsoluteWorldMatrix);
+                    Game.Device.SetTransform(TransformState.World,rNode.CurrentAbsoluteWorldMatrix);
+                    
                     material.Apply();
 
                     IRenderable entity = rNode.RenderableObject;

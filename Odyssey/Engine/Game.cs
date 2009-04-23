@@ -132,5 +132,26 @@ namespace AvengersUtd.Odyssey
             device.Present();
             frameTime = timer.GetElapsedTime();
         }
+
+        public static void LoopExpress()
+        {
+            //Clear the render target
+            timer.GetElapsedTime();
+            
+            currentScene.ProcessInput();
+            scene.Process();
+
+            device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.CornflowerBlue,
+                         1.0f, 0);
+            device.BeginScene();
+
+            currentScene.Render();
+
+            //Signal the device that we're done with our scene
+            device.EndScene();
+            //Show the results to the user
+            device.Present();
+            frameTime = timer.GetElapsedTime();
+        }
     }
 }

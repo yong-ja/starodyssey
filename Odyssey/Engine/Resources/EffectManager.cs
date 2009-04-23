@@ -22,6 +22,7 @@ namespace AvengersUtd.Odyssey.Resources
             }
             else
             {
+                string compilationErrors = string.Empty;
                 try
                 {
                     int fileSize = (int)new FileInfo(filename).Length;
@@ -40,14 +41,16 @@ namespace AvengersUtd.Odyssey.Resources
 
                                          };
 
-                    string compilationErrors;
-                    Effect effect = Effect.FromFile(Game.Device, filename, macros, null, null, ShaderFlags.Debug, null,
+                    
+                    EffectPool pool = new EffectPool();
+                    Effect effect = Effect.FromFile(Game.Device, filename, macros, null, null, ShaderFlags.Debug|ShaderFlags.NoPreshader, null,
                         out compilationErrors);
 
                     effectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
                     return effect;
                 }
-                catch (InvalidDataException ex)
+                //catch (InvalidDataException ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("This file is missing or invalid: " +
                                     filename);

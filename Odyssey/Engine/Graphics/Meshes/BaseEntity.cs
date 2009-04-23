@@ -190,7 +190,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             castsShadows = true;
             IsCollidable = true;
             isVisible = true;
-            CurrentRotation = Quaternion.Identity;
+            //CurrentRotation = Quaternion.Identity;
         }
 
         public virtual void Init()

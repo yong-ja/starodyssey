@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
     public abstract class TransformNode : SceneNode
     {
         static readonly Vector3 DefaultScaling = new Vector3(1, 1, 1);
-        bool isDynamic;
+        protected bool isDynamic;
         Matrix localWorldMatrix;
         Matrix absoluteWorldMatrix;
         Quaternion qRotation;

@@ -62,7 +62,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected AbstractMaterial(LightingAlgorithm algorithm, string filename)
         {
             lightingAlgorithm = algorithm;
-            lightingTechnique = LightingTechnique.Diffuse | LightingTechnique.Specular;
+            lightingTechnique = LightingTechnique.Diffuse|LightingTechnique.Specular;
             individualParameters = new SortedList<string, EffectParameter>();
             effectDescriptor = new EffectDescriptor(filename);
         }
@@ -223,10 +223,14 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public void SetLightingTechnique(LightingTechnique technique, bool value)
         {
+            bool previousValue = (LightingTechnique & technique) == technique;
             if (value)
                 lightingTechnique |= technique;
             else
                 lightingTechnique ^= technique;
+
+            if (value != previousValue)
+                ChooseTechnique();
         }
 
         /// <summary>

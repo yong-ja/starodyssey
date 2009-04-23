@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -46,7 +46,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDX, Version=2.0.5.39, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="SlimDX, Version=2.0.7.41, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -58,7 +58,7 @@
     <Compile Include="Devices\Keyboard.cs" />
     <Compile Include="Devices\Mouse.cs" />
     <Compile Include="Devices\XBox360Controller.cs" />
-    <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="RenderableControls\Helpers\MathHelper.cs" />
     <Compile Include="HitManager.cs" />
     <Compile Include="RenderableControls\CameraHostControl.cs" />
     <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
@@ -74,14 +74,14 @@
     <Compile Include="RenderableControls\TableRow.cs" />
     <Compile Include="RenderableControls\TableRowCollection.cs" />
     <Compile Include="Style\FontManager.cs" />
-    <Compile Include="Helpers\DebugManager.cs" />
-    <Compile Include="Helpers\DynamicPropertyAccessor.cs" />
-    <Compile Include="Helpers\Error.cs" />
-    <Compile Include="Helpers\IPropertyAccessor.cs" />
-    <Compile Include="Helpers\StaticReflection.cs" />
-    <Compile Include="Helpers\Text.cs" />
-    <Compile Include="Helpers\Timer.cs" />
-    <Compile Include="Helpers\TreeTraversal.cs" />
+    <Compile Include="RenderableControls\Helpers\DebugManager.cs" />
+    <Compile Include="RenderableControls\Helpers\DynamicPropertyAccessor.cs" />
+    <Compile Include="RenderableControls\Helpers\Error.cs" />
+    <Compile Include="RenderableControls\Helpers\IPropertyAccessor.cs" />
+    <Compile Include="RenderableControls\Helpers\StaticReflection.cs" />
+    <Compile Include="RenderableControls\Helpers\Text.cs" />
+    <Compile Include="RenderableControls\Helpers\Timer.cs" />
+    <Compile Include="RenderableControls\Helpers\TreeTraversal.cs" />
     <Compile Include="Intersection.cs" />
     <Compile Include="OdysseyUI.cs" />
     <Compile Include="Properties\Exceptions.Designer.cs">

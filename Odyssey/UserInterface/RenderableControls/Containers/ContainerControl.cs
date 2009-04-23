@@ -127,9 +127,14 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             PublicControlCollection.Add(control);
         }
 
-        public void Remove(BaseControl ctl)
+        public void Insert(int index, BaseControl control)
         {
-            controls.Remove(ctl);
+            PublicControlCollection.Insert(index, control);
+        }
+
+        public void Remove(BaseControl control)
+        {
+            controls.Remove(control);
         }
 
         public BaseControl Find(string id)
