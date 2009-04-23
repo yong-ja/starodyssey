@@ -58,7 +58,7 @@ namespace AvengersUtd.Odyssey.Resources
             {
                 try
                 {
-                    Mesh mesh = Mesh.FromFile(Game.Device, filename, MeshFlags.Managed);
+                    Mesh mesh = Mesh.FromFile(Game.Device, filename, MeshFlags.Dynamic | MeshFlags.SystemMemory);
                     mesh = ComputeTangentsAndBinormal(mesh);
                     meshCache.Add(filename, new CacheNode<Mesh>(mesh.BytesPerVertex*mesh.VertexCount, mesh));
 
@@ -91,7 +91,7 @@ namespace AvengersUtd.Odyssey.Resources
                                                                  DeclarationMethod.Default, DeclarationUsage.Binormal, 0),
                                                VertexElement.VertexDeclarationEnd
                                            };
-            Mesh tempMesh = meshObject.Clone(Game.Device, MeshFlags.Managed, elements);
+            Mesh tempMesh = meshObject.Clone(Game.Device, MeshFlags.Dynamic, elements);
             meshObject.Dispose();
             meshObject = tempMesh;
 

@@ -86,7 +86,6 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             Position = new Vector2(finalStartX, finalStartY);
             selectionEnd = new Vector2(finalEndX, finalEndY);
-
         }
 
         public void StartSelection(object sender, MouseEventArgs e)
@@ -117,5 +116,13 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             }
             
         }
+
+        public override void UpdateAppearance()
+        {
+            base.UpdateAppearance();
+            Depth = new Depth(0, 0, 999);
+        }
+
+
     }
 }

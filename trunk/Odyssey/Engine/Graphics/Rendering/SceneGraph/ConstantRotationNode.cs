@@ -53,6 +53,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         {
             this.rotationDelta = rotationDelta;
             this.axis = axis;
+            isDynamic = true;
         }
 
         public override void UpdateLocalWorldMatrix()
@@ -60,7 +61,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             currentRotation += rotationDelta * Game.FrameTime;
             LocalWorldMatrix = Matrix.RotationAxis(axis, (float)currentRotation % 360.0f);
         }
-
 
         protected override object OnClone()
         {

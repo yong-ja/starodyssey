@@ -63,7 +63,7 @@ namespace AvengersUtd.Odysseus
             controlSelector.TargetControl = control;
 
             hud.BeginDesign();
-            hud.Add(controlSelector);
+            hud.Insert(hud.Controls.Count-1,controlSelector);
             hud.EndDesign();
         }
 

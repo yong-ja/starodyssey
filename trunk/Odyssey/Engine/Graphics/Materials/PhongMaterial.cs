@@ -34,7 +34,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public PhongMaterial(): base(LightingAlgorithm.Phong,"Phong.fx")
         {
-            lightingTechnique |= LightingTechnique.Shadows;
+            lightingTechnique |= LightingTechnique.Diffuse;// | LightingTechnique.Shadows;
         }
 
         public override void CreateEffect(IRenderable entity)

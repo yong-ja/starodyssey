@@ -10,8 +10,8 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
     public class Grid:BaseControl
     {
         const string ControlTag = "Grid";
-        const int DefaultMajorGridLinesFrequency = 10;
-        const int DefaultGridSpacing = 64;
+        public const int DefaultMajorGridLinesFrequency = 5;
+        public const int DefaultGridSpacing = 32;
 
         static int count=1;
 
@@ -31,7 +31,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         {
             count++;
             GridSpacing = DefaultGridSpacing;
-            MajorGridLinesFrequency = DefaultGridSpacing;
+            MajorGridLinesFrequency = DefaultMajorGridLinesFrequency;
             CanRaiseEvents = false;
         }
 
@@ -42,28 +42,36 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
         public override void CreateShape()
         {
-            int horizontalLines = OdysseyUI.CurrentHud.Size.Height/GridSpacing;
+            int horizontalLines = OdysseyUI.CurrentHud.Size.Height/GridSpacing +1;
             int verticalLines = OdysseyUI.CurrentHud.Size.Width/GridSpacing;
-            int majorHorizontalLines = horizontalLines/MajorGridLinesFrequency+1;
-            int majorVerticalLines = verticalLines/MajorGridLinesFrequency +1;
-
-            horizontalLines -= majorHorizontalLines;
-            verticalLines -= majorVerticalLines;
+           
             ShapeDescriptors = new ShapeDescriptorCollection(horizontalLines+verticalLines);
             Size horizontalLineSize = new Size(OdysseyUI.CurrentHud.Size.Width, 1);
             Size verticalLineSize = new Size(1,OdysseyUI.CurrentHud.Size.Height);
+            Size majorHorizontalLineSize = new Size(OdysseyUI.CurrentHud.Size.Width, 2);
+            Size majorVerticalLineSize = new Size(2, OdysseyUI.CurrentHud.Size.Height);
             for (int i=0; i < horizontalLines; i++)
             {
                 Vector2 linePosition = new Vector2(0, GridSpacing*i);
-                ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
-                                                           horizontalLineSize, Color.LightGray);
+                if (i  % MajorGridLinesFrequency == 0)
+                    ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
+                                                               majorHorizontalLineSize, Color.Silver);
+                else
+                    ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
+                                                               horizontalLineSize, Color.DarkGray);
+
             }
             for (int i = horizontalLines; i < horizontalLines+ verticalLines; i++)
             {
                 Vector2 linePosition = new Vector2(GridSpacing * (i-horizontalLines),0);
-                ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
-                                                           verticalLineSize, Color.LightGray);
+                if ((i-horizontalLines) % MajorGridLinesFrequency == 0)
+                    ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
+                                                           majorVerticalLineSize, Color.Silver);
+                else
+                    ShapeDescriptors[i] = Shapes.DrawRectangle(AbsolutePosition + linePosition,
+                                                           verticalLineSize, Color.DarkGray);
             }
+
 
         }
 

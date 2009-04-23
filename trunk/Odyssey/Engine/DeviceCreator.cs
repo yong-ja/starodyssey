@@ -7,9 +7,9 @@ using SlimDX.Direct3D9;
 
 namespace AvengersUtd.Odyssey
 {
-    internal static class DeviceCreator
+    public static class DeviceCreator
     {
-        internal static ShaderQuality GetHighestSupportedShaderModel(Capabilities caps)
+        public static ShaderQuality GetHighestSupportedShaderModel(Capabilities caps)
         {
             Version requiredVersion = new Version(2, 0);
 
@@ -31,7 +31,7 @@ namespace AvengersUtd.Odyssey
             return ShaderQuality.ShaderModel1;
         }
 
-        internal static DeviceParameters[] CheckDevice(Direct3D direct3D, out Format[] supportedFormats)
+        public static DeviceParameters[] CheckDevice(Direct3D direct3D, out Format[] supportedFormats)
         {
             List<DeviceParameters> supportedParams = new List<DeviceParameters>();
 
@@ -77,6 +77,7 @@ namespace AvengersUtd.Odyssey
 
             // For each adapter
             foreach (AdapterInformation adapter in direct3D.Adapters)
+           // for (int i = 0; i < direct3D.AdapterCount; i++)
             {
 
 
