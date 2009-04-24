@@ -30,11 +30,11 @@
         {
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.snapToGridMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.renderPanel = new AvengersUtd.Odyssey.RenderPanel();
-            this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.snapToGridMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.toolStripPanel.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +55,24 @@
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 20);
             this.fileMenu.Text = "&File";
+            // 
+            // editMenu
+            // 
+            this.editMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.snapToGridMenuItem});
+            this.editMenu.Name = "editMenu";
+            this.editMenu.Size = new System.Drawing.Size(39, 20);
+            this.editMenu.Text = "&Edit";
+            // 
+            // snapToGridMenuItem
+            // 
+            this.snapToGridMenuItem.Checked = true;
+            this.snapToGridMenuItem.CheckOnClick = true;
+            this.snapToGridMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.snapToGridMenuItem.Name = "snapToGridMenuItem";
+            this.snapToGridMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.snapToGridMenuItem.Text = "&Snap to Grid";
+            this.snapToGridMenuItem.CheckedChanged += new System.EventHandler(this.snapToGridMenuItem_CheckedChanged);
             // 
             // toolStripPanel
             // 
@@ -82,24 +100,6 @@
             this.renderPanel.Size = new System.Drawing.Size(800, 600);
             this.renderPanel.TabIndex = 2;
             this.renderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.renderPanel_MouseMove);
-            // 
-            // editMenu
-            // 
-            this.editMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.snapToGridMenuItem});
-            this.editMenu.Name = "editMenu";
-            this.editMenu.Size = new System.Drawing.Size(39, 20);
-            this.editMenu.Text = "&Edit";
-            // 
-            // snapToGridMenuItem
-            // 
-            this.snapToGridMenuItem.Checked = true;
-            this.snapToGridMenuItem.CheckOnClick = true;
-            this.snapToGridMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.snapToGridMenuItem.Name = "snapToGridMenuItem";
-            this.snapToGridMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.snapToGridMenuItem.Text = "&Snap to Grid";
-            this.snapToGridMenuItem.CheckedChanged += new System.EventHandler(this.snapToGridMenuItem_CheckedChanged);
             // 
             // OdysseusForm
             // 

@@ -10,6 +10,7 @@ using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Windows.Forms;
 using SlimDX;
+using ContainerControl=AvengersUtd.Odyssey.UserInterface.RenderableControls.ContainerControl;
 
 
 namespace AvengersUtd.Odysseus
@@ -18,7 +19,6 @@ namespace AvengersUtd.Odysseus
     {
         Hud hud;
         bool designMode;
-        SelectionRectangle selectionRectangle;
         ControlSelector controlSelector;
 
         public static OdysseusForm OdysseusForm
@@ -26,6 +26,13 @@ namespace AvengersUtd.Odysseus
             get;
             set;
         }
+
+        public BaseControl SelectedControl
+        {
+            get { return controlSelector.TargetControl; }
+        }
+
+        public SelectionRectangle SelectionRectangle { get; private set; }
 
 
         public bool DesignMode
@@ -39,15 +46,15 @@ namespace AvengersUtd.Odysseus
 
                     if (designMode)
                     {
-                        hud.MouseDown += selectionRectangle.StartSelection;
-                        hud.MouseMove += selectionRectangle.UpdateSelection;
-                        hud.MouseUp += selectionRectangle.FinalizeSelection;
+                        hud.MouseDown += SelectionRectangle.StartSelection;
+                        hud.MouseMove += SelectionRectangle.UpdateSelection;
+                        hud.MouseUp += SelectionRectangle.FinalizeSelection;
                     }
                     else
                     {
-                        hud.MouseDown -= selectionRectangle.StartSelection;
-                        hud.MouseMove -= selectionRectangle.UpdateSelection;
-                        hud.MouseUp -= selectionRectangle.FinalizeSelection;
+                        hud.MouseDown -= SelectionRectangle.StartSelection;
+                        hud.MouseMove -= SelectionRectangle.UpdateSelection;
+                        hud.MouseUp -= SelectionRectangle.FinalizeSelection;
                         hud.MouseClick += (hud_MouseClick);
                     }
                 }
@@ -56,20 +63,19 @@ namespace AvengersUtd.Odysseus
 
         void hud_MouseClick(object sender, MouseEventArgs e)
         {
-            BaseControl control = OdysseyUI.FindControl(e.Location);
+            BaseControl control = hud.Find(e.Location);
             if (control == null || controlSelector.TargetControl == control)
                 return;
 
             controlSelector.TargetControl = control;
-
-            hud.BeginDesign();
-            hud.Insert(hud.Controls.Count-1,controlSelector);
-            hud.EndDesign();
+            controlSelector.IsVisible = true;
+            
         }
 
         public UIRenderer()
         {
             StyleManager.LoadControlStyles("Odyssey ControlStyles.ocs");
+            StyleManager.LoadControlStyles("Odysseus ControlStyles.ocs");
             StyleManager.LoadTextStyles("Odyssey TextStyles.ots");
             VideoSettings currentVideoSettings = EngineSettings.Video;
             hud = new Hud
@@ -87,18 +93,21 @@ namespace AvengersUtd.Odysseus
         public override void Init()
         {
             hud.BeginDesign();
-            selectionRectangle = new SelectionRectangle
+            SelectionRectangle = new SelectionRectangle
                                      {
                                          Id = "Selector",
                                          Offset = new Vector2(OdysseusForm.RenderPanel.Location.X, 0)
                                      };
-            selectionRectangle.SelectionFinalized += selectionRectangle_SelectionFinalized;
+            SelectionRectangle.SelectionFinalized += selectionRectangle_SelectionFinalized;
             controlSelector = new ControlSelector
                                   {
-                                      Id = "Handler"
+                                      Id = "Handler",
+                                      TargetControl = hud,
+                                      IsVisible = false
                                   };
 
-            hud.Add(selectionRectangle);
+            hud.Add(SelectionRectangle);
+            hud.Add(controlSelector);
             hud.EndDesign();
         }
 
@@ -112,10 +121,16 @@ namespace AvengersUtd.Odysseus
             newControl.Position = e.Position;
             newControl.Size = e.Size;
             newControl.CanRaiseEvents = false;
+            controlSelector.TargetControl = newControl;
+
             hud.BeginDesign();
             hud.Controls.Add(newControl);
+            SelectionRectangle.IsVisible = false;
+            controlSelector.IsVisible = true;
             hud.EndDesign();
-            selectionRectangle.IsVisible = false;
+
+            //OdysseusForm.RenderPanel.Cursor = Cursors.Arrow;
+            OdysseusForm.DeselectToolStripButton();
         }
 
         public override void Render()

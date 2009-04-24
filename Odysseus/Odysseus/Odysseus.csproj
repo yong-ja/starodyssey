@@ -71,7 +71,6 @@
     <Compile Include="OdysseusForm.Menu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="OdysseusForm.resx">
