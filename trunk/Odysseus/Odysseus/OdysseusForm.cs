@@ -25,6 +25,7 @@ namespace AvengersUtd.Odysseus
             get { return toolStrip.Tag as ToolStripButton; }
         }
 
+
         public RenderPanel RenderPanel
         {
             get { return renderPanel; }
@@ -133,9 +134,35 @@ namespace AvengersUtd.Odysseus
                 if (renderPanel.Cursor == Cursors.Arrow)
                     renderPanel.Cursor = Cursors.Cross;
             }
-            else if (renderPanel.Cursor == Cursors.Cross)
-                renderPanel.Cursor = Cursors.Arrow;
+            else
+            {
+                ControlSelector controlSelector;
+
+
+                controlSelector = OdysseyUI.CurrentHud.CaptureControl as ControlSelector;
+                if (controlSelector != null)
+                    renderPanel.Cursor = controlSelector.GetCursorFor(e.Location);
+                else
+                {
+                    controlSelector = OdysseyUI.CurrentHud.Find(e.Location) as ControlSelector;
+                    if (controlSelector != null)
+                        renderPanel.Cursor = controlSelector.GetCursorFor(e.Location);
+                    else
+                        renderPanel.Cursor = Cursors.Arrow;
+                }
+
+            }
+
         }
+
+        public void DeselectToolStripButton()
+        {
+            pointerButton.Checked = true;
+            SelectedButton.Checked = false;
+            toolStrip.Tag = null;
+            renderPanel.Cursor = Cursors.Arrow;
+        }
+
 
 
 
