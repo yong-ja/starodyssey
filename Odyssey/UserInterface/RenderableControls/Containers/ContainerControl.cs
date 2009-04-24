@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
 namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
@@ -162,5 +163,16 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         }
 
         #endregion
+
+        public BaseControl Find(Point cursorLocation)
+        {
+            foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(this))
+            {
+                if (control.IntersectTest(cursorLocation))
+                    return control;
+            }
+
+            return null;
+        }
     }
 }
