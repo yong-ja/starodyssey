@@ -82,7 +82,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             set
             {
                 text = value;
-                textLabel.Text = (isPassword) ? Helpers.Text.MakePasswordString(text, passwordChar) : text;
+                textLabel.Text = (isPassword) ? UserInterface.Helpers.Text.MakePasswordString(text, passwordChar) : text;
             }
         }
 
