@@ -262,17 +262,6 @@ namespace AvengersUtd.Odyssey.UserInterface
         }
         #endregion
 
-        public static BaseControl FindControl(Point cursorLocation)
-        {
-             foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(currentHUD))
-             {
-                 if (control.IntersectTest(cursorLocation))
-                     return control;
-             }
-
-             return null;
-        }
-
         public static void ReleaseResources()
         {
             FontManager.Clear();
