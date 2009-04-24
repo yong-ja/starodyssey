@@ -182,7 +182,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// is inside its bounds. Useful for drag purposes.
         /// </summary>
         /// <value>The control that has currently captured the mouse pointer.</value>
-        internal BaseControl CaptureControl
+        public BaseControl CaptureControl
         {
             get { return captureControl; }
             set

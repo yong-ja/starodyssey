@@ -73,6 +73,9 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         void UpdateSelectionExtents(MouseEventArgs e)
         {
             selectionEnd = new Vector2(e.X, e.Y);
+            if (Options.SnapToGrid)
+                selectionEnd = SnapPositionToGrid(selectionEnd);
+
             Vector2 selectionDelta = selectionStart - selectionEnd;
             int width = (int)Math.Abs(selectionDelta.X);
             int height = (int)Math.Abs(selectionDelta.Y);
@@ -86,12 +89,17 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             Position = new Vector2(finalStartX, finalStartY);
             selectionEnd = new Vector2(finalEndX, finalEndY);
+            
+
         }
 
         public void StartSelection(object sender, MouseEventArgs e)
         {
             isDragging = true;
             selectionStart = new Vector2(e.X, e.Y);
+
+            if (Options.SnapToGrid)
+                selectionStart = SnapPositionToGrid(selectionStart);
             
             Position = selectionStart;
             IsVisible = true;
@@ -123,6 +131,52 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             Depth = new Depth(0, 0, 999);
         }
 
+        public static Vector2 SnapPositionToGrid(Vector2 position)
+        {
+            int deltaX = (int)(position.X%Options.GridSpacing);
+            int deltaY = (int)(position.Y%Options.GridSpacing);
+            int newX, newY;
+            if (deltaX > Options.GridSpacing / 2)
+                newX = (int)position.X  + (Options.GridSpacing - deltaX);
+            else
+                newX = (int)position.X - deltaX;
+
+            if (deltaY > Options.GridSpacing / 2)
+                newY = (int)position.Y + (Options.GridSpacing - deltaY);
+            else
+                newY = (int)position.Y - deltaY;
+
+            return new Vector2(newX, newY);
+        }
+
+        public static Size SnapSizeToGrid(Size size, bool positiveX, bool positiveY)
+        {
+            int deltaX = (size.Width % Options.GridSpacing);
+            int deltaY = (size.Height % Options.GridSpacing);
+            int newWidth=0, newHeight=0;
+
+            if (positiveX)
+            {
+                //if (deltaX > Options.GridSpacing - Options.GridSpacing/4)
+                //    newWidth = size.Width + (Options.GridSpacing - deltaX);
+                //else
+                    newWidth = size.Width - deltaX;
+            }
+            else
+            {
+                //if (deltaX < Options.GridSpacing / 4)
+                //    newWidth = size.Width + (Options.GridSpacing - deltaX);
+                //else
+                    newWidth = size.Width + (Options.GridSpacing -deltaX);
+            }
+
+            if (deltaY > Options.GridSpacing)
+                newHeight = size.Height + (Options.GridSpacing - deltaY);
+            else
+                newHeight = size.Height - deltaY;
+
+            return new Size(newWidth, newHeight);
+        }
 
     }
 }
