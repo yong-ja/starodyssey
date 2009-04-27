@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Drawing;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Helpers;
 
 namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 {
@@ -172,6 +173,10 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             base.OnMouseMove(e);
             if (drag)
             {
+                bool rightSideX = false, rightSideY = false;
+                bool canResizeX = false, canResizeY = false;
+                bool canMoveX = false, canMoveY = false;
+                bool recomputePosition = false;
                 Vector2 prevPosition = targetControl.Position;
                 Size prevSize = targetControl.Size;
                 Vector2 currentPosition = new Vector2(e.X, e.Y);
@@ -184,6 +189,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 {
                     case IntersectionLocation.None:
                         break;
+
                     case IntersectionLocation.Inner:
                         targetControl.Position += delta;
                         Position += delta;
@@ -193,34 +199,58 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                         targetControl.Position = new Vector2(targetControl.Position.X+ (int)delta.X,
                                                              targetControl.Position.Y + (int) delta.Y);
                         targetControl.Size = new Size(targetControl.Size.Width - (int)delta.X, targetControl.Size.Height - (int)delta.Y);
+                        rightSideY = true;
+                        canMoveX = true;
+                        canMoveY = true;
+                        canResizeY = true;
+                        canResizeX = true;
                         break;
 
                     case IntersectionLocation.Top:
                         targetControl.Position = new Vector2(targetControl.Position.X, targetControl.Position.Y + (int)delta.Y);
                         targetControl.Size = new Size(targetControl.Size.Width, targetControl.Size.Height - (int)delta.Y);
+                        recomputePosition = true;
+                        rightSideY = true;
+                        canResizeY = true;
+                        canMoveY = true;
                         break;
 
                     case IntersectionLocation.CornerNE:
                         targetControl.Position = new Vector2(targetControl.Position.X, targetControl.Position.Y + (int)delta.Y);
                         targetControl.Size = new Size(targetControl.Size.Width + (int)delta.X, targetControl.Size.Height - (int)delta.Y);
+                        rightSideX = true;
+                        rightSideY = true;
+                        canResizeX = true;
+                        canResizeY = true;
+                        canMoveY = true;
                         break;
 
                     case IntersectionLocation.Right:
                         targetControl.Size = new Size(targetControl.Size.Width + (int)delta.X, targetControl.Size.Height);
+                        rightSideX = true;
+                        canResizeX = true;
                         break;
 
                     case IntersectionLocation.CornerSE:
                         targetControl.Size = new Size(targetControl.Size.Width + (int)delta.X, targetControl.Size.Height + (int)delta.Y);
+                        rightSideX = true;
+                        canResizeX = true;
+                        canResizeY = true;
                         break;
 
                     case IntersectionLocation.Bottom:
                         targetControl.Size = new Size(targetControl.Size.Width, targetControl.Size.Height + (int)delta.Y);
+                        canResizeY = true;
                         break;
 
                     case IntersectionLocation.CornerSW:
                         targetControl.Position = new Vector2(targetControl.Position.X + (int)delta.X,
                                                              targetControl.Position.Y);
                         targetControl.Size = new Size(targetControl.Size.Width - (int)delta.X, targetControl.Size.Height + (int)delta.Y);
+                        recomputePosition = true;
+                        canMoveX = true;
+                        canResizeX = true;
+                        canResizeY = true;
                         break;
 
 
@@ -228,25 +258,68 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                         targetControl.Position = new Vector2(targetControl.Position.X + (int) delta.X,
                                                              targetControl.Position.Y);
                         targetControl.Size = new Size(targetControl.Size.Width - (int)delta.X, targetControl.Size.Height);
+                        recomputePosition = true;
+                        canResizeX = true;
+                        canMoveX = true;
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
+                
+
                 if (Options.SnapToGrid)
                 {
+                    bool doX = (delta.X > Options.GridSpacing || delta.X < -Options.GridSpacing) ? true : false;
+                    bool doY = (delta.Y > Options.GridSpacing || delta.Y < -Options.GridSpacing) ? true : false;
+                    bool positiveX = false;
+                    bool positiveY = false;
+
+                    positiveX = rightSideX ? delta.X > 0 : delta.X < 0;
+                    positiveY = rightSideY ? delta.Y > 0 : delta.Y < 0;
 
 
-                    targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
-                    //delta = targetControl.Position - prevPosition;
+                    if (previousIntersection == IntersectionLocation.Inner)
+                    {
+                        targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
+                        //targetControl.Position = targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
+                                                                                       
+                        if (targetControl.Position != prevPosition)
+                            dragStartPosition = currentPosition;
+                        //delta = targetControl.Position - prevPosition;
+                    }
+                    else
+                    {
 
-                    targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, delta.X > 0, true);
+                        if (doX || doY)
+                        {
+                            DebugManager.LogToScreen(string.Format("X: {0:f0} Y: {1:f0}", delta.X, delta.Y));
 
-                    if (targetControl.Size != prevSize || targetControl.Position != prevPosition)
-                        dragStartPosition = currentPosition;
+                            targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, prevSize,
+                                                                                   positiveX, positiveY,
+                                                                                   doX & canResizeX, doY & canResizeY);
 
-                    //OdysseyUI.CurrentHud.EndDesign();
+                            //if (!(doX && doY))
+                                targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position, prevPosition, delta,
+                                    doX & canMoveX,doY & canMoveY, positiveX, positiveY); 
+
+                            if (doX && !doY)
+                                dragStartPosition = new Vector2(currentPosition.X, dragStartPosition.Y);
+                            else if (!doX && doY)
+                                dragStartPosition = new Vector2(dragStartPosition.X, currentPosition.Y);
+                            else
+                               dragStartPosition = currentPosition;
+
+                        }
+                        else
+                        {
+                            targetControl.Position = prevPosition;
+                            targetControl.Size = prevSize;
+                        }
+                    }
+
+                    //UpdateAppearance();
                 }
                 else
                 {
@@ -262,15 +335,6 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             base.OnMouseUp(e);
             OdysseyUI.CurrentHud.CaptureControl = null;
             drag = false;
-            if (Options.SnapToGrid)
-            {
-                Vector2 prevPosition = targetControl.Position;
-                targetControl.Position = SelectionRectangle.SnapPositionToGrid(prevPosition);
-                //delta = targetControl.Position - prevPosition;
-                targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, true, true);
-
-                //OdysseyUI.CurrentHud.EndDesign();
-            }
             UpdateAppearance();
         }
 

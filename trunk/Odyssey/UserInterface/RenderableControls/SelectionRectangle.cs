@@ -131,13 +131,44 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             Depth = new Depth(0, 0, 999);
         }
 
+        public static Vector2 SnapPositionToGrid(Vector2 position, Vector2 prevPosition, Vector2 delta,
+            bool doX, bool doY, bool positiveX, bool positiveY)
+        {
+           
+            int newX = (int)prevPosition.X, newY = (int)prevPosition.Y;
+            int currentX = (int)position.X, currentY = (int)position.Y;
+
+
+            int deltaX = currentX % Options.GridSpacing;
+            int deltaY = currentY % Options.GridSpacing;
+
+            if (doX)
+            {
+                if (positiveX)
+                    newX = currentX + (Options.GridSpacing - deltaX);
+                else
+                    newX = currentX - deltaX;
+            }
+
+            if (doY)
+            {
+                if (!positiveY)
+                    newY = currentY + (Options.GridSpacing - deltaY);
+                else
+                    newY = currentY - deltaY;
+            }
+
+            return new Vector2(newX, newY);
+        }
+
+
         public static Vector2 SnapPositionToGrid(Vector2 position)
         {
-            int deltaX = (int)(position.X%Options.GridSpacing);
-            int deltaY = (int)(position.Y%Options.GridSpacing);
+            int deltaX = (int)(position.X % Options.GridSpacing);
+            int deltaY = (int)(position.Y % Options.GridSpacing);
             int newX, newY;
             if (deltaX > Options.GridSpacing / 2)
-                newX = (int)position.X  + (Options.GridSpacing - deltaX);
+                newX = (int)position.X + (Options.GridSpacing - deltaX);
             else
                 newX = (int)position.X - deltaX;
 
@@ -149,31 +180,35 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
             return new Vector2(newX, newY);
         }
 
-        public static Size SnapSizeToGrid(Size size, bool positiveX, bool positiveY)
+        public static Size SnapSizeToGrid(Size size, Size prevSize, bool positiveX, bool positiveY,
+            bool doX, bool doY)
         {
             int deltaX = (size.Width % Options.GridSpacing);
             int deltaY = (size.Height % Options.GridSpacing);
-            int newWidth=0, newHeight=0;
+            int newWidth=prevSize.Width, newHeight=prevSize.Height;
 
-            if (positiveX)
+            if (doX)
             {
-                //if (deltaX > Options.GridSpacing - Options.GridSpacing/4)
-                //    newWidth = size.Width + (Options.GridSpacing - deltaX);
-                //else
+                if (positiveX)
+                {
                     newWidth = size.Width - deltaX;
-            }
-            else
-            {
-                //if (deltaX < Options.GridSpacing / 4)
-                //    newWidth = size.Width + (Options.GridSpacing - deltaX);
-                //else
-                    newWidth = size.Width + (Options.GridSpacing -deltaX);
+                }
+                else
+                {
+                    //if (deltaX < Options.GridSpacing / 4)
+                    //    newWidth = size.Width + (Options.GridSpacing - deltaX);
+                    //else
+                    newWidth = size.Width + (Options.GridSpacing - deltaX);
+                }
             }
 
-            if (deltaY > Options.GridSpacing)
-                newHeight = size.Height + (Options.GridSpacing - deltaY);
-            else
-                newHeight = size.Height - deltaY;
+            if (doY)
+            {
+                if (positiveY)
+                    newHeight = size.Height + (Options.GridSpacing - deltaY);
+                else
+                    newHeight = size.Height - deltaY;
+            }
 
             return new Size(newWidth, newHeight);
         }
