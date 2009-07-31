@@ -31,7 +31,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Window : BaseControl, IContainer
     {

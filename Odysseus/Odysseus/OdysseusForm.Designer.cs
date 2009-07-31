@@ -30,11 +30,15 @@
         {
             this.menu = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.editControlStylesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.snapToGridMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.renderPanel = new AvengersUtd.Odyssey.RenderPanel();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.toolStripPanel.SuspendLayout();
             this.SuspendLayout();
@@ -46,15 +50,25 @@
             this.editMenu});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(948, 24);
+            this.menu.Size = new System.Drawing.Size(1008, 24);
             this.menu.TabIndex = 0;
             this.menu.Text = "menuStrip1";
             // 
             // fileMenu
             // 
+            this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editControlStylesToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 20);
             this.fileMenu.Text = "&File";
+            // 
+            // editControlStylesToolStripMenuItem
+            // 
+            this.editControlStylesToolStripMenuItem.Name = "editControlStylesToolStripMenuItem";
+            this.editControlStylesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.editControlStylesToolStripMenuItem.Text = "Edit &Control Styles";
+            this.editControlStylesToolStripMenuItem.Click += new System.EventHandler(this.editControlStylesToolStripMenuItem_Click);
             // 
             // editMenu
             // 
@@ -78,16 +92,19 @@
             // 
             this.toolStripPanel.Controls.Add(this.toolStrip);
             this.toolStripPanel.Location = new System.Drawing.Point(0, 24);
+            this.toolStripPanel.Margin = new System.Windows.Forms.Padding(5);
             this.toolStripPanel.Name = "toolStripPanel";
-            this.toolStripPanel.Size = new System.Drawing.Size(142, 600);
+            this.toolStripPanel.Size = new System.Drawing.Size(200, 315);
             this.toolStripPanel.TabIndex = 3;
             // 
             // toolStrip
             // 
+            this.toolStrip.AutoSize = false;
+            this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(26, 111);
+            this.toolStrip.Size = new System.Drawing.Size(200, 315);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -95,17 +112,36 @@
             // 
             this.renderPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.renderPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.renderPanel.Location = new System.Drawing.Point(148, 24);
+            this.renderPanel.Location = new System.Drawing.Point(208, 24);
             this.renderPanel.Name = "renderPanel";
             this.renderPanel.Size = new System.Drawing.Size(800, 600);
             this.renderPanel.TabIndex = 2;
             this.renderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.renderPanel_MouseMove);
             // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Location = new System.Drawing.Point(0, 346);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(200, 266);
+            this.propertyGrid.TabIndex = 4;
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "\"C# files|*.cs\"";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.exportToolStripMenuItem.Text = "&Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
             // OdysseusForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 624);
+            this.ClientSize = new System.Drawing.Size(1008, 624);
+            this.Controls.Add(this.propertyGrid);
             this.Controls.Add(this.renderPanel);
             this.Controls.Add(this.toolStripPanel);
             this.Controls.Add(this.menu);
@@ -116,7 +152,6 @@
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
             this.toolStripPanel.ResumeLayout(false);
-            this.toolStripPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,6 +166,10 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripMenuItem editMenu;
         private System.Windows.Forms.ToolStripMenuItem snapToGridMenuItem;
+        private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.ToolStripMenuItem editControlStylesToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
     }
 }
 

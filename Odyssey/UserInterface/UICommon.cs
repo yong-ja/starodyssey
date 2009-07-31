@@ -24,7 +24,7 @@
 
 using System;
 using System.Drawing;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
 namespace AvengersUtd.Odyssey.UserInterface

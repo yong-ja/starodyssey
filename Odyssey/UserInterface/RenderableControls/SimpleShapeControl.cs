@@ -29,7 +29,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     /// <summary>
     /// A <c>SimpleShapeControl</c> is a control that is rendered using

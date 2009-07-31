@@ -37,7 +37,7 @@ using SlimDX;
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class TabPanel : ContainerControl, ISpriteControl
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using System.Reflection;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odysseus.Properties;
 using AvengersUtd.Odyssey.UserInterface;
 
@@ -29,6 +29,11 @@ namespace AvengersUtd.Odysseus
         public RenderPanel RenderPanel
         {
             get { return renderPanel; }
+        }
+
+        public PropertyGrid Propertygrid
+        {
+            get { return propertyGrid; }
         }
 
         public OdysseusForm()
@@ -65,6 +70,7 @@ namespace AvengersUtd.Odysseus
 
             Dictionary<string, Type> baseTypes = new Dictionary<string, Type>();
             baseTypes.Add("Buttons", typeof (BaseButton));
+            baseTypes.Add("Containers", typeof (AvengersUtd.Odyssey.UserInterface.ContainerControl));
             Type[] controlTypes = odysseyUI.GetTypes();
 
             foreach (KeyValuePair<string,Type> item in baseTypes)
@@ -72,7 +78,7 @@ namespace AvengersUtd.Odysseus
                 ToolStripLabel label = new ToolStripLabel
                 {
                     Text = item.Key,
-                    Font = new Font(Font, FontStyle.Bold | FontStyle.Underline)
+                    Font = new Font(Font, FontStyle.Bold | FontStyle.Underline),
                 };
 
                 toolStrip.Items.Add(label);
@@ -89,6 +95,8 @@ namespace AvengersUtd.Odysseus
                     AddInToolStrip(type);
                 }
             }
+            //toolStrip.Width = 150;
+            
         }
 
 
@@ -97,14 +105,14 @@ namespace AvengersUtd.Odysseus
 
             ToolStrip destinationToolStrip = null;
 
-            if (controlType.BaseType.Name == Resources.ControlCategory_Button)
-            {
-                destinationToolStrip = toolStrip;
+            //if (controlType.BaseType.Name == Resources.ControlCategory_Button)
+            //{
+            //    destinationToolStrip = toolStrip;
                 
-            }
+            //}
 
-            if (destinationToolStrip == null)
-                return;
+            //if (destinationToolStrip == null)
+            //    return;
 
             ToolStripToggleButton item = new ToolStripToggleButton
             {
@@ -115,7 +123,7 @@ namespace AvengersUtd.Odysseus
             };
 
 
-            destinationToolStrip.Items.Add(item);
+            toolStrip.Items.Add(item);
         }
 
 
@@ -162,7 +170,6 @@ namespace AvengersUtd.Odysseus
             toolStrip.Tag = null;
             renderPanel.Cursor = Cursors.Arrow;
         }
-
 
 
 

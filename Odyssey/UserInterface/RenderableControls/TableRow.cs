@@ -5,7 +5,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using System.Drawing;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class TableRow : ContainerControl 
     {

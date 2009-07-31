@@ -26,7 +26,7 @@ using System;
 using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class DataViewerRow : DataViewerBand
     {

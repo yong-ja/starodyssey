@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface

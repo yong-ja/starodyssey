@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class TableRowCollection : Collection<TableRow>
     {

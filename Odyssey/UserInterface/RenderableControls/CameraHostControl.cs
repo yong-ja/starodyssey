@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using SlimDX.XInput;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public enum CameraAction
     {

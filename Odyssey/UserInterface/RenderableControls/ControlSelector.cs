@@ -7,7 +7,7 @@ using System.Drawing;
 using SlimDX;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     
 
@@ -34,6 +34,8 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 hitmanager = new HitManager(targetControl, sensibleArea);
                 Position = targetControl.Position;
                 Size = targetControl.Size;
+                hitmanager.ComputeExtents();
+
             }
         }
 
@@ -282,34 +284,40 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
                     if (previousIntersection == IntersectionLocation.Inner)
                     {
-                        targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
-                        //targetControl.Position = targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
-                                                                                       
-                        if (targetControl.Position != prevPosition)
+                        DebugManager.LogToScreen(string.Format("X: {0:f0} Y: {1:f0}", delta.X, delta.Y));
+
+                        targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position, prevPosition,
+                            delta, doX, doY, delta.X < 0 && targetControl.Position.X > 0, delta.Y < 0 && targetControl.Position.Y > 0);
+
+                        if (doX && !doY)
+                            dragStartPosition = new Vector2(currentPosition.X, dragStartPosition.Y);
+                        else if (!doX && doY)
+                            dragStartPosition = new Vector2(dragStartPosition.X, currentPosition.Y);
+                        else if (doX && doY)
                             dragStartPosition = currentPosition;
                         //delta = targetControl.Position - prevPosition;
                     }
                     else
                     {
-
                         if (doX || doY)
                         {
-                            DebugManager.LogToScreen(string.Format("X: {0:f0} Y: {1:f0}", delta.X, delta.Y));
-
                             targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, prevSize,
                                                                                    positiveX, positiveY,
                                                                                    doX & canResizeX, doY & canResizeY);
 
-                            //if (!(doX && doY))
-                                targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position, prevPosition, delta,
-                                    doX & canMoveX,doY & canMoveY, positiveX, positiveY); 
+                            targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position,
+                                                                                           prevPosition, delta,
+                                                                                           doX & canMoveX,
+                                                                                           doY & canMoveY, 
+                                                                                           delta.X < 0 && targetControl.Position.X > 0,
+                                                                                           delta.Y < 0&& targetControl.Position.Y > 0);
 
                             if (doX && !doY)
                                 dragStartPosition = new Vector2(currentPosition.X, dragStartPosition.Y);
                             else if (!doX && doY)
                                 dragStartPosition = new Vector2(dragStartPosition.X, currentPosition.Y);
                             else
-                               dragStartPosition = currentPosition;
+                                dragStartPosition = currentPosition;
 
                         }
                         else

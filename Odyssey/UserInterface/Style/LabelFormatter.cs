@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 #if !(SlimDX)
     using Microsoft.DirectX;
 #else

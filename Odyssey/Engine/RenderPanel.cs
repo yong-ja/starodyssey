@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey
     /// <summary>
     /// 
     /// </summary>
-    public class RenderPanel : Panel
+    public class RenderPanel : System.Windows.Forms.Panel
     {
         Device device;
         PresentParameters presentParameters;

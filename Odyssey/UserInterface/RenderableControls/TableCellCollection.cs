@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Text;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class TableCellCollection : Collection<TableCell>
     {

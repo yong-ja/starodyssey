@@ -37,7 +37,7 @@ using Font=SlimDX.Direct3D9.Font;
 #endif
 
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Label : SimpleShapeControl, ISpriteControl
     {

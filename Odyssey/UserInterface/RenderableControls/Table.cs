@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Table : ContainerControl
     {

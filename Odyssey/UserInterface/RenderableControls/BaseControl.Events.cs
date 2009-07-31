@@ -26,7 +26,7 @@ using System;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public abstract partial class BaseControl
     {

@@ -24,7 +24,7 @@
 
 using System;
 using System.Drawing;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 #if !(SlimDX)
     using Microsoft.DirectX;
@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.UserInterface
         const int DefaultCrossPaddingX = 10;
         const int DefaultCrossPaddingY = 7;
         const int DefaultCrossWidth = 14;
-        const int DefaultTriangleSideLength = 10;
+        const int DefaultTriangleSideLength = 50;
         static int count;
 
         ShapeDescriptor buttonDescriptor;
@@ -70,8 +70,10 @@ namespace AvengersUtd.Odyssey.UserInterface
             get { return decorationType; }
             set
             {
+                OdysseyUI.CurrentHud.BeginDesign();
                 decorationType = value;
                 decorationVertex = GetDecorationVertex();
+                OdysseyUI.CurrentHud.EndDesign();
             }
         }
 
@@ -111,10 +113,12 @@ namespace AvengersUtd.Odyssey.UserInterface
             {
                 default:
                 case DecorationType.DownsideTriangle:
-                    decorationDescriptor = Shapes.DrawEquilateralTriangle(decorationVertexAbsolutePosition,
+                    decorationDescriptor = Shapes.DrawFullEquilateralTriangle(decorationVertexAbsolutePosition,
                                                                           DefaultTriangleSideLength,
-                                                                          ColorOperator.Scale(Color.Black, 0.5f), false,
-                                                                          false);
+                                                                          Color.Silver,
+                                                                          false,
+                                                                          false, ControlStyle.ColorArray.BorderEnabled,
+                                                                          ControlStyle.Shading, ControlStyle.BorderSize);
                     break;
 
                 case DecorationType.Cross:
@@ -151,11 +155,11 @@ namespace AvengersUtd.Odyssey.UserInterface
             {
                 default:
                 case DecorationType.DownsideTriangle:
-                    decorationDescriptor.UpdateShape(Shapes.DrawEquilateralTriangle(decorationVertexAbsolutePosition,
-                                                                                    DefaultTriangleSideLength,
-                                                                                    ColorOperator.Scale(Color.Black,
-                                                                                                        0.5f), false,
-                                                                                    false));
+                    decorationDescriptor.UpdateShape(Shapes.DrawFullEquilateralTriangle(decorationVertexAbsolutePosition,
+                                                                          DefaultTriangleSideLength,
+                                                                          ColorOperator.Scale(Color.Black, 0.5f), false,
+                                                                          false, ControlStyle.ColorArray.BorderEnabled,
+                                                                          ControlStyle.Shading, ControlStyle.BorderSize));
                     break;
 
                 case DecorationType.Cross:
@@ -177,9 +181,25 @@ namespace AvengersUtd.Odyssey.UserInterface
             }
         }
 
+        public override void ComputeAbsolutePosition()
+        {
+            base.ComputeAbsolutePosition();
+            decorationVertex = GetDecorationVertex();
+        }
+
         protected override void UpdatePositionDependantParameters()
         {
             decorationVertexAbsolutePosition = AbsolutePosition + decorationVertex;
+            if (decorationDescriptor != null)
+                decorationDescriptor.IsDirty = true;
+        }
+
+        protected override void UpdateSizeDependantParameters()
+        {
+            decorationVertex = GetDecorationVertex();
+            decorationVertexAbsolutePosition = AbsolutePosition + decorationVertex;
+            if (decorationDescriptor != null)
+                decorationDescriptor.IsDirty = true;
         }
 
 

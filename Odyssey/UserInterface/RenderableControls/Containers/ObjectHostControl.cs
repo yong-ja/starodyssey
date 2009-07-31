@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces;
+using AvengersUtd.Odyssey.UserInterface.Interfaces;
+using AvengersUtd.Odyssey.UserInterface.Interfaces;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using System.Windows.Forms;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class ObjectHostControl : SimpleShapeControl
         

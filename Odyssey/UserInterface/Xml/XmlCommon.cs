@@ -28,7 +28,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 #if !(SlimDX)
     using Microsoft.DirectX;

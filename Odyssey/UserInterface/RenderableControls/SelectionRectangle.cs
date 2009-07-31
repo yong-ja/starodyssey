@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class SelectionEventArgs : EventArgs
     {
@@ -144,6 +144,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             if (doX)
             {
+
                 if (positiveX)
                     newX = currentX + (Options.GridSpacing - deltaX);
                 else
@@ -152,11 +153,32 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
 
             if (doY)
             {
-                if (!positiveY)
+                if (positiveY)
                     newY = currentY + (Options.GridSpacing - deltaY);
                 else
                     newY = currentY - deltaY;
             }
+
+            return new Vector2(newX, newY);
+        }
+
+        public static Vector2 SnapPositionToGrid(Vector2 position, Vector2 prevPosition, Vector2 delta)
+        {
+            int currentX = (int)position.X, currentY = (int)position.Y;
+            int deltaX = currentX%Options.GridSpacing;
+            int deltaY = currentY%Options.GridSpacing;
+            int newX = (int) prevPosition.X, newY = (int) prevPosition.Y;
+
+            bool positiveX = delta.X > 0;
+            bool positiveY = delta.Y > 0;
+            if (Math.Abs(delta.X) > Options.GridSpacing/2)
+                newX = positiveX ? currentX - deltaX : currentX + (Options.GridSpacing - deltaX);
+
+            if (Math.Abs(delta.Y) > Options.GridSpacing/2)
+                newY = positiveY ? currentY - deltaY : currentY + (Options.GridSpacing - deltaY);
+
+            //else
+            //    newX = currentX + (Options.GridSpacing - deltaX);
 
             return new Vector2(newX, newY);
         }

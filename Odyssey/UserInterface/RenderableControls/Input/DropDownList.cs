@@ -33,7 +33,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     /// <summary>
     /// This is the DropDownList control, also known as "ComboBox". 

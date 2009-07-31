@@ -823,6 +823,62 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         #region Triangles
 
+        public static ShapeDescriptor DrawEquilateralTriangleRL(Vector2 topLeft, float sideLength, Color color,
+                                                              bool isShaded, bool isTriangleUpside)
+        {
+            Vector2 triangleVertex;
+            TransformedColored[] vertices = new TransformedColored[3];
+            Color shaded;
+            float heightOffset = (float)(sideLength / 2 * Math.Sqrt(3));
+           
+            int col1 = color.ToArgb();
+            int col2;
+
+            if (isShaded)
+            {
+                shaded = Color.FromArgb(color.A, ColorOperator.Scale(color, 0.5f));
+                col2 = shaded.ToArgb();
+            }
+            else
+                col2 = col1;
+
+
+            if (!isTriangleUpside)
+            {
+                triangleVertex = new Vector2(topLeft.X, topLeft.Y + sideLength/2);
+                vertices[0] = new TransformedColored(triangleVertex.X, triangleVertex.Y, 0, 1, col1);
+                vertices[1] = new TransformedColored(triangleVertex.X + heightOffset, triangleVertex.Y - sideLength / 2, 0, 1, col2);
+                vertices[2] = new TransformedColored(triangleVertex.X + heightOffset, triangleVertex.Y + sideLength / 2, 0, 1, col2);
+            }
+            else
+            {
+                triangleVertex = new Vector2(topLeft.X + heightOffset, topLeft.Y + sideLength / 2);
+                vertices[0] = new TransformedColored(triangleVertex.X, triangleVertex.Y, 0, 1, col1);
+                vertices[1] = new TransformedColored(triangleVertex.X - heightOffset, triangleVertex.Y-sideLength/2, 0, 1, col2);
+                vertices[2] = new TransformedColored(triangleVertex.X - heightOffset, triangleVertex.Y + sideLength/2, 0, 1, col2);
+            }
+
+            int[] indices = new int[3];
+
+            if (isTriangleUpside)
+            {
+                indices[0] = 0;
+                indices[1] = 1;
+                indices[2] = 2;
+            }
+            else
+            {
+                indices[0] = 2;
+                indices[1] = 0;
+                indices[2] = 1;
+            }
+
+            
+
+
+            return new ShapeDescriptor(1, vertices, indices);
+        }
+
         public static ShapeDescriptor DrawEquilateralTriangle(Vector2 leftVertex, float sideLength, Color color,
                                                               bool isShaded, bool isTriangleUpside)
         {
@@ -865,6 +921,24 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
 
             return new ShapeDescriptor(1, vertices, indices);
+        }
+
+        public static ShapeDescriptor DrawFullEquilateralTriangle(Vector2 leftVertex, float sideLength, Color color,
+                                                              bool isShaded, bool isTriangleUpside, Color borderColor, Shading shading, int borderSize)
+        {
+            float heightOffset = (float) (sideLength/2*Math.Sqrt(3));
+            if (isTriangleUpside)
+                heightOffset *= -1;
+            ShapeDescriptor triangle = DrawEquilateralTriangleRL(leftVertex, sideLength, color, isShaded, isTriangleUpside);
+            ShapeDescriptor triangleOutline =
+                DrawPolyLine(2, borderColor, true,
+                             new Vector2[]
+                                 {
+                                     new Vector2(leftVertex.X, leftVertex.Y),
+                                     new Vector2(leftVertex.X + sideLength, leftVertex.Y),
+                                     new Vector2(leftVertex.X + sideLength/2, leftVertex.Y + heightOffset)
+                                 });
+            return ShapeDescriptor.Join(triangle, triangleOutline);
         }
 
         #endregion

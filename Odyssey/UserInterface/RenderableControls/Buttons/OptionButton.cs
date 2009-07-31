@@ -31,7 +31,7 @@ using System.Windows.Forms;
 using SlimDX;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     /// <summary>
     /// This is the OptionButton control - also known as Radio Button. Instead of creating

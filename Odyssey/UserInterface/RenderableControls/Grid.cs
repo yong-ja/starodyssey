@@ -5,7 +5,7 @@ using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Grid:BaseControl
     {

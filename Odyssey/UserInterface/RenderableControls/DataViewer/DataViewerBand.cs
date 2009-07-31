@@ -26,7 +26,7 @@ using System;
 using AvengersUtd.Odyssey.UserInterface.Properties;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     [Flags]
     public enum TableElementStates

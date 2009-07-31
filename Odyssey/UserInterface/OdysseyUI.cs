@@ -27,7 +27,7 @@
 		using System.Drawing;
 		using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 #if !(SlimDX)
     using Microsoft.DirectX.Direct3D;
@@ -65,6 +65,8 @@ namespace AvengersUtd.Odyssey.UserInterface
     {
         static Hud currentHUD;
         static Device device;
+        public static Control Owner
+        { get; private set; }
 
         static readonly MouseButtons clickButton;
 
@@ -259,6 +261,8 @@ namespace AvengersUtd.Odyssey.UserInterface
                 MouseEventHandler(ProcessMouseInputRelease);
             target.MouseMove += new
                 MouseEventHandler(MouseMovementHandler);
+
+            Owner = target;
         }
         #endregion
 

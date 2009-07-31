@@ -29,7 +29,7 @@ using System;
 using SlimDX;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class GroupBox : ContainerControl
     {

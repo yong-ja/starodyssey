@@ -38,7 +38,7 @@ using SlimDX;
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public abstract class DataViewerCell : DataViewerElement, ICloneable
     {
