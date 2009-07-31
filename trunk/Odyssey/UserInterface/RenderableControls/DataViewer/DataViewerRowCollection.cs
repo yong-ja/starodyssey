@@ -24,7 +24,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class DataViewerRowCollection : Collection<DataViewerRow>
     {

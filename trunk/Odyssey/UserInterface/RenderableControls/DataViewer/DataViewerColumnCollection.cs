@@ -26,7 +26,7 @@ using System;
 using System.Collections.ObjectModel;
 using AvengersUtd.Odyssey.UserInterface.Properties;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class DataViewerColumnCollection : Collection<DataViewerColumn>
     {

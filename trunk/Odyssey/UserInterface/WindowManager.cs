@@ -23,7 +23,7 @@
 #endregion
 
 using System.Collections.Generic;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 
 namespace AvengersUtd.Odyssey.UserInterface
 {

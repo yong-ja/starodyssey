@@ -37,7 +37,7 @@ using SlimDX.Direct3D9;
 #endregion
 
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
 
     #region RenderInfo struct

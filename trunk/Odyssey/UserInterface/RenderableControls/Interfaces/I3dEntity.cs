@@ -4,7 +4,7 @@ using System.Text;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls.Interfaces
+namespace AvengersUtd.Odyssey.UserInterface.Interfaces
 {
     public interface I3dEntity
     {

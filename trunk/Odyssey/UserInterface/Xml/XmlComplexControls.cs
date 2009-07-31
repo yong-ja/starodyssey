@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 
 namespace AvengersUtd.Odyssey.UserInterface.Xml
 {

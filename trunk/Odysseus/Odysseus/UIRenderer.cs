@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.Settings;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Windows.Forms;
 using SlimDX;
-using ContainerControl=AvengersUtd.Odyssey.UserInterface.RenderableControls.ContainerControl;
+using ContainerControl=AvengersUtd.Odyssey.UserInterface.ContainerControl;
 
 
 namespace AvengersUtd.Odysseus
@@ -25,6 +25,11 @@ namespace AvengersUtd.Odysseus
         {
             get;
             set;
+        }
+
+        public Hud Hud
+        {
+            get { return hud; }
         }
 
         public BaseControl SelectedControl
@@ -63,11 +68,12 @@ namespace AvengersUtd.Odysseus
 
         void hud_MouseClick(object sender, MouseEventArgs e)
         {
-            BaseControl control = hud.Find(e.Location);
+            BaseControl control = hud.FindAll(e.Location);
             if (control == null || controlSelector.TargetControl == control)
                 return;
 
             controlSelector.TargetControl = control;
+            
             controlSelector.IsVisible = true;
             
         }
@@ -105,10 +111,16 @@ namespace AvengersUtd.Odysseus
                                       TargetControl = hud,
                                       IsVisible = false
                                   };
+            controlSelector.MouseClick += new MouseEventHandler(controlSelector_MouseClick);
 
             hud.Add(SelectionRectangle);
             hud.Add(controlSelector);
             hud.EndDesign();
+        }
+
+        void controlSelector_MouseClick(object sender, MouseEventArgs e)
+        {
+            OdysseusForm.Propertygrid.SelectedObject = controlSelector.TargetControl;
         }
 
         void selectionRectangle_SelectionFinalized(object sender, SelectionEventArgs e)

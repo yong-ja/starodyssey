@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class ControlCollection : Collection<BaseControl>, IEnumerable<BaseControl>
     {
@@ -55,7 +55,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
                 for (int i = 0; i < Count; i++)
                 {
                     BaseControl control = this[i];
-                    if (control.IsVisible && control.IsEnabled)
+                    if (control.IsVisible && control.IsEnabled && control.CanRaiseEvents)
                         yield return control;
                     else continue;
                 }

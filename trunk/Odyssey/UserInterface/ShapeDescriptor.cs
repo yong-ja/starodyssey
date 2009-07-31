@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
 #if (!SlimDX)
@@ -302,11 +302,12 @@ namespace AvengersUtd.Odyssey.UserInterface
                 throw new ArgumentNullException("ctl",
                                                 "The control passed as parameter to the ComputeShape method is null.");
 
+            ColorArray colorArray = ctl.ControlStyle.ColorArray;
             switch (shape)
             {
                 case Shape.Rectangle:
                     return Shapes.DrawFullRectangle(ctl.AbsolutePosition, ctl.Size,
-                                                    ctl.InnerAreaColor, ctl.BorderColor,
+                                                    colorArray.Enabled, colorArray.BorderEnabled,
                                                     ctl.ControlStyle.Shading,
                                                     ctl.BorderSize,
                                                     ctl.BorderStyle);

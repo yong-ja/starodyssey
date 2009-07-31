@@ -22,7 +22,7 @@
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public interface ISpriteControl
     {

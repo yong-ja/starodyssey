@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DE18678F-8789-41E8-AFA0-EED7FCF3B469}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -62,9 +62,19 @@
     <Compile Include="Devices\Keyboard.cs" />
     <Compile Include="Devices\Mouse.cs" />
     <Compile Include="Devices\XBox360Controller.cs" />
+    <Compile Include="RenderableControls\Containers\CollapsablePanel.cs" />
+    <Compile Include="Style\AlphaSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Style\CustomColorDialog.cs" />
+    <Compile Include="Style\NativeMethods.cs" />
+    <Compile Include="Style\OColor.cs" />
+    <Compile Include="Style\OColorConverter.cs" />
+    <Compile Include="Style\OColorEditor.cs" />
+    <Compile Include="Style\OControlStyle.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="RenderableControls\Helpers\Extensions.cs" />
-    <Compile Include="RenderableControls\Helpers\MathHelper.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="HitManager.cs" />
     <Compile Include="RenderableControls\CameraHostControl.cs" />
     <Compile Include="RenderableControls\Containers\ObjectHostControl.cs" />
@@ -80,14 +90,14 @@
     <Compile Include="RenderableControls\TableRow.cs" />
     <Compile Include="RenderableControls\TableRowCollection.cs" />
     <Compile Include="Style\FontManager.cs" />
-    <Compile Include="RenderableControls\Helpers\DebugManager.cs" />
-    <Compile Include="RenderableControls\Helpers\DynamicPropertyAccessor.cs" />
-    <Compile Include="RenderableControls\Helpers\Error.cs" />
-    <Compile Include="RenderableControls\Helpers\IPropertyAccessor.cs" />
-    <Compile Include="RenderableControls\Helpers\StaticReflection.cs" />
-    <Compile Include="RenderableControls\Helpers\Text.cs" />
-    <Compile Include="RenderableControls\Helpers\Timer.cs" />
-    <Compile Include="RenderableControls\Helpers\TreeTraversal.cs" />
+    <Compile Include="Helpers\DebugManager.cs" />
+    <Compile Include="Helpers\DynamicPropertyAccessor.cs" />
+    <Compile Include="Helpers\Error.cs" />
+    <Compile Include="Helpers\IPropertyAccessor.cs" />
+    <Compile Include="Helpers\StaticReflection.cs" />
+    <Compile Include="Helpers\Text.cs" />
+    <Compile Include="Helpers\Timer.cs" />
+    <Compile Include="Helpers\TreeTraversal.cs" />
     <Compile Include="Intersection.cs" />
     <Compile Include="OdysseyUI.cs" />
     <Compile Include="Properties\Exceptions.Designer.cs">
@@ -155,6 +165,7 @@
     <Compile Include="Style\LabelFormatter.cs" />
     <Compile Include="Style\LabelPage.cs" />
     <Compile Include="Style\Padding.cs" />
+    <Compile Include="Style\PaddingConverter.cs" />
     <Compile Include="Style\Shading.cs" />
     <Compile Include="Style\Shapes.cs" />
     <Compile Include="Style\StyleManager.cs" />

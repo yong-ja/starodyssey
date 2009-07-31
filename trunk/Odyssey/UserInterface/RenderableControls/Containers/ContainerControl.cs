@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public abstract class ContainerControl : SimpleShapeControl, IContainer
     {
@@ -167,6 +167,17 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         public BaseControl Find(Point cursorLocation)
         {
             foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(this))
+            {
+                if (control.IntersectTest(cursorLocation))
+                    return control;
+            }
+
+            return null;
+        }
+
+        public BaseControl FindAll(Point cursorLocation)
+        {
+            foreach (BaseControl control in TreeTraversal.PreOrderControlVisit(this))
             {
                 if (control.IntersectTest(cursorLocation))
                     return control;

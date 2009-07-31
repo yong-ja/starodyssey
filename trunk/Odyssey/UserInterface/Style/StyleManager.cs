@@ -31,7 +31,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 using AvengersUtd.Odyssey.UserInterface.Properties;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Xml;
 using System.IO;
 
@@ -55,6 +55,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         {
             // not yet fully implemented
             get { return DefaultFontSize; }
+        }
+
+        public static ControlStyle[] ControlStyles
+        {
+            get
+            {
+                ControlStyle[] cStyleArray = new ControlStyle[controlStyles.Count];
+                controlStyles.Values.CopyTo(cStyleArray, 0);
+                return cStyleArray;
+                
+            }
         }
 
         #endregion

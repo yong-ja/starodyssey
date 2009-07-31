@@ -25,16 +25,17 @@
 using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Panel : ContainerControl
     {
         const string ControlTag = "Panel";
-
+        static int count;
         #region Constructors
 
-        public Panel() 
+        public Panel() : base(ControlTag + count, ControlTag, ControlTag)
         {
+            count++;
             ApplyControlStyle(StyleManager.GetControlStyle(ControlTag));
         }
 

@@ -26,7 +26,9 @@
 		using System;
 using System.ComponentModel;
 using System.Drawing;
-using AvengersUtd.Odyssey.UserInterface.Style;
+		using System.Drawing.Design;
+		using AvengersUtd.Odyssey.UserInterface.Helpers;
+		using AvengersUtd.Odyssey.UserInterface.Style;
 #if !(SlimDX)
     using Microsoft.DirectX;
 #else
@@ -34,7 +36,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 #endif 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public abstract partial class BaseControl
     {
@@ -80,6 +82,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// <remarks>If you <b>set</b> the class, it will cause that class to be recovered
         /// from the static cache in memory. If there's no <see cref="TextStyle"/> object present
         /// in memory, the <b>Default</b> style will be used instead.</remarks>
+        [CategoryAttribute("Style"),DescriptionAttribute("ID of the text style class to use.")]
         public string TextStyleClass
         {
             get { return textStyle.Name; }
@@ -118,6 +121,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// <value>The name of the <see cref="TextStyle"/> class to use. Classes are defined
         /// in a <c><b>[Theme Name]</b> TextStyles.ots</c> file.
         /// </value>
+        [CategoryAttribute("Style"),DescriptionAttribute("ID of the control style class to use.")]
         public string ControlStyleClass
         {
             get { return controlStyle.Name; }
@@ -217,6 +221,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// Gets or sets the color of the inner area.
         /// </summary>
         /// <value>The background <see cref="System.Drawing.Color"/> for this control.</value>
+        [BrowsableAttribute(false)]
         public Color InnerAreaColor
         {
             get { return innerAreaColor; }
@@ -264,6 +269,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// The id of the control. The default is: <b>name of the control + number of instances of
         /// that control generated</b>. Like, <b>Label82</b> for example.
         /// </value>
+        [CategoryAttribute("Design"),DescriptionAttribute("ID for this control.")]
         public string Id
         {
             get { return id; }

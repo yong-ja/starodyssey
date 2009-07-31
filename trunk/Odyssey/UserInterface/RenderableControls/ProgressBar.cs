@@ -4,7 +4,7 @@ using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Helpers;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class ProgressChangedEventArgs : EventArgs
     {
@@ -117,7 +117,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
         /// <summary>
         /// Raises the <see cref="ProgressChanged"/> event.
         /// </summary>
-        /// <param name="e">The <see cref="AvengersUtd.Odyssey.UserInterface.RenderableControls.ProgressChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="ProgressChangedEventArgs"/> instance containing the event data.</param>
         protected void OnProgressChanged(ProgressChangedEventArgs e)
         {
             float percentage = progressValue/((float)(maximum-minimum));

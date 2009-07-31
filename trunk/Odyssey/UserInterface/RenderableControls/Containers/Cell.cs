@@ -30,7 +30,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class Cell<TControl> : SimpleShapeControl, ICell where TControl : BaseControl
     {

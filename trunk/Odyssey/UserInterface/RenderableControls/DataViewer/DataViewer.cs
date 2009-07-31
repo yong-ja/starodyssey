@@ -33,7 +33,7 @@ using AvengersUtd.Odyssey.UserInterface.Properties;
 
 #endregion
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class DataViewer : ContainerControl
     {

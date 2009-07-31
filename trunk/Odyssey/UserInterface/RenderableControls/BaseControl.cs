@@ -34,7 +34,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 #endif
 
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     /// <summary>
     /// The <b>BaseControl</b> class is the root class of all controls in the library. It provides
@@ -59,6 +59,7 @@ namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
     /// <seealso cref="ShapeDescriptor"/>
     /// <seealso cref="Hud"/>
     /// <seealso cref="StyleManager"/>
+    [DefaultPropertyAttribute("ID")]
     public abstract partial class BaseControl : IControl, IComparable<BaseControl>, IDisposable
     {
         #region Private fields

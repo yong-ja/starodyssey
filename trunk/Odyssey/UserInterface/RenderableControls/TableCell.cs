@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class TableCell : SimpleShapeControl, ISpriteControl
     {

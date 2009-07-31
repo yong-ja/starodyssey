@@ -4,7 +4,7 @@ using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.XInput;
 using AvengersUtd.Odyssey.UserInterface.Devices;
-using AvengersUtd.Odyssey.UserInterface.RenderableControls;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.Geometry;
 
 

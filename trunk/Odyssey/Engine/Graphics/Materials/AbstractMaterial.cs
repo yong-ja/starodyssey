@@ -229,8 +229,8 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             else
                 lightingTechnique ^= technique;
 
-            if (value != previousValue)
-                ChooseTechnique();
+            //if (value != previousValue)
+            //    ChooseTechnique();
         }
 
         /// <summary>

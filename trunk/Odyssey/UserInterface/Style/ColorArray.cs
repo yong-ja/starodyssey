@@ -61,41 +61,50 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public Color Enabled
         {
             get { return this[ColorIndex.Enabled]; }
+            set { this[ColorIndex.Enabled] = value; }
         }
 
         public Color Highlighted
         {
             get { return this[ColorIndex.Highlighted]; }
+            set { this[ColorIndex.Highlighted] = value; }
+
         }
 
         public Color Clicked
         {
             get { return this[ColorIndex.Clicked]; }
+            set { this[ColorIndex.Clicked] = value; }
         }
 
         public Color Disabled
         {
             get { return this[ColorIndex.Disabled]; }
+            set { this[ColorIndex.Disabled] = value; }
         }
 
         public Color Focused
         {
             get { return this[ColorIndex.Focused]; }
+            set { this[ColorIndex.Focused] = value; }
         }
 
         public Color Selected
         {
             get { return this[ColorIndex.Selected]; }
+            set { this[ColorIndex.Selected] = value; }
         }
 
         public Color BorderEnabled
         {
             get { return this[ColorIndex.BorderEnabled]; }
+            set { this[ColorIndex.BorderEnabled] = value; }
         }
 
         public Color BorderHighlighted
         {
             get { return this[ColorIndex.BorderHighlighted]; }
+            set { this[ColorIndex.BorderHighlighted]=value; }
         }
 
         public Color this[ColorIndex colorIndex]

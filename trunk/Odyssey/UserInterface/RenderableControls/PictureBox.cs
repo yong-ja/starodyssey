@@ -32,7 +32,7 @@ using SlimDX;
 using SlimDX.Direct3D9;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class PictureBox : SimpleShapeControl, ISpriteControl
     {

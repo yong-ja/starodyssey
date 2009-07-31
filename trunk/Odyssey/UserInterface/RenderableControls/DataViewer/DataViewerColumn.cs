@@ -27,7 +27,7 @@ using AvengersUtd.Odyssey.UserInterface.Helpers;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Properties;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public class DataViewerColumn : DataViewerBand
     {

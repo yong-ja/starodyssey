@@ -25,7 +25,7 @@
 
 using System;
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
 
     #region Using Directives

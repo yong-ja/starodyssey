@@ -32,62 +32,25 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         internal const string Error = "Error";
         internal const string Empty = "Empty";
 
-        int borderSize;
-        BorderStyle borderStyle;
-        ColorArray colorArray;
-        string name;
-        Padding padding;
-        Shading shading;
-        Shape shape;
-        Size size;
-        string textStyleClass;
-
         #region Properties
 
-        public string Name
-        {
-            get { return name; }
-        }
+        public string Name { get; set; }
 
-        public BorderStyle BorderStyle
-        {
-            get { return borderStyle; }
-        }
+        public BorderStyle BorderStyle { get; set; }
 
-        public int BorderSize
-        {
-            get { return borderSize; }
-        }
+        public int BorderSize { get; set; }
 
-        public Shape Shape
-        {
-            get { return shape; }
-        }
+        public Shape Shape { get; set; }
 
-        public Size Size
-        {
-            get { return size; }
-        }
+        public Size Size { get; set; }
 
-        public Padding Padding
-        {
-            get { return padding; }
-        }
+        public Padding Padding { get; set; }
 
-        public Shading Shading
-        {
-            get { return shading; }
-        }
+        public Shading Shading { get; set; }
 
-        public ColorArray ColorArray
-        {
-            get { return colorArray; }
-        }
+        public ColorArray ColorArray { get; private set; }
 
-        public string TextStyleClass
-        {
-            get { return textStyleClass; }
-        }
+        public string TextStyleClass { get; set; }
 
         public static ControlStyle EmptyStyle
         {
@@ -110,15 +73,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public ControlStyle(string name, Size size, Padding padding, BorderStyle borderStyle, int borderSize,
                             Shape shape, Shading shading, ColorArray colorArray, string textStyleClass)
         {
-            this.name = name;
-            this.borderStyle = borderStyle;
-            this.borderSize = borderSize;
-            this.shape = shape;
-            this.size = size;
-            this.padding = padding;
-            this.shading = shading;
-            this.colorArray = colorArray;
-            this.textStyleClass = textStyleClass;
+            this.Name = name;
+            this.BorderStyle = borderStyle;
+            this.BorderSize = borderSize;
+            this.Shape = shape;
+            this.Size = size;
+            this.Padding = padding;
+            this.Shading = shading;
+            this.ColorArray = colorArray;
+            this.TextStyleClass = textStyleClass;
         }
     }
 }

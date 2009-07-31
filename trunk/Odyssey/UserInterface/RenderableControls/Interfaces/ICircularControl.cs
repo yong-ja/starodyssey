@@ -28,7 +28,7 @@
 using SlimDX;
 #endif
 
-namespace AvengersUtd.Odyssey.UserInterface.RenderableControls
+namespace AvengersUtd.Odyssey.UserInterface
 {
     public interface ICircularControl
     {
