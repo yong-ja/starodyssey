@@ -1,9 +1,0 @@
-<Configuration>
-  <SettingsComponent>
-    <string>
-      <setting name="LastSelectedResourceFile">0D9B154B-B7D8-4CC8-9245-006F693952D1/d:Properties/f:Stringtable.resx</setting>
-    </string>
-    <integer />
-    <boolean />
-  </SettingsComponent>
-</Configuration>
