@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using AvengersUtd.Odyssey11;
+using AvengersUtd.Odyssey;
+using SlimDX.Windows;
+using AvengersUtd.StarOdyssey.Scenes;
 
 namespace StarOdyssey
 {
@@ -16,7 +18,10 @@ namespace StarOdyssey
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            RenderForm11 form = new RenderForm11(); 
+            RenderForm11 form = new RenderForm11();
+            Game.ChangeRenderer(new TestRenderer());
+            MessagePump.Run(form.Handle,Game.Loop);
+            //form.Dispose();
         }
     }
 }

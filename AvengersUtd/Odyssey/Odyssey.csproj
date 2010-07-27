@@ -5,24 +5,20 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6CB4F25C-2817-40C0-9513-0127E65A2006}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{B343E52E-51F3-4667-ACE1-15ABE72EBDFA}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvengersUtd.StarOdyssey</RootNamespace>
-    <AssemblyName>StarOdyssey</AssemblyName>
+    <RootNamespace>AvengersUtd.Odyssey</RootNamespace>
+    <AssemblyName>Odyssey</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -36,6 +32,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
@@ -51,9 +50,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Geometry\Extensions.cs" />
+    <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\TexturedVertex.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Graphics\Effects\AbstractParameter.cs" />
+    <Compile Include="Graphics\Effects\EffectDescriptor.cs" />
+    <Compile Include="Graphics\Effects\InstanceParameter.cs" />
+    <Compile Include="Graphics\Effects\SharedParameter.cs" />
+    <Compile Include="Graphics\Effects\ParamHandles.cs" />
+    <Compile Include="Graphics\Enums.cs" />
+    <Compile Include="Graphics\EventArgs.cs" />
+    <Compile Include="Graphics\Materials\AbstractMaterial.cs" />
+    <Compile Include="Graphics\Materials\FunctionalMaterial.cs" />
+    <Compile Include="Graphics\Materials\Interfaces.cs" />
+    <Compile Include="Graphics\Materials\IMaterial.cs" />
+    <Compile Include="Graphics\Materials\MaterialCollection.cs" />
+    <Compile Include="Graphics\Materials\MaterialDescriptor.cs" />
+    <Compile Include="Graphics\Materials\ShaderMaterial.cs" />
+    <Compile Include="Graphics\Meshes\BaseMesh.cs" />
+    <Compile Include="Graphics\Meshes\IRenderable.cs" />
+    <Compile Include="Graphics\Meshes\MeshDescriptor.cs" />
+    <Compile Include="Graphics\Rendering\BaseCommand.cs" />
+    <Compile Include="Graphics\Rendering\CommandList.cs" />
+    <Compile Include="Graphics\Rendering\IRenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\RenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\Renderer.cs" />
+    <Compile Include="Graphics\Rendering\RenderMapper.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\ConstantRotationNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\DummyNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\EllipticalOrbitNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\FixedNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\FreeTransformNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\MaterialNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\RenderableNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneGraph.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\SceneNodeCollection.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\TransformNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\Rendering\SceneOrganizer.cs" />
+    <Compile Include="Graphics\Rendering\ShadowCommand.cs" />
+    <Compile Include="Graphics\Resources\EffectManager.cs" />
+    <Compile Include="Graphics\Resources\EntityDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenes\TestRenderer.cs" />
+    <Compile Include="QuaternionCam.cs" />
+    <Compile Include="RenderForm.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -64,7 +108,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -76,10 +119,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Odyssey\Odyssey.csproj">
-      <Project>{B343E52E-51F3-4667-ACE1-15ABE72EBDFA}</Project>
-      <Name>Odyssey</Name>
-    </ProjectReference>
+    <Folder Include="Graphics\Text\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Odyssey\Utils\Utils.csproj">
       <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
       <Name>Utils</Name>
