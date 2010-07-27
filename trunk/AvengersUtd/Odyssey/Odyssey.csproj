@@ -95,7 +95,7 @@
     <Compile Include="Graphics\Rendering\ShadowCommand.cs" />
     <Compile Include="Graphics\Resources\EffectManager.cs" />
     <Compile Include="Graphics\Resources\EntityDescriptor.cs" />
-    <Compile Include="Graphics\Text\TextManager.cs" />
+    <Compile Include="Text\TextManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuaternionCam.cs" />
     <Compile Include="RenderForm.cs" />
