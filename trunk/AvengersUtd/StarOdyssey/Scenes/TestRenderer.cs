@@ -27,6 +27,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public void TestInit2()
         {
+            AvengersUtd.Odyssey.Graphics.Text.TextManager.DrawText("prova");
+
             triangle = Polygon.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
 
 
@@ -40,6 +42,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             sOrg = new SceneOrganizer();
             sOrg.BuildRenderScene(sceneGraph);
+
 
         }
         public override void Init()
