@@ -71,7 +71,7 @@ namespace AvengersUtd.Odyssey
                                             };
 
             FeatureLevel fl = Device.GetSupportedFeatureLevel();
-            Device.CreateWithSwapChain(DriverType.Reference, DeviceCreationFlags.Debug, desc, out device, out swapChain);
+            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.Debug, desc, out device, out swapChain);
            
             Factory factory = swapChain.GetParent<Factory>();
             factory.SetWindowAssociation(form.Handle, WindowAssociationFlags.IgnoreAll);

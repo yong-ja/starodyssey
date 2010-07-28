@@ -27,7 +27,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public void TestInit2()
         {
-            AvengersUtd.Odyssey.Graphics.Text.TextManager.DrawText("prova");
+            AvengersUtd.Odyssey.Text.TextManager.DrawText("prova");
 
             triangle = Polygon.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
 
@@ -80,6 +80,24 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(triangle.Vertices, 24, 0));
             Device.ImmediateContext.InputAssembler.SetIndexBuffer(triangle.Indices, Format.R16_UInt, 0);
+            BlendStateDescription bDescr = new BlendStateDescription();
+            RenderTargetBlendDescription rtbd = new RenderTargetBlendDescription()
+            {
+                BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
+                SourceBlendAlpha = BlendOption.Zero,
+                DestinationBlendAlpha = BlendOption.Zero,
+
+                BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                SourceBlend = BlendOption.SourceAlpha,
+                DestinationBlend = BlendOption.InverseSourceAlpha
+            };
+
+            rtbd.BlendEnable = true;
+            rtbd.RenderTargetWriteMask = ColorWriteMaskFlags.All;
+            bDescr.RenderTargets[0] = rtbd;
+
+            Device.ImmediateContext.OutputMerger.BlendState = BlendState.FromDescription(Device, bDescr);
+            
             sOrg.Display();
         }
 
