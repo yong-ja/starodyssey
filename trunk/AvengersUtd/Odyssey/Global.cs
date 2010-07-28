@@ -13,9 +13,9 @@ namespace AvengersUtd.Odyssey
         public const string TexturePath = "Textures/";
         public const string GUIPath = "GUI/";
 
-        public static Form owner;
+        private static RenderForm11 owner;
 
-        public static Form FormOwner
+        public static RenderForm11 FormOwner
         {
             get { return owner; }
             set { owner = value; }

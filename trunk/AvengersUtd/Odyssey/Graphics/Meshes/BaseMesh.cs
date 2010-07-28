@@ -50,6 +50,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         protected virtual void OnPositionChanged(PositionEventArgs e)
         {
+            mWorld = Matrix.Translation(vPosition.ToVector3());
+
             EventHandler<PositionEventArgs> handler = (EventHandler<PositionEventArgs>)eventHandlerList[EventPositionChanged];
             if (handler != null)
                 handler(this, e);
@@ -97,7 +99,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         { get; private set; } 
         #endregion
 
-        #region IRenderable
+        #region IEntity
 
         public int IndexCount { get; private set; }
 

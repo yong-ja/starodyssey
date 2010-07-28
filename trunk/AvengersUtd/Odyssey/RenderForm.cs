@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D11;
@@ -47,8 +48,6 @@ namespace AvengersUtd.Odyssey
             CreateDevice();
         }
 
-        
-
         /// <summary>
         /// Initializes our PresentParamters class
         /// </summary>
@@ -80,6 +79,9 @@ namespace AvengersUtd.Odyssey
 
             device.ImmediateContext.OutputMerger.SetTargets(renderTarget);
             device.ImmediateContext.Rasterizer.SetViewports(new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0.0f, 1.0f));
+
+            VideoSettings.ScreenWidth = form.Width;
+            VideoSettings.ScreenHeight = form.Height;
         }
 
         public void Dispose()
@@ -90,6 +92,5 @@ namespace AvengersUtd.Odyssey
             swapChain.Dispose();
         }
 
-        private Polygon triangle;
     }
 }

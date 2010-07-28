@@ -1,4 +1,5 @@
 using System;
+using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.Direct3D11;
 
@@ -21,6 +22,7 @@ namespace AvengersUtd.Odyssey
         private Matrix mWorld;
         Matrix mView;
         Matrix mProjection;
+        private Matrix mOrthoProjection;
 
         int zoomLevel = 0;
 
@@ -31,6 +33,7 @@ namespace AvengersUtd.Odyssey
         static readonly Vector3 YAxis = new Vector3(0f, 1f, 0f);
         static Vector3 XAxis = new Vector3(1f, 0f, 0f);
         static Vector3 ZAxis = new Vector3(0f, 0f, 1f);
+        
 
         #region Properties
 
@@ -105,6 +108,13 @@ namespace AvengersUtd.Odyssey
             get { return new Vector3(mView.M13, mView.M23, mView.M33); }
         }
 
+        public Matrix OrthoProjection
+        {
+            get {
+                return mOrthoProjection;
+            }
+        }
+
         #endregion
 
         public QuaternionCam()
@@ -113,6 +123,7 @@ namespace AvengersUtd.Odyssey
             nearClip = 0.01f;
             farClip = 10000.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, nearClip, farClip);
+            mOrthoProjection = Matrix.OrthoLH(VideoSettings.ScreenWidth, VideoSettings.ScreenHeight, 0, farClip);
             //frustum = new BoundingFrustum();
             Reset();
         }

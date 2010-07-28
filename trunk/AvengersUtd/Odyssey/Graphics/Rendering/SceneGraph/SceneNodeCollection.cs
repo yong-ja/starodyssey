@@ -40,10 +40,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                 RenderableNode rNode = node as RenderableNode;
                 if (rNode != null && rNode.RenderableObject.IsVisible)
                 {
-                    IRenderable entity = rNode.RenderableObject;
-                    mNode.Material.ApplyInstanceParameters(entity);
+                    IRenderable rObject = rNode.RenderableObject;
+                    mNode.Material.ApplyInstanceParameters(rObject);
                     
-                    entity.Render();
+                    rObject.Render();
                 }
             }
             //string technique = mNode.Technique;
@@ -70,13 +70,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             //{
             //    node.Update();
             //    RenderableNode rNode = node as RenderableNode;
-            //    if (rNode != null && rNode.RenderableObject.IsVisible)
+            //    if (rNode != null && rNode.renderableObject.IsVisible)
             //    {
             //        Game.Device.SetTransform(TransformState.World, rNode.CurrentAbsoluteWorldMatrix);
 
-            //        rNode.RenderableObject.Materials[0].Apply();
+            //        rNode.renderableObject.Materials[0].Apply();
 
-            //        IRenderable entity = rNode.RenderableObject;
+            //        IRenderable entity = rNode.renderableObject;
             //        entity.DrawMesh();
             //    }
             //}
@@ -104,7 +104,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
                     
             //        material.Apply();
 
-            //        IRenderable entity = rNode.RenderableObject;
+            //        IRenderable entity = rNode.renderableObject;
             //        entity.DrawMesh();
             //    }
             //}

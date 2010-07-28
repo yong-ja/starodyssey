@@ -43,19 +43,27 @@ namespace AvengersUtd.Odyssey.Resources
 
 
                     ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.None,
-                                                                   EffectFlags.None);
+                                                                   EffectFlags.None, null, null, out compilationErrors);
                     Effect effect = new Effect(RenderForm11.Device, byteCode);
 
                     effectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
                     return effect;
                 }
+                    catch(SlimDX.CompilationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Compilation error in " + filename, MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+                        
+                    }
                 //catch (InvalidDataException ex)
                 catch (Exception ex)
                 {
                     MessageBox.Show("This file is missing or invalid: " +
                                     filename);
-                    return null;
+                    
                 }
+
+                return null;
             }
         }
 

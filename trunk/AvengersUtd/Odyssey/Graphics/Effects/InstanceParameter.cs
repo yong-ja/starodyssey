@@ -67,6 +67,28 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
                     update = (fxParam, rObject) => MatrixUpdate(fxParam.EffectVariable, rObject.World);
                     break;
+
+
+            }
+
+            return new InstanceParameter(varName, effect, eV, update);
+        }
+
+        public static InstanceParameter CreateDefault(InstanceVariable type, Effect effect)
+        {
+            string varName = string.Empty;
+            dynamic eV = null;
+            UpdateInstanceParameter update = null;
+
+            switch (type)
+            {
+
+                case InstanceVariable.ObjectWorld:
+                    varName = ParamHandles.Matrices.World;
+                    eV = effect.GetVariableByName(varName).AsMatrix();
+
+                    update = (fxParam, rObject) => MatrixUpdate(fxParam.EffectVariable, rObject.World);
+                    break;
             }
 
             return new InstanceParameter(varName, effect, eV, update);

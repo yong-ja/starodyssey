@@ -7,7 +7,7 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
-    public interface IRenderable : IDisposable//, IEntity
+    public interface IRenderable : IDisposable
     {
         //EntityDescriptor Descriptor { get; }
         //Mesh Mesh { get; }

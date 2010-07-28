@@ -46,7 +46,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             //    Game.Device.SetTransform(TransformState.World, rNode.CurrentAbsoluteWorldMatrix);
             //    currentMaterial.Apply();
 
-            //    IRenderable entity = rNode.RenderableObject;
+            //    IRenderable entity = rNode.renderableObjectObject;
             //    entity.DrawMesh();
             //}
 

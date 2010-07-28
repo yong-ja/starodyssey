@@ -48,14 +48,12 @@ namespace AvengersUtd.Odyssey.Text
                             graphics.InterpolationMode = Gdi.Drawing2D.InterpolationMode.HighQualityBicubic;
                             graphics.TextRenderingHint = Gdi.Text.TextRenderingHint.AntiAliasGridFit;
                             graphics.SmoothingMode = Gdi.Drawing2D.SmoothingMode.AntiAlias;
-;
-graphics.DrawString(text, font, brush, new Gdi.PointF(0, 0), StringFormat.GenericTypographic);
+                            graphics.DrawString(text, font, brush, new Gdi.PointF(0, 0), StringFormat.GenericTypographic);
                         }
                         t = ConvertFromBitmap(image);
                     }
                 }
             }
-            Texture2D.ToFile(RenderForm11.Device.ImmediateContext, t, ImageFileFormat.Jpg, "Prova2.jpg");
             return t;
         }
 

@@ -116,48 +116,54 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 
                 case FXParameterType.CameraView:
                     varName = ParamHandles.Matrices.View;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.View));
                     break;
 
                 case FXParameterType.CameraViewInverse:
                     varName = ParamHandles.Matrices.ViewInverse;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                      update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.View)));
                     break;
 
                 case FXParameterType.CameraWorld:
                     varName = ParamHandles.Matrices.World;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.World));
                     break;
 
                 case FXParameterType.CameraWorldInverse:
                     varName = ParamHandles.Matrices.WorldInverse;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.World)));
                     break;
 
                 case FXParameterType.CameraWorldViewInverse:
                     varName = ParamHandles.Matrices.WorldViewInverse;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.World * Game.CurrentScene.Camera.View)));
                     break;
 
                 case FXParameterType.CameraWorldViewProjection:
                     varName = ParamHandles.Matrices.WorldViewProjection;
-                    eV = effect.GetVariableByName(varName);
+                    eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update =
                         (fxParam =>
                          MatrixUpdate(fxParam.EffectVariable,
                                       Matrix.Invert(Game.CurrentScene.Camera.World*Game.CurrentScene.Camera.View*
                                                     Game.CurrentScene.Camera.Projection)));
+                    break;
+
+                case FXParameterType.CameraOrthographicProjection:
+                    varName = ParamHandles.Matrices.Projection;
+                    eV = effect.GetVariableByName(varName).AsMatrix();
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.OrthoProjection));
                     break;
 
             }

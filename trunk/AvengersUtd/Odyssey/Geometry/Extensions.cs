@@ -9,14 +9,15 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public static class Extensions
     {
-        #region Vector2 extensions
-        //public static Point ToPoint(this Vector2 vector2)
-        //{
-        //    return new Point((int)vector2.X, (int)vector2.Y);
-        //}
+        #region Vector3 extensions
+        public static Vector4 ToVector4(this Vector3 vector3)
+        {
+            return new Vector4(vector3, 1.0f);
+        }
+        
         #endregion
 
-        #region Vector3 extensions
+        #region Vector4 extensions
         public static Vector3 ToVector3(this Vector4 vector4)
         {
             return new Vector3(vector4.X, vector4.Y, vector4.Z);
