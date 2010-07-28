@@ -6,6 +6,7 @@ using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using SlimDX.Direct3D11;
+using AvengersUtd.Odyssey.Text;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
@@ -29,7 +30,8 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public Texture2D DiffuseMap
         {
-            get { return Texture2D.FromFile(RenderForm11.Device, "prova.jpg"); }
+            get { return TextManager.DrawText("Prova"); }
+                //Texture2D.FromFile(RenderForm11.Device, "prova.jpg"); }
         }
 
         #endregion

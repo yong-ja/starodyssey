@@ -9,7 +9,7 @@ using SlimDX.Direct3D11;
 using Gdi = System.Drawing;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.Graphics.Text
+namespace AvengersUtd.Odyssey.Text
 {
     public static class TextManager
     {
@@ -19,7 +19,7 @@ namespace AvengersUtd.Odyssey.Graphics.Text
             //Our return value.
             Texture2D t;
 
-            using (Gdi.Font font = new Gdi.Font("Arial", 12))
+            using (Gdi.Font font = new Gdi.Font("Arial", 64))
             {
                 //The size of the rendered string.
                 Gdi.SizeF strsize;
@@ -43,18 +43,19 @@ namespace AvengersUtd.Odyssey.Graphics.Text
                         graphics.Clear(Gdi.Color.FromArgb(0));
 
                         //Draw the text
-                        using (Gdi.Brush brush = new Gdi.SolidBrush(Gdi.Color.FromArgb(255, 0, 255, 0)))
+                        using (Gdi.Brush brush = new Gdi.SolidBrush(Gdi.Color.FromArgb(255, 255, 255, 255)))
                         {
+                            graphics.InterpolationMode = Gdi.Drawing2D.InterpolationMode.HighQualityBicubic;
                             graphics.TextRenderingHint = Gdi.Text.TextRenderingHint.AntiAliasGridFit;
                             graphics.SmoothingMode = Gdi.Drawing2D.SmoothingMode.AntiAlias;
-                            graphics.DrawString(text, font, brush, new Gdi.PointF(0, 0));
+;
+graphics.DrawString(text, font, brush, new Gdi.PointF(0, 0), StringFormat.GenericTypographic);
                         }
-
                         t = ConvertFromBitmap(image);
                     }
                 }
             }
-            Texture2D.ToFile(RenderForm11.Device., t, ImageFileFormat.Jpg, "Prova2.jpg");
+            Texture2D.ToFile(RenderForm11.Device.ImmediateContext, t, ImageFileFormat.Jpg, "Prova2.jpg");
             return t;
         }
 
@@ -62,32 +63,36 @@ namespace AvengersUtd.Odyssey.Graphics.Text
         {
             System.Drawing.Imaging.BitmapData data = image.LockBits(new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
 										System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
-				IntPtr src = data.Scan0;
-				int bytes = data.Stride * image.Height;
-				byte[] dest = new byte[bytes];
+            int bytes = data.Stride * image.Height;
+            DataStream stream = new SlimDX.DataStream(bytes, true, true);
+            stream.WriteRange(data.Scan0,bytes);
+            stream.Position = 0;
+            DataRectangle dRect = new SlimDX.DataRectangle(data.Stride, stream);
 
-				Marshal.Copy(src, dest, 0, bytes);
-				image.UnlockBits(data);
-
-				SlimDX.DXGI.SampleDescription sampleDesc = new SlimDX.DXGI.SampleDescription();
-				sampleDesc.Count = 1;
-				sampleDesc.Quality = 0;
+            SlimDX.DXGI.SampleDescription sampleDesc = new SlimDX.DXGI.SampleDescription();
+            sampleDesc.Count = 1;
+            sampleDesc.Quality = 0;
 
             Texture2DDescription texDesc = new Texture2DDescription()
-                                               {
-                                                   ArraySize = 1,
-                                                   MipLevels = 1,
-                                                   SampleDescription = sampleDesc,
-                                                   Format = SlimDX.DXGI.Format.R8_UInt,
-                                                   CpuAccessFlags = CpuAccessFlags.Write,
-                                                   BindFlags = BindFlags.ShaderResource,
-                                                   Usage = ResourceUsage.Dynamic,
-                                                   Height = image.Height,
-                                                   Width = image.Width
-                                               };
+            {
+                ArraySize = 1,
+                MipLevels = 1,
+                SampleDescription = sampleDesc,
+                Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                BindFlags = BindFlags.ShaderResource,
+                Usage = ResourceUsage.Dynamic,
+                Height = image.Height,
+                Width = image.Width
+            };
 
-                return new Texture2D(RenderForm11.Device, texDesc);
-            
+            image.UnlockBits(data);
+            image.Dispose();
+
+            return new Texture2D(RenderForm11.Device, texDesc, dRect);
+
         }
+
+        
     }
 }
