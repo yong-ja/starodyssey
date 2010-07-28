@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Forms;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -42,7 +43,10 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             instanceParameters = new SortedList<string, InstanceParameter>();
             staticParameters = new SortedList<string, SharedParameter>();
             dynamicParameters = new SortedList<string, SharedParameter>();
+            
             effect = EffectManager.LoadEffect(Global.FXPath + filename);
+            if (effect == null)
+                Application.Exit();
             technique = effect.GetTechniqueByIndex(0);
         }
 

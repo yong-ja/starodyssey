@@ -19,6 +19,7 @@ namespace StarOdyssey
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             RenderForm11 form = new RenderForm11();
+            Global.FormOwner = form;
             Game.ChangeRenderer(new TestRenderer());
             MessagePump.Run(form.Handle,Game.Loop);
             //form.Dispose();

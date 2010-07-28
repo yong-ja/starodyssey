@@ -11,6 +11,7 @@ using SlimDX.Direct3D11;
 using SlimDX.D3DCompiler;
 using SlimDX.DXGI;
 using AvengersUtd.Odyssey.Graphics.Rendering;
+using AvengersUtd.Odyssey.Text;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
@@ -29,14 +30,15 @@ namespace AvengersUtd.StarOdyssey.Scenes
         {
             AvengersUtd.Odyssey.Text.TextManager.DrawText("prova");
 
-            triangle = Polygon.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
+            //triangle = Polygon.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
+            triangle = Polygon.CreateTexturedQuad(new Vector4(0, 0, 500f, 1f), 105f, 105f);
 
 
             sceneGraph = new SceneGraph();
 
             FunctionalMaterial texturer = new FunctionalMaterial();
             MaterialNode mNode = new MaterialNode(texturer);
-            rNode = new RenderableNode(triangle);
+            rNode = new RenderableNode(new TextLiteral("FrameTime", new Vector3(510f,510f,0f)));
             mNode.AppendChild(rNode);
             sceneGraph.RootNode.AppendChild(mNode);
 

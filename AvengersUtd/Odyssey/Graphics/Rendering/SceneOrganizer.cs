@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 RenderableNode rNode = node as RenderableNode;
                 if (rNode != null)
                 {
-                    IRenderable entity = rNode.RenderableObject;
+                    IRenderable rObject = rNode.RenderableObject;
                     MaterialNode currentMaterialNode = (MaterialNode)SceneNode.FindFirstTParentNode<MaterialNode>(rNode);
                     if (!renderMapper.ContainsKey(currentMaterialNode.Material.TechniqueName))
                     {
@@ -53,7 +53,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             foreach (MaterialNode mNode in renderMapper.Keys)
                 renderList.Add(new RenderCommand(mNode, renderMapper[mNode]));
 
-            //Predicate<RenderableNode> p = rNode => rNode.RenderableObject.CastsShadows;
+            //Predicate<RenderableNode> p = rNode => rNode.renderableObject.CastsShadows;
         }
         
         public void Process()
@@ -76,7 +76,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             switch (commandType)
             {
                 case CommandType.ComputeShadows:
-                    //Predicate<RenderableNode> p = rNode => rNode.RenderableObject.CastsShadows;
+                    //Predicate<RenderableNode> p = rNode => rNode.renderableObject.CastsShadows;
                     //command = new ShadowMappingCommand(sceneGraph.SelectNodes(p));
                     //command = new ShadowMappingCommand(nodes);
                     break;
@@ -99,10 +99,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         //    foreach (RenderableNode rNode in nodes)
         //    {
-        //        if (cNode == rNode || !rNode.RenderableObject.IsCollidable)
+        //        if (cNode == rNode || !rNode.renderableObject.IsCollidable)
         //            continue;
 
-        //        IRenderable entity = rNode.RenderableObject;
+        //        IRenderable entity = rNode.renderableObject;
         //        IAxisAlignedBox iBox = entity as IAxisAlignedBox;
         //        if (iBox != null)
         //        {
@@ -112,7 +112,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         //            if (BoundingBox.Intersects(box, sphere))
         //            {
-        //                return rNode.RenderableObject;
+        //                return rNode.renderableObject;
         //            }
         //        }
         //        else
@@ -122,8 +122,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         //            {
         //                Plane p = iPlane.BoundingPlane;
         //                if (Plane.Intersects(p, sphere) == PlaneIntersectionType.Intersecting
-        //                    && Vector3.Distance(rNode.RenderableObject.PositionV3, cNode.RenderableObject.PositionV3) <= 5)
-        //                    return rNode.RenderableObject;
+        //                    && Vector3.Distance(rNode.renderableObject.PositionV3, cNode.renderableObject.PositionV3) <= 5)
+        //                    return rNode.renderableObject;
         //            }
         //        }
         //    }

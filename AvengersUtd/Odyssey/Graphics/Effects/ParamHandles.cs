@@ -41,7 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             public const string LightViewProjection = "mLightViewProj";
             public const string LightWorldViewProjection = "mLightWorldViewProj";
-            public const string Projection = "mProj";
+            public const string Projection = "mProjection";
             public const string TextureBias = "mTextureBias";
             public const string View = "mView";
             public const string ViewInverse = "mViewInverse";
@@ -81,7 +81,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
     public enum FXParameterType
     {
-        
+
         LightDirection,
         LightPosition,
         LightWorldViewProjection,
@@ -96,6 +96,13 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         CameraWorldViewInverse,
         CameraWorldViewProjection,
 
-        ObjectWorld
+        ObjectWorld,
+        CameraOrthographicProjection
+    }
+
+    public enum InstanceVariable
+    {
+        ObjectWorld,
+        DiffuseMap,
     }
 }

@@ -10,7 +10,6 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         public Polygon(Buffer vertices, Buffer indices, int vertexCount) : base(vertices, indices, vertexCount)
         {
-            World = Matrix.Translation(Vector3.Zero);
         }
 
         public override void Render()
@@ -76,7 +75,12 @@ namespace AvengersUtd.Odyssey.Geometry
             });
             stream.Dispose();
 
-            return new Polygon(vertexBuffer, indices, indexCount);
+            Polygon quad = new Polygon(vertexBuffer, indices, indexCount)
+                               {
+                                   PositionV4 = topLeftVertex
+                               };
+            return quad;
+
         }
 
         public static Polygon CreateTriangle(Vector4 topVertex, float sideLength, float heightOffset)
@@ -119,7 +123,11 @@ namespace AvengersUtd.Odyssey.Geometry
                                                                          });
             stream.Dispose();
 
-            return new Polygon(vertices, indices, vertexCount);
+            Polygon triangle = new Polygon(vertices, indices, vertexCount)
+                                   {
+                                       PositionV4 = topVertex
+                                   };
+            return triangle;
         } 
         #endregion
 

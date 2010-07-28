@@ -38,6 +38,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             get { return renderableObject; }
         }
 
+        public RenderableNode(IEntity entityObject) : this(entityObject.RenderableObject)
+        {}
+
         public RenderableNode(IRenderable renderableObject) :
             base(nodeTag + (count++), SceneNodeType.Renderable)
         {

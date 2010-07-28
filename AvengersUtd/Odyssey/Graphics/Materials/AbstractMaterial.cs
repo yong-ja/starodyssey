@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using SlimDX;
 using SlimDX.Direct3D11;

@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     //        base(CommandType.ComputeShadows, sceneNodeCollection)
     //    {
     //        depthMappingMaterial = new DepthMaterial();
-    //        depthMappingMaterial.CreateEffect(((RenderableNode)Items[0]).RenderableObject);
+    //        depthMappingMaterial.CreateEffect(((RenderableNode)Items[0]).renderableObjectObject);
 
     //        shadowMap = new Texture(Game.Device, 256, 256, 0, Usage.RenderTarget | Usage.AutoGenerateMipMap,
     //                                     Format.X8R8G8B8, Pool.Default);
@@ -35,7 +35,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     //        SceneNodeCollection newCollection = new SceneNodeCollection();
     //        foreach (RenderableNode rNode in Items)
     //        {
-    //            if (rNode.RenderableObject.CastsShadows)
+    //            if (rNode.renderableObjectObject.CastsShadows)
     //                newCollection.Add(rNode);
     //        }
 
@@ -50,7 +50,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     //        //BaseTexture.ToFile(shadowMap, "prova.jpg", ImageFileFormat.Jpg);
     //        foreach (RenderableNode rNode in Items)
     //        {
-    //            foreach (AbstractMaterial material in rNode.RenderableObject.Materials)
+    //            foreach (AbstractMaterial material in rNode.renderableObjectObject.Materials)
     //            {
     //                ICastsShadows shadowMaterial = material as ICastsShadows;
     //                if (shadowMaterial != null)
