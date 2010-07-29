@@ -79,7 +79,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         }
     }
 
-    public enum FXParameterType
+    public enum SceneVariable
     {
 
         LightDirection,
@@ -95,8 +95,6 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         CameraWorldInverse,
         CameraWorldViewInverse,
         CameraWorldViewProjection,
-
-        ObjectWorld,
         CameraOrthographicProjection
     }
 
@@ -104,5 +102,10 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
     {
         ObjectWorld,
         DiffuseMap,
+        Ambient,
+        Diffuse,
+        DiffuseCoefficient,
+        Specular,
+        SpecularCoefficient
     }
 }

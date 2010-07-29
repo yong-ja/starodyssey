@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX;
 using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Effects
 {
-
     public delegate Result UpdateInstanceParameter(InstanceParameter fxParam, IRenderable rObject);
 
     public class InstanceParameter : AbstractParameter
     {
-        dynamic effectVariable;
-        UpdateInstanceParameter update;
+        private dynamic effectVariable;
+        private UpdateInstanceParameter update;
 
         public override dynamic EffectVariable
         {
-            get { return effectVariable; }
+            get
+            {
+                return effectVariable;
+            }
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// <param name="effect">A reference of the effect instance.</param>
         /// <returns>An istance of EffectParameter containg all the needed information
         /// to correctly set and update this value into the shader.</returns>
-        public static InstanceParameter CreateDefault(FXParameterType type, Effect effect)
+        public static InstanceParameter Create(InstanceVariable type, Effect effect)
         {
             string varName = string.Empty;
             dynamic eV = null;
@@ -60,39 +63,51 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
             switch (type)
             {
-
-                case FXParameterType.ObjectWorld:
-                    varName = ParamHandles.Matrices.World;
-                    eV = effect.GetVariableByName(varName).AsMatrix();
-
-                    update = (fxParam, rObject) => MatrixUpdate(fxParam.EffectVariable, rObject.World);
-                    break;
-
-
-            }
-
-            return new InstanceParameter(varName, effect, eV, update);
-        }
-
-        public static InstanceParameter CreateDefault(InstanceVariable type, Effect effect)
-        {
-            string varName = string.Empty;
-            dynamic eV = null;
-            UpdateInstanceParameter update = null;
-
-            switch (type)
-            {
-
                 case InstanceVariable.ObjectWorld:
                     varName = ParamHandles.Matrices.World;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update = (fxParam, rObject) => MatrixUpdate(fxParam.EffectVariable, rObject.World);
                     break;
+
+                case InstanceVariable.Ambient:
+                    varName = ParamHandles.Colors.LightAmbient;
+                    eV = effect.GetVariableByName(varName).AsVector();
+
+                    update =
+                        (fxParam, rObject) =>
+                        Color4Update(fxParam.EffectVariable,
+                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).AmbientColor);
+                    break;
+
+                case InstanceVariable.Diffuse:
+                    varName = ParamHandles.Colors.MaterialDiffuse;
+                    eV = effect.GetVariableByName(varName).AsVector();
+                    update =
+                        (fxParam, rObject) =>
+                        Color4Update(fxParam.EffectVariable,
+                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).DiffuseColor);
+                    break;
+
+                case InstanceVariable.Specular:
+                    varName = ParamHandles.Colors.MaterialSpecular;
+                    eV = effect.GetVariableByName(varName).AsVector();
+                    update =
+                        (fxParam, rObject) =>
+                        Color4Update(fxParam.EffectVariable,
+                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).SpecularColor);
+                    break;
+
+                case InstanceVariable.DiffuseMap:
+                    varName = ParamHandles.Textures.DiffuseMap;
+                    eV = effect.GetVariableByName(varName).AsResource();
+                    update=(fxParam, rObject) =>
+                        TextureUpdate((EffectResourceVariable) fxParam.EffectVariable,
+                                     ((IDiffuseMap)rObject).DiffuseMap);
+                    break;
             }
 
             return new InstanceParameter(varName, effect, eV, update);
         }
-
     }
 }

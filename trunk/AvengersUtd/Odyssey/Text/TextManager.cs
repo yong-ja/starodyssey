@@ -31,6 +31,7 @@ namespace AvengersUtd.Odyssey.Text
                     {
                         //Measure the string...
                         strsize = dummygraphics.MeasureString(text, font);
+                        Console.WriteLine("W: " +strsize.Width + " H: " + strsize.Height);
                     }
                 }
 

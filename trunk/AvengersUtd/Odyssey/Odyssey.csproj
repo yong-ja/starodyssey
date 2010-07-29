@@ -52,8 +52,11 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\Extensions.cs" />
+    <Compile Include="Geometry\Enums.cs" />
     <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\TexturedPolygon.cs" />
     <Compile Include="Geometry\TexturedVertex.cs" />
+    <Compile Include="Geometry\VertexDescription.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\Effects\AbstractParameter.cs" />
     <Compile Include="Graphics\Effects\EffectDescriptor.cs" />

@@ -2,23 +2,30 @@
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX;
 using SlimDX.Direct3D11;
+using SlimDX.DXGI;
 using Buffer = SlimDX.Direct3D11.Buffer;
+using AvengersUtd.Odyssey.Graphics.Materials;
+using Device = SlimDX.Direct3D11.Device;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public class Polygon : BaseMesh 
+    public class Polygon : BaseMesh
     {
-        public Polygon(Buffer vertices, Buffer indices, int vertexCount) : base(vertices, indices, vertexCount)
+
+        public Polygon(Buffer vertices, Buffer indices, int vertexCount, VertexDescription vertexDescription)
+            : base(vertices, indices, vertexCount, vertexDescription)
         {
         }
 
         public override void Render()
         {
+            //RenderForm11.Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(Vertices, VertexDescription.Stride, 0));
+            //RenderForm11.Device.ImmediateContext.InputAssembler.SetIndexBuffer(Indices, Format.R16_UInt, 0);
             RenderForm11.Device.ImmediateContext.DrawIndexed(IndexCount, 0, 0);
         }
 
         #region Create methods
-        public static Polygon CreateTexturedQuad(Vector4 topLeftVertex, float width, float height)
+        public static TexturedPolygon CreateTexturedQuad(Vector4 topLeftVertex, float width, float height)
         {
             int numPrimitives = 2;
             int indexCount = 6;
@@ -39,6 +46,7 @@ namespace AvengersUtd.Odyssey.Geometry
                                                                 topLeftVertex.Z, 1.0f), new Vector2(1.0f, 1.0f))
                                             };
 
+           
             DataStream stream = new DataStream(4 * TexturedVertex.Stride, true, true);
             foreach (TexturedVertex vertex in vertices)
             {
@@ -75,7 +83,7 @@ namespace AvengersUtd.Odyssey.Geometry
             });
             stream.Dispose();
 
-            Polygon quad = new Polygon(vertexBuffer, indices, indexCount)
+            TexturedPolygon quad = new TexturedPolygon(vertexBuffer, indices, indexCount)
                                {
                                    PositionV4 = topLeftVertex
                                };
@@ -123,13 +131,17 @@ namespace AvengersUtd.Odyssey.Geometry
                                                                          });
             stream.Dispose();
 
-            Polygon triangle = new Polygon(vertices, indices, vertexCount)
+            // attenzione
+            Polygon triangle = new Polygon(vertices, indices, vertexCount, TexturedVertex.Description)
                                    {
                                        PositionV4 = topVertex
                                    };
             return triangle;
         } 
         #endregion
+
+        
+
 
 
     }

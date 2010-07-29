@@ -18,15 +18,16 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         protected override void OnInstanceParametersInit()
         {
-            effectDescriptor.SetInstanceParameter(InstanceParameter.CreateDefault(FXParameterType.ObjectWorld, effectDescriptor.Effect));
+            effectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.ObjectWorld, effectDescriptor.Effect));
+            effectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.DiffuseMap, effectDescriptor.Effect));
+
         }
 
         protected override void OnDynamicParametersInit()
         {
-            effectDescriptor.SetStaticParameter(SharedParameter.CreateDefault(MaterialParameter.DiffuseMap, effectDescriptor.Effect, this));
-            effectDescriptor.SetDynamicParameter(SharedParameter.CreateDefault(FXParameterType.CameraWorld, effectDescriptor.Effect));
-            effectDescriptor.SetDynamicParameter(SharedParameter.CreateDefault(FXParameterType.CameraView, effectDescriptor.Effect));
-            effectDescriptor.SetDynamicParameter(SharedParameter.CreateDefault(FXParameterType.CameraOrthographicProjection, effectDescriptor.Effect));
+            effectDescriptor.SetDynamicParameter(SharedParameter.Create(SceneVariable.CameraWorld, effectDescriptor.Effect));
+            effectDescriptor.SetDynamicParameter(SharedParameter.Create(SceneVariable.CameraView, effectDescriptor.Effect));
+            effectDescriptor.SetDynamicParameter(SharedParameter.Create(SceneVariable.CameraOrthographicProjection, effectDescriptor.Effect));
         }
 
         #region IDiffuseMap Members
