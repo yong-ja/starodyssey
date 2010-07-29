@@ -24,28 +24,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         }
 
-        public void RenderGroup(MaterialNode mNode)
-        {
-            EffectTechnique technique = mNode.Material.EffectDescriptor.Technique;
-
-            EffectPass pass = technique.GetPassByIndex(mNode.Material.EffectDescriptor.Pass);
-            RenderForm11.Device.ImmediateContext.InputAssembler.InputLayout = new InputLayout(RenderForm11.Device, pass.Description.Signature,
-                    TexturedVertex.InputElements);
-            pass.Apply(RenderForm11.Device.ImmediateContext);
-            mNode.Material.ApplyDynamicParameters();
-
-            foreach (SceneNode node in this)
-            {
-                node.Update();
-                RenderableNode rNode = node as RenderableNode;
-                if (rNode != null && rNode.RenderableObject.IsVisible)
-                {
-                    IRenderable rObject = rNode.RenderableObject;
-                    mNode.Material.ApplyInstanceParameters(rObject);
-                    
-                    rObject.Render();
-                }
-            }
+        
             //string technique = mNode.Technique;
             //AbstractMaterial material = mNode.Materials[0];
 
@@ -84,7 +63,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             //Game.Device.SetTransform(TransformState.World, Matrix.Identity);
             //effect.EndPass();
             //effect.End();
-        }
+        
 
         public void RenderWithMaterial(AbstractMaterial material)
         {

@@ -78,7 +78,8 @@
     <Compile Include="Graphics\Rendering\BaseCommand.cs" />
     <Compile Include="Graphics\Rendering\CommandList.cs" />
     <Compile Include="Graphics\Rendering\IEntity.cs" />
-    <Compile Include="Graphics\Rendering\IRenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\ICommand.cs" />
+    <Compile Include="Graphics\Rendering\RasterizerStateChangeCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderCommand.cs" />
     <Compile Include="Graphics\Rendering\Renderer.cs" />
     <Compile Include="Graphics\Rendering\RenderMapper.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Graphics\Resources\EffectManager.cs" />
     <Compile Include="Graphics\Resources\EntityDescriptor.cs" />
     <Compile Include="Settings\VideoSettings.cs" />
+    <Compile Include="Text\DebugLogger.cs" />
     <Compile Include="Text\TextLiteral.cs" />
     <Compile Include="Text\TextManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

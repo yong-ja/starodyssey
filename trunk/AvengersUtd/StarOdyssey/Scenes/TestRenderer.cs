@@ -41,10 +41,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             FunctionalMaterial texturer = new FunctionalMaterial();
             MaterialNode mNode = new MaterialNode(texturer);
-            rNode = new RenderableNode(new TextLiteral("1234567890", new Vector3(500f,176f,10f)));
-            //rNode1 = new RenderableNode(new TextLiteral("12345", new Vector3(10f,150f,0f)));
+            rNode = new RenderableNode(new TextLiteral("1234567890", new Vector3(0f,0f,10f)));
+            rNode1 = new RenderableNode(new TextLiteral("12345", new Vector3(10f,150f,0f)));
             mNode.AppendChild(rNode);
-            //mNode.AppendChild(rNode1);
+            mNode.AppendChild(rNode1);
 
             sceneGraph.RootNode.AppendChild(mNode);
 
@@ -84,10 +84,16 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //    pass.Apply(Device.ImmediateContext);
             //    Device.ImmediateContext.DrawIndexed(triangle.IndexCount, 0, 0);
             //}
-            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding((((BaseMesh)rNode.RenderableObject).Vertices), 24, 0));
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer((((BaseMesh)rNode.RenderableObject).Indices), Format.R16_UInt, 0);
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             
+            //Device.ImmediateContext.Rasterizer.State = RasterizerState.FromDescription(Device,
+            //    new RasterizerStateDescription()
+            //        {
+            //            CullMode = CullMode.None,
+            //            FillMode = FillMode.Solid,
+            //            IsFrontCounterclockwise = true
+            //        });
+
             BlendStateDescription bDescr = new BlendStateDescription();
             RenderTargetBlendDescription rtbd = new RenderTargetBlendDescription()
             {

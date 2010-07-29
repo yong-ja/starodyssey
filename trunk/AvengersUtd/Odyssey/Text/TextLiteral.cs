@@ -29,9 +29,6 @@ namespace AvengersUtd.Odyssey.Text
             float newX =((VideoSettings.ScreenWidth/2f)*-1f) + screenPosition.X;
             float newY = (VideoSettings.ScreenHeight/2f) - screenPosition.Y;
 
-            //newX = screenPosition.X;
-            //newY = screenPosition.Y;
-
             texture = TextManager.DrawText(text);
             Texture2DDescription tDesc = texture.Description;
 

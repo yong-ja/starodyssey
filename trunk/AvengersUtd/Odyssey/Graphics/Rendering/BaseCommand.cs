@@ -6,23 +6,17 @@ using System;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public abstract class BaseCommand : IRenderCommand
+    public abstract class BaseCommand : ICommand
     {
         bool disposed;
-        SceneNodeCollection sceneNodeCollection;
+
+        public CommandType CommandType { get; private set; }
 
         public bool Disposed
         {
             get { return disposed; }
         }
-
-        public CommandType RenderCommandType { get; private set; }
-
-        public SceneNodeCollection Items
-        {
-            get { return sceneNodeCollection; }
-            internal set { sceneNodeCollection = value; }
-        }
+        
 
         /// <summary>
         /// Executes this <see cref="BaseCommand"/>.
@@ -32,14 +26,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         /// <summary>
         /// Performs the particular render operation required by this <see cref="BaseCommand"/>.
         /// </summary>
-        public abstract void PerformRender();
-
         protected abstract void OnDispose();
 
-        protected BaseCommand(CommandType renderCommandType, SceneNodeCollection sceneNodeCollection)
+        protected BaseCommand(CommandType commandType)
         {
-            this.RenderCommandType = renderCommandType;
-            this.sceneNodeCollection = sceneNodeCollection;
         }
 
          #region IDisposable Members

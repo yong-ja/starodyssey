@@ -21,7 +21,8 @@ namespace AvengersUtd.Odyssey.Graphics
     public enum CommandType
     {
         RenderScene,
-        ComputeShadows
+        ComputeShadows,
+        RasterizerStateChange
     }
 
     public enum FXVectorOperationType
