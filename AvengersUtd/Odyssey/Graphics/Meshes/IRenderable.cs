@@ -1,9 +1,11 @@
 
 using System;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
+using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
@@ -16,15 +18,18 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         bool IsCollidable { get; }
         bool IsVisible { get; }
         bool CastsShadows { get; }
+        bool IsInViewFrustum();
+
+        Buffer Indices { get; }
+        Buffer Vertices { get; }
+        VertexDescription VertexDescription { get; }
 
         Matrix World { get; set; }
         Vector3 PositionV3 { get; }
         Vector4 PositionV4 { get; set; }
-
         Vector3 RotationDelta { get; set; }
         Quaternion CurrentRotation { get; set; }
 
-        bool IsInViewFrustum();
         RenderableNode ParentNode { get; set; }
        
         /// <summary>

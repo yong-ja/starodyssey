@@ -196,6 +196,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             this.indices = indices;
             IndexCount = indexCount;
             VertexDescription = vDescription;
+
+            mWorld = Matrix.Identity;
         } 
 	#endregion
 

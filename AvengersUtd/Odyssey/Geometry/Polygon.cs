@@ -33,14 +33,14 @@ namespace AvengersUtd.Odyssey.Geometry
             TexturedVertex[] vertices = new TexturedVertex[]
                                             {
                                                 new TexturedVertex(
-                                                    new Vector4(topLeftVertex.X, topLeftVertex.Y, topLeftVertex.Z, 1.0f),
-                                                    new Vector2(0.0f, 0.0f)),
+                                                    new Vector4(topLeftVertex.X, topLeftVertex.Y-height, topLeftVertex.Z, 1.0f),
+                                                    new Vector2(0.0f, 1.0f)),
+                                                new TexturedVertex(
+                                                    new Vector4(topLeftVertex.X, topLeftVertex.Y,
+                                                                topLeftVertex.Z, 1.0f), new Vector2(0.0f, 0.0f)),
                                                 new TexturedVertex(
                                                     new Vector4(topLeftVertex.X + width, topLeftVertex.Y,
                                                                 topLeftVertex.Z, 1.0f), new Vector2(1.0f, 0.0f)),
-                                                new TexturedVertex(
-                                                    new Vector4(topLeftVertex.X, topLeftVertex.Y - height,
-                                                                topLeftVertex.Z, 1.0f), new Vector2(0.0f, 1.0f)),
                                                 new TexturedVertex(
                                                     new Vector4(topLeftVertex.X + width, topLeftVertex.Y - height,
                                                                 topLeftVertex.Z, 1.0f), new Vector2(1.0f, 1.0f))
@@ -71,7 +71,7 @@ namespace AvengersUtd.Odyssey.Geometry
             stream.WriteRange(new short[]
                                   {
                                       0, 1, 2,
-                                      2, 1, 3
+                                      3, 0, 2
                                   });
             stream.Position = 0;
             Buffer indices = new Buffer(RenderForm11.Device, stream, new BufferDescription()
@@ -83,10 +83,7 @@ namespace AvengersUtd.Odyssey.Geometry
             });
             stream.Dispose();
 
-            TexturedPolygon quad = new TexturedPolygon(vertexBuffer, indices, indexCount)
-                               {
-                                   PositionV4 = topLeftVertex
-                               };
+            TexturedPolygon quad = new TexturedPolygon(vertexBuffer, indices, indexCount);
             return quad;
 
         }

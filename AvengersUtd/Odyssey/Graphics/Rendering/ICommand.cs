@@ -2,10 +2,9 @@ using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public interface IRenderCommand
+    public interface ICommand
     {
-        SceneNodeCollection Items { get; }
+        CommandType CommandType { get; }
         void Execute();
-        void PerformRender();
     }
 }

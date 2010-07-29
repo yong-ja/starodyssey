@@ -41,6 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             : base(label, SceneNodeType.Material)
         {
             this.material = material;
+            material.OwningNode = this;
         }
 
         public MaterialNode(AbstractMaterial material)
