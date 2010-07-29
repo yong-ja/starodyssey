@@ -53,6 +53,8 @@ namespace AvengersUtd.Odyssey
         /// </summary>
         void CreateDevice()
         {
+            VideoSettings.ScreenWidth = 1024;
+            VideoSettings.ScreenHeight = 768;
             form = new RenderForm()
                                   {
                                       ClientSize = new Size(1024, 768),
@@ -80,8 +82,7 @@ namespace AvengersUtd.Odyssey
             device.ImmediateContext.OutputMerger.SetTargets(renderTarget);
             device.ImmediateContext.Rasterizer.SetViewports(new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0.0f, 1.0f));
 
-            VideoSettings.ScreenWidth = form.Width;
-            VideoSettings.ScreenHeight = form.Height;
+            
         }
 
         public void Dispose()

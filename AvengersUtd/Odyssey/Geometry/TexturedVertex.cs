@@ -16,6 +16,11 @@ namespace AvengersUtd.Odyssey.Geometry
     public struct TexturedVertex : IEquatable<TexturedVertex>
     {
         private static InputElement[] inputElements;
+        static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
+
+        public const int Stride = 24;
+        public const VertexFormat VertexFormat = Geometry.VertexFormat.PositionTextureUV;
+        
 
         static TexturedVertex()
         {
@@ -48,7 +53,14 @@ namespace AvengersUtd.Odyssey.Geometry
             get { return inputElements; }
         }
 
-        public const int Stride = 24;
+
+        public static VertexDescription Description
+        {
+            get
+            {
+                return description;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TexturedVertex"/> struct.
@@ -124,5 +136,7 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             return (Position == other.Position && TextureCoordinate == other.TextureCoordinate);
         }
+
+
     }
 }

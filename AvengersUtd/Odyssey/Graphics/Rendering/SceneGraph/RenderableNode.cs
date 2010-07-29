@@ -15,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         IRenderable renderableObject;
         TransformNode tParent;
+        private MaterialNode mParent;
 
         public Matrix CurrentAbsoluteWorldMatrix
         {
@@ -27,10 +28,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             }
         }
 
+        public AbstractMaterial CurrentMaterial
+        {
+            get { return mParent.Material; }
+        }
+
         protected override void OnParentChanged(object sender, AvengersUtd.Odyssey.Utils.Collections.NodeEventArgs e)
         {
             base.OnParentChanged(sender, e);
             tParent = FindFirstTParentNode<TransformNode>(this);
+            mParent = FindFirstTParentNode<MaterialNode>(this);
         }
 
         public IRenderable RenderableObject

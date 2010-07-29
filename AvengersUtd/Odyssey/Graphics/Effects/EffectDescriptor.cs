@@ -68,9 +68,9 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// the view vector, etc. A static parameter is updated only once.
         /// </summary>
         /// <param name="fxParam">The parameter type</param>
-        public void SetStaticParameter(FXParameterType fxParam)
+        public void SetStaticParameter(SceneVariable fxParam)
         {
-            SharedParameter ep = SharedParameter.CreateDefault(fxParam, effect);
+            SharedParameter ep = SharedParameter.Create(fxParam, effect);
             SetStaticParameter(ep);
         }
 
@@ -92,9 +92,9 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// the view vector, etc. A dynamic parameter is updated each frame.
         /// </summary>
         /// <param name="fxParam">The parameter type</param>
-        public void SetDynamicParameter(FXParameterType fxParam)
+        public void SetDynamicParameter(SceneVariable fxParam)
         {
-            SharedParameter ep = SharedParameter.CreateDefault(fxParam, effect);
+            SharedParameter ep = SharedParameter.Create(fxParam, effect);
             SetDynamicParameter(ep);
         }
 

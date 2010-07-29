@@ -43,15 +43,6 @@ namespace AvengersUtd.Odyssey.Graphics
         LightWorldViewProjection
     }
 
-    public enum MaterialParameter
-    {
-        Ambient,
-        Diffuse,
-        DiffuseCoefficient,
-        DiffuseMap,
-        Specular,
-        SpecularCoefficient
-    }
 
     public enum LightingAlgorithm
     {

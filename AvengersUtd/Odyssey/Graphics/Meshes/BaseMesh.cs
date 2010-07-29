@@ -96,10 +96,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         { get; private set; }
 
         public bool CastsShadows
-        { get; private set; } 
-        #endregion
+        { get; private set; }
 
-        #region IEntity
+        public VertexDescription VertexDescription { get; private set; }
 
         public int IndexCount { get; private set; }
 
@@ -187,7 +186,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             EventRotationChanged = new object();
         }
 
-        protected BaseMesh(Buffer vertices, Buffer indices, int indexCount)
+        protected BaseMesh(Buffer vertices, Buffer indices, int indexCount, VertexDescription vDescription)
         {
             eventHandlerList = new EventHandlerList();
             CastsShadows = false;
@@ -196,6 +195,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             this.vertices = vertices;
             this.indices = indices;
             IndexCount = indexCount;
+            VertexDescription = vDescription;
         } 
 	#endregion
 

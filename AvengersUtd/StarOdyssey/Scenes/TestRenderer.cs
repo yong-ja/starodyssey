@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Rendering;
 using AvengersUtd.Odyssey.Geometry;
@@ -24,22 +26,26 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         SceneGraph sceneGraph;
         RenderableNode rNode;
+        private RenderableNode rNode1;
         SceneOrganizer sOrg;
 
         public void TestInit2()
         {
-            AvengersUtd.Odyssey.Text.TextManager.DrawText("prova");
-
+            //AvengersUtd.Odyssey.Text.TextManager.DrawText("prova");
+            Camera.Update();
             //triangle = Polygon.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
-            triangle = Polygon.CreateTexturedQuad(new Vector4(0, 0, 500f, 1f), 105f, 105f);
+            triangle = Polygon.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
 
 
             sceneGraph = new SceneGraph();
 
             FunctionalMaterial texturer = new FunctionalMaterial();
             MaterialNode mNode = new MaterialNode(texturer);
-            rNode = new RenderableNode(new TextLiteral("FrameTime", new Vector3(510f,510f,0f)));
+            rNode = new RenderableNode(new TextLiteral("1234567890", new Vector3(500f,176f,10f)));
+            //rNode1 = new RenderableNode(new TextLiteral("12345", new Vector3(10f,150f,0f)));
             mNode.AppendChild(rNode);
+            //mNode.AppendChild(rNode1);
+
             sceneGraph.RootNode.AppendChild(mNode);
 
             sOrg = new SceneOrganizer();
@@ -78,10 +84,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //    pass.Apply(Device.ImmediateContext);
             //    Device.ImmediateContext.DrawIndexed(triangle.IndexCount, 0, 0);
             //}
-
+            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding((((BaseMesh)rNode.RenderableObject).Vertices), 24, 0));
+            Device.ImmediateContext.InputAssembler.SetIndexBuffer((((BaseMesh)rNode.RenderableObject).Indices), Format.R16_UInt, 0);
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            Device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(triangle.Vertices, 24, 0));
-            Device.ImmediateContext.InputAssembler.SetIndexBuffer(triangle.Indices, Format.R16_UInt, 0);
+            
             BlendStateDescription bDescr = new BlendStateDescription();
             RenderTargetBlendDescription rtbd = new RenderTargetBlendDescription()
             {

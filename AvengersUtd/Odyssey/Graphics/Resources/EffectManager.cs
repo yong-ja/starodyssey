@@ -42,7 +42,7 @@ namespace AvengersUtd.Odyssey.Resources
                     //                     };
 
 
-                    ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.None,
+                    ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.Debug,
                                                                    EffectFlags.None, null, null, out compilationErrors);
                     Effect effect = new Effect(RenderForm11.Device, byteCode);
 
@@ -87,11 +87,11 @@ namespace AvengersUtd.Odyssey.Resources
 
         //        case FXType.Diffuse:
         //            fxDescriptor = new EffectDescriptor("Diffuse.fx");
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldViewProjection);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.World);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldInverse);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.LightPosition);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.AmbientColor);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldInverse);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.LightPosition);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.AmbientColor);
         //            return fxDescriptor;
 
 
@@ -135,40 +135,40 @@ namespace AvengersUtd.Odyssey.Resources
         //                                                                            (float) (km*4*Math.PI));
         //            fxDescriptor.SetStaticParameter(epkm4Pi);
 
-        //            fxDescriptor.SetStaticParameter(FXParameterType.LightPosition);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.EyePosition);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldViewProjection);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.World);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldInverse);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.View);
+        //            fxDescriptor.SetStaticParameter(SceneVariable.LightPosition);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.EyePosition);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldInverse);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.View);
 
         //            return fxDescriptor;
 
         //        case FXType.SurfaceFromSpace:
         //            fxDescriptor = new EffectDescriptor("SurfaceFromSpace.fx");
         //            fxDescriptor.Technique = "Surface";
-        //            fxDescriptor.SetStaticParameter(FXParameterType.LightPosition);
-        //            //fxDescriptor.SetDynamicParameter(FXParameterType.EyePosition);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldViewProjection);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.World);
-        //            //fxDescriptor.SetDynamicParameter(FXParameterType.WorldInverse);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.View);
+        //            fxDescriptor.SetStaticParameter(SceneVariable.LightPosition);
+        //            //fxDescriptor.SetDynamicParameter(SceneVariable.EyePosition);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
+        //            //fxDescriptor.SetDynamicParameter(SceneVariable.WorldInverse);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.View);
 
         //            return fxDescriptor;
 
         //        case FXType.Textured:
         //            fxDescriptor = new EffectDescriptor("Textured.fx");
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.WorldViewProjection);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
 
-        //            //fxDescriptor.SetDynamicParameter(FXParameterType.EyePosition);
+        //            //fxDescriptor.SetDynamicParameter(SceneVariable.EyePosition);
         //            return fxDescriptor;
 
         //        case FXType.SelfAlign:
 
         //            fxDescriptor = new EffectDescriptor("SelfAlign.fx");
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.World);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.View);
-        //            fxDescriptor.SetDynamicParameter(FXParameterType.Projection);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.View);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.Projection);
         //            return fxDescriptor;
         //    }
         //}
