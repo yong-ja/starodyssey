@@ -15,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 
         #region Events
         static readonly object EventMaterialChanged;
+
         public event NodeEventHandler MaterialChanged
         {
             add { eventHandlerList.AddHandler(EventMaterialChanged, value); }

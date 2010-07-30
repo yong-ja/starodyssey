@@ -33,16 +33,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
         }
 
 
-        public SceneNodeCollection VisibleNodes
+        public SceneNodeCollection<RenderableNode> VisibleNodes
         {
             get
             {
-                SceneNodeCollection visibleNodes = new SceneNodeCollection();
+                SceneNodeCollection<RenderableNode> visibleNodes = new SceneNodeCollection<RenderableNode>();
                 foreach (SceneNode node in Node.PostOrderVisit(rootNode))
                 {
                     RenderableNode rNode = node as RenderableNode;
                     if (rNode != null && rNode.RenderableObject.IsInViewFrustum())
-                        visibleNodes.Add(node);
+                        visibleNodes.Add(rNode);
                 }
                 return visibleNodes;
             }

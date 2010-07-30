@@ -9,7 +9,7 @@ using ResourceDictionary = AvengersUtd.Odyssey.Properties.Resources;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public class RenderMapper : Dictionary<MaterialNode,SceneNodeCollection>
+    public class RenderMapper : Dictionary<MaterialNode,SceneNodeCollection<RenderableNode>>
     {
         public bool ContainsKey(string techniqueId)
         {
@@ -28,7 +28,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
 
 
-        public SceneNodeCollection this[string techniqueID]
+        public SceneNodeCollection<RenderableNode> this[string techniqueID]
         {
             get { 
                 MaterialNode mNode = FindBy(techniqueID);

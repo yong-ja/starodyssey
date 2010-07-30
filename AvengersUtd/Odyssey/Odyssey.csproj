@@ -76,12 +76,15 @@
     <Compile Include="Graphics\Meshes\IRenderable.cs" />
     <Compile Include="Graphics\Meshes\MeshDescriptor.cs" />
     <Compile Include="Graphics\Rendering\BaseCommand.cs" />
+    <Compile Include="Graphics\Rendering\BlendStateChangeCommand.cs" />
     <Compile Include="Graphics\Rendering\CommandList.cs" />
+    <Compile Include="Graphics\Rendering\Extensions.cs" />
     <Compile Include="Graphics\Rendering\IEntity.cs" />
     <Compile Include="Graphics\Rendering\ICommand.cs" />
     <Compile Include="Graphics\Rendering\RasterizerStateChangeCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderCommand.cs" />
     <Compile Include="Graphics\Rendering\Renderer.cs" />
+    <Compile Include="Graphics\Rendering\RenderManager.cs" />
     <Compile Include="Graphics\Rendering\RenderMapper.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\ConstantRotationNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\DummyNode.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Graphics\Rendering\SceneGraph\FreeTransformNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\MaterialNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\RenderableNode.cs" />
+    <Compile Include="Graphics\Rendering\SceneGraph\RenderableNodeCollection.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\SceneGraph.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\SceneNode.cs" />
     <Compile Include="Graphics\Rendering\SceneGraph\SceneNodeCollection.cs" />

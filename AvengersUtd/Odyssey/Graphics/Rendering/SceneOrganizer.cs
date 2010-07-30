@@ -12,21 +12,25 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class SceneOrganizer
     {
-        SceneNodeCollection materials;
-        CommandList<RenderCommand> renderList;
+        SceneNodeCollection<MaterialNode> materials;
+        CommandList<RenderCommand> renderList2;
+        private RenderManager renderManager;
         RenderMapper renderMapper;
         SceneGraph.SceneGraph sceneGraph, renderGraph;
 
         public SceneOrganizer()
         {
-            renderList = new CommandList<RenderCommand>();
+            renderList2 = new CommandList<RenderCommand>();
             renderMapper = new RenderMapper();
+            //stateManager = new StateManager();
+            renderManager = new RenderManager();
+
             //materials = new SceneNodeCollection();
         }
 
         public void BuildRenderScene(SceneGraph.SceneGraph graph)
         {
-            renderList.Clear();
+            renderList2.Clear();
             renderMapper.Clear();
 
             sceneGraph = graph;
@@ -42,7 +46,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     AbstractMaterial currentMaterial = rNode.CurrentMaterial;
                     if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
                     {
-                        renderMapper.Add(currentMaterial.OwningNode, new SceneNodeCollection());
+                        renderMapper.Add(currentMaterial.OwningNode, new SceneNodeCollection<RenderableNode>());
                         //materials.Add(currentSubRoot);
                     }
                     renderMapper[currentMaterial.TechniqueName].Add(rNode);
@@ -50,7 +54,25 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             }
 
             foreach (MaterialNode mNode in renderMapper.Keys)
-                renderList.Add(new RenderCommand(mNode, renderMapper[mNode]));
+            {
+                if (mNode.Material.RequirePreRenderStateChange)
+                    {
+                        foreach (BaseCommand stateChangeCommand in mNode.Material.PreRenderStates)
+                        {
+                            renderManager.AddCommand(stateChangeCommand);
+                        }
+                    }
+                //renderList2.Add(new RenderCommand(mNode, renderMapper[mNode]));
+                renderManager.AddCommand(new RenderCommand(mNode, renderMapper[mNode]));
+
+                if (mNode.Material.RequirePostRenderStateChange)
+                {
+                    foreach (BaseCommand stateChangeCommand in mNode.Material.PostRenderStates)
+                    {
+                        renderManager.AddCommand(stateChangeCommand);
+                    }
+                } 
+            }
 
             //Predicate<RenderableNode> p = rNode => rNode.renderableObject.CastsShadows;
         }
@@ -59,9 +81,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Display()
         {
-            foreach (RenderCommand rCommand in renderList)
+            foreach (BaseCommand command in renderManager.Commands)
             {
-                rCommand.PerformRender();
+                command.Execute();
             }
         }
 

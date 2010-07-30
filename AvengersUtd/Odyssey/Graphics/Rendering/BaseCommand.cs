@@ -6,7 +6,7 @@ using System;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public abstract class BaseCommand : ICommand
+    public abstract class BaseCommand : ICommand, IEquatable<BaseCommand>
     {
         bool disposed;
 
@@ -56,6 +56,26 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         ~BaseCommand()
         {
             Dispose(false);
+        }
+
+        #endregion
+
+
+        #region IEquatable<BaseCommand> Members
+
+        public virtual bool Equals(BaseCommand other)
+        {
+            return CommandType == other.CommandType;
+        }
+
+        public static bool operator ==(BaseCommand cmd1, BaseCommand cmd2)
+        {
+            return cmd1.Equals(cmd2);
+        }
+
+        public static bool operator !=(BaseCommand cmd1, BaseCommand cmd2)
+        {
+            return !(cmd1 == cmd2);
         }
 
         #endregion

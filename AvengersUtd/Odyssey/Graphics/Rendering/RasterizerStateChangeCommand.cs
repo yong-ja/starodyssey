@@ -9,23 +9,48 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RasterizerStateChangeCommand : BaseCommand
     {
-        private readonly RasterizerStateDescription rasterizerStateDesc;
+        public RasterizerStateDescription Description { get; private set; }
 
-        public RasterizerStateChangeCommand(RasterizerStateDescription rStateDesc) : 
-            base(CommandType.RasterizerStateChange)
+        public RasterizerStateChangeCommand(RasterizerStateDescription rStateDesc)
+            : base(CommandType.RasterizerStateChange)
         {
-            rasterizerStateDesc = rStateDesc;
+            Description = rStateDesc;
         }
 
         public override void Execute()
         {
-            RenderForm11.Device.ImmediateContext.Rasterizer.State = RasterizerState.FromDescription(
-                RenderForm11.Device, rasterizerStateDesc);
+            RenderForm11.Device.ImmediateContext.Rasterizer.State =
+                RasterizerState.FromDescription(RenderForm11.Device, Description);
         }
 
         protected override void OnDispose()
         {
             return;
+        }
+
+        public override bool Equals(BaseCommand other)
+        {
+            if (CommandType == other.CommandType)
+                return ((RasterizerStateChangeCommand) other).Description == Description;
+            else
+                return false;
+        }
+
+        public static RasterizerStateChangeCommand Default
+        {
+            get
+            {
+                RasterizerStateDescription rStateDesc = new RasterizerStateDescription()
+                                                            {
+                                                                CullMode = CullMode.Back,
+                                                                FillMode = FillMode.Solid,
+                                                                IsAntialiasedLineEnabled = true,
+                                                                IsFrontCounterclockwise = true,
+                                                                IsMultisampleEnabled = true,
+                                                            };
+
+                return new RasterizerStateChangeCommand(rStateDesc);
+            }
         }
     }
 }

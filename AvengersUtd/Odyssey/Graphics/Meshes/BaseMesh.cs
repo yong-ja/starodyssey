@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using SlimDX;
+using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
 using System.ComponentModel;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
@@ -19,6 +21,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         private Buffer vertices;
         private Buffer indices;
+        private List<ShaderResourceView> shaderResources;
         private bool disposed;
         EventHandlerList eventHandlerList;
 
@@ -174,6 +177,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return indices; }
             set { indices = value; }
         }
+
+        public ShaderResourceView[] ShaderResources { get { return shaderResources.ToArray(); } }
+
 
         #endregion
 

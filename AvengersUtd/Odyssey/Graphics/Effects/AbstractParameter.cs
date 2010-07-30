@@ -109,6 +109,11 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             return vectorVar.Set(vector4);
         }
 
+        public static Result ResourceUpdate(EffectResourceVariable resourceVar, ShaderResourceView texture)
+        {
+            return resourceVar.SetResource(texture);
+        }
+
         public static Result TextureUpdate(EffectResourceVariable textureVar, Texture2D texture)
         {
             return textureVar.SetResource(new ShaderResourceView(RenderForm11.Device, texture));

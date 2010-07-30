@@ -36,56 +36,62 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     /// </summary>
     public abstract class AbstractMaterial : IMaterial
     {
-        bool disposed;
-        
-        
-        protected FXType fxType;
-        static protected EffectDescriptor effectDescriptor;
-
-        protected AbstractMaterial()
-        {
-        }
+        private bool disposed;
 
         protected AbstractMaterial(string filename)
         {
-            //lightingAlgorithm = algorithm;
-            //lightingTechnique = LightingTechnique.Diffuse|LightingTechnique.Specular;
-            effectDescriptor = new EffectDescriptor(filename);
+            EffectDescriptor = new EffectDescriptor(filename);
+            PreRenderStateList = new List<BaseCommand>();
+            PostRenderStateList = new List<BaseCommand>();
         }
 
         #region Properties
 
-        
-
         /// <summary>
         /// Returns the type of effect that this Material represents.
         /// </summary>
-        public FXType FXType
-        {
-            get { return fxType; }
-        }
+        public FXType FXType { get; private set; }
 
         /// <summary>
         /// Returns a reference to the <see cref="EffectDescriptor"/> object this
-        /// class uses to setup its shader.
+        /// instance uses to setup its shader.
         /// </summary>
-        public virtual EffectDescriptor EffectDescriptor
+        public virtual EffectDescriptor EffectDescriptor { get; private set; }
+
+        public MaterialNode OwningNode { get; internal set; }
+
+        protected List<BaseCommand> PreRenderStateList { get; private set; }
+        protected List<BaseCommand> PostRenderStateList { get; private set; }
+
+        public bool RequirePreRenderStateChange
         {
-            get { return effectDescriptor; }
+            get { return PreRenderStateList.Count > 0; }
         }
 
-        public MaterialNode OwningNode
-        { get; internal set; }
+        public bool RequirePostRenderStateChange
+        {
+            get { return PostRenderStateList.Count > 0; }
+        }
 
+        public BaseCommand[] PreRenderStates
+        {
+            get { return PreRenderStateList.ToArray(); }
+        }
+
+        public BaseCommand[] PostRenderStates
+        {
+            get { return PostRenderStateList.ToArray(); }
+        }
 
         public string TechniqueName
         {
-            get { return effectDescriptor.Technique.Description.Name; }
+            get { return EffectDescriptor.Technique.Description.Name; }
         }
+
         #endregion
 
-
         #region Parameters initializataion methods
+
         /// <summary>
         /// Initializes static shader parameters individual of this particular instance of the 
         /// shader.
@@ -118,12 +124,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
             //ChooseTechnique();
             ApplyStaticParameters();
-           
         }
 
         public virtual void ApplyStaticParameters()
         {
-            effectDescriptor.ApplyStaticParameters();
+            EffectDescriptor.ApplyStaticParameters();
         }
 
         /// <summary>
@@ -131,19 +136,19 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// </summary>
         public virtual void ApplyDynamicParameters()
         {
-            effectDescriptor.ApplyDynamicParameters();
+            EffectDescriptor.ApplyDynamicParameters();
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)
         {
-            effectDescriptor.ApplyInstanceParameters(rObject);
+            EffectDescriptor.ApplyInstanceParameters(rObject);
         }
 
         public void Apply()
         {
             ApplyDynamicParameters();
         }
-        
+
         #endregion
 
         //protected virtual void ChooseTechnique()
@@ -172,7 +177,5 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         //    Game.CurrentScene.LightManager.HandleMaterial(this);
         //}
-
-      
     }
 }
