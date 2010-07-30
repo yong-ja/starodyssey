@@ -7,6 +7,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
 {
     public class RenderableNodeCollection : SceneNodeCollection<RenderableNode>
     {
-        public 
+        public bool CommonTexture { get; private set; }
+        public bool Tran
     }
 }

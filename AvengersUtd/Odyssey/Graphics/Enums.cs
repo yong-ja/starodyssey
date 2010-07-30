@@ -1,15 +1,6 @@
 using System;
 namespace AvengersUtd.Odyssey.Graphics
 {
-    public enum RenderOp
-    {
-        /// <summary>
-        /// Renders the object without applying effects
-        /// </summary>
-        Default,
-        UseShader
-    }
-
     public enum SceneNodeType
     {
         Transform,
@@ -24,6 +15,13 @@ namespace AvengersUtd.Odyssey.Graphics
         ComputeShadows,
         RasterizerStateChange,
         BlendStateChange
+    }
+
+    public enum TranslucencyType
+    {
+        Opaque,
+        Additive,
+        Subtractive
     }
 
     public enum FXVectorOperationType
@@ -41,7 +39,6 @@ namespace AvengersUtd.Odyssey.Graphics
         SpotlightOuterConeCosine,
         SpotlightFalloff,
         Radius,
-
         LightWorldViewProjection
     }
 
