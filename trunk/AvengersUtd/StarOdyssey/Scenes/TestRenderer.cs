@@ -85,7 +85,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //    Device.ImmediateContext.DrawIndexed(triangle.IndexCount, 0, 0);
             //}
             Device.ImmediateContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            
+
             //Device.ImmediateContext.Rasterizer.State = RasterizerState.FromDescription(Device,
             //    new RasterizerStateDescription()
             //        {

@@ -18,5 +18,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public interface IDiffuseMap
     {
         Texture2D DiffuseMap { get; }
+        ShaderResourceView DiffuseMapResource { get; }
     }
 }

@@ -20,6 +20,10 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected LightingTechnique lightingTechnique;
 
 
+        public ShaderMaterial(string filename) : base(filename)
+        {
+        }
+
         public Color4 DiffuseColor
         {
             get { return diffuseColor; }
@@ -28,7 +32,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
                 if (diffuseColor != value)
                 {
                     diffuseColor = value;
-                    effectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Diffuse, effectDescriptor.Effect));
+                    EffectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Diffuse, EffectDescriptor.Effect));
                 }
             }
         }
@@ -47,7 +51,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
                 if (specularColor != value)
                 {
                     specularColor = value;
-                    effectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, effectDescriptor.Effect));
+                    EffectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, EffectDescriptor.Effect));
                 }
             }
         }

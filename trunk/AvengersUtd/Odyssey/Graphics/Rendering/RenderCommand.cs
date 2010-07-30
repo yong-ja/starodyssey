@@ -10,18 +10,18 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class RenderCommand : BaseCommand
     {
         private readonly MaterialNode materialNode;
-        public SceneNodeCollection Items { get; internal set; }
+        public SceneNodeCollection<RenderableNode> Items { get; internal set; }
 
-        public RenderCommand(MaterialNode mNode, SceneNodeCollection sceneNodeCollection)
+        public RenderCommand(MaterialNode mNode, SceneNodeCollection<RenderableNode> SceneNodeCollection)
             : base(CommandType.RenderScene)
         {
-            Items = sceneNodeCollection;
+            Items = SceneNodeCollection;
             materialNode = mNode;
         }
 
         public override void Execute()
         {
-            return;
+            PerformRender();
         }
 
         public virtual void PerformRender()

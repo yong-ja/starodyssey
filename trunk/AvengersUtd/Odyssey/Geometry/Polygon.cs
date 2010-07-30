@@ -70,8 +70,8 @@ namespace AvengersUtd.Odyssey.Geometry
             stream = new DataStream(3 * numPrimitives * sizeof(short), true, true);
             stream.WriteRange(new short[]
                                   {
-                                      0, 1, 2,
-                                      3, 0, 2
+                                      2, 1, 0,
+                                      2, 0, 3
                                   });
             stream.Position = 0;
             Buffer indices = new Buffer(RenderForm11.Device, stream, new BufferDescription()

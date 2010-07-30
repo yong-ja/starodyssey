@@ -85,11 +85,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             get { return LastChildNode as SceneNode; }
         }
 
-        public SceneNodeCollection ChildrenCollection
+        public SceneNodeCollection<SceneNode> ChildrenCollection
         {
             get
             {
-                SceneNodeCollection nodeCollection = new SceneNodeCollection();
+                SceneNodeCollection<SceneNode> nodeCollection = new SceneNodeCollection<SceneNode>();
                 foreach (SceneNode node in ChildrenIterator)
                     nodeCollection.Add(node);
                 return nodeCollection;
@@ -187,10 +187,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             return result;
         }
 
-        public SceneNodeCollection SelectNodes<T>(Predicate<T> predicate)
+        public SceneNodeCollection<T> SelectNodes<T>(Predicate<T> predicate)
             where T : SceneNode
         {
-            SceneNodeCollection nodeCollection = new SceneNodeCollection();
+            SceneNodeCollection<T> nodeCollection = new SceneNodeCollection<T>();
             foreach (INode node in Node.PreOrderVisit(this))
             {
                 T nodeT = node as T;
@@ -201,10 +201,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph
             return nodeCollection;
         }
 
-        public SceneNodeCollection SelectNodes<T>()
+        public SceneNodeCollection<T> SelectNodes<T>()
             where T : SceneNode
         {
-            SceneNodeCollection nodeCollection = new SceneNodeCollection();
+            SceneNodeCollection<T> nodeCollection = new SceneNodeCollection<T>();
             foreach (INode node in Node.PreOrderVisit(this))
             {
                 T nodeT = node as T;

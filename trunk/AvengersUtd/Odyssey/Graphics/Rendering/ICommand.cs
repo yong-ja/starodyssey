@@ -7,4 +7,5 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         CommandType CommandType { get; }
         void Execute();
     }
+
 }

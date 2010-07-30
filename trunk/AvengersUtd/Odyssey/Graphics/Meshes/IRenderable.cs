@@ -5,6 +5,7 @@ using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
+using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
@@ -23,6 +24,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Buffer Indices { get; }
         Buffer Vertices { get; }
         VertexDescription VertexDescription { get; }
+        ShaderResourceView[] ShaderResources { get; }
 
         Matrix World { get; set; }
         Vector3 PositionV3 { get; }
