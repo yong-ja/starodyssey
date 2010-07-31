@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Rendering;
+using AvengersUtd.Odyssey.Text;
 using AvengersUtd.Odyssey.Utils;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
@@ -27,6 +28,7 @@ namespace AvengersUtd.Odyssey
             CurrentScene.Render();
             CurrentScene.Present();
             FrameTime = timer.GetElapsedTime();
+            Console.WriteLine(FrameTime);
         }
 
         

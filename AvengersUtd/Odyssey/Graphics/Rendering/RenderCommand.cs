@@ -10,13 +10,24 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class RenderCommand : BaseCommand
     {
         private readonly MaterialNode materialNode;
-        public SceneNodeCollection<RenderableNode> Items { get; internal set; }
+        private InputLayout inputLayout;
+        private AbstractMaterial material;
+        private EffectTechnique technique;
+        private EffectPass pass;
 
-        public RenderCommand(MaterialNode mNode, SceneNodeCollection<RenderableNode> SceneNodeCollection)
+        public RenderableCollection Items { get; internal set; }
+
+
+
+        public RenderCommand(MaterialNode mNode, RenderableCollection sceneNodeCollection)
             : base(CommandType.RenderScene)
         {
-            Items = SceneNodeCollection;
+            Items = sceneNodeCollection;
             materialNode = mNode;
+            material = materialNode.Material;
+            technique = material.EffectDescription.Technique;
+            pass = technique.GetPassByIndex(material.EffectDescription.Pass);
+            inputLayout = new InputLayout(RenderForm11.Device, pass.Description.Signature, Items.Description.InputElements);
         }
 
         public override void Execute()
@@ -26,24 +37,21 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public virtual void PerformRender()
         {
-            AbstractMaterial material = materialNode.Material;
-            EffectTechnique technique = material.EffectDescriptor.Technique;
 
-            EffectPass pass = technique.GetPassByIndex(material.EffectDescriptor.Pass);
-            RenderForm11.Device.ImmediateContext.InputAssembler.InputLayout =
-                new InputLayout(RenderForm11.Device,
-                                pass.Description.Signature,
-                                TexturedVertex.InputElements);
-
-            pass.Apply(RenderForm11.Device.ImmediateContext);
+            RenderForm11.Device.ImmediateContext.InputAssembler.InputLayout = inputLayout;
+           
             material.ApplyDynamicParameters();
 
-            foreach (SceneNode node in Items)
+            foreach (RenderableNode rNode in Items)
             {
-                node.Update();
-                RenderableNode rNode = node as RenderableNode;
-                if (rNode != null && rNode.RenderableObject.IsVisible)
+                rNode.Update();
+                if (!Items.Description.CommonTexture)
+                    material.ApplyInstanceParameters(rNode.RenderableObject);
+                
+                if (rNode.RenderableObject.IsVisible)
                 {
+                    pass.Apply(RenderForm11.Device.ImmediateContext);
+
                     IRenderable rObject = rNode.RenderableObject;
 
                     RenderForm11.Device.ImmediateContext.InputAssembler.SetVertexBuffers(
@@ -51,7 +59,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                         new VertexBufferBinding(rObject.Vertices, rObject.VertexDescription.Stride, 0));
 
                     RenderForm11.Device.ImmediateContext.InputAssembler.SetIndexBuffer(
-                        rObject.Indices, Format.R16_UInt, 0);
+                        rObject.Indices, Items.Description.IndexFormat, 0);
 
                     material.ApplyInstanceParameters(rObject);
 

@@ -24,8 +24,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             renderMapper = new RenderMapper();
             //stateManager = new StateManager();
             renderManager = new RenderManager();
-
-            //materials = new SceneNodeCollection();
         }
 
         public void BuildRenderScene(SceneGraph.SceneGraph graph)
@@ -46,8 +44,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     AbstractMaterial currentMaterial = rNode.CurrentMaterial;
                     if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
                     {
-                        renderMapper.Add(currentMaterial.OwningNode, new SceneNodeCollection<RenderableNode>());
-                        //materials.Add(currentSubRoot);
+                        
+                        renderMapper.Add(currentMaterial.OwningNode, new RenderableCollection(currentMaterial.RenderableCollectionDescription));
                     }
                     renderMapper[currentMaterial.TechniqueName].Add(rNode);
                 }
@@ -62,7 +60,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                             renderManager.AddCommand(stateChangeCommand);
                         }
                     }
-                //renderList2.Add(new RenderCommand(mNode, renderMapper[mNode]));
                 renderManager.AddCommand(new RenderCommand(mNode, renderMapper[mNode]));
 
                 if (mNode.Material.RequirePostRenderStateChange)
@@ -73,12 +70,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     }
                 } 
             }
-
-            //Predicate<RenderableNode> p = rNode => rNode.renderableObject.CastsShadows;
         }
-        
-        
-
+ 
         public void Display()
         {
             foreach (BaseCommand command in renderManager.Commands)

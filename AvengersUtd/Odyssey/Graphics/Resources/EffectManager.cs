@@ -77,16 +77,16 @@ namespace AvengersUtd.Odyssey.Resources
                     node.Object.Dispose();
         }
 
-        //public static EffectDescriptor CreateEffect(FXType fxType, params object[] data)
+        //public static EffectDescription CreateEffect(FXType fxType, params object[] data)
         //{
-        //    EffectDescriptor fxDescriptor;
+        //    EffectDescription fxDescriptor;
 
         //    switch (fxType)
         //    {
         //        default:
 
         //        case FXType.Diffuse:
-        //            fxDescriptor = new EffectDescriptor("Diffuse.fx");
+        //            fxDescriptor = new EffectDescription("Diffuse.fx");
         //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldInverse);
@@ -96,12 +96,12 @@ namespace AvengersUtd.Odyssey.Resources
 
 
         //        case FXType.AtmosphericScattering:
-        //            fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+        //            fxDescriptor = new EffectDescription("AtmosphericScattering.fx");
         //            fxDescriptor.Pass = 1;
         //            return fxDescriptor;
 
         //        case FXType.SurfaceFromSpaceWithAtmosphere:
-        //            fxDescriptor = new EffectDescriptor("AtmosphericScattering.fx");
+        //            fxDescriptor = new EffectDescription("AtmosphericScattering.fx");
         //            fxDescriptor.Pass = 0;
 
 
@@ -145,7 +145,7 @@ namespace AvengersUtd.Odyssey.Resources
         //            return fxDescriptor;
 
         //        case FXType.SurfaceFromSpace:
-        //            fxDescriptor = new EffectDescriptor("SurfaceFromSpace.fx");
+        //            fxDescriptor = new EffectDescription("SurfaceFromSpace.fx");
         //            fxDescriptor.Technique = "Surface";
         //            fxDescriptor.SetStaticParameter(SceneVariable.LightPosition);
         //            //fxDescriptor.SetDynamicParameter(SceneVariable.EyePosition);
@@ -157,7 +157,7 @@ namespace AvengersUtd.Odyssey.Resources
         //            return fxDescriptor;
 
         //        case FXType.Textured:
-        //            fxDescriptor = new EffectDescriptor("Textured.fx");
+        //            fxDescriptor = new EffectDescription("Textured.fx");
         //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldViewProjection);
 
         //            //fxDescriptor.SetDynamicParameter(SceneVariable.EyePosition);
@@ -165,7 +165,7 @@ namespace AvengersUtd.Odyssey.Resources
 
         //        case FXType.SelfAlign:
 
-        //            fxDescriptor = new EffectDescriptor("SelfAlign.fx");
+        //            fxDescriptor = new EffectDescription("SelfAlign.fx");
         //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.View);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.Projection);

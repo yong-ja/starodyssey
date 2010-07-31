@@ -6,7 +6,7 @@ using AvengersUtd.Odyssey.Graphics.Meshes;
 
 namespace AvengersUtd.Odyssey.Graphics.Effects
 {
-    public class EffectDescriptor
+    public class EffectDescription
     {
         string filename;
         private EffectTechnique technique;
@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
         #endregion
 
-        public EffectDescriptor(string filename)
+        public EffectDescription(string filename)
         {
             this.filename = filename;
             instanceParameters = new SortedList<string, InstanceParameter>();
