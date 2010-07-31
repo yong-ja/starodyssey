@@ -19,7 +19,7 @@ namespace AvengersUtd.Odyssey.Text
             //Our return value.
             Texture2D t;
 
-            using (Gdi.Font font = new Gdi.Font("Arial", 64))
+            using (Gdi.Font font = new Gdi.Font("Arial", 16))
             {
                 //The size of the rendered string.
                 Gdi.SizeF strsize;
@@ -31,7 +31,6 @@ namespace AvengersUtd.Odyssey.Text
                     {
                         //Measure the string...
                         strsize = dummygraphics.MeasureString(text, font);
-                        Console.WriteLine("W: " +strsize.Width + " H: " + strsize.Height);
                     }
                 }
 

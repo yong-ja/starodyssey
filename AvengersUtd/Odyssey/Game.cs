@@ -14,29 +14,28 @@ namespace AvengersUtd.Odyssey
     public static class Game
     {
         private static Timer timer;
-        public static Renderer CurrentScene { get; private set;}
+        public static Renderer CurrentRenderer { get; private set;}
+        public static DebugLogger Logger { get; private set; }
         public static double FrameTime { get; private set; }
 
         static Game()
         {
             timer = new Timer();
             timer.Reset();
+            Logger = new DebugLogger();
         }
         public static void Loop()
         {
-            CurrentScene.Device.ImmediateContext.ClearRenderTargetView(RenderForm11.renderTarget, Color.LightBlue);
-            CurrentScene.Render();
-            CurrentScene.Present();
+            CurrentRenderer.Device.ImmediateContext.ClearRenderTargetView(RenderForm11.renderTarget, Color.LightBlue);
+            CurrentRenderer.Render();
+            CurrentRenderer.Present();
             FrameTime = timer.GetElapsedTime();
-            Console.WriteLine(FrameTime);
         }
-
-        
 
         public static void ChangeRenderer(Renderer renderer)
         {
+            CurrentRenderer = renderer;
             renderer.Init();
-            CurrentScene = renderer;
         }
 
 

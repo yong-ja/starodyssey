@@ -104,6 +104,7 @@
     <Compile Include="Graphics\Rendering\ShadowCommand.cs" />
     <Compile Include="Graphics\Resources\EffectManager.cs" />
     <Compile Include="Graphics\Resources\EntityDescriptor.cs" />
+    <Compile Include="Graphics\Resources\ResourceManager.cs" />
     <Compile Include="Settings\VideoSettings.cs" />
     <Compile Include="Text\DebugLogger.cs" />
     <Compile Include="Text\TextLiteral.cs" />

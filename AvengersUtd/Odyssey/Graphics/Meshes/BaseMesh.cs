@@ -23,7 +23,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private Buffer indices;
         private List<ShaderResourceView> shaderResources;
         private bool disposed;
-        EventHandlerList eventHandlerList;
+        readonly EventHandlerList eventHandlerList;
 
 
         #region Events
@@ -89,6 +89,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #region Properties
 
+        protected List<ShaderResourceView> ShaderResourceList
+        {
+            get { return shaderResources; }
+        }
         
         public bool Inited { get; private set; }
 
@@ -199,6 +203,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             IsCollidable = false;
             IsVisible = true;
             this.vertices = vertices;
+            shaderResources = new List<ShaderResourceView>();
             this.indices = indices;
             IndexCount = indexCount;
             VertexDescription = vDescription;

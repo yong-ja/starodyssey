@@ -24,18 +24,15 @@ namespace AvengersUtd.Odyssey.Geometry
             RenderForm11.Device.ImmediateContext.DrawIndexed(IndexCount, 0, 0);
         }
 
-        #region Create methods
-        public static TexturedPolygon CreateTexturedQuad(Vector4 topLeftVertex, float width, float height)
+        public static TexturedVertex[] CreateTexturedQuad(Vector4 topLeftVertex, float width, float height, out short[] indices)
         {
-            int numPrimitives = 2;
-            int indexCount = 6;
 
-            TexturedVertex[] vertices = new TexturedVertex[]
+            TexturedVertex[] vertices = new[]
                                             {
                                                 new TexturedVertex(
                                                     new Vector4(topLeftVertex.X, topLeftVertex.Y-height, topLeftVertex.Z, 1.0f),
                                                     new Vector2(0.0f, 1.0f)),
-                                                new TexturedVertex(
+                                                 new TexturedVertex(
                                                     new Vector4(topLeftVertex.X, topLeftVertex.Y,
                                                                 topLeftVertex.Z, 1.0f), new Vector2(0.0f, 0.0f)),
                                                 new TexturedVertex(
@@ -45,9 +42,24 @@ namespace AvengersUtd.Odyssey.Geometry
                                                     new Vector4(topLeftVertex.X + width, topLeftVertex.Y - height,
                                                                 topLeftVertex.Z, 1.0f), new Vector2(1.0f, 1.0f))
                                             };
+            indices = new short[]
+                          {
+                              2, 1, 0,
+                              2, 0, 3
+                          };
 
+            return vertices;
+        }
+
+        #region Create methods
+        public static TexturedPolygon CreateTexturedPolygon(Vector4 topLeftVertex, float width, float height)
+        {
+
+            const int numPrimitives = 2;
+            short[] indices;
+            TexturedVertex[] vertices = CreateTexturedQuad(topLeftVertex, width, height, out indices);
            
-            DataStream stream = new DataStream(4 * TexturedVertex.Stride, true, true);
+            DataStream stream = new DataStream(vertices.Length * TexturedVertex.Stride, true, true);
             foreach (TexturedVertex vertex in vertices)
             {
                 stream.Write(vertex.Position);
@@ -59,22 +71,18 @@ namespace AvengersUtd.Odyssey.Geometry
             Buffer vertexBuffer = new Buffer(RenderForm11.Device, stream, new BufferDescription()
             {
                 BindFlags = BindFlags.VertexBuffer,
-                CpuAccessFlags = CpuAccessFlags.None,
+                CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = 4 * TexturedVertex.Stride,
-                Usage = ResourceUsage.Default
-            });
+                SizeInBytes = vertices.Length * TexturedVertex.Stride,
+                Usage = ResourceUsage.Dynamic
+            }); 
 
             stream.Close();
 
             stream = new DataStream(3 * numPrimitives * sizeof(short), true, true);
-            stream.WriteRange(new short[]
-                                  {
-                                      2, 1, 0,
-                                      2, 0, 3
-                                  });
+            stream.WriteRange(indices);
             stream.Position = 0;
-            Buffer indices = new Buffer(RenderForm11.Device, stream, new BufferDescription()
+            Buffer indexBuffer = new Buffer(RenderForm11.Device, stream, new BufferDescription()
             {
                 BindFlags = BindFlags.IndexBuffer,
                 CpuAccessFlags = CpuAccessFlags.None,
@@ -83,7 +91,7 @@ namespace AvengersUtd.Odyssey.Geometry
             });
             stream.Dispose();
 
-            TexturedPolygon quad = new TexturedPolygon(vertexBuffer, indices, indexCount);
+            TexturedPolygon quad = new TexturedPolygon(vertexBuffer, indexBuffer, indices.Length);
             return quad;
 
         }

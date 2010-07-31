@@ -26,7 +26,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
     //        shadowMap = new Texture(Game.Device, 256, 256, 0, Usage.RenderTarget | Usage.AutoGenerateMipMap,
     //                                     Format.X8R8G8B8, Pool.Default);
-    //        TextureManager.Add(commandTag, shadowMap);
+    //        ResourceManager.Add(commandTag, shadowMap);
     //        PurgeNonShadowCasters();
     //    }
 

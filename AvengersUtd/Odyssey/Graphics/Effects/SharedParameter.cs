@@ -75,9 +75,9 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 //    {
                 //        Matrix mLightVP =
                 //            BaseLight.CreateLightViewProjectionMatrix(
-                //                (Spotlight) Game.CurrentScene.LightManager.GetLight(0));
+                //                (Spotlight) Game.CurrentRenderer.LightManager.GetLight(0));
 
-                //        Matrix mWorld = Game.CurrentScene.Camera.World;
+                //        Matrix mWorld = Game.CurrentRenderer.Camera.World;
 
                 //        fxParam.ownerEffect.SetValue(eH,mWorld * mLightVP);
                 //    };
@@ -87,20 +87,20 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     varName = ParamHandles.Vectors.EyePosition;
                     eV = effect.GetVariableByName(varName).AsVector();
 
-                    update = (fxParam => Vector4Update(fxParam.EffectVariable, Game.CurrentScene.Camera.PositionV4));
+                    update = (fxParam => Vector4Update(fxParam.EffectVariable, Game.CurrentRenderer.Camera.PositionV4));
                     break;
 
                 case SceneVariable.FarClip:
                     varName = ParamHandles.Floats.FarClip;
                     eV = effect.GetVariableByName(varName).AsScalar();
-                    update = (fxParam => FloatUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.FarClip));
+                    update = (fxParam => FloatUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.FarClip));
                     break;
 
                 case SceneVariable.Projection:
                     varName = ParamHandles.Matrices.Projection;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.Projection));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.Projection));
                     break;
 
                 //case SceneVariable.TextureBias:
@@ -118,35 +118,35 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     varName = ParamHandles.Matrices.View;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.View));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.View));
                     break;
 
                 case SceneVariable.CameraViewInverse:
                     varName = ParamHandles.Matrices.ViewInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.View)));
+                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.View)));
                     break;
 
                 case SceneVariable.CameraWorld:
                     varName = ParamHandles.Matrices.World;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.World));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.World));
                     break;
 
                 case SceneVariable.CameraWorldInverse:
                     varName = ParamHandles.Matrices.WorldInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.World)));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.World)));
                     break;
 
                 case SceneVariable.CameraWorldViewInverse:
                     varName = ParamHandles.Matrices.WorldViewInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentScene.Camera.World * Game.CurrentScene.Camera.View)));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.World * Game.CurrentRenderer.Camera.View)));
                     break;
 
                 case SceneVariable.CameraWorldViewProjection:
@@ -156,14 +156,14 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update =
                         (fxParam =>
                          MatrixUpdate(fxParam.EffectVariable,
-                                      Matrix.Invert(Game.CurrentScene.Camera.World*Game.CurrentScene.Camera.View*
-                                                    Game.CurrentScene.Camera.Projection)));
+                                      Matrix.Invert(Game.CurrentRenderer.Camera.World*Game.CurrentRenderer.Camera.View*
+                                                    Game.CurrentRenderer.Camera.Projection)));
                     break;
 
                 case SceneVariable.CameraOrthographicProjection:
                     varName = ParamHandles.Matrices.Projection;
                     eV = effect.GetVariableByName(varName).AsMatrix();
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentScene.Camera.OrthoProjection));
+                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.OrthoProjection));
                     break;
 
             }

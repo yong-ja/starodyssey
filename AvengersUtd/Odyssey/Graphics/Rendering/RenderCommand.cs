@@ -61,7 +61,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     RenderForm11.Device.ImmediateContext.InputAssembler.SetIndexBuffer(
                         rObject.Indices, Items.Description.IndexFormat, 0);
 
-                    material.ApplyInstanceParameters(rObject);
 
                     rObject.Render();
                 }

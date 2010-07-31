@@ -12,29 +12,24 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class SceneOrganizer
     {
-        SceneNodeCollection<MaterialNode> materials;
-        CommandList<RenderCommand> renderList2;
-        private RenderManager renderManager;
-        RenderMapper renderMapper;
-        SceneGraph.SceneGraph sceneGraph, renderGraph;
+        readonly RenderMapper renderMapper;
+
+        public RenderManager CommandManager { get; private set; }
+        public SceneGraph.SceneGraph Tree { get; private set; }
 
         public SceneOrganizer()
         {
-            renderList2 = new CommandList<RenderCommand>();
             renderMapper = new RenderMapper();
-            //stateManager = new StateManager();
-            renderManager = new RenderManager();
+            CommandManager = new RenderManager();
+            Tree = new SceneGraph.SceneGraph();
         }
 
-        public void BuildRenderScene(SceneGraph.SceneGraph graph)
+        public void BuildRenderScene()
         {
-            renderList2.Clear();
             renderMapper.Clear();
 
-            sceneGraph = graph;
-            renderGraph = new SceneGraph.SceneGraph();
-            
-            foreach (SceneNode node in Node.PostOrderVisit(graph.RootNode))
+          
+            foreach (SceneNode node in Node.PostOrderVisit(Tree.RootNode))
             {
 
                 RenderableNode rNode = node as RenderableNode;
@@ -57,32 +52,31 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     {
                         foreach (BaseCommand stateChangeCommand in mNode.Material.PreRenderStates)
                         {
-                            renderManager.AddCommand(stateChangeCommand);
+                            CommandManager.AddCommand(stateChangeCommand);
                         }
                     }
-                renderManager.AddCommand(new RenderCommand(mNode, renderMapper[mNode]));
+                CommandManager.AddCommand(new RenderCommand(mNode, renderMapper[mNode]));
 
                 if (mNode.Material.RequirePostRenderStateChange)
                 {
                     foreach (BaseCommand stateChangeCommand in mNode.Material.PostRenderStates)
                     {
-                        renderManager.AddCommand(stateChangeCommand);
+                        CommandManager.AddCommand(stateChangeCommand);
                     }
                 } 
             }
         }
- 
+
+
         public void Display()
         {
-            foreach (BaseCommand command in renderManager.Commands)
+            foreach (BaseCommand command in CommandManager.Commands)
             {
                 command.Execute();
             }
         }
 
-       
-      
-
+        
         //public IRenderable CheckForCollisions(IRenderable collidingObject, BoundingSphere sphere)
         //{
         //    RenderableNode cNode = collidingObject.ParentNode;
