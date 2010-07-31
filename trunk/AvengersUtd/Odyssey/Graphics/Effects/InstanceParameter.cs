@@ -102,7 +102,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     varName = ParamHandles.Textures.DiffuseMap;
                     eV = effect.GetVariableByName(varName).AsResource();
                     update=(fxParam, rObject) =>
-                        ResourceUpdate((EffectResourceVariable) fxParam.EffectVariable,
+                        ResourceUpdate(fxParam.EffectVariable,
                                      ((IDiffuseMap)rObject).DiffuseMapResource);
                     break;
             }

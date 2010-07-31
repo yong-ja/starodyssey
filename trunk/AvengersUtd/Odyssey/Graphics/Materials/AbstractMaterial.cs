@@ -177,7 +177,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         //    if (lightingAlgorithm == LightingAlgorithm.Wireframe || lightingAlgorithm == LightingAlgorithm.None)
         //        return;
 
-        //    Game.CurrentScene.LightManager.HandleMaterial(this);
+        //    Game.CurrentRenderer.LightManager.HandleMaterial(this);
         //}
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 using Device = SlimDX.Direct3D11.Device;
@@ -11,15 +12,12 @@ namespace AvengersUtd.Odyssey.Rendering
     public abstract class Renderer : IDisposable
     {
         private bool disposed;
-        private QuaternionCam qCam;
         private Device device;
         private SwapChain swapChain;
         //LightManager lightManager;
 
-        public QuaternionCam Camera
-        {
-            get { return qCam; }
-        }
+        public QuaternionCam Camera { get; private set; }
+        public SceneOrganizer Scene { get; private set; }
 
         //public LightManager LightManager
         //{
@@ -36,7 +34,8 @@ namespace AvengersUtd.Odyssey.Rendering
             device = RenderForm11.Device;
             swapChain = RenderForm11.SwapChain;
             //lightManager = new LightManager();
-            qCam = new QuaternionCam();
+            Scene = new SceneOrganizer();
+            Camera = new QuaternionCam();
         }
 
         public void Reset()

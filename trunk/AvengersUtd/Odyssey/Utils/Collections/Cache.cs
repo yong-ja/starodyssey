@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 #endregion
 
@@ -299,8 +300,7 @@ namespace AvengersUtd.Odyssey.Collections
         /// <returns>The enumerator for keys.</returns>
         public IEnumerable<Key> GetKeys()
         {
-            foreach (Key k in arrivalOrder)
-                yield return k;
+            return arrivalOrder;
         }
 
         /// <summary>
@@ -310,8 +310,7 @@ namespace AvengersUtd.Odyssey.Collections
         /// <returns>The enumerator for the values.</returns>
         public IEnumerable<Value> GetValues()
         {
-            foreach (KeyValuePair<Key, Value> i in cacheStore)
-                yield return i.Value;
+            return cacheStore.Select(i => i.Value);
         }
 
         /// <summary>
@@ -325,8 +324,7 @@ namespace AvengersUtd.Odyssey.Collections
         /// Library's std::pair template.</remarks>
         public IEnumerable<KeyValuePair<Key, Value>> GetItems()
         {
-            foreach (KeyValuePair<Key, Value> i in cacheStore)
-                yield return i;
+            return cacheStore;
         }
 
         /// <summary>
@@ -335,8 +333,7 @@ namespace AvengersUtd.Odyssey.Collections
         /// <returns>The enumerator for the values.</returns>
         public IEnumerator<Value> GetEnumerator()
         {
-            foreach (KeyValuePair<Key, Value> i in cacheStore)
-                yield return i.Value;
+            return cacheStore.Select(i => i.Value).GetEnumerator();
         }
 
         /// <summary>

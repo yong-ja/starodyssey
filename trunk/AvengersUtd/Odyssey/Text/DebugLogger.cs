@@ -28,7 +28,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using AvengersUtd.Odyssey.Utils;
+using SlimDX;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 
 #endregion
 
@@ -42,39 +46,55 @@ namespace AvengersUtd.Odyssey.Text
     {
         const int messageLimit = 5;
         //static FrameTimeCounter frameTimeCounter;
-        static DebugLogger logger;
-
+        
         bool disposed;
         string debugInfo = string.Empty;
-        string deviceStats = string.Empty;
         string frameStats = string.Empty;
         uint lastStatsUpdateFrames; // frames count since last time the stats were updated
         double lastStatsUpdateTime; // last time the stats were updated
         
         Font font;
+        private TextLiteral text;
 
         Queue<string> messageQueue = new Queue<string>(messageLimit);
         StringBuilder stringBuffer = new StringBuilder();
         Timer timer;
 
 
-        DebugLogger()
+        public DebugLogger()
         {
+            DeviceInfo = string.Empty;
             timer = new Timer();
+
         }
 
-        public string DeviceInfo
-        {
-            get { return deviceStats; }
-        }
+        public string DeviceInfo { get; private set; }
 
-        public static string FrameStats
+        public string FrameStats
         {
             get
             {
-                logger.UpdateFrameStats(Game.FrameTime);
-                return logger.frameStats;
+                UpdateFrameStats(Game.FrameTime);
+                return frameStats;
             }
+        }
+
+        public void Activate()
+        {
+            text = new TextLiteral(FrameStats, new Vector3(10, 10, 0));
+            FunctionalMaterial textWriter = new FunctionalMaterial();
+            MaterialNode mNode = new MaterialNode("Logger", textWriter);
+            RenderableNode rNode = new RenderableNode(text);
+            mNode.AppendChild(rNode);
+            RenderableCollection rCollection = new RenderableCollection(textWriter.RenderableCollectionDescription)
+                                                   {rNode};
+            //RenderCommand rCommand = new RenderCommand(mNode, rCollection);
+            Game.CurrentRenderer.Scene.Tree.RootNode.AppendChild(mNode);
+        }
+
+        public void Update()
+        {
+            text.Content = FrameStats;
         }
 
         public void DisplayStats()
@@ -139,8 +159,9 @@ namespace AvengersUtd.Odyssey.Text
                 lastStatsUpdateFrames = 0;
                 lastStatsUpdateTime = time;
 
-                frameStats = "FPS: " +
-                             fps.ToString("f2") + " FrameTime: " + framerate.ToString("f6");
+                //frameStats = "FPS: " +
+                //             fps.ToString("f2") + " FrameTime: " + framerate.ToString("f6");
+                frameStats = "FPS: " + fps.ToString("f2");
             }
         }
 

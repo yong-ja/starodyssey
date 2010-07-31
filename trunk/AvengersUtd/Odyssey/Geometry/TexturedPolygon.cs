@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Resources;
 using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
 
@@ -10,32 +11,45 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public class TexturedPolygon : Polygon, IDiffuseMap
     {
-        private List<ShaderResourceView> shaderResources;
-        private Texture2D diffuseMap;
-
+        private string diffuseMapKey;
+        
         public TexturedPolygon(Buffer vertices, Buffer indices, int vertexCount) : base(vertices, indices, vertexCount, TexturedVertex.Description)
         {
-            shaderResources = new List<ShaderResourceView>();
+            diffuseMapKey = string.Empty;
         }
 
-        public Texture2D DiffuseMap
+        internal string DiffuseMapKey
         {
-            get { return diffuseMap; }
+            get { return diffuseMapKey; }
             set
             {
-                diffuseMap = value;
-                if (shaderResources.Contains())
-                shaderResources.Add(new ShaderResourceView(RenderForm11.Device, diffuseMap));
+                if (diffuseMapKey != value)
+                {
+                    diffuseMapKey = value;
+
+                    ShaderResourceView srv = ResourceManager.GetResource(diffuseMapKey);
+                    if (ShaderResourceList.Count == 0)
+                        ShaderResourceList.Add(srv);
+                    else
+                        ShaderResourceList[0] = srv;
+                }
             }
         }
 
+
         #region IDiffuseMap Members
 
+        public Texture2D DiffuseMap
+        {
+            get { return ResourceManager.GetTexture(DiffuseMapKey); }
+        }
 
         public ShaderResourceView DiffuseMapResource
         {
-            get { return shaderResources[0]; }
+            get { return ShaderResourceList[0]; }
         }
         #endregion
+
+      
     }
 }
