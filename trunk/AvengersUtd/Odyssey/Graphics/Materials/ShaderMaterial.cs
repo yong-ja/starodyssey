@@ -32,7 +32,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
                 if (diffuseColor != value)
                 {
                     diffuseColor = value;
-                    EffectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Diffuse, EffectDescriptor.Effect));
+                    EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Diffuse, EffectDescription.Effect));
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
                 if (specularColor != value)
                 {
                     specularColor = value;
-                    EffectDescriptor.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, EffectDescriptor.Effect));
+                    EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, EffectDescription.Effect));
                 }
             }
         }

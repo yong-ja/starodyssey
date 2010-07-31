@@ -24,6 +24,7 @@ namespace AvengersUtd.Odyssey.Geometry
             set
             {
                 diffuseMap = value;
+                if (shaderResources.Contains())
                 shaderResources.Add(new ShaderResourceView(RenderForm11.Device, diffuseMap));
             }
         }

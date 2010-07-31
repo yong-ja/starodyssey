@@ -34,7 +34,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         internal void RenderWithMaterial(AbstractMaterial material)
         {
-            Effect effect = material.EffectDescriptor.Effect;
+            Effect effect = material.EffectDescription.Effect;
             //int passes = effect.Begin(FX.None);
             //effect.BeginPass(0);
             //foreach (AbstractMaterial currentMaterial in Items)
@@ -79,18 +79,18 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         {
             //List<MaterialCollection> materialCollectionList = new List<MaterialCollection>();
 
-            //string currentTechnique = Items[0].EffectDescriptor.Technique;
+            //string currentTechnique = Items[0].EffectDescription.Technique;
             //MaterialCollection currentCollection = new MaterialCollection();
             //currentCollection.IsSameMaterial = true;
 
             //foreach (AbstractMaterial material in Items)
             //{
-            //    if (material.EffectDescriptor.Technique != currentTechnique)
+            //    if (material.EffectDescription.Technique != currentTechnique)
             //    {
             //        materialCollectionList.Add(currentCollection);
 
             //        currentCollection = new MaterialCollection();
-            //        currentTechnique = material.EffectDescriptor.Technique;
+            //        currentTechnique = material.EffectDescription.Technique;
             //    }
             //    currentCollection.Add(material);
             //}

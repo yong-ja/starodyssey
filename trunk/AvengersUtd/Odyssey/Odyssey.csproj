@@ -59,7 +59,7 @@
     <Compile Include="Geometry\VertexDescription.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\Effects\AbstractParameter.cs" />
-    <Compile Include="Graphics\Effects\EffectDescriptor.cs" />
+    <Compile Include="Graphics\Effects\EffectDescription.cs" />
     <Compile Include="Graphics\Effects\InstanceParameter.cs" />
     <Compile Include="Graphics\Effects\SharedParameter.cs" />
     <Compile Include="Graphics\Effects\ParamHandles.cs" />

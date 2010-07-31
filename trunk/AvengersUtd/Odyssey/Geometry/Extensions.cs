@@ -9,12 +9,13 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public static class Extensions
     {
+        #region Geometry
         #region Vector3 extensions
         public static Vector4 ToVector4(this Vector3 vector3)
         {
             return new Vector4(vector3, 1.0f);
         }
-        
+
         #endregion
 
         #region Vector4 extensions
@@ -31,6 +32,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return vector3Array;
         }
+        #endregion 
         #endregion
 
     }

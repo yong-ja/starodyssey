@@ -24,6 +24,7 @@ using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
 using SlimDX;
 using SlimDX.Direct3D11;
+using EffectDescription = AvengersUtd.Odyssey.Graphics.Effects.EffectDescription;
 
 #endregion
 
@@ -40,7 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         protected AbstractMaterial(string filename)
         {
-            EffectDescriptor = new EffectDescriptor(filename);
+            EffectDescription = new EffectDescription(filename);
             PreRenderStateList = new List<BaseCommand>();
             PostRenderStateList = new List<BaseCommand>();
         }
@@ -53,10 +54,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         public FXType FXType { get; private set; }
 
         /// <summary>
-        /// Returns a reference to the <see cref="EffectDescriptor"/> object this
+        /// Returns a reference to the <see cref="EffectDescription"/> object this
         /// instance uses to setup its shader.
         /// </summary>
-        public virtual EffectDescriptor EffectDescriptor { get; private set; }
+        public virtual EffectDescription EffectDescription { get; private set; }
+        public RenderableCollectionDescription RenderableCollectionDescription { get; protected set; }
 
         public MaterialNode OwningNode { get; internal set; }
 
@@ -85,7 +87,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public string TechniqueName
         {
-            get { return EffectDescriptor.Technique.Description.Name; }
+            get { return EffectDescription.Technique.Description.Name; }
         }
 
         #endregion
@@ -128,7 +130,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public virtual void ApplyStaticParameters()
         {
-            EffectDescriptor.ApplyStaticParameters();
+            EffectDescription.ApplyStaticParameters();
         }
 
         /// <summary>
@@ -136,12 +138,12 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// </summary>
         public virtual void ApplyDynamicParameters()
         {
-            EffectDescriptor.ApplyDynamicParameters();
+            EffectDescription.ApplyDynamicParameters();
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)
         {
-            EffectDescriptor.ApplyInstanceParameters(rObject);
+            EffectDescription.ApplyInstanceParameters(rObject);
         }
 
         public void Apply()

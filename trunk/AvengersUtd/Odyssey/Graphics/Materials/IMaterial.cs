@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public interface IMaterial
     {
         MaterialNode OwningNode { get; }
-        EffectDescriptor EffectDescriptor { get; }
+        EffectDescription EffectDescription { get; }
         void ApplyDynamicParameters();
         
     }

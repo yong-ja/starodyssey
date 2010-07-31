@@ -1,57 +1,56 @@
-﻿#region Disclaimer
+﻿#region #Disclaimer
 
-/* 
- * Timer
- *
- * Created on 21 August 2007
- * Last update on 29 July 2010
- * 
- * Author: Adalberto L. Simeone (Taranto, Italy)
- * Website: http://www.avengersutd.com
- *
- * Part of the Odyssey Utils Library
- *
- * This source code is Intellectual property of the Author
- * and is released under the Creative Commons Attribution 
- * NonCommercial License, available at:
- * http://creativecommons.org/licenses/by-nc/3.0/ 
- * You can alter and use this source code as you wish, 
- * provided that you do not use the results in commercial
- * projects, without the express and written consent of
- * the Author.
- *
- */
+// /* 
+//  * Timer
+//  *
+//  * Created on 21 August 2007
+//  * Last update on 29 July 2010
+//  * 
+//  * Author: Adalberto L. Simeone (Taranto, Italy)
+//  * E-Mail: avengerdragon@gmail.com
+//  * Website: http://www.avengersutd.com
+//  *
+//  * Part of the Odyssey Engine.
+//  *
+//  * This source code is Intellectual property of the Author
+//  * and is released under the Creative Commons Attribution 
+//  * NonCommercial License, available at:
+//  * http://creativecommons.org/licenses/by-nc/3.0/ 
+//  * You can alter and use this source code as you wish, 
+//  * provided that you do not use the results in commercial
+//  * projects, without the express and written consent of
+//  * the Author.
+//  *
+//  */
 
 #endregion
 
+#region Using directives
+
 using System;
 using System.Threading;
+
+#endregion
 
 namespace AvengersUtd.Odyssey.Utils
 {
     public class ElapsedEventArgs : EventArgs
     {
-        readonly DateTime signalTime;
-
-        public DateTime SignalTime
-        {
-            get
-            {
-                return signalTime;
-            }
-        }
+        private readonly DateTime signalTime;
 
         public ElapsedEventArgs(DateTime signalTime)
         {
             this.signalTime = signalTime;
         }
 
+        public DateTime SignalTime
+        {
+            get { return signalTime; }
+        }
+
         public new static ElapsedEventArgs Empty
         {
-            get
-            {
-                return new ElapsedEventArgs(new DateTime(0));
-            }
+            get { return new ElapsedEventArgs(new DateTime(0)); }
         }
     }
 
@@ -60,22 +59,19 @@ namespace AvengersUtd.Odyssey.Utils
     /// </summary>
     public class Timer
     {
+        #region Delegates
+
         public delegate void ElapsedEventHandler(object sender, ElapsedEventArgs e);
-        long baseTime;
-        long elapsedTime;
-        readonly long ticksPerSecond;
 
-        double interval = 1000;
-        Thread timerThread;
-        public event ElapsedEventHandler Elapsed;
+        #endregion
 
-        public bool IsStopped { get; private set; }
+        private readonly long ticksPerSecond;
 
-        public double Interval
-        {
-            get { return interval; }
-            set { interval = value; }
-        }
+        private long baseTime;
+        private long elapsedTime;
+
+        private double interval = 1000;
+        private Thread timerThread;
 
         /// <summary>
         /// High Precision Timer Class
@@ -87,6 +83,16 @@ namespace AvengersUtd.Odyssey.Utils
                 throw new ApplicationException("Timer: Performance Frequency Unavailable");
             Reset();
         }
+
+        public bool IsStopped { get; private set; }
+
+        public double Interval
+        {
+            get { return interval; }
+            set { interval = value; }
+        }
+
+        public event ElapsedEventHandler Elapsed;
 
         /// <summary>
         /// Resets the Timer, updates the base time
@@ -107,7 +113,7 @@ namespace AvengersUtd.Odyssey.Utils
         {
             long time = 0;
             SafeNativeMethods.QueryPerformanceCounter(ref time);
-            return (double)(time - baseTime) / (double)ticksPerSecond;
+            return (time - baseTime)/(double) ticksPerSecond;
         }
 
         /// <summary>
@@ -118,7 +124,7 @@ namespace AvengersUtd.Odyssey.Utils
         {
             long time = 0;
             SafeNativeMethods.QueryPerformanceCounter(ref time);
-            return (double)time / (double)ticksPerSecond;
+            return time/(double) ticksPerSecond;
         }
 
         /// <summary>
@@ -129,7 +135,7 @@ namespace AvengersUtd.Odyssey.Utils
         {
             long time = 0;
             SafeNativeMethods.QueryPerformanceCounter(ref time);
-            double absoluteTime = (double)(time - elapsedTime) / (double)ticksPerSecond;
+            double absoluteTime = (time - elapsedTime)/(double) ticksPerSecond;
             elapsedTime = time;
             return absoluteTime;
         }
@@ -138,13 +144,12 @@ namespace AvengersUtd.Odyssey.Utils
         {
             IsStopped = false;
 
-            timerThread = new Thread(new ThreadStart(Run));
+            timerThread = new Thread(Run);
             timerThread.IsBackground = true;
             timerThread.Start();
-
         }
 
-        void SleepIntermittently(double totalTime)
+        private void SleepIntermittently(double totalTime)
         {
             int sleptTime = 0;
             int intermittentSleepIncrement = 10;
@@ -160,7 +165,6 @@ namespace AvengersUtd.Odyssey.Utils
         {
             // Request the loop to stop
             IsStopped = true;
-
         }
 
         public void Run()
