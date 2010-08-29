@@ -1,15 +1,15 @@
 ﻿
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Graphics;
 using System;
 
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public abstract class BaseCommand : ICommand, IEquatable<BaseCommand>
+    public abstract class BaseCommand : ICommand, IDisposable, IEquatable<BaseCommand>
     {
         bool disposed;
-
+        
         public CommandType CommandType { get; private set; }
 
         public bool Disposed
@@ -30,6 +30,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected BaseCommand(CommandType commandType)
         {
+            CommandType = commandType;
         }
 
          #region IDisposable Members
@@ -63,19 +64,37 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         #region IEquatable<BaseCommand> Members
 
+        public static bool operator ==(BaseCommand left, BaseCommand right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(BaseCommand left, BaseCommand right)
+        {
+            return !Equals(left, right);
+        }
+
         public virtual bool Equals(BaseCommand other)
         {
-            return CommandType == other.CommandType;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.CommandType, CommandType) && other.disposed.Equals(disposed);
         }
 
-        public static bool operator ==(BaseCommand cmd1, BaseCommand cmd2)
+        public override bool Equals(object obj)
         {
-            return cmd1.Equals(cmd2);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (BaseCommand)) return false;
+            return Equals((BaseCommand) obj);
         }
 
-        public static bool operator !=(BaseCommand cmd1, BaseCommand cmd2)
+        public override int GetHashCode()
         {
-            return !(cmd1 == cmd2);
+            unchecked
+            {
+                return (disposed.GetHashCode()*397) ^ CommandType.GetHashCode();
+            }
         }
 
         #endregion

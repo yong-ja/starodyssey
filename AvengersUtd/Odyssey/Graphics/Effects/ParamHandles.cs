@@ -4,7 +4,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 {
     public struct ParamHandles
     {
-        public struct Colors
+        public struct Color4s
         {
             public const string LightAmbient = "cLightAmbient";
             public const string MaterialDiffuse = "cMaterialDiffuse";
@@ -56,7 +56,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             public const string SpotlightDirection = "vSpotlightDirection";
             public const string SpotlightTarget = "vSpotlightTarget";
-            public const string EyePosition = "vEyePos";
+            public const string EyePosition = "vEyePosition";
             public const string LightPosition = "vLightPosition";
             public const string LightDirection = "vLightDirection";
             public const string EntityPosition = "vCenter";
@@ -87,7 +87,6 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         LightWorldViewProjection,
         EyePosition,
         FarClip,
-        Projection,
         TextureBias,
         CameraView,
         CameraViewInverse,
@@ -95,7 +94,11 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         CameraWorldInverse,
         CameraWorldViewInverse,
         CameraWorldViewProjection,
-        CameraOrthographicProjection
+        CameraOrthographicProjection,
+        CameraProjection,
+        CameraViewTranspose,
+        CameraProjectionTranspose,
+        CameraRotation
     }
 
     public enum InstanceVariable

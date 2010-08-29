@@ -23,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\..\..\Settings\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -50,12 +52,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceContext11.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="Geometry\CBUpdateEveryFrame.cs" />
+    <Compile Include="Geometry\SkyBox.cs" />
+    <Compile Include="Geometry\TexturedPolygon.Factory.cs" />
+    <Compile Include="Geometry\TexturedVertex.cs" />
+    <Compile Include="Geometry\IVertex.cs" />
+    <Compile Include="Geometry\MathHelper.cs" />
+    <Compile Include="Geometry\Primitive.Factory.cs" />
+    <Compile Include="Geometry\Sphere.cs" />
+    <Compile Include="Geometry\TexturedMeshVertex.cs" />
+    <Compile Include="Graphics\Effects\IncludeHandler.cs" />
+    <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
+    <Compile Include="Graphics\Materials\PhongMaterial.cs" />
+    <Compile Include="Graphics\Materials\UIMaterial.cs" />
+    <Compile Include="Graphics\Rendering\SceneTreeUpdateCommand.cs" />
+    <Compile Include="Graphics\Rendering\RenderableNodeCollectionDescription.cs" />
+    <Compile Include="Graphics\Rendering\DepthStencilStateChangeCommand.cs" />
+    <Compile Include="Graphics\Rendering\RenderStep.cs" />
+    <Compile Include="Graphics\Rendering\Management\CameraOverlayNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\CameraAnchorNode.cs" />
+    <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
+    <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
+    <Compile Include="UserInterface\Controls\Button.cs" />
+    <Compile Include="UserInterface\Controls\ControlSelector.cs" />
+    <Compile Include="UserInterface\Controls\DropDownList.cs" />
+    <Compile Include="UserInterface\Controls\Decorator.cs" />
+    <Compile Include="UserInterface\Controls\DecoratorButton.cs" />
+    <Compile Include="UserInterface\Controls\Grid.cs" />
+    <Compile Include="UserInterface\Controls\Hud.cs" />
+    <Compile Include="UserInterface\Controls\HudDescription.cs" />
+    <Compile Include="UserInterface\Controls\ISpriteObject.cs" />
+    <Compile Include="UserInterface\Controls\SelectionRectangle.cs" />
+    <Compile Include="UserInterface\Extensions.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Geometry\Textured3DVertex.cs" />
     <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\Enums.cs" />
+    <Compile Include="UserInterface\HitManager.cs" />
+    <Compile Include="UserInterface\Input\CameraBinding.cs" />
+    <Compile Include="UserInterface\Input\Mouse.cs" />
+    <Compile Include="UserInterface\InterfaceMesh.cs" />
+    <Compile Include="UserInterface\Intersection.cs" />
     <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\Polygon.Factory.cs" />
+    <Compile Include="UserInterface\Style\ColorShader.cs" />
+    <Compile Include="UserInterface\Style\Depth.cs" />
+    <Compile Include="UserInterface\Style\ShapeCollection.cs" />
     <Compile Include="Geometry\TexturedPolygon.cs" />
-    <Compile Include="Geometry\TexturedVertex.cs" />
+    <Compile Include="Geometry\ColoredVertex.cs" />
     <Compile Include="Geometry\VertexDescription.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\Effects\AbstractParameter.cs" />
@@ -66,10 +112,9 @@
     <Compile Include="Graphics\Enums.cs" />
     <Compile Include="Graphics\EventArgs.cs" />
     <Compile Include="Graphics\Materials\AbstractMaterial.cs" />
-    <Compile Include="Graphics\Materials\FunctionalMaterial.cs" />
+    <Compile Include="Graphics\Materials\TextMaterial.cs" />
     <Compile Include="Graphics\Materials\Interfaces.cs" />
     <Compile Include="Graphics\Materials\IMaterial.cs" />
-    <Compile Include="Graphics\Materials\MaterialCollection.cs" />
     <Compile Include="Graphics\Materials\MaterialDescriptor.cs" />
     <Compile Include="Graphics\Materials\ShaderMaterial.cs" />
     <Compile Include="Graphics\Meshes\BaseMesh.cs" />
@@ -84,34 +129,65 @@
     <Compile Include="Graphics\Rendering\RasterizerStateChangeCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderCommand.cs" />
     <Compile Include="Graphics\Rendering\Renderer.cs" />
-    <Compile Include="Graphics\Rendering\RenderManager.cs" />
+    <Compile Include="Graphics\Rendering\CommandManager.cs" />
     <Compile Include="Graphics\Rendering\RenderMapper.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\ConstantRotationNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\DummyNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\EllipticalOrbitNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\FixedNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\FreeTransformNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\MaterialNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\RenderableNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\RenderableNodeCollection.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\SceneGraph.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\SceneNode.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\SceneNodeCollection.cs" />
-    <Compile Include="Graphics\Rendering\SceneGraph\TransformNode.cs">
+    <Compile Include="Graphics\Rendering\Management\ConstantRotationNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\DummyNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\EllipticalOrbitNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\FixedNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\FreeTransformNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\MaterialNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\RenderableNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\RenderableNodeCollection.cs" />
+    <Compile Include="Graphics\Rendering\Management\SceneTree.cs" />
+    <Compile Include="Graphics\Rendering\Management\SceneNode.cs" />
+    <Compile Include="Graphics\Rendering\Management\SceneNodeCollection.cs" />
+    <Compile Include="Graphics\Rendering\Management\TransformNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\Rendering\SceneOrganizer.cs" />
+    <Compile Include="Graphics\Rendering\SceneManager.cs" />
     <Compile Include="Graphics\Rendering\ShadowCommand.cs" />
     <Compile Include="Graphics\Resources\EffectManager.cs" />
     <Compile Include="Graphics\Resources\EntityDescriptor.cs" />
     <Compile Include="Graphics\Resources\ResourceManager.cs" />
-    <Compile Include="Settings\VideoSettings.cs" />
-    <Compile Include="Text\DebugLogger.cs" />
-    <Compile Include="Text\TextLiteral.cs" />
-    <Compile Include="Text\TextManager.cs" />
+    <Compile Include="Settings\DeviceSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuaternionCam.cs" />
-    <Compile Include="RenderForm.cs" />
+    <Compile Include="UserInterface\Controls\BaseControl.cs" />
+    <Compile Include="UserInterface\Controls\BaseControl.Events.cs" />
+    <Compile Include="UserInterface\Controls\BaseControl.Methods.cs" />
+    <Compile Include="UserInterface\Controls\BaseControl.Properties.cs" />
+    <Compile Include="UserInterface\Controls\ContainerControl.cs" />
+    <Compile Include="UserInterface\Controls\ControlCollection.cs" />
+    <Compile Include="UserInterface\Controls\IContainer.cs" />
+    <Compile Include="UserInterface\Controls\IControl.cs" />
+    <Compile Include="UserInterface\Controls\Panel.cs" />
+    <Compile Include="UserInterface\Controls\SimpleShapeControl.cs" />
+    <Compile Include="UserInterface\Enums.cs" />
+    <Compile Include="UserInterface\EventArgs.cs" />
+    <Compile Include="UserInterface\Input\Keyboard.cs" />
+    <Compile Include="UserInterface\OdysseyUI.cs" />
+    <Compile Include="UserInterface\Style\ColorArray.cs" />
+    <Compile Include="UserInterface\Style\ControlDescription.cs" />
+    <Compile Include="UserInterface\Style\Padding.cs" />
+    <Compile Include="UserInterface\Style\ShapeCreator.cs" />
+    <Compile Include="UserInterface\Style\ShapeCreator.Rectangle.cs" />
+    <Compile Include="UserInterface\Style\ShapeDescription.cs" />
+    <Compile Include="UserInterface\Style\StyleManager.cs" />
+    <Compile Include="UserInterface\Text\DebugLogger.cs" />
+    <Compile Include="UserInterface\Text\TextDescription.cs" />
+    <Compile Include="UserInterface\Text\TextLiteral.cs" />
+    <Compile Include="UserInterface\Text\TextManager.cs" />
+    <Compile Include="UserInterface\TreeTraversal.cs" />
+    <Compile Include="UserInterface\Structs.cs" />
+    <Compile Include="UserInterface\Xml\UIParser.cs" />
+    <Compile Include="UserInterface\Xml\XmlBasicControls.cs" />
+    <Compile Include="UserInterface\Xml\XmlCommon.cs" />
+    <Compile Include="UserInterface\Style\ShapeCreator.Triangle.cs" />
+    <None Include="UserInterface\Xml\XmlComplexControls.cs" />
+    <Compile Include="UserInterface\Xml\XmlContainers.cs" />
+    <Compile Include="UserInterface\Xml\XmlControlStyle.cs" />
+    <Compile Include="UserInterface\Xml\XmlTextDescription.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

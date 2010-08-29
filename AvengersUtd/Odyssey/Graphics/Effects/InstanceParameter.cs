@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
         /// <summary>
         /// Creates a "default parameter", such as World, View, Projection Matrices, 
-        /// light direction, positionV3, ambient color and so on.
+        /// light direction, positionV3, ambient Color and so on.
         /// </summary>
         /// <param name="type">The type of the parameter to create.</param>
         /// <param name="effect">A reference of the effect instance.</param>
@@ -71,31 +71,31 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     break;
 
                 case InstanceVariable.Ambient:
-                    varName = ParamHandles.Colors.LightAmbient;
+                    varName = ParamHandles.Color4s.LightAmbient;
                     eV = effect.GetVariableByName(varName).AsVector();
 
                     update =
                         (fxParam, rObject) =>
-                        Color4Update(fxParam.EffectVariable,
-                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).AmbientColor);
+                        Color44Update(fxParam.EffectVariable,
+                                     ((IColor4Material) rObject).AmbientColor4);
                     break;
 
                 case InstanceVariable.Diffuse:
-                    varName = ParamHandles.Colors.MaterialDiffuse;
+                    varName = ParamHandles.Color4s.MaterialDiffuse;
                     eV = effect.GetVariableByName(varName).AsVector();
                     update =
                         (fxParam, rObject) =>
-                        Color4Update(fxParam.EffectVariable,
-                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).DiffuseColor);
+                        Color44Update(fxParam.EffectVariable,
+                                     ((IColor4Material) rObject).DiffuseColor);
                     break;
 
                 case InstanceVariable.Specular:
-                    varName = ParamHandles.Colors.MaterialSpecular;
+                    varName = ParamHandles.Color4s.MaterialSpecular;
                     eV = effect.GetVariableByName(varName).AsVector();
                     update =
                         (fxParam, rObject) =>
-                        Color4Update(fxParam.EffectVariable,
-                                     ((IColorMaterial) rObject.ParentNode.CurrentMaterial).SpecularColor);
+                        Color44Update(fxParam.EffectVariable,
+                                     ((IColor4Material) rObject).SpecularColor4);
                     break;
 
                 case InstanceVariable.DiffuseMap:

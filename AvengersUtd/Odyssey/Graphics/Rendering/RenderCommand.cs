@@ -1,33 +1,32 @@
-﻿using AvengersUtd.Odyssey.Geometry;
+﻿using System;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
-    public class RenderCommand : BaseCommand
+    public class RenderCommand : BaseCommand, IRenderCommand
     {
-        private readonly MaterialNode materialNode;
-        private InputLayout inputLayout;
-        private AbstractMaterial material;
-        private EffectTechnique technique;
-        private EffectPass pass;
+        protected MaterialNode MaterialNode {get; private set; }
+        protected InputLayout InputLayout { get; private set; }
+        protected AbstractMaterial Material { get; private set; }
+        protected EffectTechnique Technique { get; private set; }
+        protected EffectPass Pass { get; private set; }
 
         public RenderableCollection Items { get; internal set; }
 
-
-
         public RenderCommand(MaterialNode mNode, RenderableCollection sceneNodeCollection)
-            : base(CommandType.RenderScene)
+            : base(CommandType.Render)
         {
             Items = sceneNodeCollection;
-            materialNode = mNode;
-            material = materialNode.Material;
-            technique = material.EffectDescription.Technique;
-            pass = technique.GetPassByIndex(material.EffectDescription.Pass);
-            inputLayout = new InputLayout(RenderForm11.Device, pass.Description.Signature, Items.Description.InputElements);
+            MaterialNode = mNode;
+            Material = MaterialNode.Material;
+            Technique = Material.EffectDescription.Technique;
+            Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
+            InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
         }
 
         public override void Execute()
@@ -37,31 +36,21 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public virtual void PerformRender()
         {
-
-            RenderForm11.Device.ImmediateContext.InputAssembler.InputLayout = inputLayout;
+            Game.Context.Device.ImmediateContext.InputAssembler.InputLayout = InputLayout;
            
-            material.ApplyDynamicParameters();
+            Material.ApplyDynamicParameters();
 
             foreach (RenderableNode rNode in Items)
             {
                 rNode.Update();
-                if (!Items.Description.CommonTexture)
-                    material.ApplyInstanceParameters(rNode.RenderableObject);
-                
+                if (!Items.Description.CommonResources)
+                    Material.ApplyInstanceParameters(rNode.RenderableObject);
+
                 if (rNode.RenderableObject.IsVisible)
                 {
-                    pass.Apply(RenderForm11.Device.ImmediateContext);
+                    Pass.Apply(Game.Context.Device.ImmediateContext);
 
                     IRenderable rObject = rNode.RenderableObject;
-
-                    RenderForm11.Device.ImmediateContext.InputAssembler.SetVertexBuffers(
-                        0,
-                        new VertexBufferBinding(rObject.Vertices, rObject.VertexDescription.Stride, 0));
-
-                    RenderForm11.Device.ImmediateContext.InputAssembler.SetIndexBuffer(
-                        rObject.Indices, Items.Description.IndexFormat, 0);
-
-
                     rObject.Render();
                 }
             }
@@ -69,6 +58,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected override void OnDispose()
         {
+            if (!InputLayout.Disposed)
+                InputLayout.Dispose();
+
+            foreach (RenderableNode rNode in Items)
+            {
+                if (!rNode.RenderableObject.Disposed)
+                    rNode.RenderableObject.Dispose();
+            }
+        }
+
+        public virtual void UpdateItems()
+        {
+            return;
         }
     }
 }

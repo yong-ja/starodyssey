@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.Graphics.Resources;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -45,9 +46,11 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             dynamicParameters = new SortedList<string, SharedParameter>();
             
             effect = EffectManager.LoadEffect(Global.FXPath + filename);
+
             if (effect == null)
                 Application.Exit();
-            technique = effect.GetTechniqueByIndex(0);
+            else 
+                technique = effect.GetTechniqueByIndex(0);
         }
 
         /// <summary>
@@ -98,6 +101,12 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             SetDynamicParameter(ep);
         }
 
+
+        public void SetInstanceParameter(InstanceVariable instanceVariable)
+        {
+            InstanceParameter ip = InstanceParameter.Create(instanceVariable, effect);
+            SetInstanceParameter(ip);
+        }
         /// <summary>
         /// Adds the description of an instance parameter. 
         /// </summary>

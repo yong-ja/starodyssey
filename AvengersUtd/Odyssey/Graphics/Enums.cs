@@ -11,17 +11,23 @@ namespace AvengersUtd.Odyssey.Graphics
 
     public enum CommandType
     {
-        RenderScene,
+        Render,
+        Update,
         ComputeShadows,
         RasterizerStateChange,
-        BlendStateChange
+        BlendStateChange,
+        DepthStencilStateChange,
+        UserInterfaceRenderCommand
     }
 
-    public enum TranslucencyType
+    public enum RenderingOrderType
     {
-        Opaque,
-        Additive,
-        Subtractive
+        OpaqueGeometry,
+        MixedGeometry,
+        AdditiveBlendingGeometry,
+        SubtractiveBlendingGeometry,
+        First,
+        Last
     }
 
     public enum FXVectorOperationType
@@ -57,7 +63,7 @@ namespace AvengersUtd.Odyssey.Graphics
     {
         None = 0,
         /// <summary>
-        /// Uniform color
+        /// Uniform Color
         /// </summary>
         Diffuse = 1,
         /// <summary>
@@ -85,6 +91,19 @@ namespace AvengersUtd.Odyssey.Graphics
         ShadowMapping
     }
 
+    public enum CameraAction
+    {
+        MoveForward,
+        MoveBackward,
+        RotateLeft,
+        RotateRight,
+        StrafeLeft,
+        StrafeRight,
+        HoverUp,
+        HoverDown,
+        None
+    }
+
     public enum ScaleOp
     {
         Downsample,
@@ -99,11 +118,11 @@ namespace AvengersUtd.Odyssey.Graphics
         BloomV
     }
 
-    public enum ColorOp
+    public enum Color4Op
     {
         Brightness,
         Contrast,
-        Colorize,
+        Color4ize,
         Invert
     }
 
@@ -118,8 +137,8 @@ namespace AvengersUtd.Odyssey.Graphics
         Screen,
         Mask,
         Multiply,
-        ColorDodge,
-        ColorBurn,
+        Color4Dodge,
+        Color4Burn,
     }
 
     public enum MatrixType
@@ -127,7 +146,7 @@ namespace AvengersUtd.Odyssey.Graphics
         Brightness,
         Contrast,
         GrayScale,
-        Colorize
+        Color4ize
     } ;
 
     public enum MeshOp

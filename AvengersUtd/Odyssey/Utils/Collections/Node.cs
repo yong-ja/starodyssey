@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using AvengersUtd.Odyssey.Utils.Properties;
 
 namespace AvengersUtd.Odyssey.Utils.Collections
@@ -51,8 +52,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         INode firstChild;
         INode lastChild;
 
-        protected EventHandlerList eventHandlerList = new EventHandlerList();
-
+        protected EventHandlerList EventHandlerList { get; private set; }
         #endregion
 
         #region Events
@@ -63,39 +63,39 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         public event NodeEventHandler ParentChanged
         {
-            add { eventHandlerList.AddHandler(EventParentChanged, value); }
-            remove { eventHandlerList.RemoveHandler(EventParentChanged, value); }
+            add { EventHandlerList.AddHandler(EventParentChanged, value); }
+            remove { EventHandlerList.RemoveHandler(EventParentChanged, value); }
         }
 
         public event NodeEventHandler ChildAdded
         {
-            add { eventHandlerList.AddHandler(EventChildAdded, value); }
-            remove { eventHandlerList.RemoveHandler(EventChildAdded, value); }
+            add { EventHandlerList.AddHandler(EventChildAdded, value); }
+            remove { EventHandlerList.RemoveHandler(EventChildAdded, value); }
         }
 
         public event NodeEventHandler ChildRemoved
         {
-            add { eventHandlerList.AddHandler(EventChildRemoved, value); }
-            remove { eventHandlerList.RemoveHandler(EventChildRemoved, value); }
+            add { EventHandlerList.AddHandler(EventChildRemoved, value); }
+            remove { EventHandlerList.RemoveHandler(EventChildRemoved, value); }
         }
 
         protected virtual void OnParentChanged(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)eventHandlerList[EventParentChanged];
+            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventParentChanged];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnChildAdded(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)eventHandlerList[EventChildAdded];
+            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventChildAdded];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnChildRemoved(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)eventHandlerList[EventChildRemoved];
+            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventChildRemoved];
             if (handler != null)
                 handler(this, e);
         }
@@ -112,7 +112,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected Node()
         {
-            eventHandlerList = new EventHandlerList();
+            EventHandlerList = new EventHandlerList();
         }
         #endregion
 
@@ -137,10 +137,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             get
             {
-                int count=0;
-                foreach (Node node in ChildrenIterator)
-                    count++;
-                return count;
+                return ChildrenIterator.Count();
             }
         }
 
@@ -438,11 +435,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         public bool Contains(INode child)
         {
-            foreach (INode node in ChildrenIterator)
-                if (node == child)
-                    return true;
-
-            return false;
+            return ChildrenIterator.Any(node => node == child);
         }
 
         public override string ToString()

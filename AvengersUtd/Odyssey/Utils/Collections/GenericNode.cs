@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Utils.Properties;
 
@@ -42,10 +43,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             get
             {
-                int count = 0;
-                foreach (Node node in ChildrenNodeIterator)
-                    count++;
-                return count;
+                return ChildrenNodeIterator.Count();
             }
         }
 

@@ -104,7 +104,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             return vectorVar.Set(vector4);
         }
 
-        public static Result Color4Update(EffectVectorVariable vectorVar, Color4 vector4)
+        public static Result Color44Update(EffectVectorVariable vectorVar, Color4 vector4)
         {
             return vectorVar.Set(vector4);
         }
@@ -116,7 +116,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
         public static Result TextureUpdate(EffectResourceVariable textureVar, Texture2D texture)
         {
-            return textureVar.SetResource(new ShaderResourceView(RenderForm11.Device, texture));
+            return textureVar.SetResource(new ShaderResourceView(Game.Context.Device, texture));
         } 
         #endregion
 
