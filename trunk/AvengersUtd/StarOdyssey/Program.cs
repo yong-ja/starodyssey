@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using SlimDX.Windows;
 using AvengersUtd.StarOdyssey.Scenes;
 
-namespace StarOdyssey
+namespace AvengersUtd.StarOdyssey
 {
     static class Program
     {
@@ -18,11 +16,14 @@ namespace StarOdyssey
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            RenderForm11 form = new RenderForm11();
-            Global.FormOwner = form;
-            Game.ChangeRenderer(new TestRenderer());
-            MessagePump.Run(form.Handle,Game.Loop);
-            //form.Dispose();
+            
+            Game.Init();
+
+            Game.ChangeRenderer(new TestRenderer(Game.Context));
+            MessagePump.Run(Global.FormOwner,Game.Loop);
+            
+            Game.Context.Dispose();
+
         }
     }
 }

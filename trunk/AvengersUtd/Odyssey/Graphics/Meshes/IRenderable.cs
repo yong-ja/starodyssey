@@ -2,7 +2,7 @@
 using System;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX;
 using SlimDX.Direct3D11;
@@ -19,16 +19,19 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         bool IsCollidable { get; }
         bool IsVisible { get; }
         bool CastsShadows { get; }
+        bool Disposed { get; }
         bool IsInViewFrustum();
 
-        Buffer Indices { get; }
-        Buffer Vertices { get; }
+        Buffer IndexBuffer { get; }
+        Buffer VertexBuffer { get; }
         VertexDescription VertexDescription { get; }
         ShaderResourceView[] ShaderResources { get; }
 
         Matrix World { get; set; }
-        Vector3 PositionV3 { get; }
-        Vector4 PositionV4 { get; set; }
+        Matrix Translation { get; }
+        Matrix Rotation { get; }
+        Vector3 PositionV3 { get; set; }
+        Vector4 PositionV4 { get; }
         Vector3 RotationDelta { get; set; }
         Quaternion CurrentRotation { get; set; }
 
@@ -43,6 +46,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// Renders the entity with effects applied.
         /// </summary>
         void Render();
+        void Render(int indexCount, int vertexOffset=0, int indexOffet=0, int startIndex=0, int baseVertex=0);
 
         /// <summary>
         /// Updates the position of the entity.

@@ -1,4 +1,7 @@
 using System;
+using System.ComponentModel;
+using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.Direct3D11;
@@ -8,9 +11,10 @@ namespace AvengersUtd.Odyssey
 {
     public class QuaternionCam
     {
+        private readonly EventHandlerList eventHandlerList;
+        private static readonly object EventCameraMoved;
         bool[] actions;
-        bool shouldUpdateFrustum = true;
-
+        
         Device device;
 
         //BoundingFrustum frustum;
@@ -24,8 +28,6 @@ namespace AvengersUtd.Odyssey
         Matrix mProjection;
         private Matrix mOrthoProjection;
 
-        int zoomLevel = 0;
-
         public const float DefaultSpeed = 20f;
         public const float DefaultRotationSpeed = 0.5f;
         public const float DefaultSlerpSpeed = 0.01f;
@@ -34,14 +36,25 @@ namespace AvengersUtd.Odyssey
         static Vector3 XAxis = new Vector3(1f, 0f, 0f);
         static Vector3 ZAxis = new Vector3(0f, 0f, 1f);
         
+        #region Events
+        public event EventHandler CameraMoved
+        {
+            add { eventHandlerList.AddHandler(EventCameraMoved, value); }
+            remove { eventHandlerList.RemoveHandler(EventCameraMoved, value); }
+        }
+
+        protected virtual void OnCameraMoved(object sender, EventArgs e)
+        {
+            EventHandler handler = (EventHandler)eventHandlerList[EventCameraMoved];
+            if (handler != null)
+                handler(this, e);
+        } 
+        #endregion
 
         #region Properties
 
-        public int ZoomLevel
-        {
-            get { return zoomLevel; }
-            set { zoomLevel = value; }
-        }
+        public int ZoomLevel { get; set; }
+        internal bool ShouldUpdateFrustum { get; private set; }
 
         public float NearClip
         {
@@ -68,19 +81,31 @@ namespace AvengersUtd.Odyssey
             get { return mView; }
         }
 
-        public Vector4 PositionV4
+        public Matrix Rotation
         {
             get
             {
-                Vector4 vPos = new Vector4(vPosition.X, vPosition.Y, vPosition.Z, 1f);
-                return vPos;
+                Matrix mRotation = mView;
+                mRotation.M41 = mRotation.M42 = mRotation.M43 = 0.0f;
+                mRotation.M44 = 1.0f;
+                return mRotation;
             }
+        }
+
+        public Vector4 PositionV4
+        {
+            get { return vPosition.ToVector4(); }
         }
 
         public Vector3 PositionV3
         {
             get { return vPosition; }
             set { vPosition = value; }
+        }
+
+        public Quaternion Orientation
+        {
+            get { return qOrientation; }
         }
 
         public Matrix Projection
@@ -117,23 +142,31 @@ namespace AvengersUtd.Odyssey
 
         #endregion
 
+        static QuaternionCam()
+        {
+            EventCameraMoved  = new object();
+        }
         public QuaternionCam()
         {
+            eventHandlerList = new EventHandlerList();
+            ZoomLevel = 0;
             actions = new bool[8];
-            nearClip = 0.01f;
-            farClip = 10000.0f;
-            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, 4/3f, nearClip, farClip);
-            mOrthoProjection = Matrix.OrthoLH(VideoSettings.ScreenWidth, VideoSettings.ScreenHeight, 0, farClip);
+            nearClip = 0.1f;
+            farClip = 100.0f;
+            mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
+            mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
             //frustum = new BoundingFrustum();
             Reset();
         }
 
         public void Reset()
         {
-            device = RenderForm11.Device;
+            device = Game.Context.Device;
             vPosition = new Vector3();
             qOrientation = Quaternion.Identity;
-            mView = Matrix.Identity;
+            mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, Game.Context.Settings.AspectRatio, nearClip, farClip);
+            mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
+            mWorld = mView = Matrix.Identity;
         }
 
         public void SetCamera(Vector3 vNewPos)
@@ -141,52 +174,58 @@ namespace AvengersUtd.Odyssey
             vPosition = vNewPos;
         }
 
-        //public void UpdateStates()
-        //{
-        //    bool cameraMoved = false;
-        //    if (actions[(int) CameraAction.MoveForward])
-        //    {
-        //        Move(DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.MoveBackward])
-        //    {
-        //        Move(-DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.StrafeLeft])
-        //    {
-        //        Strafe(-DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.StrafeRight])
-        //    {
-        //        Strafe(DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.HoverUp])
-        //    {
-        //        Hover(-DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.HoverDown])
-        //    {
-        //        Hover(DefaultSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.RotateLeft])
-        //    {
-        //        RotateY(DefaultRotationSpeed);
-        //        cameraMoved = true;
-        //    }
-        //    if (actions[(int) CameraAction.RotateRight])
-        //    {
-        //        RotateY(-DefaultRotationSpeed);
-        //        cameraMoved = true;
-        //    }
+        public void UpdateStates()
+        {
+            if (actions[(int)CameraAction.MoveForward])
+            {
+                Move(DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.MoveBackward])
+            {
+                Move(-DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.StrafeLeft])
+            {
+                Strafe(-DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.StrafeRight])
+            {
+                Strafe(DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.HoverUp])
+            {
+                Hover(-DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.HoverDown])
+            {
+                Hover(DefaultSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.RotateLeft])
+            {
+                RotateY(DefaultRotationSpeed);
+                ShouldUpdateFrustum = true;
+            }
+            if (actions[(int)CameraAction.RotateRight])
+            {
+                RotateY(-DefaultRotationSpeed);
+                ShouldUpdateFrustum = true;
+            }
+           
+            if (ShouldUpdateFrustum)
+                OnCameraMoved(this, EventArgs.Empty);
+        }
 
-        //    shouldUpdateFrustum = cameraMoved;
-        //}
+        public void SetState(CameraAction action, bool state)
+        {
+            ShouldUpdateFrustum = true;
+            actions[(int)action] = state;
+        }
 
         /// <summary>
         /// Updates the camera view matrix. Should be called once per frame.
@@ -196,14 +235,13 @@ namespace AvengersUtd.Odyssey
             Matrix mTranslation = Matrix.Translation(-vPosition.X, -vPosition.Y, -vPosition.Z);
             Matrix mRotation = Matrix.RotationQuaternion(qOrientation);
             mView = mTranslation*mRotation;
+            
+            if (ShouldUpdateFrustum)
+            {
+                //frustum.SetMatrix(mView * mProjection);
+                ShouldUpdateFrustum = false;
+            }
 
-            //if (shouldUpdateFrustum)
-            //{
-            //    frustum.SetMatrix(mView*mProjection);
-            //    shouldUpdateFrustum = false;
-            //}
-
-            //device.SetTransform(TransformState.View, mView);
         }
 
         public void LookAt(Vector3 vTo, Vector3 vFrom)
@@ -214,31 +252,31 @@ namespace AvengersUtd.Odyssey
             qOrientation = Quaternion.RotationMatrix(r);
         }
 
-        //public void Move(float distance)
-        //{
-        //    vPosition += ViewVector*distance*(float) Game.FrameTime;
-        //}
+        public void Move(float distance)
+        {
+            vPosition += ViewVector * distance * (float)Game.FrameTime;
+        }
 
-        //public void Strafe(float distance)
-        //{
-        //    vPosition += AxisX*distance*(float) Game.FrameTime;
-        //}
+        public void Strafe(float distance)
+        {
+            vPosition += AxisX * distance * (float)Game.FrameTime;
+        }
 
-        //public void Hover(float distance)
-        //{
-        //    vPosition += YAxis*distance*(float) Game.FrameTime;
-        //}
+        public void Hover(float distance)
+        {
+            vPosition += YAxis * distance * (float)Game.FrameTime;
+        }
 
-        //public void Rotate(float angle, Vector3 vAxis)
-        //{
-        //    Quaternion qRotation = Quaternion.RotationAxis(GetCameraAxis(vAxis), angle*(float) Game.FrameTime);
-        //    qOrientation *= qRotation;
-        //}
+        public void Rotate(float angle, Vector3 vAxis)
+        {
+            Quaternion qRotation = Quaternion.RotationAxis(GetCameraAxis(vAxis), angle * (float)Game.FrameTime);
+            qOrientation *= qRotation;
+        }
 
-        //public void RotateY(float angle)
-        //{
-        //    Rotate(angle, YAxis);
-        //}
+        public void RotateY(float angle)
+        {
+            Rotate(angle, YAxis);
+        }
 
         public Vector3 GetCameraAxis(Vector3 axisVector)
         {

@@ -1,11 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region #Disclaimer
+
+// /* 
+//  * Timer
+//  *
+//  * Created on 21 August 2007
+//  * Last update on 29 July 2010
+//  * 
+//  * Author: Adalberto L. Simeone (Taranto, Italy)
+//  * E-Mail: avengerdragon@gmail.com
+//  * Website: http://www.avengersutd.com
+//  *
+//  * Part of the Odyssey Engine.
+//  *
+//  * This source code is Intellectual property of the Author
+//  * and is released under the Creative Commons Attribution 
+//  * NonCommercial License, available at:
+//  * http://creativecommons.org/licenses/by-nc/3.0/ 
+//  * You can alter and use this source code as you wish, 
+//  * provided that you do not use the results in commercial
+//  * projects, without the express and written consent of
+//  * the Author.
+//  *
+//  */
+
+#endregion
+
+#region Using directives
+
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+
+#endregion
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -13,14 +41,25 @@ namespace AvengersUtd.Odyssey.Geometry
     /// Represents a vertex with a position and a texture coordinate.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct TexturedVertex : IEquatable<TexturedVertex>
+    public struct TexturedVertex : IVertex
     {
-        private static InputElement[] inputElements;
-        static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
+        /// <summary>
+        /// Gets or sets the position of the vertex.
+        /// </summary>
+        public Vector4 Position { get; set; }
 
+        /// <summary>
+        /// Gets or sets the texture coordinate for the vertex.
+        /// </summary>
+        public Vector2 TextureCoordinate { get; set; }
         public const int Stride = 24;
         public const VertexFormat VertexFormat = Geometry.VertexFormat.PositionTextureUV;
+
+        private static readonly InputElement[] inputElements;
+        private static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
+
         
+
 
         static TexturedVertex()
         {
@@ -30,23 +69,8 @@ namespace AvengersUtd.Odyssey.Geometry
                                     new InputElement("TEXCOORD", 0, Format.R32G32_Float, 16, 0)
                                 };
         }
-        /// <summary>
-        /// Gets or sets the position of the vertex.
-        /// </summary>
-        public Vector4 Position
-        {
-            get;
-            set;
-        }
 
-        /// <summary>
-        /// Gets or sets the texture coordinate for the vertex.
-        /// </summary>
-        public Vector2 TextureCoordinate
-        {
-            get;
-            set;
-        }
+        
 
         public static InputElement[] InputElements
         {
@@ -56,17 +80,14 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public static VertexDescription Description
         {
-            get
-            {
-                return description;
-            }
+            get { return description; }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TexturedVertex"/> struct.
         /// </summary>
         /// <param name="position">The position.</param>
-        /// <param name="color">The color.</param>
+        /// <param name="Color4">The Color.</param>
         public TexturedVertex(Vector4 position, Vector2 textureCoordinate)
             : this()
         {
@@ -122,7 +143,7 @@ namespace AvengersUtd.Odyssey.Geometry
             if (GetType() != obj.GetType())
                 return false;
 
-            return Equals((TexturedVertex)obj);
+            return Equals((TexturedVertex) obj);
         }
 
         /// <summary>
@@ -136,7 +157,5 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             return (Position == other.Position && TextureCoordinate == other.TextureCoordinate);
         }
-
-
     }
 }

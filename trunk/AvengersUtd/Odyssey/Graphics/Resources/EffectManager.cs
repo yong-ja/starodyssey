@@ -1,24 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.Collections;
-using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D11;
 
-namespace AvengersUtd.Odyssey.Resources
+namespace AvengersUtd.Odyssey.Graphics.Resources
 {
     public static class EffectManager
     {
-        readonly static Cache<string, CacheNode<Effect>> effectCache = new Cache<string, CacheNode<Effect>>(10*1024*1024);
+        readonly static Cache<string, CacheNode<Effect>> EffectCache = new Cache<string, CacheNode<Effect>>(10*1024*1024);
 
         public static Effect LoadEffect(string filename)
         {
-            if (effectCache.ContainsKey(filename))
+            if (EffectCache.ContainsKey(filename))
             {
-                return effectCache[filename].Object;
+                return EffectCache[filename].Object;
             }
             else
             {
@@ -42,12 +40,14 @@ namespace AvengersUtd.Odyssey.Resources
                     //                     };
 
 
-                    ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.Debug,
-                                                                   EffectFlags.None, null, null, out compilationErrors);
-                    Effect effect = new Effect(RenderForm11.Device, byteCode);
-
-                    effectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
-                    return effect;
+                    using (ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.Debug,
+                                                                   EffectFlags.None, null, new IncludeHandler(), out compilationErrors))
+                    {
+                        Effect effect = new Effect(Game.Context.Device, byteCode);
+                        EffectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
+                        return effect;
+                    }
+                    
                 }
                     catch(SlimDX.CompilationException ex)
                     {
@@ -67,14 +67,19 @@ namespace AvengersUtd.Odyssey.Resources
             }
         }
 
-        public static void Dispose()
+        internal static void OnDispose(object sender, EventArgs e)
         {
-            if (effectCache.IsEmpty)
+            if (EffectCache.IsEmpty)
                 return;
 
-            foreach (CacheNode<Effect> node in effectCache)
+            foreach (CacheNode<Effect> node in EffectCache)
                 if (!node.Object.Disposed)
                     node.Object.Dispose();
+        }
+
+        public static void Dispose()
+        {
+            OnDispose(null, EventArgs.Empty);
         }
 
         //public static EffectDescription CreateEffect(FXType fxType, params object[] data)
@@ -91,7 +96,7 @@ namespace AvengersUtd.Odyssey.Resources
         //            fxDescriptor.SetDynamicParameter(SceneVariable.World);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.WorldInverse);
         //            fxDescriptor.SetDynamicParameter(SceneVariable.LightPosition);
-        //            fxDescriptor.SetDynamicParameter(SceneVariable.AmbientColor);
+        //            fxDescriptor.SetDynamicParameter(SceneVariable.AmbientColor4);
         //            return fxDescriptor;
 
 

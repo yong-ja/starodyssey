@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RasterizerStateChangeCommand : BaseCommand
     {
+        private RasterizerState rasterizerState;
         public RasterizerStateDescription Description { get; private set; }
 
         public RasterizerStateChangeCommand(RasterizerStateDescription rStateDesc)
@@ -19,21 +20,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public override void Execute()
         {
-            RenderForm11.Device.ImmediateContext.Rasterizer.State =
-                RasterizerState.FromDescription(RenderForm11.Device, Description);
+            rasterizerState = RasterizerState.FromDescription(Game.Context.Device, Description);
+            Game.Context.Device.ImmediateContext.Rasterizer.State = rasterizerState; 
         }
 
         protected override void OnDispose()
         {
-            return;
+            rasterizerState.Dispose();
         }
 
         public override bool Equals(BaseCommand other)
         {
-            if (CommandType == other.CommandType)
-                return ((RasterizerStateChangeCommand) other).Description == Description;
-            else
-                return false;
+            bool equal = base.Equals(other);
+            return equal && ((RasterizerStateChangeCommand) other).Description == Description;
         }
 
         public static RasterizerStateChangeCommand Default
@@ -43,11 +42,30 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 RasterizerStateDescription rStateDesc = new RasterizerStateDescription()
                                                             {
                                                                 CullMode = CullMode.Back,
+                                                                IsDepthClipEnabled = true,
                                                                 FillMode = FillMode.Solid,
                                                                 IsAntialiasedLineEnabled = true,
                                                                 IsFrontCounterclockwise = true,
-                                                                IsMultisampleEnabled = true,
+                                                                IsMultisampleEnabled = true
                                                             };
+
+                return new RasterizerStateChangeCommand(rStateDesc);
+            }
+        }
+
+        public static RasterizerStateChangeCommand Wireframe
+        {
+            get
+            {
+                RasterizerStateDescription rStateDesc = new RasterizerStateDescription()
+                {
+                    CullMode = CullMode.None,
+                    IsDepthClipEnabled = true,
+                    FillMode = FillMode.Wireframe,
+                    IsAntialiasedLineEnabled = true,
+                    IsFrontCounterclockwise = true,
+                    IsMultisampleEnabled = true
+                };
 
                 return new RasterizerStateChangeCommand(rStateDesc);
             }

@@ -21,7 +21,7 @@ using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using SlimDX;
 using SlimDX.Direct3D11;
 using EffectDescription = AvengersUtd.Odyssey.Graphics.Effects.EffectDescription;
@@ -35,7 +35,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     /// It holds the basic functionalities that are further specialized by 
     /// derived classes. Each material will actually be rendered by a HLSL shader. 
     /// </summary>
-    public abstract class AbstractMaterial : IMaterial
+    public abstract class AbstractMaterial : IMaterial, IDisposable
     {
         private bool disposed;
 
@@ -179,5 +179,34 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         //    Game.CurrentRenderer.LightManager.HandleMaterial(this);
         //}
+
+        #region IDisposable Members
+
+       public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose (bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (EffectDescription.Effect.Disposed)
+                        EffectDescription.Effect.Dispose();
+                }
+
+            }
+            disposed = true;
+        }
+
+        ~AbstractMaterial()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

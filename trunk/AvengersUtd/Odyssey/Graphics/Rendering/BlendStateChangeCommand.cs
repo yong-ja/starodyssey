@@ -9,6 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class BlendStateChangeCommand : BaseCommand
     {
         public RenderTargetBlendDescription Description { get; private set; }
+        private BlendState blendState;
 
         public BlendStateChangeCommand(RenderTargetBlendDescription bStateDesc)
             : base(CommandType.BlendStateChange)
@@ -19,23 +20,24 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public override void Execute()
         {
             BlendStateDescription bStateDescr = new BlendStateDescription();
-            bStateDescr.RenderTargets[0] = Description; 
-            RenderForm11.Device.ImmediateContext.OutputMerger.BlendState =
-                BlendState.FromDescription(RenderForm11.Device, bStateDescr);
- 
-      }
+            bStateDescr.RenderTargets[0] = Description;
+
+            blendState = BlendState.FromDescription(Game.Context.Device, bStateDescr);
+
+            Game.Context.Immediate.OutputMerger.BlendState =
+                BlendState.FromDescription(Game.Context.Device, bStateDescr);
+        }
 
         protected override void OnDispose()
         {
-            return;
+            blendState.Dispose();
         }
 
         public override bool Equals(BaseCommand other)
         {
-            if (CommandType == other.CommandType)
-                return ((BlendStateChangeCommand)other).Description == Description;
-            else
-                return false;
+            bool equal = base.Equals(other);
+
+            return equal && ((BlendStateChangeCommand)other).Description == Description ;
         }
 
         public static BlendStateChangeCommand DefaultEnabled
@@ -55,6 +57,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                                                                 RenderTargetWriteMask = ColorWriteMaskFlags.All
                                                             };
 
+
                 return new BlendStateChangeCommand(bStateDesc);
             }
         }
@@ -65,13 +68,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             {
                 RenderTargetBlendDescription bStateDesc = new RenderTargetBlendDescription()
                                                             {
-                                                                BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
-                                                                SourceBlendAlpha = BlendOption.Zero,
-                                                                DestinationBlendAlpha = BlendOption.Zero,
-
-                                                                BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
-                                                                SourceBlend = BlendOption.SourceAlpha,
-                                                                DestinationBlend = BlendOption.InverseSourceAlpha,
                                                                 BlendEnable = false,
                                                                 RenderTargetWriteMask = ColorWriteMaskFlags.All
                                                             };

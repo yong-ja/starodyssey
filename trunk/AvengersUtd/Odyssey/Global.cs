@@ -1,4 +1,5 @@
 using System.Windows.Forms;
+using SlimDX.Windows;
 
 namespace AvengersUtd.Odyssey
 {
@@ -13,9 +14,9 @@ namespace AvengersUtd.Odyssey
         public const string TexturePath = "Textures/";
         public const string GUIPath = "GUI/";
 
-        private static RenderForm11 owner;
+        private static RenderForm owner;
 
-        public static RenderForm11 FormOwner
+        public static RenderForm FormOwner
         {
             get { return owner; }
             set { owner = value; }

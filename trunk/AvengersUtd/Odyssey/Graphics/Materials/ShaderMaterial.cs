@@ -7,11 +7,11 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public class ShaderMaterial : AbstractMaterial, IColorMaterial
+    public class ShaderMaterial : AbstractMaterial, IColor4Material
     {
-        Color4 ambientColor = new Color4(0, 0, 0, 0);
+        Color4 ambientColor4 = new Color4(0, 0, 0, 0);
         Color4 diffuseColor = new Color4(0, 0, 0, 1);
-        Color4 specularColor;
+        Color4 specularColor4;
         float kA;
         float kD;
         float kS;
@@ -37,20 +37,20 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             }
         }
 
-        public Color4 AmbientColor
+        public Color4 AmbientColor4
         {
-            get { return ambientColor; }
-            set { ambientColor = value; }
+            get { return ambientColor4; }
+            set { ambientColor4 = value; }
         }
 
-        public Color4 SpecularColor
+        public Color4 SpecularColor4
         {
-            get { return specularColor; }
+            get { return specularColor4; }
             set
             {
-                if (specularColor != value)
+                if (specularColor4 != value)
                 {
-                    specularColor = value;
+                    specularColor4 = value;
                     EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, EffectDescription.Effect));
                 }
             }
@@ -65,11 +65,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         {
             if ((lightingTechnique & LightingTechnique.Diffuse) != LightingTechnique.Diffuse)
             {
-                AmbientColor = new Color4(0, 0, 0, 0);
+                AmbientColor4 = new Color4(0, 0, 0, 0);
                 DiffuseColor = new Color4(1, 0, 1, 0);
             }
             if ((lightingTechnique & LightingTechnique.Specular) != LightingTechnique.None)
-                SpecularColor = new Color4(1, 1, 1, 1);
+                SpecularColor4 = new Color4(1, 1, 1, 1);
         }
 
         public void SetLightingTechnique(LightingTechnique technique, bool value)

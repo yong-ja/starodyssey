@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey", "Odyssey\Odyssey.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "..\AvengersUtd2\Odyssey\Engine\Engine.csproj", "{38924D32-845D-453A-A617-AE6BD8929610}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odysseus", "Odysseus\Odysseus.csproj", "{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -62,6 +64,16 @@ Global
 		{38924D32-845D-453A-A617-AE6BD8929610}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{38924D32-845D-453A-A617-AE6BD8929610}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{38924D32-845D-453A-A617-AE6BD8929610}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Debug|x86.ActiveCfg = Debug|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Debug|x86.Build.0 = Debug|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|Any CPU.ActiveCfg = Release|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|x86.ActiveCfg = Release|x86
+		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

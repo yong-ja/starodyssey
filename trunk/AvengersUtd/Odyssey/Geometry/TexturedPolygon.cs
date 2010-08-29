@@ -3,53 +3,84 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Resources;
+using SlimDX;
 using SlimDX.Direct3D11;
-using Buffer = SlimDX.Direct3D11.Buffer;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public class TexturedPolygon : Polygon, IDiffuseMap
+    public partial class TexturedPolygon : BaseMesh<TexturedVertex>, IDiffuseMap
     {
         private string diffuseMapKey;
-        
-        public TexturedPolygon(Buffer vertices, Buffer indices, int vertexCount) : base(vertices, indices, vertexCount, TexturedVertex.Description)
+        private Texture2D diffuseMap;
+                
+        public TexturedPolygon(Vector3 topLeftVertex, float width, float height, bool dynamic = false) : base(TexturedVertex.Description)
         {
+            short[] indices;
+            Vertices = CreateTexturedQuad(topLeftVertex, width, height, out indices);
+            Indices = indices;
+            if (dynamic)
+            {
+                CpuAccessFlags = CpuAccessFlags.Write;
+                ResourceUsage = ResourceUsage.Dynamic;
+            }
+           
             diffuseMapKey = string.Empty;
         }
 
-        internal string DiffuseMapKey
+        #region IDiffuseMap Members
+        public string DiffuseMapKey
         {
             get { return diffuseMapKey; }
             set
             {
-                if (diffuseMapKey != value)
-                {
-                    diffuseMapKey = value;
+                if (diffuseMapKey == value) return;
 
-                    ShaderResourceView srv = ResourceManager.GetResource(diffuseMapKey);
-                    if (ShaderResourceList.Count == 0)
-                        ShaderResourceList.Add(srv);
-                    else
-                        ShaderResourceList[0] = srv;
-                }
+                diffuseMapKey = value;
+                ShaderResourceView srv = ResourceManager.GetResource(diffuseMapKey);
+                diffuseMap = (Texture2D) srv.Resource;
+                if (ShaderResourceList.Count == 0)
+                    ShaderResourceList.Add(srv);
+                else
+                    ShaderResourceList[0] = srv;
             }
         }
 
-
-        #region IDiffuseMap Members
-
-        public Texture2D DiffuseMap
+        public Texture2D DiffuseMapTexture2D
         {
-            get { return ResourceManager.GetTexture(DiffuseMapKey); }
+            get { return diffuseMap; }
         }
 
         public ShaderResourceView DiffuseMapResource
         {
             get { return ShaderResourceList[0]; }
+            set
+            {
+                if (ShaderResourceList.Count == 0)
+                    ShaderResourceList.Add(value);
+                else
+                    ShaderResourceList[0] = value;
+                diffuseMapKey = Properties.Resources.RES_TextureNotCached;
+                diffuseMap = (Texture2D)value.Resource;
+            }
         }
         #endregion
 
-      
+        protected override void OnDisposing(EventArgs e)
+        {
+            base.OnDisposing(e);
+            if (!diffuseMap.Disposed)
+                diffuseMap.Dispose();
+
+            if (!ShaderResourceList[0].Disposed)
+                ShaderResourceList[0].Dispose();
+        }
+
+        
+
+
+
+
     }
 }

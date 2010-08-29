@@ -11,12 +11,33 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
     public static class ResourceManager
     {
         static readonly Cache<string, CacheNode<ShaderResourceView>> ResourceCache = new Cache<string, CacheNode<ShaderResourceView>>();
-        public static void Add(string textureKey, Texture2D texture)
+        
+        public static void Add(string resourceKey, Texture2D texture)
         {
             Texture2DDescription description = texture.Description;
             int sizeInBytes = BitFromFormat(description.Format) * description.Width * description.Height;
-            ShaderResourceView srv = new ShaderResourceView(RenderForm11.Device, texture);
-            ResourceCache.Add(textureKey, new CacheNode<ShaderResourceView>(sizeInBytes, srv)); 
+            AddResource(resourceKey, texture, sizeInBytes);
+        }
+
+        public static void Add(string resourceKey, Texture3D texture)
+        {
+            Texture3DDescription description = texture.Description;
+            int sizeInBytes = BitFromFormat(description.Format) * description.Width * description.Height;
+            AddResource(resourceKey, texture, sizeInBytes);
+        }
+
+        static void AddResource(string resourceKey, SlimDX.Direct3D11.Resource resource, int sizeInBytes)
+        {
+            ShaderResourceView srv = new ShaderResourceView(Game.Context.Device, resource);
+            ResourceCache.Add(resourceKey, new CacheNode<ShaderResourceView>(sizeInBytes, srv)); 
+        }
+
+        public static void Remove(string textureKey)
+        {
+            ShaderResourceView srv = ResourceCache.GetValue(textureKey).Object;
+            srv.Resource.Dispose();
+            srv.Dispose();
+            ResourceCache.Remove(textureKey);
         }
 
         public static bool Contains(string resourceKey)
@@ -148,7 +169,7 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                     return -1;
 
                 default:
-                    throw new ArgumentOutOfRangeException("textureFormat");
+                    throw Error.WrongCase("textureFormat", "BitFromFormat", textureFormat);
             }
 
         }
@@ -160,7 +181,7 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 return (Texture2D)ResourceCache[resourceKey].Object.Resource;
             }
 
-            throw (new KeyNotFoundException("Key not found in ResourceCache: " + resourceKey));
+            throw Error.KeyNotFound(resourceKey, "ResourceCache");
         }
 
         public static ShaderResourceView GetResource(string resourceKey)
@@ -170,9 +191,9 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 return ResourceCache[resourceKey].Object;
             }
 
-            throw (new KeyNotFoundException("Key not found in ResourceCache: " + resourceKey));
+            throw Error.KeyNotFound(resourceKey, "ResourceCache");
         }
-        public static ShaderResourceView LoadResource(string filename)
+        public static ShaderResourceView LoadTexture2DResource(string filename)
         {
             if (ResourceCache.ContainsKey(filename))
             {
@@ -182,31 +203,61 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
             {
                 try
                 {
-                    Texture2D texture2D = Texture2D.FromFile(RenderForm11.Device, filename);
+                    Texture2D texture2D = Texture2D.FromFile(Game.Context.Device, filename);
                     Add(filename, texture2D);
                     return ResourceCache[filename].Object;
                 }
-                catch (InvalidDataException ex)
+                catch (InvalidDataException)
                 {
-                    MessageBox.Show("You are missing this file:" +
-                                    filename);
+                    Error.MessageMissingFile(filename);
                     return null;
                 }
             }
         }
 
-      
+        public static ShaderResourceView LoadTexture3DResource(string filename)
+        {
+            if (ResourceCache.ContainsKey(filename))
+            {
+                return ResourceCache[filename].Object;
+            }
+            else
+            {
+                try
+                {
+                    Texture3D texture3D = Texture3D.FromFile(Game.Context.Device, filename);
+                    Add(filename, texture3D);
+                    return ResourceCache[filename].Object;
+                }
+                catch (InvalidDataException)
+                {
+                    Error.MessageMissingFile(filename);
+                    return null;
+                }
+            }
+        }
 
-        public static void Dispose()
+        internal static void OnDispose(object sender, EventArgs e)
         {
             if (ResourceCache.IsEmpty)
                 return;
 
             foreach (CacheNode<ShaderResourceView> node in ResourceCache)
             {
+                if (!node.Object.Resource.Disposed)
+                    node.Object.Resource.Dispose();
+
                 if (!node.Object.Disposed)
+                {
+
                     node.Object.Dispose();
+                }
             }
+        }
+
+        public static void Dispose()
+        {
+            OnDispose(null, EventArgs.Empty);
         }
     }
 }

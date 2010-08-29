@@ -44,8 +44,7 @@ namespace AvengersUtd.Odyssey.Utils.Xml
 
         public static void Serialize<T>(T obj, string filename)
         {
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-            xmlWriterSettings.Indent = true;
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings {Indent = true};
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof (T));
             using (XmlWriter xmlWriter = XmlWriter.Create(filename, xmlWriterSettings))

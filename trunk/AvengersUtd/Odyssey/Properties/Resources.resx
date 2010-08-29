@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ERR_ShaderModelNotSupported" xml:space="preserve">
     <value>Your hardware device does not support shaders version 2.0!</value>
@@ -151,6 +151,78 @@
     <value>This node can only be added to a TransformNode.</value>
   </data>
   <data name="ERR_TechniqueNotFound" xml:space="preserve">
-    <value>The desired technique was not found in the RenderMapper object.</value>
+    <value>The technique {1} was not found in {0} collection.</value>
   </data>
+  <data name="ERR_StyleNotFound" xml:space="preserve">
+    <value>The specified style file was not found.</value>
+  </data>
+  <data name="ERR_FontCannotBeNull" xml:space="preserve">
+    <value>Font cannot be null.</value>
+  </data>
+  <data name="ERR_CreatingFromObject" xml:space="preserve">
+    <value>You cannot create a {0} object from a null {1} type.</value>
+  </data>
+  <data name="RES_TextureNotCached" xml:space="preserve">
+    <value>Texture not cached</value>
+  </data>
+  <data name="ERR_HudNoControls" xml:space="preserve">
+    <value>There are no vertices in the chosen HUD!</value>
+  </data>
+  <data name="ERR_AddBaseCommand" xml:space="preserve">
+    <value>Invalid command type specified. Use AddRenderCommand() instead.</value>
+  </data>
+  <data name="ERR_AddRenderCommand" xml:space="preserve">
+    <value>Invalid command type specified. Use AddBaseCommand() instead.</value>
+  </data>
+  <data name="ERR_AddUpdateCommand" xml:space="preserve">
+    <value>Invalid update command specified. Use AddBaseCommand() or AddRenderCommand() instead</value>
+  </data>
+  <data name="ERR_KeyNotFound" xml:space="preserve">
+    <value>Key not found in {0}: {1}</value>
+  </data>
+  <data name="ERR_MissingFile" xml:space="preserve">
+    <value>The file: {0} is missing.</value>
+  </data>
+  <data name="ERR_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ERR_WrongCase" xml:space="preserve">
+    <value>Parameter {0} is not  valid in {1}.</value>
+  </data>
+  <data name="ERR_ArrayElements" xml:space="preserve">
+    <value>The {0} array does not hold {1} elements.</value>
+  </data>
+  <data name="ERR_Argument" xml:space="preserve">
+    <value>Argument {0} is not valid for method {1}.{2}. See the InnerException for details.</value>
+  </data>
+  <data name="ERR_ArgumentNull" xml:space="preserve">
+    <value>Argument {0} for method {1}.{2} cannot be null.</value>
+  </data>
+	<data name="ERR_NoDetails">
+		<value xml:space="preserve">No details available.</value>
+	</data>
+	<data name="ERR_NoControlDescription">
+		<value xml:space="preserve">No ControlDescription file loaded. Be sure to call LoadControlDescription first.</value>
+	</data>
+	<data name="ERR_NoTextDescription">
+		<value xml:space="preserve">No TextDescription file loaded. Be sure to call LoadTextDescription first.</value>
+	</data>
+	<data name="ERR_TargetControlNull">
+		<value xml:space="preserve">The target control must not be null.</value>
+	</data>
+	<data name="ERR_IdNotFound">
+		<value xml:space="preserve">The control with the specified id was not found.</value>
+	</data>
+	<data name="ERR_AddNullControl">
+		<value xml:space="preserve">You cannot add null controls.</value>
+	</data>
+	<data name="ERR_ControlInCollection">
+		<value><![CDATA[The collection already contains control: {0} ]]></value>
+	</data>
+	<data name="ERR_IdInCollection">
+		<value xml:space="preserve">The collection already contains a control by the same Id: {0}</value>
+	</data>
+	<data name="ERR_InvalidNumVertices">
+		<value xml:space="preserve">Invalid number of vertices specified for the specified Shape value.</value>
+	</data>
 </root>

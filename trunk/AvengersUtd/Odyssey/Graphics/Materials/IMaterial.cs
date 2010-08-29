@@ -2,7 +2,8 @@
 
 using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
-using AvengersUtd.Odyssey.Graphics.Rendering.SceneGraph;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
+using System;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
