@@ -39,7 +39,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 20);
+            this.label1.Size = new System.Drawing.Size(103, 25);
             this.label1.TabIndex = 2;
             this.label1.Text = "Resolution";
             // 
@@ -49,7 +49,7 @@
             this.cbResolution.FormattingEnabled = true;
             this.cbResolution.Location = new System.Drawing.Point(131, 6);
             this.cbResolution.Name = "cbResolution";
-            this.cbResolution.Size = new System.Drawing.Size(353, 28);
+            this.cbResolution.Size = new System.Drawing.Size(353, 33);
             this.cbResolution.TabIndex = 3;
             // 
             // btCancel
@@ -75,7 +75,7 @@
             // Options
             // 
             this.AcceptButton = this.btOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.btCancel;

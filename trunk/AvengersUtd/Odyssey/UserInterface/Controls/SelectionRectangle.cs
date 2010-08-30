@@ -119,10 +119,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public static Vector2 CheckFlip(Vector2 oldPosition, Vector2 newPosition, Size size)
         {
-            if (oldPosition.Y + size.Height == newPosition.Y)
-                return oldPosition;
-
-            return newPosition;
+            return oldPosition.Y + size.Height == newPosition.Y ? oldPosition : newPosition;
         }
 
         public static Vector2 SnapPositionToGrid(Vector2 position, Vector2 prevPosition, Vector2 delta, int gridSpacing,
