@@ -66,6 +66,7 @@ namespace AvengersUtd.Odyssey.UserInterface
         Add,
         Remove,
         Move,
+        Recompute
     }
 
     public enum IntersectionLocation

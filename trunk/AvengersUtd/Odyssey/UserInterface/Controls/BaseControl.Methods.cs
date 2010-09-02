@@ -57,12 +57,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// </summary>
         public virtual void UpdateAppearance(UpdateAction updateAction = UpdateAction.UpdateShape)
         {
+            
             if (isVisible && !DesignMode 
                 && (ApplyStatusChanges || updateAction == UpdateAction.Move)
                 && !IsBeingRemoved && Description.Shape != Shape.None)
             {
                 UpdateStatus();
-                OdysseyUI.CurrentHud.EnqueueForUpdate(this, UpdateAction.UpdateShape);
+                OdysseyUI.CurrentHud.EnqueueForUpdate(this, updateAction);
             }
             return;
         }
@@ -197,6 +198,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         internal virtual bool ProcessMouseRelease(MouseEventArgs e)
         {
+            
             if (canRaiseEvents && (HasCaptured || IntersectTest(e.Location)))
             {
                 if (IsClicked)
