@@ -10,6 +10,12 @@ namespace AvengersUtd.Odyssey.UserInterface
     {
         public BaseControl Control { get; set; }
         public UpdateAction Action { get; set; }
+
+        public UpdateElement(BaseControl control, UpdateAction action) : this()
+        {
+            Control = control;
+            Action = action;
+        }
     }
 
 }

@@ -53,11 +53,20 @@ namespace AvengersUtd.Odysseus
         void HudMouseClick(object sender, MouseEventArgs e)
         {
             BaseControl control = Hud.Find(e.Location);
-            if (control == null || ControlSelector.TargetControl == control)
+            if (control == null)
+            {
+                ControlSelector.TargetControl = null;
+                ControlSelector.IsVisible = false;
+            }
+            else if (ControlSelector.TargetControl == control)
+            {
                 return;
-
-            ControlSelector.TargetControl = control;
-            ControlSelector.IsVisible = true;
+            }
+            else
+            {
+                ControlSelector.TargetControl = control;
+                ControlSelector.IsVisible = true;    
+            }
 
         }
 

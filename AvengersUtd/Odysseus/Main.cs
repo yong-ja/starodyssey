@@ -93,12 +93,19 @@ namespace AvengersUtd.Odysseus
             }
             else
             {
-                if (controlSelector.HasCaptured)
+                if (controlSelector.TargetControl != null)
                     renderPanel.Cursor = controlSelector.GetCursorFor(e.Location);
                 else
                 {
-                    controlSelector = hud.Find(e.Location) as ControlSelector;
-                    renderPanel.Cursor = controlSelector != null ? controlSelector.GetCursorFor(e.Location) : Cursors.Arrow;
+                    BaseControl control = hud.Find(e.Location);
+                    if (control == null)
+                    {
+                        renderPanel.Cursor = Cursors.Arrow;
+                        return;
+                    }
+
+                    renderPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+
                 }
             }
 

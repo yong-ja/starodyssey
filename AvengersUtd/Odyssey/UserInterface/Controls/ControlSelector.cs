@@ -34,8 +34,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
             set
             {
+                
                 targetControl = value;
+                if (targetControl == null) return;
                 hitmanager = new HitManager(targetControl, sensibleArea);
+                hitmanager.ComputeExtents();
                 Position = targetControl.Position;
                 Size = targetControl.Size;
             }
@@ -98,6 +101,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                     Description.ColorArray[ColorIndex.BorderEnabled]).Vertices);
                 Shapes[i].Depth = Depth;
             }
+            //System.Diagnostics.Debug.WriteLine("C:{0} T:{1}", Position, bounds[0]);
         }
 
 
@@ -154,8 +158,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 dragStartPosition = new Vector2(e.X, e.Y);
             initialSize = targetControl.Size;
             initialPosition = targetControl.Position;
-            width = initialSize.Width;
-            height = initialSize.Height;
+            //width = initialSize.Width;
+            //height = initialSize.Height;
 
             //}
         }
@@ -167,15 +171,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (!drag) return;
 
             const int minimumSize = 10;
-            bool rightSideX = false, rightSideY = false;
-            bool canResizeX = false, canResizeY = false;
-            bool canMoveX = false, canMoveY = false;
-
 
             Vector2 prevPosition = targetControl.Position;
-            Vector2 newPosition = Vector2.Zero;
+            Vector2 newPosition;
             Size prevSize = targetControl.Size;
-            Size newSize = Size.Empty;
+            Size newSize;
             Vector2 currentPosition = new Vector2(e.X, e.Y);
             Vector2 delta = currentPosition - dragStartPosition;
 
@@ -190,60 +190,76 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                     break;
 
                 case IntersectionLocation.CornerNW:
-                    targetControl.Position = new Vector2(targetControl.Position.X + (int) delta.X,
-                                                         targetControl.Position.Y + (int) delta.Y);
-                    targetControl.Size = new Size(targetControl.Size.Width - (int) delta.X,
-                                                  targetControl.Size.Height - (int) delta.Y);
-                    rightSideY = true;
-                    canMoveX = true;
-                    canMoveY = true;
-                    canResizeY = true;
-                    canResizeX = true;
-                    break;
+                    height = (int)((initialPosition.Y - currentPosition.Y + initialSize.Height));
+                    width = (int)(initialPosition.X - currentPosition.X + initialSize.Width);
 
-                case IntersectionLocation.Top:
-                    height = (int)(-currentPosition.Y + (initialSize.Height + initialPosition.Y));
-                    newPosition = new Vector2(prevPosition.X, currentPosition.Y);
-                    newSize = new Size(prevSize.Width, height);
+                    newSize = new Size(width, height);
+                    newPosition = new Vector2(currentPosition.X, currentPosition.Y);
 
-                    if (newSize.Height <= minimumSize || currentPosition.Y >= initialPosition.Y + Size.Height - minimumSize)
+                    if (newSize.Width <= minimumSize || currentPosition.X >= initialPosition.X + initialSize.Width - minimumSize)
                     {
-                        newSize.Height = minimumSize;
-                        newPosition.Y = initialPosition.Y + Size.Height - minimumSize;
+                        newSize.Width = minimumSize;
+                        newPosition.X = initialPosition.X + initialSize.Width - minimumSize;
                     }
 
-                    targetControl.Size = newSize;
+                    if (newSize.Height <= minimumSize || currentPosition.Y >= initialPosition.Y + initialSize.Height - minimumSize)
+                    {
+                        newSize.Height = minimumSize;
+                        newPosition.Y = initialPosition.Y + initialSize.Height - minimumSize;
+                    }
+
                     targetControl.Position = newPosition;
-                    //System.Diagnostics.Debug.WriteLine("H:{0}", newSize.Height);
-                    rightSideY = true;
-                    canResizeY = true;
-                    canMoveY = true;
+                    targetControl.Size = newSize;
+
+                    break;
+
+                    case IntersectionLocation.Top:
+                    height = (int)((initialPosition.Y - currentPosition.Y + initialSize.Height));
+                    
+                    newSize = new Size(prevSize.Width, height);
+                    newPosition = new Vector2(prevPosition.X, currentPosition.Y);
+
+                    if (newSize.Height <= minimumSize || currentPosition.Y >= initialPosition.Y + initialSize.Height - minimumSize)
+                    {
+                        newSize.Height = minimumSize;
+                        newPosition.Y = initialPosition.Y + initialSize.Height - minimumSize;
+                    }
+
+                    targetControl.Position = newPosition;
+                    targetControl.Size = newSize;
+                    
+                    //System.Diagnostics.Debug.WriteLine("{1}) H:{0} Y:{2} P:{3}", newSize.Height, t++, targetControl.Position.Y, targetControl.Position.Y + targetControl.Size.Height);
+                    break;
+
+                case IntersectionLocation.Bottom:
+                    height = (int) (currentPosition.Y - initialPosition.Y);
+                    newSize = new Size(prevSize.Width, height);
+
+                    if (newSize.Height <= minimumSize || currentPosition.Y <= initialPosition.Y + minimumSize)
+                    {
+                        newSize.Height = minimumSize;
+                    }
+                    targetControl.Size = newSize;
                     break;
 
                 case IntersectionLocation.CornerNE:
-                    newPosition = new Vector2(prevPosition.X, prevPosition.Y + delta.Y);
-                    newSize = new Size(prevSize.Width + (int)delta.X, prevSize.Height - (int)delta.Y);
-                    height -= (int) delta.Y;
-                    width += (int) delta.X;
+                    height = (int)((initialPosition.Y - currentPosition.Y + initialSize.Height));
+                    width = (int)(currentPosition.X - initialPosition.X);
 
-                    if (newSize.Height <= minimumSize || height<= minimumSize )
+                    newSize = new Size(width, height);
+                    newPosition = new Vector2(prevPosition.X, currentPosition.Y);
+
+                    if (newSize.Height <= minimumSize || currentPosition.Y >= initialPosition.Y + initialSize.Height - minimumSize)
                     {
-                        newPosition.Y = prevPosition.Y;
-                        newSize.Height = prevSize.Height;
+                        newSize.Height = minimumSize;
+                        newPosition.Y = initialPosition.Y + initialSize.Height - minimumSize;
                     }
-                    if (newSize.Width <= minimumSize|| width <= minimumSize)
-                    {
-                        newPosition.X = prevPosition.X;
-                        newSize.Width= prevSize.Width;
-                    }
+
+                    if (newSize.Width <= minimumSize || currentPosition.X <= initialPosition.X + minimumSize)
+                        newSize.Width = minimumSize;
                     
                     targetControl.Position = newPosition;
                     targetControl.Size = newSize;
-                    rightSideX = true;
-                    rightSideY = true;
-                    canResizeX = true;
-                    canResizeY = true;
-                    canMoveY = true;
                     break;
 
                 case IntersectionLocation.Right:
@@ -255,35 +271,42 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
                     targetControl.Size = newSize;
                     //width = targetControl.ClientSize.Width;
-                    rightSideX = true;
-                    canResizeX = true;
                     break;
 
                 case IntersectionLocation.CornerSE:
-                    targetControl.Size = new Size(targetControl.Size.Width + (int) delta.X,
-                                                  targetControl.Size.Height + (int) delta.Y);
-                    rightSideX = true;
-                    canResizeX = true;
-                    canResizeY = true;
-                    break;
+                    width = (int)(currentPosition.X - initialPosition.X);
+                    height = (int) (currentPosition.Y - initialPosition.Y);
+                    newSize = new Size(width, height);
 
-                case IntersectionLocation.Bottom:
-                    newSize = new Size(prevSize.Width, prevSize.Height + (int)delta.Y);
-                    height += (int) delta.Y;
-                    if (newSize.Height <= minimumSize || height <= minimumSize)
-                        break;
+                    if (newSize.Height <= minimumSize || currentPosition.Y <= initialPosition.Y + minimumSize)
+                    {
+                        newSize.Height = minimumSize;
+                    }
+                    if (newSize.Width <= minimumSize || currentPosition.X <= initialPosition.X + minimumSize)
+                        newSize.Width = minimumSize;
+
                     targetControl.Size = newSize;
-                    canResizeY = true;
+
                     break;
 
                 case IntersectionLocation.CornerSW:
-                    targetControl.Position = new Vector2(targetControl.Position.X + (int) delta.X,
-                                                         targetControl.Position.Y);
-                    targetControl.Size = new Size(targetControl.Size.Width - (int) delta.X,
-                                                  targetControl.Size.Height + (int) delta.Y);
-                    canMoveX = true;
-                    canResizeX = true;
-                    canResizeY = true;
+                    width = (int)(initialPosition.X - currentPosition.X  +initialSize.Width);
+                    height = (int) (currentPosition.Y - initialPosition.Y);
+                    newSize = new Size(width, height);
+
+                    newPosition = new Vector2(currentPosition.X, prevPosition.Y);
+                    if (newSize.Width <= minimumSize || currentPosition.X >= initialPosition.X + initialSize.Width - minimumSize)
+                    {
+                        newSize.Width = minimumSize;
+                        newPosition.X = initialPosition.X + initialSize.Width - minimumSize;
+                    }
+                    if (newSize.Height <= minimumSize || currentPosition.Y <= initialPosition.Y + minimumSize)
+                    {
+                        newSize.Height = minimumSize;
+                    }
+
+                    targetControl.Position = newPosition;
+                    targetControl.Size = newSize;
                     break;
 
 
@@ -302,14 +325,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
                     targetControl.Position = newPosition;
                     targetControl.Size = newSize;
-                    canResizeX = true;
-                    canMoveX = true;
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        
+            {
+                dragStartPosition = currentPosition;
+            }
+
+           
         /*
             if (OwnerGrid.SnapToGrid)
             {
@@ -376,19 +401,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 //UpdateAppearance();
             }
             else*/
-            {
-                dragStartPosition = currentPosition;
-            }
-                
-            hitmanager.ComputeExtents();
+            
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            UpdatePositionDependantParameters();
+            
             OdysseyUI.CurrentHud.CaptureControl = null;
             drag = false;
-            UpdatePositionDependantParameters();
             IsVisible = true;
            
         }

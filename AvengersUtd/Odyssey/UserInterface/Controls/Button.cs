@@ -97,6 +97,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         protected override void UpdateSizeDependantParameters()
         {
+            label.Position = TextManager.ComputeTextPosition(this, label);
             label.ComputeAbsolutePosition();
         }
         

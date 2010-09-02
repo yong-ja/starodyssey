@@ -69,6 +69,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         private UserInterfaceUpdateCommand uiUCommand;
         private BaseControl captureControl;
         private ShapeDescription hudInterface;
+        private readonly UpdateElement recomputeAction;
 
         static Hud()
         {
@@ -124,6 +125,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             IsInside = true;
             IsFocusable = true;
             //WindowManager = new WindowManager();
+
+            recomputeAction = new UpdateElement(this, UpdateAction.Recompute);
         }
 
         #region Properties
@@ -330,19 +333,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                         break;
                     case UpdateAction.Add:
                         AddControl(element.Control);
-                        if (HudDescription.Multithreaded)
-                        {
-                            if (!uiUCommand.TaskQueue.Contains(AssembleInterface))
-                                uiUCommand.TaskQueue.Enqueue(AssembleInterface);
-                        }
+                        if (!updateQueue.Contains(recomputeAction))
+                            updateQueue.Enqueue(recomputeAction);
                         break;
                     case UpdateAction.Remove:
                         RemoveControl(element.Control);
-                        if (HudDescription.Multithreaded)
-                        {
-                            if (!uiUCommand.TaskQueue.Contains(AssembleInterface))
-                                uiUCommand.TaskQueue.Enqueue(AssembleInterface);
-                        }
+                        if (!updateQueue.Contains(recomputeAction))
+                            updateQueue.Enqueue(recomputeAction);
+                        break;
+
+                    case UpdateAction.Recompute:
+                        AssembleInterface();
                         break;
                     default:
                         throw Error.WrongCase("element.Action", "Update", element.Action);
@@ -457,7 +458,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 ShapeDescription sDesc = control.Shapes[j];
                 if (!sDesc.IsDirty) continue;
 
-                Array.Copy(sDesc.Vertices, 0, Shapes[0].Vertices, sDesc.ArrayOffset,
+                Array.Copy(sDesc.Vertices, 0, hudInterface.Vertices, sDesc.ArrayOffset,
                     sDesc.Vertices.Length);
                 sDesc.IsDirty = false;
             }
