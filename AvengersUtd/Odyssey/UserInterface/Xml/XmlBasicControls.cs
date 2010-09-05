@@ -22,6 +22,7 @@
 
 #endregion
 
+using System.ComponentModel;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 
@@ -52,30 +53,32 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     //    }
     //}
 
-    //[XmlType(TypeName = "Button")]
-    //public class XmlButton : XmlBaseControl
-    //{
-    //    string text;
+    [XmlType(TypeName = "Button")]
+    public class XmlButton : XmlBaseControl
+    {
+        public XmlButton()
+        {
+            Content = string.Empty;
+        }
 
-    //    public XmlButton() : base()
-    //    {
-    //        text = string.Empty;
-    //    }
+        public XmlButton(Button button) : base(button)
+        {
+            Content = button.Content;
+        }
 
-    //    [XmlAttribute]
-    //    public string Text
-    //    {
-    //        get { return text; }
-    //        set { text = value; }
-    //    }
+        [XmlAttribute]
+        [Category("Appearance")]
+        public string Content { get; set; }
 
-    //    public override void FromControl(BaseControl control)
-    //    {
-    //        base.FromControl(control);
-    //        Button button = control as Button;
-    //        text = button.Text;
-    //    }
-    //}
+        internal override void FromControl(BaseControl control)
+        {
+            base.FromControl(control);
+            Button button = control as Button;
+            if (button != null) Content = button.Content;
+
+            else throw Error.ArgumentNull("control", GetType(), "FromControl");
+        }
+    }
 
     //[XmlType(TypeName = "DecoratedButton")]
     //public class XmlDecoratedButton : XmlBaseControl

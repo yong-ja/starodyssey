@@ -53,7 +53,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void BuildRenderScene()
         {
-            CommandManager.AddUpdateCommand(new SceneTreeUpdateCommand(Tree));
+            CommandManager.Updater.AddRecurrentTask(new RecurrentTask(TaskType.SceneTreeUpdate, Tree.UpdateAllNodes, 1));
             renderMapper.Clear();
 
             foreach (SceneNode node in Node.PostOrderVisit(Tree.RootNode))

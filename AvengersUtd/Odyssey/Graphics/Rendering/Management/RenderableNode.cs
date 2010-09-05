@@ -40,7 +40,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         {}
 
         public RenderableNode(IRenderable renderableObject) :
-            base(NodeTag + ((++count)), SceneNodeType.Renderable)
+            base(string.Format("{0}{1}",NodeTag, ++count), SceneNodeType.Renderable)
         {
             IsLeaf = true;
             this.RenderableObject = renderableObject;

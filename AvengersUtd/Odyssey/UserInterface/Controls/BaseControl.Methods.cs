@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX;
 
 
@@ -248,7 +249,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
             return false;
         }
-
         #endregion
 
         #region Static Methods

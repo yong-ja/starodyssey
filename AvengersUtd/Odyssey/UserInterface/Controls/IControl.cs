@@ -26,6 +26,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
@@ -72,5 +73,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         event EventHandler PositionChanged;
         event EventHandler HighlightedChanged;
         event EventHandler Move;
+    }
+    
+    public interface IXmlControl
+       
+    {
+        XmlBaseControl ToXmlControl();
     }
 }

@@ -147,7 +147,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 if (value != null)
                     value.HasCaptured = true;
-                else
+                else if (captureControl != null)
                     captureControl.HasCaptured = false;
                 captureControl = value;
             }
@@ -321,6 +321,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void Update()
         {
+            var v = from u in updateQueue
+                    where (u.Control as ControlSelector != null)
+                    select u;
+            
             while (updateQueue.Count > 0)
             {
                 UpdateElement element = updateQueue.Dequeue();
@@ -373,7 +377,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (HudDescription.Multithreaded)
             {
-                if (!uiUCommand.TaskQueue.Contains(UpdateSprites))
+                if (!uiUCommand.TaskQueue.Contains(UpdateSprites) && control is ISpriteObject)
                 {
                     uiUCommand.TaskQueue.Enqueue(UpdateSprites);
                     uiUCommand.TaskQueue.Enqueue(uiUCommand.Synch);
@@ -406,11 +410,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             // be canceled and the queue will be emptied. In this way controls that
             // requested an update before the UI was recomputed, will still be updated.
             // Otherwise they'll be stuck in the 'IsBeingUpdated' state.
-            if (updateQueue.Count > 0)
-            {
-                foreach (UpdateElement element in updateQueue)
-                    element.Control.IsBeingUpdated = false;
-            }
+            //if (updateQueue.Count > 0)
+            //{
+            //    foreach (UpdateElement element in updateQueue)
+            //        element.Control.IsBeingUpdated = false;
+            //}
 
             updateQueue.Clear();
  
@@ -425,7 +429,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         internal void UpdateBuffers()
         {
             Shapes[0] = hudInterface;
-            InterfaceMesh.UpdateBuffers(Shapes[0].Vertices, Shapes[0].Indices);
+            InterfaceMesh.UpdateBuffers(Shapes[0].Vertices, Shapes[0].Indices); 
             //Console.WriteLine(string.Format("Buffer Update"));
         }
 
@@ -492,7 +496,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             //Console.WriteLine(string.Format("Enqueing {0} for {1}",control.Id, updateAction));
                 
-            updateQueue.Enqueue(new UpdateElement {Control = control, Action = updateAction});
+            updateQueue.Enqueue(new UpdateElement(control, updateAction));
             control.IsBeingUpdated = true;
         }
 

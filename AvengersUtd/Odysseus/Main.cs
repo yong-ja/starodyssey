@@ -17,6 +17,7 @@ namespace AvengersUtd.Odysseus
     public partial class Main : Form
     {
         readonly Toolbox toolbox;
+        private PropertyBox properties;
 
         internal PictureBox RenderPanel { get; set; }
         internal UIRenderer UIRenderer { get; set; }
@@ -38,7 +39,13 @@ namespace AvengersUtd.Odysseus
                 menuStrip.Height + (ClientSize.Height- menuStrip.Height - renderPanel.Height)/2);
 
             toolbox = new Toolbox();
+       
+                        properties = new PropertyBox();
+                        UIRenderer.PropertyBox = properties;
+
+                     
             UIRenderer.Toolbox = toolbox;
+            UIRenderer.Form = this;
         }
 
         void InitDX11()
@@ -104,11 +111,12 @@ namespace AvengersUtd.Odysseus
                         return;
                     }
 
-                    renderPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-
+                    renderPanel.Cursor = Cursors.Hand;
                 }
             }
 
         }
+
+
     }
 }

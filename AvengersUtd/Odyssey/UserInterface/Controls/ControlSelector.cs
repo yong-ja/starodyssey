@@ -321,8 +321,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                         newPosition.X = initialPosition.X + initialSize.Width - minimumSize;
                     }
 
-
-
                     targetControl.Position = newPosition;
                     targetControl.Size = newSize;
                     break;

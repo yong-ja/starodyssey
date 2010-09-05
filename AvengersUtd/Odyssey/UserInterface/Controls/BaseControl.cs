@@ -30,6 +30,7 @@ using AvengersUtd.Odyssey.Settings;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Xml;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -238,7 +239,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Dispose(false);
         }
         #endregion
-
 
     }
 }

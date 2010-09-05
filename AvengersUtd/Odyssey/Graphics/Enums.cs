@@ -20,6 +20,11 @@ namespace AvengersUtd.Odyssey.Graphics
         UserInterfaceRenderCommand
     }
 
+    public enum TaskType
+    {
+        SceneTreeUpdate
+    }
+
     public enum RenderingOrderType
     {
         OpaqueGeometry,

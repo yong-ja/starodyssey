@@ -252,7 +252,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         {
             TableStyle tableStyle = new TableStyle(
                 Name,
-                XmlCommon.DecodeSize(XmlSize),
+                XmlCommon.DecodeSize(Size),
                 XmlCommon.DecodePadding(XmlPadding),
                 XmlCommon.DecodePadding(xmlCellPadding),
                 cellSpacingX,

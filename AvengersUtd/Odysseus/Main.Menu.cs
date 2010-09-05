@@ -34,5 +34,15 @@ namespace AvengersUtd.Odysseus
             if (!toolbox.Focused)
                 toolbox.Focus();
         }
+
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            properties.Show(); 
+
+            if (!properties.Focused)
+                properties.Focus();
+        
+        }
     }
 }

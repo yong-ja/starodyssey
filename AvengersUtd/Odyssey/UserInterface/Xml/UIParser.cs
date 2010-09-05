@@ -37,20 +37,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     /// </summary>
     public static class UIParser
     {
-        static Dictionary<Type, Type> registeredTypes;
+        static readonly Dictionary<Type, Type> registeredTypes;
 
 
         static UIParser()
         {
-            registeredTypes = new Dictionary<Type, Type>();
+            registeredTypes = new Dictionary<Type, Type>
+                                  {
+                                      {typeof (Button), typeof (XmlButton)},
+                                      {typeof (Panel), typeof (XmlPanel)}
+                                  };
 
-            //registeredTypes.Add(typeof (Button), typeof (XmlButton));
             //registeredTypes.Add(typeof (CheckBox), typeof (XmlCheckBox));
             //registeredTypes.Add(typeof (DropDownList), typeof (XmlDropDownList));
             //registeredTypes.Add(typeof (GroupBox), typeof (XmlGroupBox));
             //registeredTypes.Add(typeof (Label), typeof (XmlLabel));
             //registeredTypes.Add(typeof (OptionGroup), typeof (XmlOptionGroup));
-            registeredTypes.Add(typeof (Panel), typeof (XmlPanel));
             //registeredTypes.Add(typeof (TextBox), typeof (XmlTextBox));
             //registeredTypes.Add(typeof (TrackBar), typeof (XmlTrackBar));
             //registeredTypes.Add(typeof (Window), typeof (XmlWindow));

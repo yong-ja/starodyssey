@@ -9,19 +9,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class UserInterfaceUpdateCommand : BaseCommand, IUpdateCommand
     {
         private readonly Thread uiUpdateThread;
-        private readonly ManualResetEventSlim uiUpdateEvent;
         private readonly Hud hud;
         private readonly IRenderCommand uiRCommand;
 
         public Queue<UpdateTask> TaskQueue { get; private set; }
 
         public bool IsThreaded { get { return true; } }
+        public ManualResetEventSlim EventHandle { get; private set; }
 
         public UserInterfaceUpdateCommand(Hud hud, IRenderCommand uiRCommand) : base(CommandType.Update)
         {
             this.hud = hud;
             uiUpdateThread = new Thread(Activate) {Name = "UI Update Thread", Priority = ThreadPriority.Lowest};
-            uiUpdateEvent = new ManualResetEventSlim(false);
+            EventHandle = new ManualResetEventSlim(false);
             this.uiRCommand = uiRCommand;
             TaskQueue = new Queue<UpdateTask>();
         }
@@ -48,11 +48,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             while (hud.IsEnabled)
             {
                 if (hud.ShouldUpdateShapes)
-                    uiUpdateEvent.Reset();
+                    EventHandle.Reset();
                 else continue;
 
                 hud.Update();
-                uiUpdateEvent.Set();
+                EventHandle.Set();
             }
         }
 
@@ -61,7 +61,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             if (TaskQueue.Count == 0)
                 return;
 
-            uiUpdateEvent.Wait();
+            EventHandle.Wait();
             
             while (TaskQueue.Count != 0)
             {
@@ -72,7 +72,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Resume()
         {
-            uiUpdateEvent.Set();
+            EventHandle.Set();
         }
 
         public void Synch()
@@ -83,7 +83,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected override void OnDispose()
         {
             uiUpdateThread.Abort();
-            uiUpdateEvent.Dispose();
+            EventHandle.Dispose();
         }
     }
 }
