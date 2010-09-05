@@ -67,7 +67,7 @@
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
     <Compile Include="Graphics\Materials\UIMaterial.cs" />
-    <Compile Include="Graphics\Rendering\SceneTreeUpdateCommand.cs" />
+    <Compile Include="Graphics\Rendering\GenericUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderableNodeCollectionDescription.cs" />
     <Compile Include="Graphics\Rendering\DepthStencilStateChangeCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderStep.cs" />
@@ -75,6 +75,7 @@
     <Compile Include="Graphics\Rendering\Management\CameraAnchorNode.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
+    <Compile Include="Graphics\Rendering\Structs.cs" />
     <Compile Include="UserInterface\Controls\Button.cs" />
     <Compile Include="UserInterface\Controls\ControlSelector.cs" />
     <Compile Include="UserInterface\Controls\DropDownList.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="UserInterface\Intersection.cs" />
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Polygon.Factory.cs" />
+    <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\ColorShader.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
     <Compile Include="UserInterface\Style\ShapeCollection.cs" />
@@ -179,7 +181,6 @@
     <Compile Include="UserInterface\Text\TextLiteral.cs" />
     <Compile Include="UserInterface\Text\TextManager.cs" />
     <Compile Include="UserInterface\TreeTraversal.cs" />
-    <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Xml\UIParser.cs" />
     <Compile Include="UserInterface\Xml\XmlBasicControls.cs" />
     <Compile Include="UserInterface\Xml\XmlCommon.cs" />

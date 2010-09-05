@@ -27,6 +27,8 @@ namespace AvengersUtd.Odyssey
         public static DeviceContext11 Context { get; set; }
         public static double FrameTime { get; private set; }
 
+        public static bool IsRunning { get; private set; }
+
         static Game()
         {
             locker = new Object();
@@ -34,6 +36,7 @@ namespace AvengersUtd.Odyssey
             timer.Reset();
             Logger = new DebugLogger();
             RenderEvent = new ManualResetEventSlim(false);
+            IsRunning = true;
         }
 
         public static void Init()
@@ -56,6 +59,7 @@ namespace AvengersUtd.Odyssey
             OdysseyUI.SetupHooks(form);
             Global.FormOwner = form;
             HookEvents();
+            
         }
 
         public static void HookEvents()
@@ -67,6 +71,7 @@ namespace AvengersUtd.Odyssey
 
         public static void Close()
         {
+            IsRunning = false;
             Context.Dispose();
         }
 

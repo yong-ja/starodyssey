@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -42,39 +43,62 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         protected XmlBaseControl()
         {
             Id = string.Empty;
-            XmlPosition = string.Empty;
-            XmlSize = string.Empty;
+            Position = string.Empty;
+            Size = string.Empty;
         }
 
-        [XmlAttribute]
-        public string Id { get; set; }
-
-        [XmlAttribute("Position")]
-        public string XmlPosition { get; set; }
-
-        [XmlAttribute("Size")]
-        public string XmlSize { get; set; }
-
-        [XmlAttribute]
-        public bool IsEnabled { get; set; }
-
-        [XmlAttribute]
-        public bool IsVisible { get; set; }
-
-        [XmlAttribute]
-        public string TextStyleClass { get; set; }
-
-        [XmlAttribute]
-        public string ControlStyleClass { get; set; }
-
-        public virtual void FromControl(BaseControl control)
+        protected XmlBaseControl(BaseControl control)
         {
             if (control == null)
                 throw Error.InCreatingFromObject("control", GetType(), typeof (BaseControl));
 
             Id = control.Id;
-            XmlPosition = (control.Position == Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : null;
-            XmlSize = (control.Size != Size.Empty) ? XmlCommon.EncodeSize(control.Size) : null;
+            Position = (control.Position != Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : string.Empty;
+            Size = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : string.Empty;
+
+            IsEnabled = control.IsEnabled;
+            IsVisible = control.IsVisible;
+            TextStyleClass = control.TextDescriptionClass;
+            ControlStyleClass = control.ControlDescriptionClass;
+
+        }
+
+        [XmlAttribute]
+        [Category("Design")]
+        public string Id { get; set; }
+
+        [XmlAttribute]
+        [Category("Layout")]
+        public string Position { get; set; }
+
+        [XmlAttribute]
+        [Category("Layout")]
+        public string Size { get; set; }
+
+        [XmlAttribute]
+        [Category("Design")]
+        public bool IsEnabled { get; set; }
+
+        [XmlAttribute]
+        [Category("Design")]
+        public bool IsVisible { get; set; }
+
+        [XmlAttribute]
+        [Category("Appearance")]
+        public string TextStyleClass { get; set; }
+
+        [XmlAttribute]
+        [Category("Appearance")]
+        public string ControlStyleClass { get; set; }
+
+        internal virtual void FromControl(BaseControl control)
+        {
+            if (control == null)
+                throw Error.InCreatingFromObject("control", GetType(), typeof (BaseControl));
+
+            Id = control.Id;
+            Position = (control.Position == Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : null;
+            Size = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : null;
             IsEnabled = control.IsEnabled;
             IsVisible = control.IsVisible;
             TextStyleClass = control.TextDescriptionClass;
@@ -118,12 +142,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         internal static string EncodeVector2(Vector2 v)
         {
-            return string.Format(CultureInfo.InvariantCulture, "X:{0:F0} Y:{1:F0}", v.X, v.Y);
+                return string.Format(CultureInfo.InvariantCulture, "X:{0:F0} Y:{1:F0}", v.X, v.Y);
         }
 
         internal static string EncodeVector3(Vector3 v)
         {
-            return string.Format(CultureInfo.InvariantCulture, "X:{0:F0} Y:{1:F0} Z:{2:F0}", v.X, v.Y, v.Z);
+                return string.Format(CultureInfo.InvariantCulture, "X:{0:F0} Y:{1:F0} Z:{2:F0}", v.X, v.Y, v.Z);
         }
 
         internal static string EncodeSize(Size size)

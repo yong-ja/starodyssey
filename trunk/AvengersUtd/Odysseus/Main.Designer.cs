@@ -36,6 +36,7 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.renderPanel)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +97,7 @@
             // windowMenu
             // 
             this.windowMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.propertiesToolStripMenuItem,
             this.toolboxToolStripMenuItem});
             this.windowMenu.Name = "windowMenu";
             this.windowMenu.Size = new System.Drawing.Size(63, 20);
@@ -104,10 +106,18 @@
             // toolboxToolStripMenuItem
             // 
             this.toolboxToolStripMenuItem.Name = "toolboxToolStripMenuItem";
-            this.toolboxToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.toolboxToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.toolboxToolStripMenuItem.Text = "Toolbox";
+            this.toolboxToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.toolboxToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toolboxToolStripMenuItem.Text = "&Toolbox";
             this.toolboxToolStripMenuItem.Click += new System.EventHandler(this.toolboxToolStripMenuItem_Click);
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Text = "&Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -138,6 +148,7 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem windowMenu;
         private System.Windows.Forms.ToolStripMenuItem toolboxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
     }
 }
 

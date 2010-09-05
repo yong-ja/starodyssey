@@ -35,7 +35,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             xmlControlList.Add(wrapper);
         }
 
-        public override void FromControl(BaseControl control)
+        internal override void FromControl(BaseControl control)
         {
             base.FromControl(control);
 

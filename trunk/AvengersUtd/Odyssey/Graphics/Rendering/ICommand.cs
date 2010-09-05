@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -15,6 +16,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public interface IUpdateCommand: ICommand
     {
         bool IsThreaded { get; }
+        ManualResetEventSlim EventHandle { get; }
 
         void StartThread();
         void Activate();

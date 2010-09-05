@@ -11,6 +11,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly List<IUpdateCommand> updateList;
         private readonly LinkedList<ICommand> commandList;
 
+        public GenericUpdateCommand Updater { get; private set; }
+
         public IEnumerable<ICommand> Commands
         {
             get { return commandList; }
@@ -23,10 +25,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public CommandManager()
         {
+            Updater = new GenericUpdateCommand();
             updateList = new List<IUpdateCommand>();
             commandList = new LinkedList<ICommand>();
             commandList.AddFirst(DepthStencilStateChangeCommand.Default);
             commandList.AddFirst(RasterizerStateChangeCommand.Default);
+
+            AddUpdateCommand(Updater);
         }
 
         //public bool IsStateActive(ICommand stateChangeCommmand)

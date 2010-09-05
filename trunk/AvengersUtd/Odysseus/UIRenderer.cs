@@ -8,7 +8,10 @@ using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX.Direct3D11;
+using System.Reflection;
+using System.Threading;
 
 namespace AvengersUtd.Odysseus
 {
@@ -45,11 +48,14 @@ namespace AvengersUtd.Odysseus
             }
         }
 
-
+        internal delegate void ConvertControlCallback();
         internal static Toolbox Toolbox { get; set; }
+        internal static PropertyBox PropertyBox { get; set; }
         internal ControlSelector ControlSelector { get; private set; }
         internal SelectionRectangle SelectionRectangle { get; private set; }
+        internal static Main Form { get; set; }
 
+        static object controlLock = new object();
         void HudMouseClick(object sender, MouseEventArgs e)
         {
             BaseControl control = Hud.Find(e.Location);
@@ -64,10 +70,33 @@ namespace AvengersUtd.Odysseus
             }
             else
             {
-                ControlSelector.TargetControl = control;
-                ControlSelector.IsVisible = true;    
+
+                    ControlSelector.TargetControl = control;
+                    ControlSelector.IsVisible = true;
+
+                ConvertControl();
             }
 
+        }
+
+        void ConvertControl()
+        {
+            
+
+            if (PropertyBox.InvokeRequired)
+            {
+                ConvertControlCallback c = ConvertControl;
+                Form.Invoke(c);
+            }
+            else
+            {
+                Type xmlControlType = UIParser.GetWrapperTypeForControl(ControlSelector.TargetControl.GetType());
+
+                XmlBaseControl xmlControl =
+                (XmlBaseControl)
+                Activator.CreateInstance(xmlControlType, ControlSelector.TargetControl);
+                PropertyBox.SelectedControl = xmlControl;
+            }
         }
 
         void SelectionRectangleSelectionFinalized(object sender, SelectionEventArgs e)
