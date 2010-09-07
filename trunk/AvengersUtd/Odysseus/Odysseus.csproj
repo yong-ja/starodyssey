@@ -50,6 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlphaSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorChangedEventArgs.cs" />
+    <Compile Include="ColorChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorHandler.cs" />
+    <Compile Include="ColorWheel.cs" />
+    <Compile Include="CustomColorDialog.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +69,11 @@
     <Compile Include="Main.Menu.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="OColor.cs" />
+    <Compile Include="OColorConverter.cs" />
+    <Compile Include="OColorEditor.cs" />
+    <Compile Include="OControlDescription.cs" />
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +88,12 @@
       <DependentUpon>PropertyBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StyleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StyleEditor.Designer.cs">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +123,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="StyleEditor.resx">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Toolbox.resx">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>

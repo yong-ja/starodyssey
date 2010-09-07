@@ -321,10 +321,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void Update()
         {
-            var v = from u in updateQueue
-                    where (u.Control as ControlSelector != null)
-                    select u;
-            
             while (updateQueue.Count > 0)
             {
                 UpdateElement element = updateQueue.Dequeue();

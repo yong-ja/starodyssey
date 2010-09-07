@@ -15,7 +15,9 @@ namespace AvengersUtd.Odysseus
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
             Main mainForm = new Main();
+            Odysseus.Main.FormInstance  = mainForm;
             MessagePump.Run(mainForm, Game.Loop);
 
             Game.Close();

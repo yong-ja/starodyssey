@@ -56,6 +56,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             get { return DefaultFontSize; }
         }
 
+        public static IEnumerable<ControlDescription> ControlDescriptions
+        {
+            get {
+                return controlStyles != null ? controlStyles.Values : null;
+            }
+        }
+
+        public static IEnumerable<TextDescription> TextDescriptions
+        {
+            get
+            {
+                return textStyles != null ? textStyles.Values : null;
+            }
+        }
+
         #endregion
 
         public static TextDescription GetTextDescription(string id)
