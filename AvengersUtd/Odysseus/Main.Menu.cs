@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
+using AvengersUtd.Odyssey.UserInterface.Controls;
 
 namespace AvengersUtd.Odysseus
 {
@@ -43,6 +44,17 @@ namespace AvengersUtd.Odysseus
             if (!properties.Focused)
                 properties.Focus();
         
+        }
+
+        private void snapToGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UIRenderer.ControlSelector.OwnerGrid.SnapToGrid = snapToGridToolStripMenuItem.Checked;
+        }
+
+        private void styleEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StyleEditor styleEditor = new StyleEditor();
+            styleEditor.ShowDialog();
         }
     }
 }

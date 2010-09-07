@@ -175,32 +175,34 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             return new Vector2(newX, newY);
         }
 
-        public static Size SnapSizeToGrid(Size size, Size prevSize, int gridSpacing, bool positiveX, bool positiveY,
-            bool doX, bool doY)
+        public static Size SnapSizeToGrid(Size size, int gridSpacing)
         {
             int deltaX = (size.Width % gridSpacing);
             int deltaY = (size.Height % gridSpacing);
-            int newWidth=prevSize.Width, newHeight=prevSize.Height;
+            int newWidth = size.Width, newHeight = size.Height;
 
-            if (doX)
+            int threshold = (int)Math.Round(gridSpacing / 2f);
+
+            if (deltaX > threshold)
             {
-                if (positiveX)
-                {
-                    newWidth = size.Width - deltaX;
-                }
-                else
-                {
-                    newWidth = size.Width + (gridSpacing - deltaX);
-                }
+                newWidth = size.Width + (gridSpacing - deltaX);
+            }
+            else
+            {
+                newWidth = size.Width - deltaX;
             }
 
-            if (doY)
+            if (deltaY > threshold)
             {
-                if (positiveY)
-                    newHeight = size.Height + (gridSpacing - deltaY);
-                else
-                    newHeight = size.Height - deltaY;
+                newHeight = size.Height + (gridSpacing - deltaY);
             }
+            else
+                newHeight = size.Height - deltaY;
+
+            if (newWidth == 0)
+                newWidth = gridSpacing;
+            if (newHeight == 0)
+                newHeight = gridSpacing;
 
             return new Size(newWidth, newHeight);
         }

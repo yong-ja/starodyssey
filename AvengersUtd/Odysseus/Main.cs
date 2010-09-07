@@ -21,6 +21,7 @@ namespace AvengersUtd.Odysseus
 
         internal PictureBox RenderPanel { get; set; }
         internal UIRenderer UIRenderer { get; set; }
+        internal static Main FormInstance { get; set; }
 
         public Main()
         {
@@ -116,6 +117,8 @@ namespace AvengersUtd.Odysseus
             }
 
         }
+
+
 
 
     }

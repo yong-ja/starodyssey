@@ -331,79 +331,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 dragStartPosition = currentPosition;
             }
-
-           
-        /*
-            if (OwnerGrid.SnapToGrid)
-            {
-                bool doX = (delta.X > OwnerGrid.GridSpacing || delta.X < -OwnerGrid.GridSpacing) ? true : false;
-                bool doY = (delta.Y > OwnerGrid.GridSpacing || delta.Y < -OwnerGrid.GridSpacing) ? true : false;
-
-                bool positiveX = rightSideX ? delta.X > 0 : delta.X < 0;
-                bool positiveY = rightSideY ? delta.Y > 0 : delta.Y < 0;
-
-
-                if (previousIntersection == IntersectionLocation.Inner)
-                {
-                    targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position, OwnerGrid.GridSpacing);
-                    //targetControl.Position = targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position);
-                                                                                       
-                    if (targetControl.Position != prevPosition)
-                        dragStartPosition = currentPosition;
-                        
-                    Shapes.SetDirtyFlag(true);
-                    UpdateAppearance();
-                    //delta = targetControl.Position - prevPosition;
-                }
-                else
-                {
-
-                    if (doX || doY)
-                    {
-                        //DebugManager.LogToScreen(string.Format("X: {0:f0} Y: {1:f0}", delta.X, delta.Y));
-                        Vector2 newPosition = SelectionRectangle.SnapPositionToGrid(targetControl.Position, prevPosition, delta, 
-                            OwnerGrid.GridSpacing, doX & canMoveX, doY & canMoveY, positiveX, positiveY);
-
-                        if (targetControl.Size.Height < 0 || targetControl.Size.Width < 0)
-                            newPosition = prevPosition;
-
-                        targetControl.Position = newPosition;
-                        //targetControl.Position = SelectionRectangle.CheckFlip(prevPosition, newPosition,
-                        //                                                      targetControl.Size);
-
-                        targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, prevSize,
-                            OwnerGrid.GridSpacing,
-                            positiveX, positiveY,
-                            doX & canResizeX, doY & canResizeY);
- 
-
-                        if (doX && !doY)
-                            dragStartPosition = new Vector2(currentPosition.X, dragStartPosition.Y);
-                        else if (!doX)
-                            dragStartPosition = new Vector2(dragStartPosition.X, currentPosition.Y);
-                        else
-                            dragStartPosition = currentPosition;
-
-                        Shapes.SetDirtyFlag(true);
-                        UpdateAppearance();
-
-                    }
-                    else
-                    {
-                        targetControl.Position = prevPosition;
-                        targetControl.Size = prevSize;
-                    }
-                }
-                    
-
-                //UpdateAppearance();
-            }
-            else*/
             
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            if (OwnerGrid.SnapToGrid)
+            {
+                targetControl.Position = SelectionRectangle.SnapPositionToGrid(targetControl.Position,
+                    OwnerGrid.GridSpacing);
+                targetControl.Size = SelectionRectangle.SnapSizeToGrid(targetControl.Size, OwnerGrid.GridSpacing);
+            }
+
             base.OnMouseUp(e);
             UpdatePositionDependantParameters();
             

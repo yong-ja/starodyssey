@@ -35,8 +35,9 @@
             this.snapToGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.styleEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.renderPanel)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -80,17 +81,16 @@
             // 
             // snapToGridToolStripMenuItem
             // 
-            this.snapToGridToolStripMenuItem.Checked = true;
             this.snapToGridToolStripMenuItem.CheckOnClick = true;
-            this.snapToGridToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.snapToGridToolStripMenuItem.Name = "snapToGridToolStripMenuItem";
-            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.snapToGridToolStripMenuItem.Text = "&Snap to Grid";
+            this.snapToGridToolStripMenuItem.Click += new System.EventHandler(this.snapToGridToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -98,10 +98,19 @@
             // 
             this.windowMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.propertiesToolStripMenuItem,
-            this.toolboxToolStripMenuItem});
+            this.toolboxToolStripMenuItem,
+            this.styleEditorToolStripMenuItem});
             this.windowMenu.Name = "windowMenu";
             this.windowMenu.Size = new System.Drawing.Size(63, 20);
             this.windowMenu.Text = "&Window";
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Text = "&Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // toolboxToolStripMenuItem
             // 
@@ -111,13 +120,13 @@
             this.toolboxToolStripMenuItem.Text = "&Toolbox";
             this.toolboxToolStripMenuItem.Click += new System.EventHandler(this.toolboxToolStripMenuItem_Click);
             // 
-            // propertiesToolStripMenuItem
+            // styleEditorToolStripMenuItem
             // 
-            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.propertiesToolStripMenuItem.Text = "&Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            this.styleEditorToolStripMenuItem.Name = "styleEditorToolStripMenuItem";
+            this.styleEditorToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
+            this.styleEditorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.styleEditorToolStripMenuItem.Text = "&Style editor";
+            this.styleEditorToolStripMenuItem.Click += new System.EventHandler(this.styleEditorToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -149,6 +158,7 @@
         private System.Windows.Forms.ToolStripMenuItem windowMenu;
         private System.Windows.Forms.ToolStripMenuItem toolboxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem styleEditorToolStripMenuItem;
     }
 }
 
