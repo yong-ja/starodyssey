@@ -5,20 +5,20 @@ namespace AvengersUtd.Odysseus
     public class ColorChangedEventArgs:EventArgs 
     {
 
-        private ColorHandler.RGB mRGB;
+        private ColorHandler.ARGB mArgb;
         private ColorHandler.HSV mHSV;
 
-        public ColorChangedEventArgs ( ColorHandler.RGB RGB,  ColorHandler.HSV HSV) 
+        public ColorChangedEventArgs ( ColorHandler.ARGB argb,  ColorHandler.HSV HSV) 
         {
-            mRGB = RGB;
+            mArgb = argb;
             mHSV = HSV;
         }
 
-        public ColorHandler.RGB RGB
+        public ColorHandler.ARGB argb
         {
             get 
             {
-                return mRGB;
+                return mArgb;
             }
         }
 

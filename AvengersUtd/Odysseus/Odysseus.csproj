@@ -104,6 +104,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIRenderer.cs" />
+    <EmbeddedResource Include="ColorChooser.resx">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
