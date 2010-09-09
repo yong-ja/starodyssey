@@ -8,64 +8,68 @@ namespace AvengersUtd.Odysseus
         // Handle conversions between RGB and HSV    
         // (and Color types, as well).
 
-        public struct RGB
+        public struct ARGB
         {
             // All values are between 0 and 255.
-            public int Red;
-            public int Green;
-            public int Blue;
+            public int Alpha { get; set; }
+            public int Red { get; set; }
+            public int Green { get; set; }
+            public int Blue { get; set; }
 
-            public RGB(int R, int G, int B) 
+            public ARGB(int a, int r, int g, int b) :this()
             {
-                Red = R;
-                Green = G;
-                Blue = B;
+                Alpha = a;
+                Red = r;
+                Green = g;
+                Blue = b;
             }
 
             public override string  ToString() 
             {
-                return String.Format("({0}, {1}, {2})", Red, Green, Blue);
+                return String.Format("({0}, {1}, {2} {3})", Alpha, Red, Green, Blue);
             }
         } 
 
         public struct HSV
         {
             // All values are between 0 and 255.
-            public int Hue;
-            public int Saturation;
-            public int value;
+            public int Alpha { get; set; }
+            public int Hue { get; set; }
+            public int Saturation { get; set; }
+            public int Value { get; set; }
 
-            public HSV(int H, int S, int V) 
+            public HSV(int a, int h, int s, int v) : this()
             {
-                Hue = H;
-                Saturation = S;
-                value = V;
+                Alpha = a;
+                Hue = h;
+                Saturation = s;
+                Value = v;
             }
 
             public override string  ToString() 
             {
-                return String.Format("({0}, {1}, {2})", Hue, Saturation, value);
+                return String.Format("({0}, {1}, {2})", Hue, Saturation, Value);
             }
         }
 
-        public static RGB HSVtoRGB( int H, int S, int V) 
+        public static ARGB HSVtoRGB(int a, int h, int s, int v) 
         {
             // H, S, and V must all be between 0 and 255.
-            return HSVtoRGB(new HSV(H, S, V));
+            return HSVtoRGB(new HSV(a,h,s,v));
         }
 
         public static Color HSVtoColor(HSV hsv) 
         {
-            RGB RGB = HSVtoRGB(hsv);
-            return Color.FromArgb(RGB.Red, RGB.Green, RGB.Blue);
+            ARGB argb = HSVtoRGB(hsv);
+            return Color.FromArgb(argb.Alpha, argb.Red, argb.Green, argb.Blue);
         }
 
-        public static Color HSVtoColor( int H,  int S,  int V) 
+        public static Color HSVtoColor( int a, int h,  int s,  int v) 
         {
-            return HSVtoColor(new HSV(H, S, V));
+            return HSVtoColor(new HSV(a,h, s, v));
         }
 
-        public static RGB HSVtoRGB(HSV HSV) 
+        public static ARGB HSVtoRGB(HSV HSV) 
         {
             // HSV contains values scaled as in the color wheel:
             // that is, all from 0 to 255. 
@@ -87,7 +91,7 @@ namespace AvengersUtd.Odysseus
             // and value scale to be between 0 and 1.
             h = ((double) HSV.Hue / 255 * 360) % 360;
             s = (double) HSV.Saturation / 255;
-            v = (double) HSV.value / 255;
+            v = (double) HSV.Value / 255;
 
             if ( s == 0 ) 
             {
@@ -99,29 +103,21 @@ namespace AvengersUtd.Odysseus
             } 
             else 
             {
-                double p;
-                double q;
-                double t;
-
-                double fractionalSector;
-                int sectorNumber;
-                double sectorPos;
-
                 // The color wheel consists of 6 sectors.
                 // Figure out which sector you//re in.
-                sectorPos = h / 60;
-                sectorNumber = (int)(Math.Floor(sectorPos));
+                double sectorPos = h / 60;
+                int sectorNumber = (int)(Math.Floor(sectorPos));
 
                 // get the fractional part of the sector.
                 // That is, how many degrees into the sector
                 // are you?
-                fractionalSector = sectorPos - sectorNumber;
+                double fractionalSector = sectorPos - sectorNumber;
 
                 // Calculate values for the three axes
                 // of the color. 
-                p = v * (1 - s);
-                q = v * (1 - (s * fractionalSector));
-                t = v * (1 - (s * (1 - fractionalSector)));
+                double p = v * (1 - s);
+                double q = v * (1 - (s * fractionalSector));
+                double t = v * (1 - (s * (1 - fractionalSector)));
 
                 // Assign the fractional colors to r, g, and b
                 // based on the sector the angle is in.
@@ -166,10 +162,10 @@ namespace AvengersUtd.Odysseus
             }
             // return an RGB structure, with values scaled
             // to be between 0 and 255.
-            return new RGB((int)(r * 255), (int)(g * 255), (int)(b * 255));
+            return new ARGB(HSV.Alpha, (int)(r * 255), (int)(g * 255), (int)(b * 255));
         }
 
-        public static HSV RGBtoHSV( RGB RGB) 
+        public static HSV RGBtoHSV( ARGB argb) 
         {
             // In this function, R, G, and B values must be scaled 
             // to be between 0 and 1.
@@ -178,22 +174,18 @@ namespace AvengersUtd.Odysseus
             // The code must scale these to be between 0 and 255 for
             // the purposes of this application.
 
-            double min;
-            double max;
-            double delta;
-
-            double r = (double) RGB.Red / 255;
-            double g = (double) RGB.Green / 255;
-            double b = (double) RGB.Blue / 255;
+            double r = (double) argb.Red / 255;
+            double g = (double) argb.Green / 255;
+            double b = (double) argb.Blue / 255;
 
             double h;
             double s;
             double v;
 
-            min = Math.Min(Math.Min(r, g), b);
-            max = Math.Max(Math.Max(r, g), b);
+            double min = Math.Min(Math.Min(r, g), b);
+            double max = Math.Max(Math.Max(r, g), b);
             v = max;
-            delta = max - min;
+            double delta = max - min;
             if ( max == 0 || delta == 0 ) 
             {
                 // R, G, and B must be 0, or all the same.
@@ -233,7 +225,7 @@ namespace AvengersUtd.Odysseus
 
             // Scale to the requirements of this 
             // application. All values are between 0 and 255.
-            return new HSV((int)(h / 360 * 255), (int)(s * 255), (int)(v * 255));
+            return new HSV(argb.Alpha,(int)(h / 360 * 255), (int)(s * 255), (int)(v * 255));
         }
     }
 }

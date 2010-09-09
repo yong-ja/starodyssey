@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using SlimDX;
 
 namespace AvengersUtd.Odysseus
 {
@@ -19,19 +20,21 @@ namespace AvengersUtd.Odysseus
         #region " Constructors "
         public OColor()
         {
+            Alpha = 0;
             Red = 0;
             Green = 0;
             Blue = 0;
         }
-        public OColor(byte red, byte green, byte blue)
+        public OColor(byte alpha, byte red, byte green, byte blue)
         {
+            this.Alpha = alpha;
             this.Red = red;
             this.Green = green;
             this.Blue = blue;
         }
         public OColor(byte[] rgb)
         {
-            if (rgb.Length != 3)
+            if (rgb.Length != 4)
                 throw new Exception("Array must have a length of 3.");
             Red = rgb[0];
             Green = rgb[1];
@@ -59,7 +62,7 @@ namespace AvengersUtd.Odysseus
         #region " Methods "
         public new string ToString()
         {
-            return String.Format("{0} {1} {2}", Red, Green, Blue);
+            return String.Format("A:{0} R:{1} G:{2} B:{3}",  Alpha, Red, Green, Blue);
         }
         public byte[] GetRGB()
         {
@@ -69,6 +72,11 @@ namespace AvengersUtd.Odysseus
         {
             byte[] temp = new[] { Blue, Green, Red, Alpha };
             return BitConverter.ToInt32(temp, 0);
+        }
+
+        public Color4 ToColor4()
+        {
+            return new Color4(GetARGB());
         }
         #endregion
     }

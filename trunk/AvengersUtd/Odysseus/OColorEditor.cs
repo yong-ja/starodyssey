@@ -32,14 +32,9 @@ namespace AvengersUtd.Odysseus
 
                 // Create a new instance of the ColorDialog.
                 ColorChooser cc = new ColorChooser {Color = Color.FromArgb(color.GetARGB())};
-                //CustomColorDialog selectionControl = new CustomColorDialog(Main.FormInstance.Handle)
-                //                                         {InitialColor = Color.FromArgb(color.GetARGB())};
-
-                // Set the selected color in the dialog.
-                //selectionControl.SelectedColor
 
                 // Show the dialog.
-                cc.Show();
+                cc.ShowDialog();
 
                 // Return the newly selected color.
                 value = new OColor(cc.Color.ToArgb());
