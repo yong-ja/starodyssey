@@ -86,6 +86,7 @@
     <Compile Include="UserInterface\Controls\HudDescription.cs" />
     <Compile Include="UserInterface\Controls\ISpriteObject.cs" />
     <Compile Include="UserInterface\Controls\SelectionRectangle.cs" />
+    <Compile Include="UserInterface\CSExporter.cs" />
     <Compile Include="UserInterface\Extensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\Textured3DVertex.cs" />

@@ -5,12 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 
 namespace AvengersUtd.Odysseus
 {
     public partial class Main
     {
+
+        private void exportAsCFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.UIRenderer.Hud.Controls.IsEmpty)
+                return;
+
+            MessageBox.Show(CSExporter.Export(UIRenderer.Hud.Controls));
+
+        }
+
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Options options = new Options();

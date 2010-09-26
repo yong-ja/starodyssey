@@ -38,6 +38,10 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.styleEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportOUIDialog = new System.Windows.Forms.SaveFileDialog();
+            this.exportAsCFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportCSDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.renderPanel)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -66,6 +70,9 @@
             // 
             // fileMenu
             // 
+            this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToolStripMenuItem,
+            this.exportAsCFileToolStripMenuItem});
             this.fileMenu.Name = "fileMenu";
             this.fileMenu.Size = new System.Drawing.Size(37, 20);
             this.fileMenu.Text = "&File";
@@ -83,14 +90,14 @@
             // 
             this.snapToGridToolStripMenuItem.CheckOnClick = true;
             this.snapToGridToolStripMenuItem.Name = "snapToGridToolStripMenuItem";
-            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.snapToGridToolStripMenuItem.Text = "&Snap to Grid";
             this.snapToGridToolStripMenuItem.Click += new System.EventHandler(this.snapToGridToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -128,6 +135,33 @@
             this.styleEditorToolStripMenuItem.Text = "&Style editor";
             this.styleEditorToolStripMenuItem.Click += new System.EventHandler(this.styleEditorToolStripMenuItem_Click);
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.exportToolStripMenuItem.Text = "&Export as OUI";
+            // 
+            // exportOUIDialog
+            // 
+            this.exportOUIDialog.DefaultExt = "oui";
+            this.exportOUIDialog.FileName = "Interface1.oui";
+            this.exportOUIDialog.Filter = "Odyssey UI|*.oui";
+            // 
+            // exportAsCFileToolStripMenuItem
+            // 
+            this.exportAsCFileToolStripMenuItem.Name = "exportAsCFileToolStripMenuItem";
+            this.exportAsCFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
+            this.exportAsCFileToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.exportAsCFileToolStripMenuItem.Text = "Export as &C# file";
+            this.exportAsCFileToolStripMenuItem.Click += new System.EventHandler(this.exportAsCFileToolStripMenuItem_Click);
+            // 
+            // exportCSDialog
+            // 
+            this.exportCSDialog.DefaultExt = "cs";
+            this.exportCSDialog.FileName = "Interface1.cs";
+            this.exportCSDialog.Filter = "C# Source Code|*.cs";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +193,10 @@
         private System.Windows.Forms.ToolStripMenuItem toolboxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem styleEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAsCFileToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog exportOUIDialog;
+        private System.Windows.Forms.SaveFileDialog exportCSDialog;
     }
 }
 

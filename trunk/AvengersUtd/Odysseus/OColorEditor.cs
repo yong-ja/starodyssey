@@ -20,8 +20,7 @@ namespace AvengersUtd.Odysseus
         }
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
-                service = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            service = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 
             if (service != null)
             {
