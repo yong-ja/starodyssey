@@ -55,6 +55,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         #region Private members
         // Bool variable used to detect if the control is in its droppeddown status
         bool droppedDown;
+        private string[] items;
 
         Panel listPanel;
         // Currently selected TextLiteral.
@@ -103,6 +104,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public string SelectedItem
         {
             get { return ((TextLiteral) Controls[selectedIndex]).Content; }
+        }
+
+        public string[] Items
+        {
+            get { return items; }
+            set
+            {
+                AddItems(items);
+            }
         }
 
         #endregion
@@ -322,6 +332,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void AddItems(params string[] items)
         {
+            this.items = items;
             foreach (TextLiteral textLiteral in items.Select(item => new TextLiteral
                                                                          {
                                                                              Id = ControlTag + "_Item" + listPanel.Controls.Count,

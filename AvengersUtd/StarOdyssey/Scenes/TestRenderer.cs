@@ -103,6 +103,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             DropDownList d = new DropDownList
                                  {
                                      Position = new Vector2(500f, 100f),
+                                     Items
                                  };
             d.AddItems("Prova1", "Prova2", "Prova3");
 

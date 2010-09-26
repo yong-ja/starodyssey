@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
+using System.Text.RegularExpressions;
 
 namespace AvengersUtd.Odysseus
 {
@@ -47,15 +48,20 @@ namespace AvengersUtd.Odysseus
             Red = bytes[2];
             Green = bytes[1];
             Blue = bytes[0];
+
         }
         public OColor(string rgb)
         {
-            string[] parts = rgb.Split(' ');
-            if (parts.Length != 3)
-                throw new Exception("Array must have a length of 3.");
-            Red = Convert.ToByte(parts[0]);
-            Green = Convert.ToByte(parts[1]);
-            Blue = Convert.ToByte(parts[2]);
+            Regex regex = new Regex(@"A:(?<Alpha>\d+)\sR:(?<Red>\d+)\sG:(?<Green>\d+)\sB:(?<Blue>\d+)");
+            Match match = regex.Match(rgb);
+            
+            if (match.Groups.Count!= 5)
+                throw new Exception("Array must have a length of 4.");
+
+            Alpha = Convert.ToByte(match.Groups["Alpha"].Value);
+            Red = Convert.ToByte(match.Groups["Red"].Value);
+            Green = Convert.ToByte(match.Groups["Green"].Value);
+            Blue = Convert.ToByte(match.Groups["Blue"].Value);
         }
         #endregion
 
