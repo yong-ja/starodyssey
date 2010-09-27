@@ -22,7 +22,9 @@
 
 #endregion
 
+using System;
 using System.ComponentModel;
+using System.Text;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 
@@ -56,10 +58,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     [XmlType(TypeName = "Button")]
     public class XmlButton : XmlBaseControl
     {
-        public XmlButton()
-        {
-            Content = string.Empty;
-        }
 
         public XmlButton(Button button) : base(button)
         {
@@ -77,6 +75,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             if (button != null) Content = button.Content;
 
             else throw Error.ArgumentNull("control", GetType(), "FromControl");
+        }
+
+        protected override void WriteCustomCSCode(StringBuilder sb)
+        {
+            sb.AppendFormat("\t\tContent = {0},\n", Content);
         }
     }
 

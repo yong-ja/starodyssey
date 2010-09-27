@@ -26,6 +26,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Controls;
@@ -43,8 +44,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         protected XmlBaseControl()
         {
             Id = string.Empty;
-            Position = string.Empty;
-            Size = string.Empty;
+            PositionString = string.Empty;
+            SizeString = string.Empty;
         }
 
         protected XmlBaseControl(BaseControl control)
@@ -53,13 +54,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 throw Error.InCreatingFromObject("control", GetType(), typeof (BaseControl));
 
             Id = control.Id;
-            Position = (control.Position != Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : string.Empty;
-            Size = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : string.Empty;
+            Position = control.Position;
+            Size = control.Size;
+            PositionString = (control.Position != Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : string.Empty;
+            SizeString = (control.Size != Size.Empty) ? XmlCommon.EncodeSize(control.Size) : string.Empty;
 
             IsEnabled = control.IsEnabled;
             IsVisible = control.IsVisible;
             TextStyleClass = control.TextDescriptionClass;
-            ControlStyleClass = control.ControlDescriptionClass;
+            ControlDescriptionClass = control.ControlDescriptionClass;
 
         }
 
@@ -67,13 +70,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [Category("Design")]
         public string Id { get; set; }
 
-        [XmlAttribute]
+        [XmlAttribute("Position")]
         [Category("Layout")]
-        public string Position { get; set; }
+        public string PositionString { get; set; }
 
-        [XmlAttribute]
+        [XmlAttribute("Size")]
         [Category("Layout")]
-        public string Size { get; set; }
+        public string SizeString { get; set; }
+
+        [XmlIgnore]
+        internal Vector2 Position { get; private set; }
+        [XmlIgnore]
+        internal Size Size { get; private set;}
+
 
         [XmlAttribute]
         [Category("Design")]
@@ -89,7 +98,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         [XmlAttribute]
         [Category("Appearance")]
-        public string ControlStyleClass { get; set; }
+        public string ControlDescriptionClass { get; set; }
 
         internal virtual void FromControl(BaseControl control)
         {
@@ -97,13 +106,31 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 throw Error.InCreatingFromObject("control", GetType(), typeof (BaseControl));
 
             Id = control.Id;
-            Position = (control.Position == Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : null;
-            Size = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : null;
+            PositionString = (control.Position != Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : null;
+            SizeString = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : null;
             IsEnabled = control.IsEnabled;
             IsVisible = control.IsVisible;
             TextStyleClass = control.TextDescriptionClass;
-            ControlStyleClass = control.ControlDescriptionClass;
+            ControlDescriptionClass = control.ControlDescriptionClass;
         }
+
+        public void ToCSharpCode(StringBuilder sb)
+        {
+            Type ctlType = UIParser.GetControlTypeForWrapper(GetType());
+            string typeName = ctlType.Name;
+            sb.AppendFormat("{0} {1} = new {0}\n", typeName, Id);
+            sb.Append("\t{\n");
+            sb.AppendFormat("\t\tId = \"{0}\",\n", Id);
+            sb.AppendFormat("\t\tControlDescriptionClass = \"{0}\",\n", ControlDescriptionClass);
+            if (Position != Vector2.Zero)
+                sb.AppendFormat("\t\tPosition = new Vector2({0},{1}),\n", Position.X, Position.Y);
+            if (Size != Size.Empty)
+                sb.AppendFormat("\t\tSize = new Size({0},{1}),\n", Size.Width, Size.Height);
+
+            sb.Append("\t};\n\n");
+        }
+
+        protected abstract void WriteCustomCSCode(StringBuilder sb);
     }
 
     /// <summary>
