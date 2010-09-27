@@ -103,9 +103,9 @@ namespace AvengersUtd.StarOdyssey.Scenes
             DropDownList d = new DropDownList
                                  {
                                      Position = new Vector2(500f, 100f),
-                                     Items
+                                     Items = new[]{"Prova1", "Prova2", "Prova3"}
                                  };
-            d.AddItems("Prova1", "Prova2", "Prova3");
+            d.AddItems();
 
             hud.Add(d);
             Game.Logger.Activate();

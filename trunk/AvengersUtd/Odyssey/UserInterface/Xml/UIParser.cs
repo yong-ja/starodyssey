@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -37,37 +38,46 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     /// </summary>
     public static class UIParser
     {
-        static readonly Dictionary<Type, Type> registeredTypes;
+        static readonly Dictionary<Type, Type> registeredWrappers;
 
 
         static UIParser()
         {
-            registeredTypes = new Dictionary<Type, Type>
+            registeredWrappers = new Dictionary<Type, Type>
                                   {
                                       {typeof (Button), typeof (XmlButton)},
                                       {typeof (Panel), typeof (XmlPanel)}
                                   };
 
-            //registeredTypes.Add(typeof (CheckBox), typeof (XmlCheckBox));
-            //registeredTypes.Add(typeof (DropDownList), typeof (XmlDropDownList));
-            //registeredTypes.Add(typeof (GroupBox), typeof (XmlGroupBox));
-            //registeredTypes.Add(typeof (Label), typeof (XmlLabel));
-            //registeredTypes.Add(typeof (OptionGroup), typeof (XmlOptionGroup));
-            //registeredTypes.Add(typeof (TextBox), typeof (XmlTextBox));
-            //registeredTypes.Add(typeof (TrackBar), typeof (XmlTrackBar));
-            //registeredTypes.Add(typeof (Window), typeof (XmlWindow));
+            //registeredWrappers.Add(typeof (CheckBox), typeof (XmlCheckBox));
+            //registeredWrappers.Add(typeof (DropDownList), typeof (XmlDropDownList));
+            //registeredWrappers.Add(typeof (GroupBox), typeof (XmlGroupBox));
+            //registeredWrappers.Add(typeof (Label), typeof (XmlLabel));
+            //registeredWrappers.Add(typeof (OptionGroup), typeof (XmlOptionGroup));
+            //registeredWrappers.Add(typeof (TextBox), typeof (XmlTextBox));
+            //registeredWrappers.Add(typeof (TrackBar), typeof (XmlTrackBar));
+            //registeredWrappers.Add(typeof (Window), typeof (XmlWindow));
         }
 
         public static Type GetWrapperTypeForControl(Type controlClass)
         {
-            return registeredTypes[controlClass];
+            try { return registeredWrappers[controlClass];}
+            catch(KeyNotFoundException ex)
+            {
+                return typeof(XmlPanel);
+            }
+        }
+
+        public static Type GetControlTypeForWrapper(Type wrapperClass)
+        {
+            return (from pair in registeredWrappers where pair.Value == wrapperClass select pair.Key).FirstOrDefault();
         }
 
 
         public static void RegisterXmlWrapper(Type controlType, Type wrapperType)
         {
-            if (!registeredTypes.ContainsKey(controlType))
-                registeredTypes.Add(controlType, wrapperType);
+            if (!registeredWrappers.ContainsKey(controlType))
+                registeredWrappers.Add(controlType, wrapperType);
         }
 
         //public static void SerializeHud(Hud hud, string outputFilename)
@@ -77,7 +87,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         //    XmlAttributes xmlAttributes = new XmlAttributes();
         //    xmlAttributes.XmlArray = new XmlArrayAttribute("Controls");
-        //    foreach (Type type in registeredTypes.Values)
+        //    foreach (Type type in registeredWrappers.Values)
         //    {
         //        xmlAttributes.XmlArrayItems.Add(new XmlArrayItemAttribute(type));
         //    }

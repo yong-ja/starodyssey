@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 
@@ -10,7 +11,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     {
         List<XmlBaseControl> xmlControlList;
 
-        protected XmlContainerControl()
+        protected XmlContainerControl(BaseControl control) : base(control)
         {
             xmlControlList = new List<XmlBaseControl>();
         }
@@ -44,15 +45,25 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
             foreach (BaseControl childControl in containerControl.Controls)
             {
+
+                Type wrapperType = UIParser.GetWrapperTypeForControl(childControl.GetType());
+                if (wrapperType == null) continue;
+
                 MethodInfo mi =
                     typeof (XmlContainerControl).GetMethod("CreateWrapperForControl",
                                                            BindingFlags.NonPublic | BindingFlags.Instance);
-                mi = mi.MakeGenericMethod(UIParser.GetWrapperTypeForControl(childControl.GetType()));
+                
+                mi = mi.MakeGenericMethod();
                 mi.Invoke(this, new object[]
                               {
                                   childControl
                               });
             }
+        }
+
+        protected override void WriteCustomCSCode(StringBuilder sb)
+        {
+            return;
         }
     }
 
@@ -60,9 +71,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     [XmlType("Panel")]
     public class XmlPanel : XmlContainerControl
     {
-        public XmlPanel() : base()
+        public XmlPanel(BaseControl control) : base(control)
         {
         }
+
+        
     }
 
     //[XmlType(TypeName = "GroupBox")]
@@ -124,7 +137,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     [XmlType("HUD")]
     public class XmlHud : XmlContainerControl
     {
-        public XmlHud() : base()
+        public XmlHud(Hud hud) : base(hud)
         {
         }
     }
