@@ -65,6 +65,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         {
             return;
         }
+
+        public virtual void WriteContainerCSCode(StringBuilder sb)
+        {
+            foreach (XmlBaseControl xmlBaseControl in XmlControlList)
+            {
+                XmlContainerControl xmlContainerControl = xmlBaseControl as XmlContainerControl
+                if ( xmlContainerControl!= null)
+                    xmlContainerControl.WriteContainerCSCode(sb);
+                    
+                sb.AppendFormat("{0}.Add({1});\n", this.Id, xmlBaseControl.Id);
+
+            }
+        }
     }
 
     [Serializable]
@@ -140,5 +153,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public XmlHud(Hud hud) : base(hud)
         {
         }
+
+        public override void WriteCSharpCode(StringBuilder sb)
+        {
+            sb.AppendLine("Hud = Hud.FromDescription(Game.Context.Device, hudDescription);");
+        }
+
+
     }
 }

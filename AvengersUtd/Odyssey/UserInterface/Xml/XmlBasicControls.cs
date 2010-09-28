@@ -219,4 +219,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     //        isChecked = checkBox.IsChecked;
     //    }
     // }
+
+    public class XmlUnknownControl : XmlBaseControl
+    {
+        protected override void WriteCustomCSCode(StringBuilder sb)
+        {
+            return;
+        }
+    }
 }

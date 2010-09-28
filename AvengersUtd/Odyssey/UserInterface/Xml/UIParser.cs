@@ -62,9 +62,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public static Type GetWrapperTypeForControl(Type controlClass)
         {
             try { return registeredWrappers[controlClass];}
-            catch(KeyNotFoundException ex)
+            catch(KeyNotFoundException)
             {
-                return typeof(XmlPanel);
+                return typeof(XmlUnknownControl);
             }
         }
 
