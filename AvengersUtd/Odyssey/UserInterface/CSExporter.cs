@@ -29,7 +29,7 @@ namespace AvengersUtd.Odyssey.UserInterface
                 xmlControl.WriteCSharpCode(sb);
             }
 
-            xmlHud.WriteContainerCSCode();
+            xmlHud.WriteContainerCSCode(sb);
             
 
             return sb.ToString();

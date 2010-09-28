@@ -29,5 +29,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         ControlCollection Controls { get; }
         ControlCollection PrivateControlCollection { get; }
         ControlCollection PublicControlCollection { get; }
+        bool ContainsSprites { get; }
     }
 }

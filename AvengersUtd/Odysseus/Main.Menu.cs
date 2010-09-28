@@ -18,7 +18,7 @@ namespace AvengersUtd.Odysseus
             if (this.UIRenderer.Hud.Controls.IsEmpty)
                 return;
 
-            MessageBox.Show(CSExporter.Export(UIRenderer.Hud.Controls));
+            MessageBox.Show(CSExporter.Export(UIRenderer.Hud));
 
         }
 

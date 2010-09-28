@@ -373,10 +373,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (HudDescription.Multithreaded)
             {
-                if (!uiUCommand.TaskQueue.Contains(UpdateSprites) && control is ISpriteObject)
+                if (!uiUCommand.TaskQueue.Contains(UpdateSprites))
                 {
-                    uiUCommand.TaskQueue.Enqueue(UpdateSprites);
-                    uiUCommand.TaskQueue.Enqueue(uiUCommand.Synch);
+                    if (control is ISpriteObject || (containerControl != null && containerControl.ContainsSprites))
+                    {
+                        uiUCommand.TaskQueue.Enqueue(UpdateSprites);
+                        uiUCommand.TaskQueue.Enqueue(uiUCommand.Synch);
+                    }
                 }
             }
             else
