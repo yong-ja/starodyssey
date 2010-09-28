@@ -10,21 +10,30 @@ namespace AvengersUtd.Odyssey.UserInterface
 {
     public static class CSExporter
     {
-        public static string Export(ControlCollection controls)
+        public static string Export(Hud hud)
         {
-            if (controls.IsEmpty)
+            if (hud.Controls.IsEmpty)
                 throw Error.ArgumentInvalid("controls", typeof (CSExporter), "Export");
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (XmlBaseControl xmlControl in from baseControl in controls.Where(ctl => ctl.IsVisible)
+            XmlHud xmlHud = new XmlHud(hud);
+            xmlHud.WriteCSharpCode(sb);
+
+            sb.AppendLine("\nHud.BeginDesign();");
+
+            foreach (XmlBaseControl xmlControl in from baseControl in hud.Controls.Where(ctl => ctl.IsVisible)
                                                   let xmlControlType = UIParser.GetWrapperTypeForControl(baseControl.GetType())
                                                   select (XmlBaseControl) Activator.CreateInstance(xmlControlType, baseControl))
             {
-                xmlControl.ToCSharpCode(sb);
+                xmlControl.WriteCSharpCode(sb);
             }
 
+            xmlHud.WriteContainerCSCode();
+            
+
             return sb.ToString();
+
         }
 
         

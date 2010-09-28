@@ -114,7 +114,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             ControlDescriptionClass = control.ControlDescriptionClass;
         }
 
-        public void ToCSharpCode(StringBuilder sb)
+        public virtual void WriteCSharpCode(StringBuilder sb)
         {
             Type ctlType = UIParser.GetControlTypeForWrapper(GetType());
             string typeName = ctlType.Name;
@@ -126,6 +126,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 sb.AppendFormat("\t\tPosition = new Vector2({0},{1}),\n", Position.X, Position.Y);
             if (Size != Size.Empty)
                 sb.AppendFormat("\t\tSize = new Size({0},{1}),\n", Size.Width, Size.Height);
+
+            WriteCustomCSCode(sb);
 
             sb.Append("\t};\n\n");
         }
