@@ -70,7 +70,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         {
             foreach (XmlBaseControl xmlBaseControl in XmlControlList)
             {
-                XmlContainerControl xmlContainerControl = xmlBaseControl as XmlContainerControl
+                XmlContainerControl xmlContainerControl = xmlBaseControl as XmlContainerControl;
                 if ( xmlContainerControl!= null)
                     xmlContainerControl.WriteContainerCSCode(sb);
                     

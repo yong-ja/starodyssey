@@ -91,6 +91,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             get { return listPanel.Controls; }
         }
 
+
+        bool IContainer.ContainsSprites
+        {
+            get
+            {
+                foreach (ISpriteObject spriteObject in
+                    PublicControlCollection.Select(baseControl => baseControl as ISpriteObject))
+                {
+                    if (spriteObject != null)
+                        return true;
+                    else continue;
+                }
+                return false;
+            }
+        }
         protected ControlCollection PrivateControlCollection
         {
             get { return controls; }
@@ -111,6 +126,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             get { return items; }
             set
             {
+                items = value;
                 AddItems(items);
             }
         }
@@ -330,15 +346,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             listPanel.IsVisible = false;
         }
 
-        public void AddItems(params string[] items)
+        public void AddItems(params string[] dropDownItems)
         {
-            this.items = items;
-            foreach (TextLiteral textLiteral in items.Select(item => new TextLiteral
+            foreach (TextLiteral textLiteral in dropDownItems.Select(item => new TextLiteral
                                                                          {
                                                                              Id = ControlTag + "_Item" + listPanel.Controls.Count,
                                                                              Content = item, 
                                                                              Position = new Vector2(0, listPanel.Controls.Count*itemSize.Height),
-                                                                             TextDescription = TextDescription
+                                                                             TextDescription = TextDescription,
+                                                                             IsSubComponent = true
                                                                          }))
             {
                 listPanel.Add(textLiteral);

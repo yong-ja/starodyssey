@@ -164,5 +164,20 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 .FirstOrDefault(control => control.IntersectTest(cursorLocation));
         }
 
+
+        bool IContainer.ContainsSprites
+        {
+            get
+            {
+                foreach (ISpriteObject spriteObject in
+                    PublicControlCollection.Select(baseControl => baseControl as ISpriteObject))
+                {
+                    if (spriteObject != null)
+                        return true;
+                    else continue;
+                }
+                return false;
+            }
+        }
     }
 }
