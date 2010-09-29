@@ -9,6 +9,9 @@ using System.Text;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
+using ContainerControl = AvengersUtd.Odyssey.UserInterface.Controls.ContainerControl;
+using Panel = AvengersUtd.Odyssey.UserInterface.Controls.Panel;
 
 namespace AvengersUtd.Odysseus
 {
@@ -33,7 +36,7 @@ namespace AvengersUtd.Odysseus
             {
                 CheckOnClick = true,
                 TextImageRelation = TextImageRelation.ImageBeforeText,
-                Text = "Pointer111111111"
+                Text = "Pointer"
             };
 
             pointerButton.CheckedChanged += delegate
@@ -50,47 +53,68 @@ namespace AvengersUtd.Odysseus
             toolStrip.Items.Add(pointerButton);
 
             // Fill Toolstrip with Assembly controls
-            Assembly odysseyUI = Assembly.GetAssembly(typeof(BaseControl));
 
-            Dictionary<string, Type> baseTypes = new Dictionary<string, Type>
-                                                     {{"Buttons", typeof (Odyssey.UserInterface.Controls.Button)}};
-            Type[] controlTypes = odysseyUI.GetTypes().Where(t => t.IsSubclassOf(typeof(BaseControl))).ToArray();
+            AddToolStripLabel("Common");
+            AddInToolStrip(typeof (Button));
+            AddInToolStrip(typeof(DropDownList));
+            AddToolStripLabel("Containers");
+            AddInToolStrip(typeof(Panel));
+            //Assembly odysseyUI = Assembly.GetAssembly(typeof(BaseControl));
 
-            foreach (KeyValuePair<string, Type> item in baseTypes)
+            //Dictionary<string, Type> baseTypes = new Dictionary<string, Type>
+            //                                         {
+            //                                             {"Common", typeof (BaseControl)},
+            //                                             {"Containers", typeof (ContainerControl)}
+            //                                         };
+            //Type[] controlTypes = odysseyUI.GetTypes().Where(t => t.IsSubclassOf(typeof(BaseControl))).ToArray();
+
+            //foreach (KeyValuePair<string, Type> item in baseTypes)
+            //{
+            //    ToolStripLabel label = new ToolStripLabel
+            //    {
+            //        Text = item.Key,
+            //        Font = new Font(Font, FontStyle.Bold | FontStyle.Underline)
+            //    };
+
+            //    toolStrip.Items.Add(label);
+            //    Type currentType = item.Value;
+            //    Predicate<Type> baseTypePredicate = (t) =>
+            //        (t.IsSubclassOf(currentType) && !t.IsSubclassOf(typeof(Container)));
+            //    Type[] matchingTypes = Array.FindAll(controlTypes, baseTypePredicate);
+
+            //    Comparison<Type> alphabeticComparison = (x, y) => string.Compare(x.Name, y.Name);
+            //    Array.Sort(matchingTypes, alphabeticComparison);
+
+            //    foreach (Type type in matchingTypes.Where(type => type.IsPublic && type.BaseType != null))
+            //    {
+            //        AddInToolStrip(type);
+            //    }
+            //}
+        }
+
+        void AddToolStripLabel(string labelText)
+        {
+            ToolStripLabel label = new ToolStripLabel
             {
-                ToolStripLabel label = new ToolStripLabel
-                {
-                    Text = item.Key,
-                    Font = new Font(Font, FontStyle.Bold | FontStyle.Underline)
-                };
+                Text = labelText,
+                Font = new Font(Font, FontStyle.Bold | FontStyle.Underline)
+            };
 
-                toolStrip.Items.Add(label);
-                Type currentType = item.Value;
-                Predicate<Type> baseTypePredicate = (t) => t.IsSubclassOf(currentType) || t == currentType;
-                Type[] matchingTypes = Array.FindAll(controlTypes, baseTypePredicate);
-
-                Comparison<Type> alphabeticComparison = (x, y) => string.Compare(x.Name, y.Name);
-                Array.Sort(matchingTypes, alphabeticComparison);
-
-                foreach (Type type in matchingTypes.Where(type => type.IsPublic && type.BaseType != null))
-                {
-                    AddInToolStrip(type);
-                }
-            }
+            toolStrip.Items.Add(label);
         }
 
         void AddInToolStrip(Type controlType)
         {
 
-            ToolStrip destinationToolStrip = null;
+            //ToolStrip destinationToolStrip = null;
 
-            if (controlType.Name == "Button")
-            {
-                destinationToolStrip = toolStrip;
+            //if (controlType.Name == "Button")
+            //{
+            //    destinationToolStrip = toolStrip;
 
-            }
+            //}
 
-            if (destinationToolStrip == null)
+            if (toolStrip == null)
                 return;
 
             ToolStripToggleButton item = new ToolStripToggleButton
@@ -102,7 +126,7 @@ namespace AvengersUtd.Odysseus
             };
 
 
-            destinationToolStrip.Items.Add(item);
+            toolStrip.Items.Add(item);
         }
 
         public void DeselectToolStripButton()

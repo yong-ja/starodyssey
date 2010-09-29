@@ -68,15 +68,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [Category("Appearance")]
         public string Content { get; set; }
 
-        internal override void FromControl(BaseControl control)
-        {
-            base.FromControl(control);
-            Button button = control as Button;
-            if (button != null) Content = button.Content;
-
-            else throw Error.ArgumentNull("control", GetType(), "FromControl");
-        }
-
         protected override void WriteCustomCSCode(StringBuilder sb)
         {
             sb.AppendFormat("\t\tContent = {0},\n", Content);

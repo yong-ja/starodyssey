@@ -100,19 +100,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [Category("Appearance")]
         public string ControlDescriptionClass { get; set; }
 
-        internal virtual void FromControl(BaseControl control)
-        {
-            if (control == null)
-                throw Error.InCreatingFromObject("control", GetType(), typeof (BaseControl));
-
-            Id = control.Id;
-            PositionString = (control.Position != Vector2.Zero) ? XmlCommon.EncodeVector2(control.Position) : null;
-            SizeString = (control.Size != System.Drawing.Size.Empty) ? XmlCommon.EncodeSize(control.Size) : null;
-            IsEnabled = control.IsEnabled;
-            IsVisible = control.IsVisible;
-            TextStyleClass = control.TextDescriptionClass;
-            ControlDescriptionClass = control.ControlDescriptionClass;
-        }
 
         public virtual void WriteCSharpCode(StringBuilder sb)
         {

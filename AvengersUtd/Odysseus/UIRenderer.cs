@@ -81,8 +81,6 @@ namespace AvengersUtd.Odysseus
 
         void ConvertControl()
         {
-            
-
             if (PropertyBox.InvokeRequired)
             {
                 ConvertControlCallback c = ConvertControl;
@@ -92,9 +90,7 @@ namespace AvengersUtd.Odysseus
             {
                 Type xmlControlType = UIParser.GetWrapperTypeForControl(ControlSelector.TargetControl.GetType());
 
-                XmlBaseControl xmlControl =
-                (XmlBaseControl)
-                Activator.CreateInstance(xmlControlType, ControlSelector.TargetControl);
+                XmlBaseControl xmlControl = (XmlBaseControl) Activator.CreateInstance(xmlControlType, ControlSelector.TargetControl);
                 PropertyBox.SelectedControl = xmlControl;
             }
         }
