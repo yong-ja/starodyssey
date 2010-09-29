@@ -105,8 +105,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
                                      Position = new Vector2(500f, 100f),
                                      Items = new[]{"Prova1", "Prova2", "Prova3"}
                                  };
-            d.AddItems();
-
             hud.Add(d);
             Game.Logger.Activate();
             hud.Init();

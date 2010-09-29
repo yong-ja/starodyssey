@@ -44,13 +44,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         static UIParser()
         {
             registeredWrappers = new Dictionary<Type, Type>
-                                  {
-                                      {typeof (Button), typeof (XmlButton)},
-                                      {typeof (Panel), typeof (XmlPanel)}
-                                  };
+                                     {
+                                         {typeof (Button), typeof (XmlButton)},
+                                         {typeof (Panel), typeof (XmlPanel)},
+                                         {typeof (DropDownList), typeof (XmlDropDownList)}
+                                     };
 
             //registeredWrappers.Add(typeof (CheckBox), typeof (XmlCheckBox));
-            //registeredWrappers.Add(typeof (DropDownList), typeof (XmlDropDownList));
             //registeredWrappers.Add(typeof (GroupBox), typeof (XmlGroupBox));
             //registeredWrappers.Add(typeof (Label), typeof (XmlLabel));
             //registeredWrappers.Add(typeof (OptionGroup), typeof (XmlOptionGroup));

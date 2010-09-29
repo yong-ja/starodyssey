@@ -189,6 +189,7 @@
     <None Include="UserInterface\Xml\XmlComplexControls.cs" />
     <Compile Include="UserInterface\Xml\XmlContainers.cs" />
     <Compile Include="UserInterface\Xml\XmlControlStyle.cs" />
+    <Compile Include="UserInterface\Xml\XmlDropDownList.cs" />
     <Compile Include="UserInterface\Xml\XmlTextDescription.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

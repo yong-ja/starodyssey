@@ -55,7 +55,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         #region Private members
         // Bool variable used to detect if the control is in its droppeddown status
         bool droppedDown;
-        private string[] items;
 
         Panel listPanel;
         // Currently selected TextLiteral.
@@ -64,8 +63,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         ControlCollection controls;
 
         // Currently Selected Index
-        int selectedIndex;
-        
+
         // Sizes for the various sub-parts of the control
         ShapeDescription boxDescriptor;
         Size boxSize;
@@ -111,25 +109,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             get { return controls; }
         }
 
-        public int SelectedIndex
-        {
-            get { return selectedIndex; }
-        }
+        public int SelectedIndex { get; private set; }
 
         public string SelectedItem
         {
-            get { return ((TextLiteral) Controls[selectedIndex]).Content; }
+            get { return ((TextLiteral) Controls[SelectedIndex]).Content; }
         }
 
-        public string[] Items
-        {
-            get { return items; }
-            set
-            {
-                items = value;
-                AddItems(items);
-            }
-        }
+        public string[] Items { get; set; }
 
         #endregion
 
@@ -150,6 +137,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             IsFocusable = true;
             itemSize = new Size(Size.Width, TextDescription.Size + Description.Padding.Vertical);
             Shapes = new ShapeCollection(1);
+            Items = new[]{Id};
         }
 
         void CreateDropDownButton()
@@ -325,6 +313,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 control.Depth = Depth.AsChildOf(listPanel.Depth);
             }
+            AddItems(Items);
             
         }
 
@@ -369,7 +358,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (listPanel.Controls[0] == null) return;
 
             selectedTextLiteral.Content = ((TextLiteral) listPanel.Controls[0]).Content;
-            selectedIndex = 0;
+            SelectedIndex = 0;
         }
 
         /// <summary>
@@ -378,10 +367,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="index">The index of the TextLiteral to select.</param>
         public void Select(int index)
         {
-            if (index != selectedIndex && index < listPanel.Controls.Count)
+            if (index != SelectedIndex && index < listPanel.Controls.Count)
             {
-                selectedIndex = index;
-                selectedTextLiteral.Content = ((TextLiteral) listPanel.Controls[selectedIndex]).Content;
+                SelectedIndex = index;
+                selectedTextLiteral.Content = ((TextLiteral) listPanel.Controls[SelectedIndex]).Content;
                 OnSelectedIndexChanged(EventArgs.Empty);
             }
             if (droppedDown)

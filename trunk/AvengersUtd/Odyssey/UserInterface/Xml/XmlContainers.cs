@@ -19,47 +19,44 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlArray("Controls")]
         public virtual List<XmlBaseControl> XmlControlList
         {
-            get
-            {
-                if (xmlControlList.Count > 0)
-                    return xmlControlList;
-                else return null;
+            get {
+                return xmlControlList.Count > 0 ? xmlControlList : null;
             }
             set { xmlControlList = value; }
         }
 
-        void CreateWrapperForControl<TWrapperClass>(BaseControl ctl)
-            where TWrapperClass : XmlBaseControl, new()
-        {
-            TWrapperClass wrapper = new TWrapperClass();
-            wrapper.FromControl(ctl);
-            xmlControlList.Add(wrapper);
-        }
+        //void CreateWrapperForControl<TWrapperClass>(BaseControl ctl)
+        //    where TWrapperClass : XmlBaseControl, new()
+        //{
+        //    TWrapperClass wrapper = new TWrapperClass();
+        //    wrapper.FromControl(ctl);
+        //    xmlControlList.Add(wrapper);
+        //}
 
-        internal override void FromControl(BaseControl control)
-        {
-            base.FromControl(control);
+        //internal override void FromControl(BaseControl control)
+        //{
+        //    base.FromControl(control);
 
-            xmlControlList = new List<XmlBaseControl>();
-            ContainerControl containerControl = (ContainerControl) control;
+        //    xmlControlList = new List<XmlBaseControl>();
+        //    ContainerControl containerControl = (ContainerControl) control;
 
-            foreach (BaseControl childControl in containerControl.Controls)
-            {
+        //    foreach (BaseControl childControl in containerControl.Controls)
+        //    {
 
-                Type wrapperType = UIParser.GetWrapperTypeForControl(childControl.GetType());
-                if (wrapperType == null) continue;
+        //        Type wrapperType = UIParser.GetWrapperTypeForControl(childControl.GetType());
+        //        if (wrapperType == null) continue;
 
-                MethodInfo mi =
-                    typeof (XmlContainerControl).GetMethod("CreateWrapperForControl",
-                                                           BindingFlags.NonPublic | BindingFlags.Instance);
+        //        MethodInfo mi =
+        //            typeof (XmlContainerControl).GetMethod("CreateWrapperForControl",
+        //                                                   BindingFlags.NonPublic | BindingFlags.Instance);
                 
-                mi = mi.MakeGenericMethod();
-                mi.Invoke(this, new object[]
-                              {
-                                  childControl
-                              });
-            }
-        }
+        //        mi = mi.MakeGenericMethod();
+        //        mi.Invoke(this, new object[]
+        //                      {
+        //                          childControl
+        //                      });
+        //    }
+        //}
 
         protected override void WriteCustomCSCode(StringBuilder sb)
         {
@@ -86,6 +83,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     {
         public XmlPanel(BaseControl control) : base(control)
         {
+
         }
 
         
