@@ -644,7 +644,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (parent != null)
                 ComputeAbsolutePosition();
 
-            UpdateAppearance();
+            UpdateAppearance(UpdateAction.Move);
 
             EventHandler handler = (EventHandler) Events[EventPositionChanged];
             if (handler != null)
