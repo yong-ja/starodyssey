@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.Rendering;
+using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
@@ -27,23 +28,22 @@ namespace AvengersUtd.Odysseus
             get { return designMode; }
             set
             {
-                if (designMode != value)
-                {
-                    designMode = value;
+                if (designMode == value) return;
+                designMode = value;
 
-                    if (designMode)
-                    {
-                        Hud.MouseDown += SelectionRectangle.StartSelection;
-                        Hud.MouseMove += SelectionRectangle.UpdateSelection;
-                        Hud.MouseUp += SelectionRectangle.FinalizeSelection;
-                    }
-                    else
-                    {
-                        Hud.MouseDown -= SelectionRectangle.StartSelection;
-                        Hud.MouseMove -= SelectionRectangle.UpdateSelection;
-                        Hud.MouseUp -= SelectionRectangle.FinalizeSelection;
-                        Hud.MouseClick += (HudMouseClick);
-                    }
+                if (designMode)
+                {
+                    Hud.MouseDown += SelectionRectangle.StartSelection;
+                    Hud.MouseMove += SelectionRectangle.UpdateSelection;
+                    Hud.MouseUp += SelectionRectangle.FinalizeSelection;
+                    Hud.MouseClick -= HudMouseClick;
+                }
+                else
+                {
+                    Hud.MouseDown -= SelectionRectangle.StartSelection;
+                    Hud.MouseMove -= SelectionRectangle.UpdateSelection;
+                    Hud.MouseUp -= SelectionRectangle.FinalizeSelection;
+                    Hud.MouseClick += (HudMouseClick);
                 }
             }
         }
@@ -73,6 +73,8 @@ namespace AvengersUtd.Odysseus
 
                     ControlSelector.TargetControl = control;
                     ControlSelector.IsVisible = true;
+                //ControlSelector.ComputeAbsolutePosition();
+                //ControlSelector.UpdateAppearance();
 
                 ConvertControl();
             }
