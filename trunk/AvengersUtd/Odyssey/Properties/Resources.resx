@@ -187,7 +187,7 @@
     <value>Error</value>
   </data>
   <data name="ERR_WrongCase" xml:space="preserve">
-    <value>Parameter {0} is not  valid in {1}.</value>
+    <value>Parameter {0} is not valid in {1}.</value>
   </data>
   <data name="ERR_ArrayElements" xml:space="preserve">
     <value>The {0} array does not hold {1} elements.</value>

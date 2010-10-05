@@ -494,8 +494,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 return;
 
             //Console.WriteLine(string.Format("Enqueing {0} for {1}",control.Id, updateAction));
-                
-            updateQueue.Enqueue(new UpdateElement(control, updateAction));
+            UpdateElement updateElement = new UpdateElement(control, updateAction);
+            updateQueue.Enqueue(updateElement);
             control.IsBeingUpdated = true;
         }
 

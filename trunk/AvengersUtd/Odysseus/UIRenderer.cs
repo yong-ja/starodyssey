@@ -71,10 +71,8 @@ namespace AvengersUtd.Odysseus
             else
             {
 
-                    ControlSelector.TargetControl = control;
-                    ControlSelector.IsVisible = true;
-                //ControlSelector.ComputeAbsolutePosition();
-                //ControlSelector.UpdateAppearance();
+                ControlSelector.TargetControl = control;
+                ControlSelector.IsVisible = true;
 
                 ConvertControl();
             }
@@ -136,6 +134,7 @@ namespace AvengersUtd.Odysseus
                     zNear: Game.CurrentRenderer.Camera.NearClip,
                     multithreaded: true
                     ));
+
             Hud.BeginDesign();
             Grid grid = new Grid {Size = Hud.Size};
             SelectionRectangle = new SelectionRectangle{IsVisible = false};
@@ -151,7 +150,6 @@ namespace AvengersUtd.Odysseus
             grid.SendToBack();
             Hud.Init();
             Hud.EndDesign();
-            
             Hud.AddToScene(Scene);
 
             ClearColor = Color.CornflowerBlue;

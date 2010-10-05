@@ -367,7 +367,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter {0} is not  valid in {1}..
+        ///   Looks up a localized string similar to Parameter {0} is not valid in {1}..
         /// </summary>
         internal static string ERR_WrongCase {
             get {
