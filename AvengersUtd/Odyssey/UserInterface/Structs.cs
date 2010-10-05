@@ -16,6 +16,9 @@ namespace AvengersUtd.Odyssey.UserInterface
         {
             Control = control;
             Action = action;
+
+            if (Action == UpdateAction.None)
+                    Console.WriteLine("!");
         }
     }
 

@@ -620,9 +620,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected virtual void OnSizeChanged(EventArgs e)
         {
-            ClientSize = new Size(Size.Width - (Description.BorderSize * 2 + Description.Padding.Horizontal),
-                                  Size.Height - (Description.BorderSize * 2 + Description.Padding.Vertical));
-
             if (!DesignMode)
             {
                 UpdateSizeDependantParameters();

@@ -146,11 +146,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                                  {
                                      Id = ControlTag + '_' + DropDownButtonTag,
                                      DecorationType = DecorationType.DownsideTriangle,
-                                     IsSubComponent = true
+                                     IsSubComponent = true,
+                                     CanRaiseEvents = false,
+                                     IsFocusable = false
                                  };
+            // DropDownButton
 
-
-            dropDownButton.CanRaiseEvents = dropDownButton.IsFocusable = false;
             PrivateControlCollection.Add(dropDownButton);
         }
 
@@ -161,7 +162,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                                 Id = ControlTag + "_Panel",
                                 ControlDescriptionClass = DropDownPanelTag,
                                 IsVisible = false,
-                                IsSubComponent = true
+                                IsSubComponent = true,
+                                Position = new Vector2(0, boxSize.Height)
                             };
 
             listPanel.MouseMove += (sender, e) =>
@@ -379,27 +381,28 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void CreateSubComponents()
         {
+            boxSize = new Size(Size.Width, Size.Height);
+            itemSize = new Size(Size.Width, itemSize.Height);
             // Create child-controls
             CreateDropDownButton();
             CreateDropDownPanel();
+            
+            textLiteralListPosition = TopLeftPosition;
             UpdateSizeDependantParameters();
-            UpdatePositionDependantParameters();
         }
 
         protected override void UpdateSizeDependantParameters()
         {
             // Define sub-parts sizes
+            dropDownButton.Position = new Vector2(Size.Width - DefaultDropDownButtonWidth,0);
             dropDownButton.Size = new Size(DefaultDropDownButtonWidth, Size.Height);
-            boxSize = new Size(Size.Width - dropDownButton.Size.Width + Description.BorderSize, Size.Height);
+            boxSize = new Size(Size.Width, Size.Height);
             itemSize = new Size(Size.Width, itemSize.Height);
         }
 
         protected override void UpdatePositionDependantParameters()
         {
             textLiteralListPosition = TopLeftPosition;
-            // DropDownButton
-            dropDownButton.Position = new Vector2(boxSize.Width - Description.BorderSize, 0);
-            listPanel.Position = new Vector2(0, boxSize.Height);
         }
 
         protected override void OnTextDescriptionChanged(EventArgs e)
