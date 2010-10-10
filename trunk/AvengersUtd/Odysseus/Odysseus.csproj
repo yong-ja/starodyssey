@@ -50,16 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlphaSlider.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="ColorChangedEventArgs.cs" />
-    <Compile Include="ColorChooser.cs">
+    <Compile Include="UIControls\ColorChooser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorHandler.cs" />
-    <Compile Include="ColorWheel.cs" />
-    <Compile Include="CustomColorDialog.cs" />
+    <Compile Include="UIControls\ColorHandler.cs" />
+    <Compile Include="UIControls\ColorWheel.cs" />
+    <Compile Include="UIControls\GradientEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIControls\GradientEditor.Designer.cs">
+      <DependentUpon>GradientEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,9 +105,24 @@
     <Compile Include="ToolStripToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UIControls\GradientBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIControls\GradientBuilder.Designer.cs">
+      <DependentUpon>GradientBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIControls\GradientContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIControls\GradientContainer.Designer.cs">
+      <DependentUpon>GradientContainer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIRenderer.cs" />
-    <EmbeddedResource Include="ColorChooser.resx">
+    <EmbeddedResource Include="UIControls\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\GradientEditor.resx">
+      <DependentUpon>GradientEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -132,6 +149,12 @@
     <EmbeddedResource Include="Toolbox.resx">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\GradientBuilder.resx">
+      <DependentUpon>GradientBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\GradientContainer.resx">
+      <DependentUpon>GradientContainer.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -152,6 +175,18 @@
       <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Icons\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Icons\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Icons\rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Icons\color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

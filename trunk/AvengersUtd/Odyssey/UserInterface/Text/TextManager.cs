@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using AvengersUtd.Odyssey.Graphics.ImageProcessing;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.Utils;
@@ -75,43 +76,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                             graphics.FillPath(brush, path);
                         }
 
-                        t = ConvertFromBitmap(image);
+                        t = ImageHelper.TextureFromBitmap(image);
                     }
                 }
             }
             return t;
-        }
-
-        static Texture2D ConvertFromBitmap(Bitmap image)
-        {
-            BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height),
-										ImageLockMode.ReadWrite, image.PixelFormat);
-            int bytes = data.Stride * image.Height;
-            DataStream stream = new DataStream(bytes, true, true);
-            stream.WriteRange(data.Scan0,bytes);
-            stream.Position = 0;
-            DataRectangle dRect = new DataRectangle(data.Stride, stream);
-
-            Texture2DDescription texDesc = new Texture2DDescription
-            {
-                ArraySize = 1,
-                MipLevels = 1,
-                SampleDescription = new SampleDescription(1,0),
-                Format = Format.B8G8R8A8_UNorm,
-                CpuAccessFlags = CpuAccessFlags.None,
-                BindFlags = BindFlags.ShaderResource,
-                Usage = ResourceUsage.Immutable,
-                Height = image.Height,
-                Width = image.Width
-            };
-
-            image.UnlockBits(data);
-            image.Dispose();
-            Texture2D texture = new Texture2D(Game.Context.Device, texDesc, dRect);
-            stream.Dispose();
-            //Texture2D.ToFile(Game.Context.Immediate, texture, ImageFileFormat.Jpg, "prova.jpg");
-            return texture;
-
         }
 
         internal static Vector2 ComputeTextPosition(BaseControl hostControl, TextLiteral textControl)

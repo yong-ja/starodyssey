@@ -70,6 +70,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         private BaseControl captureControl;
         private ShapeDescription hudInterface;
         private readonly UpdateElement recomputeAction;
+        private BaseCommand[] renderSequence;
 
         static Hud()
         {
@@ -199,6 +200,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         
         }
 
+
         public void AddToScene(SceneManager scene)
         {
             TextMaterial textMaterial = new TextMaterial();
@@ -222,6 +224,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             uiUCommand = new UserInterfaceUpdateCommand(this, uiRCommand);
 
+            
             scene.Tree.RootNode.AppendChild(caNode);
             scene.CommandManager.AddUpdateCommand(uiUCommand);
             scene.CommandManager.AddBaseCommands(uiMaterial.PreRenderStates);

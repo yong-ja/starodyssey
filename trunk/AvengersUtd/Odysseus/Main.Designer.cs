@@ -31,6 +31,8 @@
             this.renderPanel = new System.Windows.Forms.PictureBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAsCFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.snapToGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,10 +40,9 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.styleEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportOUIDialog = new System.Windows.Forms.SaveFileDialog();
-            this.exportAsCFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportCSDialog = new System.Windows.Forms.SaveFileDialog();
+            this.gradientEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.renderPanel)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -49,9 +50,10 @@
             // renderPanel
             // 
             this.renderPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.renderPanel.Location = new System.Drawing.Point(0, 27);
+            this.renderPanel.Location = new System.Drawing.Point(0, 33);
+            this.renderPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.renderPanel.Name = "renderPanel";
-            this.renderPanel.Size = new System.Drawing.Size(407, 335);
+            this.renderPanel.Size = new System.Drawing.Size(542, 412);
             this.renderPanel.TabIndex = 0;
             this.renderPanel.TabStop = false;
             this.renderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RenderPanelMouseMove);
@@ -64,7 +66,8 @@
             this.windowMenu});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(481, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(641, 28);
             this.menuStrip.TabIndex = 2;
             this.menuStrip.Text = "menu";
             // 
@@ -74,8 +77,23 @@
             this.exportToolStripMenuItem,
             this.exportAsCFileToolStripMenuItem});
             this.fileMenu.Name = "fileMenu";
-            this.fileMenu.Size = new System.Drawing.Size(37, 20);
+            this.fileMenu.Size = new System.Drawing.Size(44, 24);
             this.fileMenu.Text = "&File";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.exportToolStripMenuItem.Text = "&Export as OUI";
+            // 
+            // exportAsCFileToolStripMenuItem
+            // 
+            this.exportAsCFileToolStripMenuItem.Name = "exportAsCFileToolStripMenuItem";
+            this.exportAsCFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
+            this.exportAsCFileToolStripMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.exportAsCFileToolStripMenuItem.Text = "Export as &C# file";
+            this.exportAsCFileToolStripMenuItem.Click += new System.EventHandler(this.exportAsCFileToolStripMenuItem_Click);
             // 
             // editMenu
             // 
@@ -83,21 +101,21 @@
             this.snapToGridToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.editMenu.Name = "editMenu";
-            this.editMenu.Size = new System.Drawing.Size(39, 20);
+            this.editMenu.Size = new System.Drawing.Size(47, 24);
             this.editMenu.Text = "&Edit";
             // 
             // snapToGridToolStripMenuItem
             // 
             this.snapToGridToolStripMenuItem.CheckOnClick = true;
             this.snapToGridToolStripMenuItem.Name = "snapToGridToolStripMenuItem";
-            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.snapToGridToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
             this.snapToGridToolStripMenuItem.Text = "&Snap to Grid";
             this.snapToGridToolStripMenuItem.Click += new System.EventHandler(this.snapToGridToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
             this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -106,16 +124,17 @@
             this.windowMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.propertiesToolStripMenuItem,
             this.toolboxToolStripMenuItem,
-            this.styleEditorToolStripMenuItem});
+            this.styleEditorToolStripMenuItem,
+            this.gradientEditorToolStripMenuItem});
             this.windowMenu.Name = "windowMenu";
-            this.windowMenu.Size = new System.Drawing.Size(63, 20);
+            this.windowMenu.Size = new System.Drawing.Size(76, 24);
             this.windowMenu.Text = "&Window";
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(211, 24);
             this.propertiesToolStripMenuItem.Text = "&Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
@@ -123,7 +142,7 @@
             // 
             this.toolboxToolStripMenuItem.Name = "toolboxToolStripMenuItem";
             this.toolboxToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.toolboxToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.toolboxToolStripMenuItem.Size = new System.Drawing.Size(211, 24);
             this.toolboxToolStripMenuItem.Text = "&Toolbox";
             this.toolboxToolStripMenuItem.Click += new System.EventHandler(this.toolboxToolStripMenuItem_Click);
             // 
@@ -131,16 +150,9 @@
             // 
             this.styleEditorToolStripMenuItem.Name = "styleEditorToolStripMenuItem";
             this.styleEditorToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            this.styleEditorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.styleEditorToolStripMenuItem.Size = new System.Drawing.Size(211, 24);
             this.styleEditorToolStripMenuItem.Text = "&Style editor";
             this.styleEditorToolStripMenuItem.Click += new System.EventHandler(this.styleEditorToolStripMenuItem_Click);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.exportToolStripMenuItem.Text = "&Export as OUI";
             // 
             // exportOUIDialog
             // 
@@ -148,29 +160,30 @@
             this.exportOUIDialog.FileName = "Interface1.oui";
             this.exportOUIDialog.Filter = "Odyssey UI|*.oui";
             // 
-            // exportAsCFileToolStripMenuItem
-            // 
-            this.exportAsCFileToolStripMenuItem.Name = "exportAsCFileToolStripMenuItem";
-            this.exportAsCFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
-            this.exportAsCFileToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.exportAsCFileToolStripMenuItem.Text = "Export as &C# file";
-            this.exportAsCFileToolStripMenuItem.Click += new System.EventHandler(this.exportAsCFileToolStripMenuItem_Click);
-            // 
             // exportCSDialog
             // 
             this.exportCSDialog.DefaultExt = "cs";
             this.exportCSDialog.FileName = "Interface1.cs";
             this.exportCSDialog.Filter = "C# Source Code|*.cs";
             // 
+            // gradientEditorToolStripMenuItem
+            // 
+            this.gradientEditorToolStripMenuItem.Name = "gradientEditorToolStripMenuItem";
+            this.gradientEditorToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.gradientEditorToolStripMenuItem.Size = new System.Drawing.Size(211, 24);
+            this.gradientEditorToolStripMenuItem.Text = "&Gradient editor";
+            this.gradientEditorToolStripMenuItem.Click += new System.EventHandler(this.gradientEditorToolStripMenuItem_Click);
+            // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 386);
+            this.ClientSize = new System.Drawing.Size(641, 475);
             this.Controls.Add(this.renderPanel);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Main";
             this.Text = "Odysseus";
             ((System.ComponentModel.ISupportInitialize)(this.renderPanel)).EndInit();
@@ -197,6 +210,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportAsCFileToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog exportOUIDialog;
         private System.Windows.Forms.SaveFileDialog exportCSDialog;
+        private System.Windows.Forms.ToolStripMenuItem gradientEditorToolStripMenuItem;
     }
 }
 

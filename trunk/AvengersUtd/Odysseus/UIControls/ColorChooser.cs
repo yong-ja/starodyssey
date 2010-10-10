@@ -317,109 +317,109 @@ namespace AvengersUtd.Odysseus
             // 
             // lblBlue
             // 
-            this.lblBlue.Location = new System.Drawing.Point(312, 360);
+            this.lblBlue.Location = new System.Drawing.Point(374, 415);
             this.lblBlue.Name = "lblBlue";
-            this.lblBlue.Size = new System.Drawing.Size(40, 23);
+            this.lblBlue.Size = new System.Drawing.Size(48, 27);
             this.lblBlue.TabIndex = 54;
             this.lblBlue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblGreen
             // 
-            this.lblGreen.Location = new System.Drawing.Point(312, 336);
+            this.lblGreen.Location = new System.Drawing.Point(374, 388);
             this.lblGreen.Name = "lblGreen";
-            this.lblGreen.Size = new System.Drawing.Size(40, 23);
+            this.lblGreen.Size = new System.Drawing.Size(48, 26);
             this.lblGreen.TabIndex = 53;
             this.lblGreen.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRed
             // 
-            this.lblRed.Location = new System.Drawing.Point(312, 312);
+            this.lblRed.Location = new System.Drawing.Point(374, 360);
             this.lblRed.Name = "lblRed";
-            this.lblRed.Size = new System.Drawing.Size(40, 23);
+            this.lblRed.Size = new System.Drawing.Size(48, 27);
             this.lblRed.TabIndex = 52;
             this.lblRed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblBrightness
             // 
-            this.lblBrightness.Location = new System.Drawing.Point(312, 280);
+            this.lblBrightness.Location = new System.Drawing.Point(374, 323);
             this.lblBrightness.Name = "lblBrightness";
-            this.lblBrightness.Size = new System.Drawing.Size(40, 23);
+            this.lblBrightness.Size = new System.Drawing.Size(48, 27);
             this.lblBrightness.TabIndex = 51;
             this.lblBrightness.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblSaturation
             // 
-            this.lblSaturation.Location = new System.Drawing.Point(312, 256);
+            this.lblSaturation.Location = new System.Drawing.Point(374, 295);
             this.lblSaturation.Name = "lblSaturation";
-            this.lblSaturation.Size = new System.Drawing.Size(40, 23);
+            this.lblSaturation.Size = new System.Drawing.Size(48, 27);
             this.lblSaturation.TabIndex = 50;
             this.lblSaturation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHue
             // 
-            this.lblHue.Location = new System.Drawing.Point(312, 232);
+            this.lblHue.Location = new System.Drawing.Point(374, 268);
             this.lblHue.Name = "lblHue";
-            this.lblHue.Size = new System.Drawing.Size(40, 23);
+            this.lblHue.Size = new System.Drawing.Size(48, 26);
             this.lblHue.TabIndex = 49;
             this.lblHue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // hsbBlue
             // 
             this.hsbBlue.LargeChange = 1;
-            this.hsbBlue.Location = new System.Drawing.Point(80, 360);
+            this.hsbBlue.Location = new System.Drawing.Point(96, 415);
             this.hsbBlue.Maximum = 255;
             this.hsbBlue.Name = "hsbBlue";
-            this.hsbBlue.Size = new System.Drawing.Size(224, 18);
+            this.hsbBlue.Size = new System.Drawing.Size(269, 21);
             this.hsbBlue.TabIndex = 48;
             this.hsbBlue.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleRGBScroll);
             // 
             // hsbGreen
             // 
             this.hsbGreen.LargeChange = 1;
-            this.hsbGreen.Location = new System.Drawing.Point(80, 336);
+            this.hsbGreen.Location = new System.Drawing.Point(96, 388);
             this.hsbGreen.Maximum = 255;
             this.hsbGreen.Name = "hsbGreen";
-            this.hsbGreen.Size = new System.Drawing.Size(224, 18);
+            this.hsbGreen.Size = new System.Drawing.Size(269, 20);
             this.hsbGreen.TabIndex = 47;
             this.hsbGreen.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleRGBScroll);
             // 
             // hsbRed
             // 
             this.hsbRed.LargeChange = 1;
-            this.hsbRed.Location = new System.Drawing.Point(80, 312);
+            this.hsbRed.Location = new System.Drawing.Point(96, 360);
             this.hsbRed.Maximum = 255;
             this.hsbRed.Name = "hsbRed";
-            this.hsbRed.Size = new System.Drawing.Size(224, 18);
+            this.hsbRed.Size = new System.Drawing.Size(269, 21);
             this.hsbRed.TabIndex = 46;
             this.hsbRed.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleRGBScroll);
             // 
             // hsbBrightness
             // 
             this.hsbBrightness.LargeChange = 1;
-            this.hsbBrightness.Location = new System.Drawing.Point(80, 280);
+            this.hsbBrightness.Location = new System.Drawing.Point(96, 323);
             this.hsbBrightness.Maximum = 255;
             this.hsbBrightness.Name = "hsbBrightness";
-            this.hsbBrightness.Size = new System.Drawing.Size(224, 18);
+            this.hsbBrightness.Size = new System.Drawing.Size(269, 21);
             this.hsbBrightness.TabIndex = 45;
             this.hsbBrightness.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleHSVScroll);
             // 
             // hsbSaturation
             // 
             this.hsbSaturation.LargeChange = 1;
-            this.hsbSaturation.Location = new System.Drawing.Point(80, 256);
+            this.hsbSaturation.Location = new System.Drawing.Point(96, 295);
             this.hsbSaturation.Maximum = 255;
             this.hsbSaturation.Name = "hsbSaturation";
-            this.hsbSaturation.Size = new System.Drawing.Size(224, 18);
+            this.hsbSaturation.Size = new System.Drawing.Size(269, 21);
             this.hsbSaturation.TabIndex = 44;
             this.hsbSaturation.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleHSVScroll);
             // 
             // hsbHue
             // 
             this.hsbHue.LargeChange = 1;
-            this.hsbHue.Location = new System.Drawing.Point(80, 232);
+            this.hsbHue.Location = new System.Drawing.Point(96, 268);
             this.hsbHue.Maximum = 255;
             this.hsbHue.Name = "hsbHue";
-            this.hsbHue.Size = new System.Drawing.Size(224, 18);
+            this.hsbHue.Size = new System.Drawing.Size(269, 20);
             this.hsbHue.TabIndex = 43;
             this.hsbHue.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleHSVScroll);
             // 
@@ -427,9 +427,9 @@ namespace AvengersUtd.Odysseus
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(296, 40);
+            this.btnCancel.Location = new System.Drawing.Point(323, 43);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(64, 24);
+            this.btnCancel.Size = new System.Drawing.Size(77, 28);
             this.btnCancel.TabIndex = 42;
             this.btnCancel.Text = "Cancel";
             // 
@@ -437,18 +437,18 @@ namespace AvengersUtd.Odysseus
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOk.Location = new System.Drawing.Point(296, 8);
+            this.btnOk.Location = new System.Drawing.Point(323, 9);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(64, 24);
+            this.btnOk.Size = new System.Drawing.Size(77, 28);
             this.btnOk.TabIndex = 41;
             this.btnOk.Text = "OK";
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(8, 360);
+            this.label3.Location = new System.Drawing.Point(10, 415);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 18);
+            this.label3.Size = new System.Drawing.Size(86, 21);
             this.label3.TabIndex = 34;
             this.label3.Text = "Blue";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -456,27 +456,27 @@ namespace AvengersUtd.Odysseus
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(8, 280);
+            this.label7.Location = new System.Drawing.Point(10, 323);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(72, 18);
+            this.label7.Size = new System.Drawing.Size(86, 21);
             this.label7.TabIndex = 37;
             this.label7.Text = "Brightness";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlColor
             // 
-            this.pnlColor.Location = new System.Drawing.Point(8, 8);
+            this.pnlColor.Location = new System.Drawing.Point(10, 9);
             this.pnlColor.Name = "pnlColor";
-            this.pnlColor.Size = new System.Drawing.Size(224, 216);
+            this.pnlColor.Size = new System.Drawing.Size(268, 249);
             this.pnlColor.TabIndex = 38;
             this.pnlColor.Visible = false;
             // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(8, 256);
+            this.label6.Location = new System.Drawing.Point(10, 295);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 18);
+            this.label6.Size = new System.Drawing.Size(86, 21);
             this.label6.TabIndex = 36;
             this.label6.Text = "Saturation";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -484,9 +484,9 @@ namespace AvengersUtd.Odysseus
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 312);
+            this.label1.Location = new System.Drawing.Point(10, 360);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 18);
+            this.label1.Size = new System.Drawing.Size(86, 21);
             this.label1.TabIndex = 32;
             this.label1.Text = "Red";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -494,35 +494,35 @@ namespace AvengersUtd.Odysseus
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(8, 232);
+            this.label5.Location = new System.Drawing.Point(10, 268);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(72, 18);
+            this.label5.Size = new System.Drawing.Size(86, 20);
             this.label5.TabIndex = 35;
             this.label5.Text = "Hue";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlSelectedColor
             // 
-            this.pnlSelectedColor.Location = new System.Drawing.Point(296, 72);
+            this.pnlSelectedColor.Location = new System.Drawing.Point(323, 77);
             this.pnlSelectedColor.Name = "pnlSelectedColor";
-            this.pnlSelectedColor.Size = new System.Drawing.Size(64, 24);
+            this.pnlSelectedColor.Size = new System.Drawing.Size(77, 28);
             this.pnlSelectedColor.TabIndex = 40;
             this.pnlSelectedColor.Visible = false;
             // 
             // pnlBrightness
             // 
-            this.pnlBrightness.Location = new System.Drawing.Point(240, 8);
+            this.pnlBrightness.Location = new System.Drawing.Point(288, 9);
             this.pnlBrightness.Name = "pnlBrightness";
-            this.pnlBrightness.Size = new System.Drawing.Size(24, 216);
+            this.pnlBrightness.Size = new System.Drawing.Size(29, 249);
             this.pnlBrightness.TabIndex = 39;
             this.pnlBrightness.Visible = false;
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(8, 336);
+            this.label2.Location = new System.Drawing.Point(10, 388);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 18);
+            this.label2.Size = new System.Drawing.Size(86, 20);
             this.label2.TabIndex = 33;
             this.label2.Text = "Green";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -530,46 +530,46 @@ namespace AvengersUtd.Odysseus
             // hsbAlpha
             // 
             this.hsbAlpha.LargeChange = 1;
-            this.hsbAlpha.Location = new System.Drawing.Point(80, 386);
+            this.hsbAlpha.Location = new System.Drawing.Point(96, 445);
             this.hsbAlpha.Maximum = 255;
             this.hsbAlpha.Name = "hsbAlpha";
-            this.hsbAlpha.Size = new System.Drawing.Size(224, 18);
+            this.hsbAlpha.Size = new System.Drawing.Size(269, 21);
             this.hsbAlpha.TabIndex = 56;
             this.hsbAlpha.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HsbAlphaScroll);
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(8, 386);
+            this.label4.Location = new System.Drawing.Point(10, 445);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(72, 18);
+            this.label4.Size = new System.Drawing.Size(86, 21);
             this.label4.TabIndex = 55;
             this.label4.Text = "Alpha";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblAlpha
             // 
-            this.lblAlpha.Location = new System.Drawing.Point(312, 380);
+            this.lblAlpha.Location = new System.Drawing.Point(374, 438);
             this.lblAlpha.Name = "lblAlpha";
-            this.lblAlpha.Size = new System.Drawing.Size(40, 24);
+            this.lblAlpha.Size = new System.Drawing.Size(48, 28);
             this.lblAlpha.TabIndex = 57;
             this.lblAlpha.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbHexCode
             // 
             this.tbHexCode.BackColor = System.Drawing.Color.White;
-            this.tbHexCode.Location = new System.Drawing.Point(296, 102);
+            this.tbHexCode.Location = new System.Drawing.Point(324, 111);
             this.tbHexCode.MaxLength = 8;
             this.tbHexCode.Name = "tbHexCode";
             this.tbHexCode.ReadOnly = true;
-            this.tbHexCode.Size = new System.Drawing.Size(63, 20);
+            this.tbHexCode.Size = new System.Drawing.Size(76, 22);
             this.tbHexCode.TabIndex = 58;
             this.tbHexCode.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TbHexCodeMouseDown);
             // 
             // ColorChooser
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(372, 421);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
+            this.ClientSize = new System.Drawing.Size(403, 472);
             this.Controls.Add(this.tbHexCode);
             this.Controls.Add(this.lblAlpha);
             this.Controls.Add(this.hsbAlpha);

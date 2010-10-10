@@ -67,5 +67,11 @@ namespace AvengersUtd.Odysseus
             StyleEditor styleEditor = new StyleEditor();
             styleEditor.ShowDialog();
         }
+
+        private void gradientEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GradientEditor2 gradientEditor = new GradientEditor2();
+            gradientEditor.ShowDialog();
+        }
     }
 }

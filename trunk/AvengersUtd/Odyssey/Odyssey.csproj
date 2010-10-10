@@ -64,6 +64,7 @@
     <Compile Include="Geometry\Sphere.cs" />
     <Compile Include="Geometry\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
+    <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
     <Compile Include="Graphics\Materials\UIMaterial.cs" />
