@@ -89,6 +89,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             commandList.AddLast(rCommand);
         }
 
+        public void RunCommand(BaseCommand command)
+        {
+            command.Execute();
+        }
+
         public void Dispose()
         {
             foreach (IUpdateCommand updateCommand in updateList)

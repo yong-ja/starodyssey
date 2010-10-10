@@ -155,11 +155,13 @@ namespace AvengersUtd.Odysseus
             ClearColor = Color.CornflowerBlue;
             
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+
         }
 
         public override void Render()
         {
             Scene.Display();
+           
         }
 
         public override void ProcessInput()
