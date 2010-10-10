@@ -39,6 +39,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                     break;
                 case Shape.RightTrapezoidDownside:
                     break;
+
+                case Shape.SubdividedRectangle:
+                    shape = DrawSubdividedRectangleWithOutline(ctl.AbsoluteOrthoPosition, ctl.Size,
+                        ctl.Description.ColorShader, ctl.Description.BorderSize, ctl.Description.BorderStyle, ctl.BorderColor);
+                    break;
                 default:
                     throw Error.WrongCase("shape", "ComputeData", shape);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -46,13 +47,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 if (!Items.Description.CommonResources)
                     Material.ApplyInstanceParameters(rNode.RenderableObject);
 
-                if (rNode.RenderableObject.IsVisible)
-                {
-                    Pass.Apply(Game.Context.Device.ImmediateContext);
+                if (!rNode.RenderableObject.IsVisible) continue;
 
-                    IRenderable rObject = rNode.RenderableObject;
-                    rObject.Render();
-                }
+                Pass.Apply(Game.Context.Device.ImmediateContext);
+
+                IRenderable rObject = rNode.RenderableObject;
+                rObject.Render();
             }
         }
 
@@ -61,10 +61,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             if (!InputLayout.Disposed)
                 InputLayout.Dispose();
 
-            foreach (RenderableNode rNode in Items)
+            foreach (RenderableNode rNode in Items.Where(rNode => !rNode.RenderableObject.Disposed))
             {
-                if (!rNode.RenderableObject.Disposed)
-                    rNode.RenderableObject.Dispose();
+                rNode.RenderableObject.Dispose();
             }
         }
 

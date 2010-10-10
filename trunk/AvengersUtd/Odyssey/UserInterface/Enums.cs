@@ -48,7 +48,8 @@ namespace AvengersUtd.Odyssey.UserInterface
         RightTrapezoidUpside,
         RightTrapezoidDownside,
         Triangle,
-        RectangleWithOutline
+        RectangleWithOutline,
+        SubdividedRectangle
     }
 
     public enum DecorationType

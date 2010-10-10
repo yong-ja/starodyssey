@@ -73,6 +73,7 @@
     <Compile Include="Graphics\Rendering\RenderStep.cs" />
     <Compile Include="Graphics\Rendering\Management\CameraOverlayNode.cs" />
     <Compile Include="Graphics\Rendering\Management\CameraAnchorNode.cs" />
+    <Compile Include="Graphics\Rendering\RenderToTextureCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />

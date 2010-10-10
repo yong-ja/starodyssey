@@ -1,17 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Style
 {
-    public delegate Color4[] Shader(Color4 color, int numVertex, float startValue, float endValue, Shape shape);
-    public struct ColorShader :IEquatable<ColorShader>
+    public struct GradientStop
+    {
+        public Color4 Color { get; set; }
+        public float Offset { get; set; }
+
+        public GradientStop(Color4 color, float offset) : this()
+        {
+            Color = color;
+            Offset = offset;
+        }
+    }
+
+    public delegate Color4[] Shader(ColorShader shader, int numVertex, Shape shape);
+    
+    public class ColorShader
     {
         public Shader Method { get; set; }
-        public float StartValue { get; set; }
-        public float EndValue { get; set; }
+        public Color4 Color { get; set; }
+        public int WidthSegments { get; set; }
+        public int HeightSegments{ get; set; }
+        public GradientStop[] Gradient { get; set; }
+
+        public ColorShader()
+        {
+            WidthSegments = 1;
+            HeightSegments = 1;
+            Method = Uniform;
+        }
 
         public static Color4[] LinearHorizontalGradient(Color4 color, int numVertex, float startValue, float endValue, Shape shape)
         {
@@ -77,25 +101,41 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             return colors;
         }
 
-        public static Color4[] LinearVerticalGradient(Color4 color, int numVertex, float startValue, float endValue, Shape shape)
+        public static Color4[] LinearVerticalGradient(ColorShader shader, int numVertex, Shape shape)
         {
-            Color4 lightColor = startValue == 1.0 ? color : Color4.Scale(color, startValue);
-            Color4 darkColor = Color4.Scale(color, endValue);
 
+            //int numVertex = (1 + widthSegments)*(1 + heightSegments);
+            Color4[] colors = new Color4[numVertex];
             switch (shape)
             {
                 default:
-                case Shape.Rectangle:
-                   if (numVertex != 4)
-                       throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "LinearVerticalGradient",
-                            Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
-                    return new[] { lightColor, lightColor, darkColor, darkColor};
+                case Shape.SubdividedRectangle:
+                    if (numVertex != (1+ shader.WidthSegments) * (1+shader.HeightSegments))
+                        throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "LinearVerticalStepGradient",
+                             Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
 
+                    int step = 0;
+                    for (int i = 0; i < numVertex; i++)
+                    {
+
+                        if (i > 0 && i % (shader.WidthSegments + 1) == 0)
+                            step++;
+                        colors[i] = shader.Gradient[step].Color;
+                    }
+
+                    //colors[0] = new Color4(1, 0,0);
+                    //colors[numVertex - 1] = new Color4(0, 1, 0);
+
+                    return colors;
             }
-
         }
 
-        public static Color4[] Uniform(Color4 color, int numVertex, float startValue=0.0f, float endValue=0.0f, Shape shape=Shape.None)
+        public static Color4[] Uniform(ColorShader shader, int numVertex, Shape shape=Shape.None)
+        {
+            return FillColorArray(shader.Color,4);
+        }
+
+        public static Color4[] FillColorArray(Color4 color, int numVertex)
         {
             Color4[] colors = new Color4[numVertex];
             for (int i = 0; i < numVertex; i++)
@@ -103,39 +143,5 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             return colors;
         }
 
-        #region Equality
-        public static bool operator ==(ColorShader left, ColorShader right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(ColorShader left, ColorShader right)
-        {
-            return !(left == right);
-        }
-
-        public bool Equals(ColorShader other)
-        {
-            return Equals(other.Method, Method) && other.StartValue.Equals(StartValue) && other.EndValue.Equals(EndValue);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (obj.GetType() != typeof(ColorShader)) return false;
-            return Equals((ColorShader)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int result = (Method != null ? Method.GetHashCode() : 0);
-                result = (result * 397) ^ StartValue.GetHashCode();
-                result = (result * 397) ^ EndValue.GetHashCode();
-                return result;
-            }
-        } 
-        #endregion
     }
 }
