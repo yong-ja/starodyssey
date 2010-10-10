@@ -61,7 +61,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                            {
                                BorderSize = 0,
                                BorderStyle = BorderStyle.None,
-                               ColorShader = new ColorShader{StartValue = 1.0f, EndValue = 1.0f, Method = ColorShader.Uniform},
+                               ColorShader = new ColorShader(),
                                ColorArray = ColorArray.Transparent,
                                Name = Empty,
                                Padding = Padding.Empty,

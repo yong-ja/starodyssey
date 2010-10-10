@@ -33,6 +33,21 @@ using System.Reflection;
 namespace AvengersUtd.Odyssey.UserInterface.Xml
 {
 
+    public struct XmlGradientStop
+    {
+        [XmlAttribute]
+        public string Color { get; set; }
+        [XmlAttribute]
+        public float Offset { get; set; }
+
+        public GradientStop ToGradientStop()
+        {
+            int argbColor = Int32.Parse(Color, NumberStyles.HexNumber);
+            return new GradientStop(new Color4(argbColor), Offset);
+        }
+
+    }
+
     /// <summary>
     /// Xml Wrapper class for the ColorShader class.
     /// </summary>
@@ -40,24 +55,46 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     [Serializable]
     public struct XmlColorShader
     {
-
         [XmlAttribute]
         public string Method { get; set; }
-        
-        [XmlAttribute]
-        public float StartValue { get; set; }
 
         [XmlAttribute]
-        public float EndValue { get; set; }
+        public string Name { get; set; }
+        [XmlAttribute("Color")]
+        public string ColorValue { get; set; }
+
+        [XmlAttribute]
+        public int WidthSegments { get; set; }
+        [XmlAttribute]
+        public int HeightSegments { get; set; }
+        
+        [XmlArray("Gradient")]
+        [XmlArrayItem("GradientStop")]
+        public XmlGradientStop[] XmlFillColors { get; set; }
 
         public ColorShader ToColorShader()
         {
+            GradientStop[] gradientColors=null;
+
+            if (XmlFillColors != null)
+            {
+                gradientColors = new GradientStop[XmlFillColors.Length];
+
+                for (int i = 0; i < XmlFillColors.Length; i++)
+                {
+                    gradientColors[i] = XmlFillColors[i].ToGradientStop();
+                }
+            }
+
 
             return new ColorShader
                        {
-                           StartValue = StartValue,
-                           EndValue = EndValue,
-                           Method = (Shader)Delegate.CreateDelegate(typeof(Shader), typeof(ColorShader).GetMethod(Method))
+                           Method =
+                               (Shader) Delegate.CreateDelegate(typeof (Shader), typeof (ColorShader).GetMethod(Method)),
+                               WidthSegments = WidthSegments,
+                               HeightSegments = HeightSegments,
+                           Color = ColorValue != null ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber)) : default(Color4),
+                           Gradient = gradientColors
                        };
         }
     }

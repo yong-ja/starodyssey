@@ -14,16 +14,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, ColorShader colorShader, Color4 fillColor, int borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
-            Color4[] shadedColors = colorShader.Method(fillColor, 4, colorShader.StartValue, colorShader.EndValue, Shape.Rectangle);
+            Color4[] shadedColors = colorShader.Method(colorShader, 4,Shape.Rectangle);
             Color4[] borderColors;
 
             switch (borderStyle)
             {
                 case BorderStyle.None:
-                    borderColors = ColorShader.Uniform(new Color4(0), 4);
+                    borderColors = ColorShader.FillColorArray(new Color4(0), 4);
                     break;
                 case BorderStyle.Flat:
-                    borderColors = ColorShader.Uniform(borderColor, 4);
+                    borderColors = ColorShader.FillColorArray(borderColor, 4);
                     break;
                 case BorderStyle.Raised:
                     borderColors = ColorShader.BorderRaised(borderColor, 4);
@@ -45,7 +45,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public static ShapeDescription DrawRectangle(Vector3 position, Size size, Color4 color)
         {
-            Color4[] shadedColors = ColorShader.Uniform(color, 4);
+            Color4[] shadedColors = ColorShader.FillColorArray(color, 4);
             return DrawRectangle(position, size, shadedColors);
         }
 
@@ -107,6 +107,50 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                     throw Error.WrongCase("borderStyle", "DrawRectangularOutline", borderStyle);
             }
             
+        }
+
+        public static ShapeDescription DrawSubdividedRectangleWithOutline(Vector3 position, Size size, ColorShader colorShader, int borderSize, BorderStyle borderStyle, Color4 borderColor)
+        {
+            Color4[] shadedColors = colorShader.Method(colorShader, (1+colorShader.WidthSegments)*(1+colorShader.HeightSegments), Shape.Rectangle);
+            Color4[] borderColors;
+
+            switch (borderStyle)
+            {
+                case BorderStyle.None:
+                    borderColors = ColorShader.FillColorArray(new Color4(0), 4);
+                    break;
+                case BorderStyle.Flat:
+                    borderColors = ColorShader.FillColorArray(borderColor, 4);
+                    break;
+                case BorderStyle.Raised:
+                    borderColors = ColorShader.BorderRaised(borderColor, 4);
+                    break;
+                case BorderStyle.Sunken:
+                    borderColors = ColorShader.BorderSunken(borderColor, 4);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("borderStyle");
+            }
+            ShapeDescription outline = DrawRectangularOutline(position, size, borderSize, borderColors, BorderStyle.Flat,
+                Border.All);
+            ShapeDescription inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+                shadedColors);
+
+            return ShapeDescription.Join(inside,outline);
+        }
+
+        public static ShapeDescription DrawSubdividedRectangle(Vector3 position, Size size, int widthSegments, int heightSegments, Color4[] colors)
+        {
+            short[] indices;
+            ColoredVertex[] vertices = Polygon.CreateSubdividedRectangle(position.ToVector4(), size.Width, size.Height,
+                                                 widthSegments, heightSegments, colors, out indices);
+            return new ShapeDescription
+            {
+                Vertices = vertices,
+                Indices = indices,
+                Primitives = indices.Length/3,
+                Shape = Shape.SubdividedRectangle
+            };
         }
     }
 }

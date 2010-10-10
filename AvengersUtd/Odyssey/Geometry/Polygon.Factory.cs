@@ -113,16 +113,64 @@ namespace AvengersUtd.Odyssey.Geometry
                 Color = colors[3]
             };
 
-            // Bottom left 0
+
             
-            // Top left 1y
-            // Top right 2
-            // Bottom right 3
+            // Top left 0
+            // Top right 1
+            // Bottom right 2
+            // Bottom left 3
             indices = new short[]
                           {
                               1, 0, 3,
                               2, 1, 3
                           };
+
+            return vertices;
+        }
+
+        public static ColoredVertex[] CreateSubdividedRectangle(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
+                                                out short[] indices)
+        {
+            ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
+           
+            float x = topLeftVertex.X;
+            float y = topLeftVertex.Y;
+            float z = topLeftVertex.Z;
+
+            float hOffset = width/(widthSegments);
+            float vOffset = height/heightSegments;
+
+            int vertexCount=0, indexCount = 0;
+            indices = new short[widthSegments*heightSegments*6];
+            // Compute vertices, one row at a time
+            for (int i=0; i < heightSegments+1;i++)
+            {
+                for (int j = 0; j < widthSegments + 1; j++)
+                {
+                    vertices[vertexCount] = new ColoredVertex
+                                                {
+                                                    Position = new Vector4(x + j*hOffset, y - i*vOffset, z, 1.0f),
+                                                    Color = colors[vertexCount]
+                                                };
+
+
+                    if (i < heightSegments && j < widthSegments)
+                    {
+
+                        indices[indexCount] = (short) (vertexCount + 1);
+                        indices[indexCount + 1] = (short) (vertexCount);
+                        indices[indexCount + 2] = (short) (vertexCount + widthSegments + 1);
+
+                        indices[indexCount + 3] = (short) (indices[indexCount + 2] + 1);
+                        indices[indexCount + 4] = indices[indexCount];
+                        indices[indexCount + 5] = indices[indexCount + 2];
+                        indexCount += 6;
+                    }
+
+                    vertexCount++;
+
+                }
+            }
 
             return vertices;
         }

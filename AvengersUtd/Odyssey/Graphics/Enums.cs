@@ -17,7 +17,8 @@ namespace AvengersUtd.Odyssey.Graphics
         RasterizerStateChange,
         BlendStateChange,
         DepthStencilStateChange,
-        UserInterfaceRenderCommand
+        UserInterfaceRenderCommand,
+        Action
     }
 
     public enum TaskType
