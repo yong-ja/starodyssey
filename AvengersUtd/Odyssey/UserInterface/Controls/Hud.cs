@@ -66,11 +66,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         readonly Queue<UpdateElement> updateQueue;
         private readonly List<ISpriteObject> spriteControls;
         private readonly List<ShapeDescription> hudShapes;
+        private UserInterfaceRenderCommand uiRCommand;
         private UserInterfaceUpdateCommand uiUCommand;
         private BaseControl captureControl;
         private ShapeDescription hudInterface;
         private readonly UpdateElement recomputeAction;
-        private BaseCommand[] renderSequence;
 
         static Hud()
         {
@@ -218,7 +218,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             textMaterial.InitParameters();
             mUINode.AppendChild(rNode);
 
-            UserInterfaceRenderCommand uiRCommand = new UserInterfaceRenderCommand
+            uiRCommand = new UserInterfaceRenderCommand
                 (mUINode, mUINode.RenderableCollection,
                 mTextNode, this);
 
@@ -381,7 +381,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                     if (control is ISpriteObject || (containerControl != null && containerControl.ContainsSprites))
                     {
                         uiUCommand.TaskQueue.Enqueue(UpdateSprites);
-                        uiUCommand.TaskQueue.Enqueue(uiUCommand.Synch);
+                        uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
                     }
                 }
             }
@@ -545,7 +545,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             else if (uiUCommand != null)
             {
                 uiUCommand.TaskQueue.Enqueue(Init);
-                uiUCommand.TaskQueue.Enqueue(uiUCommand.Synch);
+                uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
             }
         }
 

@@ -75,11 +75,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             EventHandle.Set();
         }
 
-        public void Synch()
-        {
-            uiRCommand.UpdateItems();
-        }
-    
         protected override void OnDispose()
         {
             uiUpdateThread.Abort();
