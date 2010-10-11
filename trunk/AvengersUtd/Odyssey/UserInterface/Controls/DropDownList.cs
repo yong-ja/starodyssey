@@ -286,6 +286,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
         }
 
+        protected override void OnMove(EventArgs e)
+        {
+            base.OnMove(e);
+            dropDownButton.UpdateAppearance(UpdateAction.Move);
+        }
+
         #endregion
 
      
@@ -394,8 +400,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected override void UpdateSizeDependantParameters()
         {
             // Define sub-parts sizes
-            dropDownButton.Position = new Vector2(Size.Width - DefaultDropDownButtonWidth,0);
-            dropDownButton.Size = new Size(DefaultDropDownButtonWidth, Size.Height);
+            if (dropDownButton != null)
+            {
+                dropDownButton.Position = new Vector2(Size.Width - DefaultDropDownButtonWidth, 0);
+                dropDownButton.Size = new Size(DefaultDropDownButtonWidth, Size.Height);
+            }
             boxSize = new Size(Size.Width, Size.Height);
             itemSize = new Size(Size.Width, itemSize.Height);
         }
@@ -403,6 +412,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected override void UpdatePositionDependantParameters()
         {
             textLiteralListPosition = TopLeftPosition;
+            dropDownButton.ComputeAbsolutePosition();
         }
 
         protected override void OnTextDescriptionChanged(EventArgs e)
