@@ -1,41 +1,14 @@
-﻿#region #Disclaimer
-
-// /* 
-//  * Timer
-//  *
-//  * Created on 21 August 2007
-//  * Last update on 29 July 2010
-//  * 
-//  * Author: Adalberto L. Simeone (Taranto, Italy)
-//  * E-Mail: avengerdragon@gmail.com
-//  * Website: http://www.avengersutd.com
-//  *
-//  * Part of the Odyssey Engine.
-//  *
-//  * This source code is Intellectual property of the Author
-//  * and is released under the Creative Commons Attribution 
-//  * NonCommercial License, available at:
-//  * http://creativecommons.org/licenses/by-nc/3.0/ 
-//  * You can alter and use this source code as you wish, 
-//  * provided that you do not use the results in commercial
-//  * projects, without the express and written consent of
-//  * the Author.
-//  *
-//  */
-
-#endregion
-
+﻿
 #region Using directives
 
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using AvengersUtd.Odysseus.UIControls;
 
 #endregion
 
-namespace AvengersUtd.Odysseus
+namespace AvengersUtd.ColorChooserTest
 {
     /// <summary>
     ///   Summary description for ColorChooser.

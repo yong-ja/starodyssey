@@ -2,10 +2,9 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using AvengersUtd.Odysseus.Properties;
-using AvengersUtd.Odysseus.UIControls;
+using AvengersUtd.ColorChooserTest.Properties;
 
-namespace AvengersUtd.Odysseus
+namespace AvengersUtd.ColorChooserTest
 {
     public class ColorWheel : IDisposable
     {

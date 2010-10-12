@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorChangedEventArgs.cs" />
+    <Compile Include="UIControls\ColorChangedEventArgs.cs" />
     <Compile Include="UIControls\ColorChooser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +117,7 @@
     <Compile Include="UIControls\GradientContainer.Designer.cs">
       <DependentUpon>GradientContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIControls\Marker.cs" />
     <Compile Include="UIRenderer.cs" />
     <EmbeddedResource Include="UIControls\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
@@ -177,16 +178,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Icons\add.png" />
+    <None Include="Icons\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Icons\cancel.png" />
+    <None Include="Icons\rename.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Icons\rename.png" />
+    <None Include="Icons\cancel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Icons\color.png" />
+    <None Include="Icons\color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Transparent Background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

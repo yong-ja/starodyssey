@@ -32,16 +32,19 @@
             // 
             // GradientContainer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimumSize = new System.Drawing.Size(64, 32);
+            this.MinimumSize = new System.Drawing.Size(48, 26);
             this.Name = "GradientContainer";
-            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 12);
-            this.Size = new System.Drawing.Size(256, 64);
+            this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.Size = new System.Drawing.Size(192, 52);
             this.DoubleClick += new System.EventHandler(this.GradientContainer_DoubleClick);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseClick);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseUp);
             this.ResumeLayout(false);
 
         }
