@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odyssey", "Odyssey\Odyssey.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odysseus", "Odysseus\Odysseus.csproj", "{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorChooserTest", "ColorWheelTest\ColorChooserTest.csproj", "{49DFF256-09FD-4598-A3E8-855753E2A1FC}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -65,16 +63,6 @@ Global
 		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|x86.ActiveCfg = Release|x86
 		{9B8C94E5-3710-4F4C-A182-BADE965E2DF6}.Release|x86.Build.0 = Release|x86
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{49DFF256-09FD-4598-A3E8-855753E2A1FC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
