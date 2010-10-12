@@ -10,20 +10,43 @@ using System.Windows.Forms;
 
 namespace AvengersUtd.Odysseus.UIControls
 {
+    public delegate void MarkerEventHandler(object sender, MarkerEventArgs e);
     public partial class GradientContainer : UserControl
     {
         const int TriangleHalfSize = 6;
         const int TriangleHeight = 12;
 
+        private bool isDragMode;
+        private Point dragStartPosition;
         private readonly Pen markerPen;
+        internal SortedList<float, Marker> Markers { get; set; }
+        private Rectangle gradientRectangle;
+
+        public Marker SelectedMarker { get; private set; }
+
+
+        public event MarkerEventHandler SelectedMarkerChanged;
+
+        public void OnSelectedMarkerChanged(MarkerEventArgs e)
+        {
+            MarkerEventHandler handler = SelectedMarkerChanged;
+            if (handler != null) handler(this, e);
+        }
+
         public GradientContainer()
         {
             InitializeComponent();
             markerPen = new Pen(Brushes.Black, 1f);
+            
         }
 
-        internal SortedList<float, Marker> Markers { get;  set; }
-        private Rectangle gradientRectangle;
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            gradientRectangle = new Rectangle(TriangleHalfSize, TriangleHalfSize,
+                                              ClientSize.Width - 2 * TriangleHalfSize,
+                                              ClientSize.Height - TriangleHeight - 2);
+        }
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -41,7 +64,6 @@ namespace AvengersUtd.Odysseus.UIControls
                 Positions = Markers.Select(m => m.Value.Offset).ToArray()
             };
 
-            gradientRectangle = new Rectangle(TriangleHalfSize, TriangleHalfSize, ClientSize.Width - 2 * TriangleHalfSize, ClientSize.Height - TriangleHeight - 2);
 
             using (LinearGradientBrush brush = new LinearGradientBrush(gradientRectangle, Color.Black, Color.Black,
                                                                     LinearGradientMode.Horizontal))
@@ -94,20 +116,52 @@ namespace AvengersUtd.Odysseus.UIControls
 
         }
 
-        private void GradientContainer_MouseClick(object sender, MouseEventArgs e)
+
+        private void GradientContainer_MouseDown(object sender, MouseEventArgs e)
         {
-            int xLocation = e.X - 2 * TriangleHalfSize;
+            int xLocation = e.X - TriangleHalfSize;
             float offset = xLocation / (float)gradientRectangle.Width;
 
-            Marker selectedMarker = Markers.FirstOrDefault(m => Math.Abs(m.Key - offset) <= 0.1f).Value;
+            Marker newSelectedMarker = Markers.FirstOrDefault(m => Math.Abs(m.Key - offset) <= 0.1f).Value;
 
-            if (selectedMarker!= null)
+            if (newSelectedMarker == null) return;
+
+            if (SelectedMarker == null)
             {
-                selectedMarker.Selected = true;
-                Invalidate();
+                SelectedMarker = newSelectedMarker;
+                OnSelectedMarkerChanged(new MarkerEventArgs(newSelectedMarker));
             }
+            if (SelectedMarker != newSelectedMarker)
+            {
+               SelectedMarker.Selected = false;
+               SelectedMarker = newSelectedMarker;
+               OnSelectedMarkerChanged(new MarkerEventArgs(newSelectedMarker));
+            }
+            
+            SelectedMarker.Selected = true;
+            if (SelectedMarker.Offset != 0.0f && SelectedMarker.Offset != 1.0f)
+            {
+                isDragMode = true;
+                dragStartPosition = e.Location;
+            }
+            
+            Invalidate();
+        }
 
+        private void GradientContainer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isDragMode)
+                return;
 
+            int xLocation = e.X -  TriangleHalfSize;
+            float offset = xLocation / (float)gradientRectangle.Width;
+            SelectedMarker.Offset = offset;
+            Invalidate();
+        }
+
+        private void GradientContainer_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragMode = false;
         }
     }
 }

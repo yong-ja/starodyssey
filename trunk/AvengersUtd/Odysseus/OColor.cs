@@ -18,7 +18,7 @@ namespace AvengersUtd.Odysseus
 
         #endregion
 
-        #region " Constructors "
+        #region Constructors
         public OColor()
         {
             Alpha = 0;
@@ -65,7 +65,7 @@ namespace AvengersUtd.Odysseus
         }
         #endregion
 
-        #region " Methods "
+        #region Methods
         public new string ToString()
         {
             return String.Format("A:{0} R:{1} G:{2} B:{3}",  Alpha, Red, Green, Blue);

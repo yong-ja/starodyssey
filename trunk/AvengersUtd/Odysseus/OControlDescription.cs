@@ -35,7 +35,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public ColorShader ColorShader { get; set; }
         
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Enabled background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Enabled background color.")]
         public OColor Enabled
         {
             get;
@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Highlighted background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Highlighted background color.")]
         public OColor Highlighted
         {
             get;
@@ -51,7 +51,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Clicked background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Clicked background color.")]
         public OColor Clicked
         {
             get;
@@ -59,7 +59,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Disabled background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Disabled background color.")]
         public OColor Disabled
         {
             get;
@@ -67,7 +67,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Focused background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Focused background color.")]
         public OColor Focused
         {
             get;
@@ -75,7 +75,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Selected background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Selected background color.")]
         public OColor Selected
         {
             get;
@@ -83,7 +83,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Default border color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Default border color.")]
         public OColor BorderEnabled
         {
             get;
@@ -91,7 +91,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         }
 
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
-        [Category("Design"), DefaultValueAttribute(typeof(OColor), "0 0 0"), DescriptionAttribute("Highlighted background color.")]
+        [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Highlighted background color.")]
         public OColor BorderHighlighted
         {
             get;
