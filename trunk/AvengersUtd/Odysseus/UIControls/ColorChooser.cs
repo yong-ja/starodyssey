@@ -256,6 +256,7 @@ namespace AvengersUtd.Odysseus
 
         private void TbAlphaScroll(object sender, EventArgs e)
         {
+            changeType = ChangeStyle.RGB;
             argb = new ColorHandler.ARGB(tbAlpha.Value, tbRed.Value, tbGreen.Value, tbBlue.Value);
             RefreshText(lblAlpha, tbAlpha.Value);
             tbHexCode.Text = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", argb.Alpha, argb.Red, argb.Green, argb.Blue);

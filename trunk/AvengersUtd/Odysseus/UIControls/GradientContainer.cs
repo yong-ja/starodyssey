@@ -19,7 +19,7 @@ namespace AvengersUtd.Odysseus.UIControls
         private bool isDragMode;
         private Point dragStartPosition;
         private readonly Pen markerPen;
-        internal SortedList<float, Marker> Markers { get; set; }
+        internal List<Marker> Markers { get; set; }
         private Rectangle gradientRectangle;
 
         public Marker SelectedMarker { get; private set; }
@@ -60,8 +60,8 @@ namespace AvengersUtd.Odysseus.UIControls
 
             ColorBlend colorBlend = new ColorBlend(Markers.Count)
             {
-                Colors = Markers.Select(m => m.Value.Color).ToArray(),
-                Positions = Markers.Select(m => m.Value.Offset).ToArray()
+                Colors = Markers.Select(m => m.Color).ToArray(),
+                Positions = Markers.Select(m => m.Offset).ToArray()
             };
 
 
@@ -86,9 +86,9 @@ namespace AvengersUtd.Odysseus.UIControls
                 return;
 
 
-            for (int i = 0; i < Markers.Values.Count; i++)
+            for (int i = 0; i < Markers.Count; i++)
             {
-                Marker marker = Markers.Values[i];
+                Marker marker = Markers[i];
                 int markerXLocation = (int) (marker.Offset*gradientRectangle.Width) + gradientRectangle.Location.X;
                 Point[] triangleArray = new[]
                                             {
@@ -103,7 +103,6 @@ namespace AvengersUtd.Odysseus.UIControls
             }
         }
 
-
         private void GradientContainer_DoubleClick(object sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
@@ -111,18 +110,23 @@ namespace AvengersUtd.Odysseus.UIControls
             float offset = xLocation/(float)gradientRectangle.Width;
 
             Marker newMarker = new Marker(Color.Red, offset);
-            Markers.Add(newMarker.Offset, newMarker);
+            Markers.Add(newMarker);
+            SortMarkers();
             Invalidate();
 
         }
 
+        public void SortMarkers()
+        {
+            Markers.Sort((m1, m2) => m1.Offset.CompareTo(m2.Offset));
+        }
 
         private void GradientContainer_MouseDown(object sender, MouseEventArgs e)
         {
             int xLocation = e.X - TriangleHalfSize;
             float offset = xLocation / (float)gradientRectangle.Width;
 
-            Marker newSelectedMarker = Markers.FirstOrDefault(m => Math.Abs(m.Key - offset) <= 0.1f).Value;
+            Marker newSelectedMarker = Markers.FirstOrDefault(m => Math.Abs(m.Offset - offset) <= 0.1f);
 
             if (newSelectedMarker == null) return;
 
@@ -156,6 +160,7 @@ namespace AvengersUtd.Odysseus.UIControls
             int xLocation = e.X -  TriangleHalfSize;
             float offset = xLocation / (float)gradientRectangle.Width;
             SelectedMarker.Offset = offset;
+            SortMarkers();
             Invalidate();
         }
 
