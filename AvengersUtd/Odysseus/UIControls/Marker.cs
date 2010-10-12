@@ -18,6 +18,11 @@ namespace AvengersUtd.Odysseus.UIControls
             Offset = offset;
             Selected = false;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} Offset: {1:f3}", Color, Offset);
+        }
     }
 
     public class MarkerEventArgs : EventArgs

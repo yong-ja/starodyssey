@@ -19,7 +19,7 @@ namespace AvengersUtd.Odysseus.UIControls
             InitializeComponent();
             Marker startMarker = new Marker(Color.Red, 0.0f);
             Marker endMarker = new Marker(Color.Green, 1.0f);
-            gradientContainer.Markers = new SortedList<float, Marker>() { { startMarker.Offset, startMarker }, { endMarker.Offset, endMarker } };
+            gradientContainer.Markers = new List<Marker>() { startMarker ,endMarker };
             gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
         }
 
@@ -38,6 +38,9 @@ namespace AvengersUtd.Odysseus.UIControls
             else
             {
                 ctlOffset.Enabled = true;
+                gradientContainer.SelectedMarker.Offset = (float)ctlOffset.Value;
+                gradientContainer.SortMarkers();
+                gradientContainer.Invalidate();
             }
 
         }
