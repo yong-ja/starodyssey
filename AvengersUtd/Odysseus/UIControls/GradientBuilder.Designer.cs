@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.gradientContainer = new AvengersUtd.Odysseus.UIControls.GradientContainer();
             this.groupBox = new System.Windows.Forms.GroupBox();
             this.ctlOffset = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tbHexColor = new System.Windows.Forms.TextBox();
             this.btColorWheel = new System.Windows.Forms.Button();
-            this.gradientContainer = new AvengersUtd.Odysseus.UIControls.GradientContainer();
             this.tableLayoutPanel.SuspendLayout();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ctlOffset)).BeginInit();
@@ -56,6 +56,18 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(387, 132);
             this.tableLayoutPanel.TabIndex = 0;
+            // 
+            // gradientContainer
+            // 
+            this.gradientContainer.AutoSize = true;
+            this.gradientContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gradientContainer.Location = new System.Drawing.Point(0, 0);
+            this.gradientContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.gradientContainer.MinimumSize = new System.Drawing.Size(32, 16);
+            this.gradientContainer.Name = "gradientContainer";
+            this.gradientContainer.Padding = new System.Windows.Forms.Padding(3, 0, 3, 6);
+            this.gradientContainer.Size = new System.Drawing.Size(387, 69);
+            this.gradientContainer.TabIndex = 5;
             // 
             // groupBox
             // 
@@ -80,32 +92,24 @@
             this.ctlOffset.Enabled = false;
             this.ctlOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ctlOffset.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             131072});
             this.ctlOffset.Location = new System.Drawing.Point(283, 18);
             this.ctlOffset.Margin = new System.Windows.Forms.Padding(2);
             this.ctlOffset.Maximum = new decimal(new int[] {
-            95,
+            1,
             0,
             0,
-            131072});
-            this.ctlOffset.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
+            0});
             this.ctlOffset.Name = "ctlOffset";
             this.ctlOffset.Size = new System.Drawing.Size(96, 23);
             this.ctlOffset.TabIndex = 5;
             this.ctlOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ctlOffset.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
             this.ctlOffset.ValueChanged += new System.EventHandler(this.ctlOffset_ValueChanged);
+            this.ctlOffset.Leave += new System.EventHandler(this.ctlOffset_Leave);
+            this.ctlOffset.Validating += new System.ComponentModel.CancelEventHandler(this.ctlOffset_Validating);
             // 
             // label2
             // 
@@ -151,18 +155,6 @@
             this.btColorWheel.TabIndex = 1;
             this.btColorWheel.UseVisualStyleBackColor = true;
             this.btColorWheel.Click += new System.EventHandler(this.btColorWheel_Click);
-            // 
-            // gradientContainer
-            // 
-            this.gradientContainer.AutoSize = true;
-            this.gradientContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gradientContainer.Location = new System.Drawing.Point(0, 0);
-            this.gradientContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.gradientContainer.MinimumSize = new System.Drawing.Size(32, 16);
-            this.gradientContainer.Name = "gradientContainer";
-            this.gradientContainer.Padding = new System.Windows.Forms.Padding(3, 0, 3, 6);
-            this.gradientContainer.Size = new System.Drawing.Size(387, 69);
-            this.gradientContainer.TabIndex = 5;
             // 
             // GradientBuilder
             // 

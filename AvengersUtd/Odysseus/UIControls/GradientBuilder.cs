@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AvengersUtd.Odysseus.UIControls
 {
-    
+
     public partial class GradientBuilder : UserControl
     {
 
@@ -19,14 +19,14 @@ namespace AvengersUtd.Odysseus.UIControls
             InitializeComponent();
             Marker startMarker = new Marker(Color.Red, 0.0f);
             Marker endMarker = new Marker(Color.Green, 1.0f);
-            gradientContainer.Markers = new List<Marker>() { startMarker ,endMarker };
+            gradientContainer.Markers = new List<Marker>() { startMarker, endMarker };
             gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
         }
 
         void gradientContainer_SelectedMarkerChanged(object sender, MarkerEventArgs e)
         {
             tbHexColor.Text = e.SelectedMarker.Color.ToArgb().ToString("X8");
-            ctlOffset.Value = (decimal) e.SelectedMarker.Offset;
+            ctlOffset.Value = (decimal)e.SelectedMarker.Offset;
         }
 
         private void ctlOffset_ValueChanged(object sender, EventArgs e)
@@ -65,7 +65,29 @@ namespace AvengersUtd.Odysseus.UIControls
 
         }
 
-        
 
+        private void ctlOffset_Validating(object sender, CancelEventArgs e)
+        {
+            decimal value;
+            if (!decimal.TryParse(ctlOffset.Text, out value))
+            {
+                return;
+            }
+            if (value > 0.99m)
+            {
+                e.Cancel = true;
+                //MessageBox.Show("Please insert a value between 0.01 and 0.99.", "Warning", MessageBoxButtons.OK,
+                //    MessageBoxIcon.Exclamation);
+
+                ctlOffset.Value = 0.99m;
+                ctlOffset.Select(0, ctlOffset.Text.Length);
+            }
+        }
+
+        private void ctlOffset_Leave(object sender, EventArgs e)
+        {
+            Console.WriteLine(ctlOffset.Text + " " + ctlOffset.Value);
+        }
     }
 }
+

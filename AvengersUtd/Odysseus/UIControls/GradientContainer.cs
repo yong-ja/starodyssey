@@ -22,7 +22,20 @@ namespace AvengersUtd.Odysseus.UIControls
         internal List<Marker> Markers { get; set; }
         private Rectangle gradientRectangle;
 
-        public Marker SelectedMarker { get; private set; }
+        private Marker selectedMarker;
+
+        public Marker SelectedMarker
+        {
+            get { return selectedMarker; }
+            private set
+            {
+                if (selectedMarker != value)
+                {
+                    selectedMarker = value;
+                    OnSelectedMarkerChanged(new MarkerEventArgs(value));
+                }
+            }
+        }
 
 
         public event MarkerEventHandler SelectedMarkerChanged;
@@ -111,6 +124,7 @@ namespace AvengersUtd.Odysseus.UIControls
 
             Marker newMarker = new Marker(Color.Red, offset);
             Markers.Add(newMarker);
+            SelectedMarker = newMarker;
             SortMarkers();
             Invalidate();
 
@@ -133,13 +147,11 @@ namespace AvengersUtd.Odysseus.UIControls
             if (SelectedMarker == null)
             {
                 SelectedMarker = newSelectedMarker;
-                OnSelectedMarkerChanged(new MarkerEventArgs(newSelectedMarker));
             }
             if (SelectedMarker != newSelectedMarker)
             {
                SelectedMarker.Selected = false;
                SelectedMarker = newSelectedMarker;
-               OnSelectedMarkerChanged(new MarkerEventArgs(newSelectedMarker));
             }
             
             SelectedMarker.Selected = true;
