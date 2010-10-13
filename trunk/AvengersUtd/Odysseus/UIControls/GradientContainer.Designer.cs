@@ -39,7 +39,7 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.MinimumSize = new System.Drawing.Size(48, 26);
             this.Name = "GradientContainer";
-            this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.Padding = new System.Windows.Forms.Padding(8, 3, 8, 12);
             this.Size = new System.Drawing.Size(192, 52);
             this.DoubleClick += new System.EventHandler(this.GradientContainer_DoubleClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseDown);

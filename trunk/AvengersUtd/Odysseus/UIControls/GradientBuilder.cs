@@ -19,8 +19,9 @@ namespace AvengersUtd.Odysseus.UIControls
             InitializeComponent();
             Marker startMarker = new Marker(Color.Red, 0.0f);
             Marker endMarker = new Marker(Color.Green, 1.0f);
-            gradientContainer.Markers = new List<Marker>() { startMarker, endMarker };
+            gradientContainer.Markers = new List<Marker> { startMarker, endMarker };
             gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
+            gradientContainer.SelectedMarker = startMarker;
         }
 
         void gradientContainer_SelectedMarkerChanged(object sender, MarkerEventArgs e)
