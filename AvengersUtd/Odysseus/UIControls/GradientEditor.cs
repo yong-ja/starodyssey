@@ -1,19 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
-namespace AvengersUtd.Odysseus
+namespace AvengersUtd.Odysseus.UIControls
 {
-    public partial class GradientEditor2 : Form
+    public partial class GradientEditor : Form
     {
-        public GradientEditor2()
+        private SortedDictionary<string, Gradient> gradientDictionary;
+
+        public GradientEditor()
         {
             InitializeComponent();
+            gradientDictionary = new SortedDictionary<string, Gradient>();
+        }
+
+        private void btAdd_Click(object sender, EventArgs e)
+        {
+            InputBox inputBox = new InputBox() {Text = "Create new gradient", DialogTitle = "New gradient name:"};
+            inputBox.ShowDialog();
+            
+            if (inputBox.DialogResult != System.Windows.Forms.DialogResult.OK) return;
+
+            Gradient gradient = new Gradient(inputBox.InputValue, gradientBuilder.CurrentMarkers);
+            listBox.Items.Add(gradient.Name);
+            gradientDictionary.Add(inputBox.InputValue, gradient);
+        }
+
+        public void SelectGradient(Gradient gradient)
+        {
+            gradientBuilder.SetMarkers(gradient.Markers);
+        }
+
+        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectGradient(gradientDictionary[(string)listBox.SelectedItem]);
         }
     }
 }

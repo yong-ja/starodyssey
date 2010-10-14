@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbHexColor = new System.Windows.Forms.TextBox();
             this.btColorWheel = new System.Windows.Forms.Button();
+            this.cmdDel = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ctlOffset)).BeginInit();
@@ -66,11 +67,13 @@
             this.gradientContainer.MinimumSize = new System.Drawing.Size(32, 16);
             this.gradientContainer.Name = "gradientContainer";
             this.gradientContainer.Padding = new System.Windows.Forms.Padding(3, 0, 3, 6);
+            this.gradientContainer.SelectedMarker = null;
             this.gradientContainer.Size = new System.Drawing.Size(387, 69);
             this.gradientContainer.TabIndex = 5;
             // 
             // groupBox
             // 
+            this.groupBox.Controls.Add(this.cmdDel);
             this.groupBox.Controls.Add(this.ctlOffset);
             this.groupBox.Controls.Add(this.label2);
             this.groupBox.Controls.Add(this.label1);
@@ -96,7 +99,7 @@
             0,
             0,
             131072});
-            this.ctlOffset.Location = new System.Drawing.Point(283, 18);
+            this.ctlOffset.Location = new System.Drawing.Point(237, 20);
             this.ctlOffset.Margin = new System.Windows.Forms.Padding(2);
             this.ctlOffset.Maximum = new decimal(new int[] {
             1,
@@ -108,14 +111,13 @@
             this.ctlOffset.TabIndex = 5;
             this.ctlOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.ctlOffset.ValueChanged += new System.EventHandler(this.ctlOffset_ValueChanged);
-            this.ctlOffset.Leave += new System.EventHandler(this.ctlOffset_Leave);
             this.ctlOffset.Validating += new System.ComponentModel.CancelEventHandler(this.ctlOffset_Validating);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(237, 20);
+            this.label2.Location = new System.Drawing.Point(191, 21);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 17);
@@ -141,7 +143,7 @@
             this.tbHexColor.Margin = new System.Windows.Forms.Padding(2);
             this.tbHexColor.Name = "tbHexColor";
             this.tbHexColor.ReadOnly = true;
-            this.tbHexColor.Size = new System.Drawing.Size(97, 23);
+            this.tbHexColor.Size = new System.Drawing.Size(70, 23);
             this.tbHexColor.TabIndex = 2;
             this.tbHexColor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -155,6 +157,17 @@
             this.btColorWheel.TabIndex = 1;
             this.btColorWheel.UseVisualStyleBackColor = true;
             this.btColorWheel.Click += new System.EventHandler(this.btColorWheel_Click);
+            // 
+            // cmdDel
+            // 
+            this.cmdDel.Image = global::AvengersUtd.Odysseus.Properties.Resources.Delete;
+            this.cmdDel.Location = new System.Drawing.Point(339, 12);
+            this.cmdDel.Margin = new System.Windows.Forms.Padding(2);
+            this.cmdDel.Name = "cmdDel";
+            this.cmdDel.Size = new System.Drawing.Size(40, 40);
+            this.cmdDel.TabIndex = 6;
+            this.cmdDel.UseVisualStyleBackColor = true;
+            this.cmdDel.Click += new System.EventHandler(this.cmdDel_Click);
             // 
             // GradientBuilder
             // 
@@ -183,6 +196,7 @@
         private System.Windows.Forms.TextBox tbHexColor;
         private System.Windows.Forms.Button btColorWheel;
         private GradientContainer gradientContainer;
+        private System.Windows.Forms.Button cmdDel;
 
     }
 }

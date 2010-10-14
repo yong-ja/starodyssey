@@ -1,6 +1,6 @@
-﻿namespace AvengersUtd.Odysseus
+﻿namespace AvengersUtd.Odysseus.UIControls
 {
-    partial class GradientEditor2
+    partial class GradientEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.treeView = new System.Windows.Forms.TreeView();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOk = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -39,10 +38,14 @@
             this.btRename = new System.Windows.Forms.Button();
             this.btDelete = new System.Windows.Forms.Button();
             this.gradientBuilder = new AvengersUtd.Odysseus.UIControls.GradientBuilder();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listBox = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.buttonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.listButtons.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -51,11 +54,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 390F));
-            this.tableLayoutPanel1.Controls.Add(this.treeView, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.buttonPanel, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.listButtons, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.gradientBuilder, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
@@ -68,25 +71,17 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(670, 694);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // treeView
+            // buttonPanel
             // 
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(3, 3);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(144, 511);
-            this.treeView.TabIndex = 2;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.btCancel);
-            this.flowLayoutPanel1.Controls.Add(this.btOk);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(282, 655);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(386, 37);
-            this.flowLayoutPanel1.TabIndex = 15;
+            this.buttonPanel.Controls.Add(this.btCancel);
+            this.buttonPanel.Controls.Add(this.btOk);
+            this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.buttonPanel.Location = new System.Drawing.Point(282, 655);
+            this.buttonPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonPanel.Name = "buttonPanel";
+            this.buttonPanel.Size = new System.Drawing.Size(386, 37);
+            this.buttonPanel.TabIndex = 15;
             // 
             // btCancel
             // 
@@ -135,7 +130,6 @@
             // 
             // btAdd
             // 
-            this.btAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btAdd.Image = global::AvengersUtd.Odysseus.Properties.Resources.Add;
             this.btAdd.Location = new System.Drawing.Point(2, 2);
             this.btAdd.Margin = new System.Windows.Forms.Padding(2);
@@ -143,10 +137,10 @@
             this.btAdd.Size = new System.Drawing.Size(40, 40);
             this.btAdd.TabIndex = 8;
             this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
             // 
             // btRename
             // 
-            this.btRename.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btRename.Image = global::AvengersUtd.Odysseus.Properties.Resources.Rename;
             this.btRename.Location = new System.Drawing.Point(46, 2);
             this.btRename.Margin = new System.Windows.Forms.Padding(2);
@@ -157,7 +151,6 @@
             // 
             // btDelete
             // 
-            this.btDelete.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btDelete.Image = global::AvengersUtd.Odysseus.Properties.Resources.Delete;
             this.btDelete.Location = new System.Drawing.Point(90, 2);
             this.btDelete.Margin = new System.Windows.Forms.Padding(2);
@@ -177,20 +170,50 @@
             this.gradientBuilder.Size = new System.Drawing.Size(516, 132);
             this.gradientBuilder.TabIndex = 16;
             // 
-            // GradientEditor2
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.listBox);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(144, 511);
+            this.flowLayoutPanel1.TabIndex = 17;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(40, 6);
+            this.label1.Margin = new System.Windows.Forms.Padding(40, 6, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 17);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Gradients";
+            // 
+            // listBox
+            // 
+            this.listBox.FormattingEnabled = true;
+            this.listBox.Location = new System.Drawing.Point(3, 26);
+            this.listBox.Name = "listBox";
+            this.listBox.Size = new System.Drawing.Size(140, 485);
+            this.listBox.TabIndex = 5;
+            this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
+            // 
+            // GradientEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 694);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "GradientEditor2";
-            this.Text = "GradientEditor2";
+            this.Name = "GradientEditor";
+            this.Text = "GradientEditor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
+            this.buttonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.listButtons.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -198,15 +221,17 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.FlowLayoutPanel listButtons;
         private System.Windows.Forms.Button btAdd;
         private System.Windows.Forms.Button btRename;
         private System.Windows.Forms.Button btDelete;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel buttonPanel;
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Button btOk;
         private UIControls.GradientBuilder gradientBuilder;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listBox;
     }
 }

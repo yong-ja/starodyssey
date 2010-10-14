@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AvengersUtd.Odysseus.UIControls;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
@@ -70,7 +71,7 @@ namespace AvengersUtd.Odysseus
 
         private void gradientEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GradientEditor2 gradientEditor = new GradientEditor2();
+            GradientEditor gradientEditor = new GradientEditor();
             gradientEditor.ShowDialog();
         }
     }

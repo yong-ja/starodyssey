@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gradient.cs" />
     <Compile Include="UIControls\ColorChangedEventArgs.cs" />
     <Compile Include="UIControls\ColorChooser.cs">
       <SubType>Form</SubType>
@@ -76,33 +77,33 @@
     <Compile Include="OColorConverter.cs" />
     <Compile Include="OColorEditor.cs" />
     <Compile Include="OControlDescription.cs" />
-    <Compile Include="Options.cs">
+    <Compile Include="UIControls\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Options.Designer.cs">
+    <Compile Include="UIControls\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="PropertyBox.cs">
+    <Compile Include="UIControls\PropertyBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropertyBox.Designer.cs">
+    <Compile Include="UIControls\PropertyBox.Designer.cs">
       <DependentUpon>PropertyBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StyleEditor.cs">
+    <Compile Include="UIControls\StyleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StyleEditor.Designer.cs">
+    <Compile Include="UIControls\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox.cs">
+    <Compile Include="UIControls\Toolbox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Toolbox.Designer.cs">
+    <Compile Include="UIControls\Toolbox.Designer.cs">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolStripToggleButton.cs">
+    <Compile Include="UIControls\ToolStripToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIControls\GradientBuilder.cs">
@@ -117,6 +118,12 @@
     <Compile Include="UIControls\GradientContainer.Designer.cs">
       <DependentUpon>GradientContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIControls\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIControls\InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIControls\Marker.cs" />
     <Compile Include="UIRenderer.cs" />
     <EmbeddedResource Include="UIControls\ColorChooser.resx">
@@ -128,10 +135,10 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Options.resx">
+    <EmbeddedResource Include="UIControls\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropertyBox.resx">
+    <EmbeddedResource Include="UIControls\PropertyBox.resx">
       <DependentUpon>PropertyBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -144,10 +151,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="StyleEditor.resx">
+    <EmbeddedResource Include="UIControls\StyleEditor.resx">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Toolbox.resx">
+    <EmbeddedResource Include="UIControls\Toolbox.resx">
       <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\GradientBuilder.resx">
@@ -155,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIControls\GradientContainer.resx">
       <DependentUpon>GradientContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControls\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
