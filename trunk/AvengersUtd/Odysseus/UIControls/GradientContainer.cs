@@ -18,7 +18,6 @@ namespace AvengersUtd.Odysseus.UIControls
         private const int CircleRadius = 10;
 
         private bool isDragMode;
-        private Point dragStartPosition;
         private readonly Pen markerPen;
         internal List<Marker> Markers { get; set; }
         private Rectangle gradientRectangle;
@@ -41,6 +40,13 @@ namespace AvengersUtd.Odysseus.UIControls
 
 
         public event MarkerEventHandler SelectedMarkerChanged;
+        public event MarkerEventHandler OffsetChanged;
+
+        public void OnOffsetChanged(MarkerEventArgs e)
+        {
+            MarkerEventHandler handler = OffsetChanged;
+            if (handler != null) handler(this, e);
+        }
 
         public void OnSelectedMarkerChanged(MarkerEventArgs e)
         {
@@ -171,7 +177,6 @@ namespace AvengersUtd.Odysseus.UIControls
             if (SelectedMarker.Offset != 0.0f && SelectedMarker.Offset != 1.0f)
             {
                 isDragMode = true;
-                dragStartPosition = e.Location;
             }
             
             Invalidate();
@@ -189,6 +194,7 @@ namespace AvengersUtd.Odysseus.UIControls
             if (offset > 0.99f)
                 offset = 0.99f;
             SelectedMarker.Offset = offset;
+            OnOffsetChanged(new MarkerEventArgs(selectedMarker));
             SortMarkers();
             Invalidate();
         }
@@ -196,6 +202,28 @@ namespace AvengersUtd.Odysseus.UIControls
         private void GradientContainer_MouseUp(object sender, MouseEventArgs e)
         {
             isDragMode = false;
+        }
+
+        public void DeleteSelectedMarker()
+        {
+            if (SelectedMarker.Offset == 0f || SelectedMarker.Offset == 1f)
+            {
+                MessageBox.Show("Cannot delete start or end markers.",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return;
+            }
+
+            Markers.Remove(SelectedMarker);
+            SelectedMarker = Markers[0];
+            Invalidate();
+        }
+
+        private void GradientContainer_KeyUp(object sender, KeyEventArgs e)
+        {
+            DeleteSelectedMarker();
+
         }
     }
 }

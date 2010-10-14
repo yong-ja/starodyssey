@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
-using SlimDX;
 
-namespace AvengersUtd.Odysseus
+namespace AvengersUtd.Odysseus.UIControls
 {
     public partial class StyleEditor : Form
     {

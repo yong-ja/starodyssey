@@ -42,6 +42,7 @@
             this.Padding = new System.Windows.Forms.Padding(8, 3, 8, 12);
             this.Size = new System.Drawing.Size(192, 52);
             this.DoubleClick += new System.EventHandler(this.GradientContainer_DoubleClick);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GradientContainer_KeyUp);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GradientContainer_MouseUp);

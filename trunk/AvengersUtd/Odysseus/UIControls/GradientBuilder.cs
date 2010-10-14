@@ -21,13 +21,37 @@ namespace AvengersUtd.Odysseus.UIControls
             Marker endMarker = new Marker(Color.Green, 1.0f);
             gradientContainer.Markers = new List<Marker> { startMarker, endMarker };
             gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
+            gradientContainer.OffsetChanged += gradientContainer_OffsetChanged;
             gradientContainer.SelectedMarker = startMarker;
         }
 
-        void gradientContainer_SelectedMarkerChanged(object sender, MarkerEventArgs e)
+        public Marker[] CurrentMarkers
         {
-            tbHexColor.Text = e.SelectedMarker.Color.ToArgb().ToString("X8");
-            ctlOffset.Value = (decimal)e.SelectedMarker.Offset;
+            get { return gradientContainer.Markers.ToArray(); }
+        }
+
+        public void RefreshLabels(float value)
+        {
+            ctlOffset.Value = (decimal)value;
+        }
+
+        public void SetMarkers(Marker[] markers)
+        {
+            gradientContainer.Markers = markers.ToList();
+            gradientContainer.SelectedMarker = gradientContainer.Markers[0];
+            gradientContainer.Invalidate();
+        }
+
+        #region Events
+        private void gradientContainer_OffsetChanged(object sender, MarkerEventArgs e)
+        {
+            RefreshLabels(e.Marker.Offset);
+        }
+
+        private void gradientContainer_SelectedMarkerChanged(object sender, MarkerEventArgs e)
+        {
+            tbHexColor.Text = e.Marker.Color.ToArgb().ToString("X8");
+            RefreshLabels(e.Marker.Offset);
         }
 
         private void ctlOffset_ValueChanged(object sender, EventArgs e)
@@ -59,13 +83,12 @@ namespace AvengersUtd.Odysseus.UIControls
             cc.ShowDialog();
 
             // Return the newly selected color.
-
             gradientContainer.SelectedMarker.Color = cc.Color;
-
             tbHexColor.Text = cc.Color.ToArgb().ToString("X8");
 
-        }
+            gradientContainer.Invalidate();
 
+        }
 
         private void ctlOffset_Validating(object sender, CancelEventArgs e)
         {
@@ -85,10 +108,11 @@ namespace AvengersUtd.Odysseus.UIControls
             }
         }
 
-        private void ctlOffset_Leave(object sender, EventArgs e)
+        private void cmdDel_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(ctlOffset.Text + " " + ctlOffset.Value);
-        }
+            gradientContainer.DeleteSelectedMarker();
+        } 
+        #endregion
     }
 }
 

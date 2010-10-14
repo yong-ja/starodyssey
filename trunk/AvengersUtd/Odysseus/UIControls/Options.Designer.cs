@@ -1,4 +1,4 @@
-﻿namespace AvengersUtd.Odysseus
+﻿namespace AvengersUtd.Odysseus.UIControls
 {
     partial class Options
     {

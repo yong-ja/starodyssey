@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
-using ContainerControl = AvengersUtd.Odyssey.UserInterface.Controls.ContainerControl;
 using Panel = AvengersUtd.Odyssey.UserInterface.Controls.Panel;
 
-namespace AvengersUtd.Odysseus
+namespace AvengersUtd.Odysseus.UIControls
 {
     public partial class Toolbox : Form
     {

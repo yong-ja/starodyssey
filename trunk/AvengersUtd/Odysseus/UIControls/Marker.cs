@@ -28,13 +28,13 @@ namespace AvengersUtd.Odysseus.UIControls
     public class MarkerEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the currently selected <see cref="Marker"/>.
+        /// Gets the currently selected <see cref="UIControls.Marker"/>.
         /// </summary>
-        public Marker SelectedMarker { get; private set; }
+        public Marker Marker { get; private set; }
 
-        public MarkerEventArgs(Marker selectedMarker)
+        public MarkerEventArgs(Marker marker)
         {
-            SelectedMarker = selectedMarker;
+            Marker = marker;
         }
         
     }
