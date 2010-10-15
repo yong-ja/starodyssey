@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using AvengersUtd.Odysseus.Properties;
 using AvengersUtd.Odysseus.UIControls;
+using AvengersUtd.Odysseus.Properties;
 
 namespace AvengersUtd.Odysseus
 {
