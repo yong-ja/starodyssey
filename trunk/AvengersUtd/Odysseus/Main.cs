@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
+using AvengersUtd.Odysseus;
 using AvengersUtd.Odysseus.UIControls;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Settings;
@@ -10,8 +9,6 @@ using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
-using SlimDX.Windows;
-using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
 
 namespace AvengersUtd.Odysseus
 {

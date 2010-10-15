@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.gradientContainer = new AvengersUtd.Odysseus.UIControls.GradientContainer();
+            this.gradientContainer = new GradientContainer();
             this.groupBox = new System.Windows.Forms.GroupBox();
             this.ctlOffset = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();

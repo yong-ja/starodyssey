@@ -37,7 +37,7 @@
             this.btAdd = new System.Windows.Forms.Button();
             this.btRename = new System.Windows.Forms.Button();
             this.btDelete = new System.Windows.Forms.Button();
-            this.gradientBuilder = new AvengersUtd.Odysseus.UIControls.GradientBuilder();
+            this.gradientBuilder = new GradientBuilder();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.listBox = new System.Windows.Forms.ListBox();
