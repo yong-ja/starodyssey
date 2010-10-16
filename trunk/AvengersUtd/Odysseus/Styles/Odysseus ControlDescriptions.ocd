@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey UI Style Declaration file, generated on venerdi' 3 agosto 2007 14.49.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey UI website at http://www.avengersutd.com/wiki/OdysseyUI for more information.
+Thanks for using the Odyssey UI!-->
+<ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
+  <ControlDescription Name="ControlSelector" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
+   <ColorShader GradientType="Uniform"/>
+    <ColorArray>
+      <Color Type="Enabled" Name="Transparent" HexValue="00000000" />
+      <Color Type="Highlighted" Name="Transparent" HexValue="00000000" />
+      <Color Type="Clicked" Name="Transparent" HexValue="00000000" />
+      <Color Type="Disabled" Name="Transparent" HexValue="00000000" />
+      <Color Type="Selected" Name="Transparent" HexValue="00000000" />
+      <Color Type="Focused" Name="Transparent" HexValue="00000000" />
+      <Color Type="BorderEnabled" Name="Aqua" HexValue="FFFF8C00" />
+      <Color Type="BorderHighlighted" Name="Orange" HexValue="FFFFA500" />
+    </ColorArray>
+  </ControlDescription>
+</ArrayOfControlDescription>

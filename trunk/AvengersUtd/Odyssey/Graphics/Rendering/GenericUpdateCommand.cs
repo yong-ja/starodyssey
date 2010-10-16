@@ -10,8 +10,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class GenericUpdateCommand:BaseCommand,IUpdateCommand
     {
         private readonly Thread genericUpdateThread;
-        private Queue<UpdateTask> updateTasks;
-        private SortedDictionary<TaskType, RecurrentTask> recurrentTasks;
+        private readonly Queue<UpdateTask> updateTasks;
+        private readonly SortedDictionary<TaskType, RecurrentTask> recurrentTasks;
 
 
         internal GenericUpdateCommand() : base(CommandType.Update)

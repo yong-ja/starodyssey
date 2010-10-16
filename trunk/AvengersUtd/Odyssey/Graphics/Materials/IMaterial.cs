@@ -2,6 +2,7 @@
 
 using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using System;
 
@@ -11,7 +12,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     {
         MaterialNode OwningNode { get; }
         EffectDescription EffectDescription { get; }
-        void ApplyDynamicParameters();
+        void ApplyDynamicParameters(Renderer rendererContext);
         
     }
 }

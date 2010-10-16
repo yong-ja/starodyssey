@@ -75,7 +75,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                                 graphics.DrawPath(Pens.Black, path);
                             graphics.FillPath(brush, path);
                         }
-
                         t = ImageHelper.TextureFromBitmap(image);
                     }
                 }

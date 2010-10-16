@@ -159,7 +159,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 if (!newAbsolutePosition.Equals(oldAbsolutePosition))
                 {
                     AbsolutePosition = newAbsolutePosition;
-                    AbsoluteOrthoPosition = OrthographicTransform(AbsolutePosition, Depth.ZOrder);
+                    AbsoluteOrthoPosition = Layout.OrthographicTransform(AbsolutePosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                     if (!DesignMode)
                         UpdatePositionDependantParameters();
                 }
@@ -177,16 +177,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public override string ToString()
         {
             return string.Format("{0}: '{1}' [{2}] D:{3}", GetType().Name, Id, AbsolutePosition, Depth);
-        }
-
-        public static Vector3 OrthographicTransform(Vector2 screenPosition, float zOrder)
-        {
-            return new Vector3
-            {
-                X =(float)Math.Floor(((Game.Context.Settings.ScreenWidth / 2f) * -1f) + screenPosition.X),
-                Y =(float)Math.Floor((Game.Context.Settings.ScreenHeight / 2f) - screenPosition.Y),
-                Z = zOrder,
-            };
         }
 
         #region IComparable Members

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Utils.Collections;
 
@@ -12,23 +13,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
        
         #region Private Fields
 
-        string label;
-        SceneNodeType nodeType;
-        
         #endregion
 
         #region Properties
 
-        public string Label
-        {
-            get { return label; }
-            set { label = value; }
-        }
+        public string Label { get; set; }
 
-        public SceneNodeType NodeType
-        {
-            get { return nodeType; }
-        }
+        public SceneNodeType NodeType { get; private set; }
 
         public bool Inited
         {
@@ -102,8 +93,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         protected SceneNode(string label, SceneNodeType nodeType)
         {
-            this.label = label;
-            this.nodeType = nodeType;
+            this.Label = label;
+            this.NodeType = nodeType;
         }
 
         protected SceneNode(SceneNodeType nodeType) : this(nodeType.ToString(), nodeType)
@@ -168,21 +159,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         public bool Contains(string label)
         {
-            foreach (SceneNode node in ChildrenIterator)
-                if (node.label == label)
-                    return true;
-            return false;
+            return ChildrenIterator.Cast<SceneNode>().Any(node => node.Label == label);
         }
 
         public SceneNode Find(string label)
         {
             SceneNode result = null;
 
-            foreach (SceneNode node in ChildrenIterator)
-                if (node.label == label)
-                {
-                    result = node;
-                }
+            foreach (SceneNode node in ChildrenIterator.Cast<SceneNode>().Where(node => node.Label == label))
+            {
+                result = node;
+            }
 
             return result;
         }
@@ -205,11 +192,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             where T : SceneNode
         {
             SceneNodeCollection<T> nodeCollection = new SceneNodeCollection<T>();
-            foreach (INode node in Node.PreOrderVisit(this))
+            foreach (T nodeT in PreOrderVisit(this).OfType<T>())
             {
-                T nodeT = node as T;
-                if (nodeT != null)
-                    nodeCollection.Add(nodeT);
+                nodeCollection.Add(nodeT);
             }
 
             return nodeCollection;

@@ -388,11 +388,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 size = value;
                 ClientSize = new Size(Size.Width - (Description.BorderSize * 2 + Description.Padding.Horizontal),
                                   Size.Height - (Description.BorderSize * 2 + Description.Padding.Vertical));
-                UpdateSizeDependantParameters();
+                
 
                 if (DesignMode) return;
                 OnSizeChanged(EventArgs.Empty);
             }
+        }
+
+        public int Width
+        {
+            get { return size.Width; }
+        }
+
+        public int Height
+        {
+            get { return size.Height; }
         }
 
         #endregion

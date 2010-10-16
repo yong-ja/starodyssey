@@ -152,7 +152,7 @@ namespace AvengersUtd.Odysseus
             grid.SendToBack();
             Hud.Init();
             Hud.EndDesign();
-            Hud.AddToScene(Scene);
+            Hud.AddToScene(this,Scene);
 
             ClearColor = Color.CornflowerBlue;
             

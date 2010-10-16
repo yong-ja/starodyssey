@@ -111,7 +111,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             hud.EndDesign();
 
             Scene.BuildRenderScene();
-            hud.AddToScene(Game.CurrentRenderer.Scene);
+            hud.AddToScene(this,Scene);
         }
         
         public override void Render()

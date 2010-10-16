@@ -146,6 +146,7 @@ namespace AvengersUtd.Odyssey
         {
             EventCameraMoved  = new object();
         }
+
         public QuaternionCam()
         {
             eventHandlerList = new EventHandlerList();
@@ -292,6 +293,13 @@ namespace AvengersUtd.Odyssey
 
             return cameraAxis;
         }
+
+        public void ChangeScreenSize(float width, float height)
+        {
+            mOrthoProjection = Matrix.OrthoLH(width, height, nearClip, farClip);
+            mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, width/height, nearClip, farClip);
+        }
+
 
         //public void SetState(CameraAction action, bool state)
         //{

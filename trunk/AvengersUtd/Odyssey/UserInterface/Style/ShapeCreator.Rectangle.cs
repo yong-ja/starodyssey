@@ -133,17 +133,37 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             }
             ShapeDescription outline = DrawRectangularOutline(position, size, borderSize, borderColors, BorderStyle.Flat,
                 Border.All);
-            ShapeDescription inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+            float[] offsets = colorShader.Gradient.Select(g => g.Offset).ToArray();
+            ShapeDescription inside;
+
+            switch (colorShader.GradientType)
+            {
+                case GradientType.Uniform:
+                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
                 shadedColors);
+                    break;
+                case GradientType.LinearVerticalGradient:
+                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+                shadedColors, heightOffsets: offsets);
+                    break;
+                case GradientType.LinearHorizontalGradient:
+                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+                shadedColors, widthOffsets: offsets);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            
 
             return ShapeDescription.Join(inside,outline);
         }
 
-        public static ShapeDescription DrawSubdividedRectangle(Vector3 position, Size size, int widthSegments, int heightSegments, Color4[] colors)
+        public static ShapeDescription DrawSubdividedRectangle(Vector3 position, Size size, int widthSegments, int heightSegments, Color4[] colors, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             short[] indices;
             ColoredVertex[] vertices = Polygon.CreateSubdividedRectangle(position.ToVector4(), size.Width, size.Height,
-                                                 widthSegments, heightSegments, colors, out indices);
+                                                 widthSegments, heightSegments, colors, out indices, widthOffsets, heightOffsets);
             return new ShapeDescription
             {
                 Vertices = vertices,

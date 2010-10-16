@@ -117,7 +117,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// <summary>
         /// Initializes this shader's parameters.
         /// </summary>
-        public void InitParameters()
+        public void InitParameters(Renderer rendererContext)
         {
             //HandleLights();
             OnStaticParametersInit();
@@ -125,20 +125,20 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             OnInstanceParametersInit();
 
             //ChooseTechnique();
-            ApplyStaticParameters();
+            ApplyStaticParameters(rendererContext);
         }
 
-        public virtual void ApplyStaticParameters()
+        public virtual void ApplyStaticParameters(Renderer rendererContext)
         {
-            EffectDescription.ApplyStaticParameters();
+            EffectDescription.ApplyStaticParameters(rendererContext);
         }
 
         /// <summary>
         /// Sets the shader values. Has to be called before rendering.
         /// </summary>
-        public virtual void ApplyDynamicParameters()
+        public virtual void ApplyDynamicParameters(Renderer rendererContext)
         {
-            EffectDescription.ApplyDynamicParameters();
+            EffectDescription.ApplyDynamicParameters(rendererContext);
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)
@@ -146,9 +146,9 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             EffectDescription.ApplyInstanceParameters(rObject);
         }
 
-        public void Apply()
+        public void Apply(Renderer rendererContext)
         {
-            ApplyDynamicParameters();
+            ApplyDynamicParameters(rendererContext);
         }
 
         #endregion

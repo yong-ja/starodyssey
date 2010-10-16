@@ -129,16 +129,17 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         public static ColoredVertex[] CreateSubdividedRectangle(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
-                                                out short[] indices)
+            out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
-           
+            if (widthOffsets != null && widthOffsets.Length != widthSegments+1)
+                throw Error.ArgumentInvalid("widthOffsets", typeof (float[]), "CreateSubdividedRectangle");
+            if (heightOffsets != null && heightOffsets.Length != heightSegments+1)
+                throw Error.ArgumentInvalid("heightSegments", typeof(float[]), "CreateSubdividedRectangle");
+
             float x = topLeftVertex.X;
             float y = topLeftVertex.Y;
             float z = topLeftVertex.Z;
-
-            float hOffset = width/(widthSegments);
-            float vOffset = height/heightSegments;
 
             int vertexCount=0, indexCount = 0;
             indices = new short[widthSegments*heightSegments*6];
@@ -147,9 +148,12 @@ namespace AvengersUtd.Odyssey.Geometry
             {
                 for (int j = 0; j < widthSegments + 1; j++)
                 {
+                    float hOffset = widthOffsets == null ? j * (width/widthSegments) : widthOffsets[j]*width;
+                    float vOffset = heightOffsets == null ? i* (height/heightSegments) : heightOffsets[i]*height;
+
                     vertices[vertexCount] = new ColoredVertex
                                                 {
-                                                    Position = new Vector4(x + j*hOffset, y - i*vOffset, z, 1.0f),
+                                                    Position = new Vector4(x + hOffset, y -vOffset, z, 1.0f),
                                                     Color = colors[vertexCount]
                                                 };
 

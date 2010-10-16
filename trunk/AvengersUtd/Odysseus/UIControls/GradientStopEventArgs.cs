@@ -36,6 +36,6 @@ namespace AvengersUtd.Odysseus.UIControls
         {
             Marker = marker;
         }
-        
+
     }
 }

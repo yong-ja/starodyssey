@@ -70,6 +70,13 @@ namespace AvengersUtd.Odyssey.UserInterface
         Recompute
     }
 
+    public enum GradientType
+    {
+        Uniform,
+        LinearVerticalGradient,
+        LinearHorizontalGradient
+    }
+
     public enum IntersectionLocation
     {
         None,

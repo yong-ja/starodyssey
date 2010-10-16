@@ -620,6 +620,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected virtual void OnSizeChanged(EventArgs e)
         {
+            UpdateSizeDependantParameters();
             UpdateAppearance();
 
             EventHandler handler = (EventHandler) Events[EventSizeChanged];

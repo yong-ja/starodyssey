@@ -29,6 +29,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
@@ -48,9 +49,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly EffectPass textPass;
         private readonly EffectTechnique textTechnique;
 
-        public UserInterfaceRenderCommand(MaterialNode uiMaterialNode,
+        public UserInterfaceRenderCommand(Renderer renderer, MaterialNode uiMaterialNode,
             RenderableCollection uiRCollection, 
-            MaterialNode textMaterialNode, Hud hud) : base(uiMaterialNode, uiRCollection)
+            MaterialNode textMaterialNode, Hud hud) : base(renderer, uiMaterialNode, uiRCollection)
         {
             this.textMaterialNode = textMaterialNode;
             this.hud = hud;
@@ -66,6 +67,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public RenderableCollection TextItems { get; internal set; }
 
+        public override void Init()
+        {
+            base.Init();
+            textMaterial.InitParameters(Renderer);
+        }
+
         public override void Execute()
         {
             Render();
@@ -78,7 +85,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             foreach (RenderStep renderStep in hud.RenderSteps)
             {
                 Game.Context.Immediate.InputAssembler.InputLayout = InputLayout;
-                Material.ApplyDynamicParameters();
+                Material.ApplyDynamicParameters(Renderer);
                 Material.ApplyInstanceParameters(rNode.RenderableObject);
                 Pass.Apply(Game.Context.Immediate);
 
@@ -88,11 +95,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     baseVertex: renderStep.BaseVertex);
 
                 Game.Context.Immediate.InputAssembler.InputLayout = textLayout;
-                textMaterial.ApplyDynamicParameters();
+                textMaterial.ApplyDynamicParameters(Renderer);
                 for (int i = renderStep.BaseLabelIndex; i < renderStep.LabelCount; i++)
                 {
                     IRenderable rObject = TextItems[i].RenderableObject;
-
                     textMaterial.ApplyInstanceParameters(rObject);
                     textPass.Apply(Game.Context.Immediate);
                     rObject.Render();

@@ -12,10 +12,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         private static int count;
         private readonly QuaternionCam camera;
 
-        public CameraOverlayNode()
-            : this(Game.CurrentRenderer.Camera)
-        {
-        }
 
         public CameraOverlayNode(QuaternionCam camera)
             : base(NodeTag + ++count, true)

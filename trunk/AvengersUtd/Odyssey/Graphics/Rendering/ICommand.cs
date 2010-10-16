@@ -26,6 +26,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
     public interface IRenderCommand : ICommand
     {
+        void Init();
         void PerformRender();
         void UpdateItems();
     }

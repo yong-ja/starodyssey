@@ -11,6 +11,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RenderCommand : BaseCommand, IRenderCommand
     {
+        protected Renderer Renderer { get; private set; }
         protected MaterialNode MaterialNode {get; private set; }
         protected InputLayout InputLayout { get; private set; }
         protected AbstractMaterial Material { get; private set; }
@@ -19,9 +20,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public RenderableCollection Items { get; internal set; }
 
-        public RenderCommand(MaterialNode mNode, RenderableCollection sceneNodeCollection)
-            : base(CommandType.Render)
+        public RenderCommand(Renderer renderer,MaterialNode mNode, RenderableCollection sceneNodeCollection)
+            : base(Graphics.CommandType.Render)
         {
+            Renderer = renderer;
             Items = sceneNodeCollection;
             MaterialNode = mNode;
             Material = MaterialNode.Material;
@@ -30,16 +32,26 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
         }
 
+        public RenderCommand(MaterialNode mNode, RenderableCollection sceneNodeCollection)
+            : this(Game.CurrentRenderer, mNode, sceneNodeCollection)
+        {
+        }
+
         public override void Execute()
         {
             PerformRender();
+        }
+
+        public virtual void Init()
+        {
+            Material.InitParameters(Renderer);
         }
 
         public virtual void PerformRender()
         {
             Game.Context.Device.ImmediateContext.InputAssembler.InputLayout = InputLayout;
            
-            Material.ApplyDynamicParameters();
+            Material.ApplyDynamicParameters(Renderer);
 
             foreach (RenderableNode rNode in Items)
             {
