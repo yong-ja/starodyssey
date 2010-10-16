@@ -75,6 +75,7 @@
     <Compile Include="Graphics\Rendering\Management\CameraOverlayNode.cs" />
     <Compile Include="Graphics\Rendering\Management\CameraAnchorNode.cs" />
     <Compile Include="Graphics\Rendering\RenderToTextureCommand.cs" />
+    <Compile Include="Graphics\Rendering\TextureRenderer.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\ColorShader.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
+    <Compile Include="UserInterface\Style\Layout.cs" />
     <Compile Include="UserInterface\Style\ShapeCollection.cs" />
     <Compile Include="Geometry\TexturedPolygon.cs" />
     <Compile Include="Geometry\ColoredVertex.cs" />

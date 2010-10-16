@@ -134,6 +134,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         //    }
         //    return null;
         //}
+
         public void Update()
         {
             foreach (IUpdateCommand updateCommand in CommandManager.UpdateCommands)

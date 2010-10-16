@@ -27,10 +27,10 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         }
 
-        public override void ApplyStaticParameters()
-        {
-            //EffectDescription.SetStaticParameter(SceneVariable.LightPosition);
-        }
+        //public override void ApplyStaticParameters()
+        //{
+        //    //EffectDescription.SetStaticParameter(SceneVariable.LightPosition);
+        //}
 
         protected override void OnDynamicParametersInit()
         {

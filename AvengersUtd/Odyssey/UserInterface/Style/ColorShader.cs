@@ -18,12 +18,43 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             Color = color;
             Offset = offset;
         }
+
+        public static bool operator ==(GradientStop left, GradientStop right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GradientStop left, GradientStop right)
+        {
+            return !left.Equals(right);
+        }
+
+        public bool Equals(GradientStop other)
+        {
+            return other.Color.Equals(Color) && other.Offset.Equals(Offset);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (obj.GetType() != typeof (GradientStop)) return false;
+            return Equals((GradientStop) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Color.GetHashCode()*397) ^ Offset.GetHashCode();
+            }
+        }
     }
 
     public delegate Color4[] Shader(ColorShader shader, int numVertex, Shape shape);
     
     public class ColorShader
     {
+        public GradientType GradientType { get; set; }
         public Shader Method { get; set; }
         public Color4 Color { get; set; }
         public int WidthSegments { get; set; }

@@ -91,6 +91,7 @@
       <DependentUpon>PropertyBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIControls\GradientStopEventArgs.cs" />
     <Compile Include="UIControls\StyleEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,7 +125,6 @@
     <Compile Include="UIControls\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UIControls\Marker.cs" />
     <Compile Include="UIRenderer.cs" />
     <EmbeddedResource Include="UIControls\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
@@ -176,6 +176,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Styles\Odysseus ControlDescriptions.ocd" />
+    <None Include="Styles\Odyssey ControlDescriptions.ocd" />
+    <None Include="Styles\Odyssey TextDescriptions.otd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">

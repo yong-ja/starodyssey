@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Resources;
 using AvengersUtd.Odyssey.Resources;
 using SlimDX.Direct3D11;
@@ -123,16 +124,16 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             instanceParameters.Add(effectParameter.Name, effectParameter);
         }
 
-        public void ApplyStaticParameters()
+        public void ApplyStaticParameters(Renderer rendererContext)
         {
             foreach (SharedParameter p in staticParameters.Values)
-                p.Apply();
+                p.Apply(rendererContext);
         }
 
-        public void ApplyDynamicParameters()
+        public void ApplyDynamicParameters(Renderer rendererContext)
         {
             foreach (SharedParameter p in dynamicParameters.Values)
-                p.Apply();
+                p.Apply(rendererContext);
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)

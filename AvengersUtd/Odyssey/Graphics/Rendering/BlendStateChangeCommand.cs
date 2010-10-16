@@ -9,23 +9,22 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class BlendStateChangeCommand : BaseCommand
     {
         public RenderTargetBlendDescription Description { get; private set; }
-        private BlendState blendState;
+        private readonly BlendState blendState;
+        private readonly BlendStateDescription blendStateDescription;
 
         public BlendStateChangeCommand(RenderTargetBlendDescription bStateDesc)
             : base(CommandType.BlendStateChange)
         {
             Description = bStateDesc;
+            blendStateDescription = new BlendStateDescription();
+            blendStateDescription.RenderTargets[0] = Description;
+            blendState = BlendState.FromDescription(Game.Context.Device, blendStateDescription);
         }
 
         public override void Execute()
         {
-            BlendStateDescription bStateDescr = new BlendStateDescription();
-            bStateDescr.RenderTargets[0] = Description;
-
-            blendState = BlendState.FromDescription(Game.Context.Device, bStateDescr);
-
             Game.Context.Immediate.OutputMerger.BlendState =
-                BlendState.FromDescription(Game.Context.Device, bStateDescr);
+                BlendState.FromDescription(Game.Context.Device, blendStateDescription);
         }
 
         protected override void OnDispose()
@@ -46,17 +45,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             { 
                 RenderTargetBlendDescription bStateDesc = new RenderTargetBlendDescription()
                                                             {
-                                                                BlendOperationAlpha = SlimDX.Direct3D11.BlendOperation.Add,
-                                                                SourceBlendAlpha = BlendOption.Zero,
-                                                                DestinationBlendAlpha = BlendOption.Zero,
-
-                                                                BlendOperation = SlimDX.Direct3D11.BlendOperation.Add,
+                                                                BlendOperationAlpha = BlendOperation.Add,
                                                                 SourceBlend = BlendOption.SourceAlpha,
+                                                                SourceBlendAlpha = BlendOption.One,
                                                                 DestinationBlend = BlendOption.InverseSourceAlpha,
+                                                                DestinationBlendAlpha = BlendOption.One,
+                                                                BlendOperation = BlendOperation.Add,
                                                                 BlendEnable = true,
                                                                 RenderTargetWriteMask = ColorWriteMaskFlags.All
                                                             };
-
 
                 return new BlendStateChangeCommand(bStateDesc);
             }

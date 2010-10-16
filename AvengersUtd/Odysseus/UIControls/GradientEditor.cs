@@ -1,18 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey;
+using AvengersUtd.Odyssey.Graphics.ImageProcessing;
+using AvengersUtd.Odyssey.Graphics.Rendering;
+using AvengersUtd.Odyssey.UserInterface;
+using AvengersUtd.Odyssey.UserInterface.Controls;
+using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
+using LayoutManager = AvengersUtd.Odyssey.UserInterface.Style.Layout;
 
 namespace AvengersUtd.Odysseus.UIControls
 {
     public partial class GradientEditor : Form
     {
-        private SortedDictionary<string, Gradient> gradientDictionary;
+        private TextureRenderer textureRenderer;
+        private readonly SortedDictionary<string, Gradient> gradientDictionary;
+        private Hud mainHud;
 
         public GradientEditor()
         {
             InitializeComponent();
             gradientDictionary = new SortedDictionary<string, Gradient>();
-        }
+            cbControls.Items.Add("Button");
+            cbControls.SelectedIndex = 0;
+            tbSize.Text = "96; 32";
+            mainHud = OdysseyUI.CurrentHud;
+
+            textureRenderer = new TextureRenderer(320, 320, Game.Context);
+ }
 
         private void btAdd_Click(object sender, EventArgs e)
         {
@@ -35,5 +52,21 @@ namespace AvengersUtd.Odysseus.UIControls
         {
             SelectGradient(gradientDictionary[(string)listBox.SelectedItem]);
         }
+
+        private void GradientEditor_Load(object sender, EventArgs e)
+        {
+            textureRenderer.Init();
+            textureRenderer.Render();
+            
+            pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);
+            pictureBox1.Invalidate();
+        }
+
+        private void GradientEditor_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            OdysseyUI.CurrentHud = mainHud;
+            textureRenderer.FreeResources();
+        }
+
     }
 }

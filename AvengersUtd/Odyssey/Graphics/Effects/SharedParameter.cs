@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 using SlimDX;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -11,12 +12,12 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 {
 
 
-    public delegate Result UpdateSharedParameter(SharedParameter fxParam);
-   
+    public delegate Result UpdateSharedParameter(SharedParameter fxParam, Renderer renderer);
+
 
 
     public class SharedParameter : AbstractParameter, IDisposable
-   {
+    {
         readonly dynamic effectVariable;
         UpdateSharedParameter update;
 
@@ -24,7 +25,6 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             get { return effectVariable; }
         }
-
 
         protected override void OnDispose()
         {
@@ -41,12 +41,12 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             : base(name, effect)
         {
             effectVariable = variableRef;
-            update = updateMethod ;
+            update = updateMethod;
         }
 
-        public void Apply()
+        public void Apply(Renderer rendererContext)
         {
-            update(this);
+            update(this,rendererContext);
         }
 
 
@@ -63,7 +63,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             string varName = string.Empty;
             dynamic eV = null;
             UpdateSharedParameter update = null;
-           
+
             switch (type)
             {
 
@@ -77,7 +77,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 //            BaseLight.CreateLightViewProjectionMatrix(
                 //                (Spotlight) Game.CurrentRenderer.LightManager.GetLight(0));
 
-                //        Matrix mWorld = Game.CurrentRenderer.Camera.World;
+                //        Matrix mWorld = renderer.Camera.World;
 
                 //        fxParam.ownerEffect.SetValue(eH,mWorld * mLightVP);
                 //    };
@@ -87,27 +87,27 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     varName = ParamHandles.Vectors.EyePosition;
                     eV = effect.GetVariableByName(varName).AsVector();
 
-                    update = (fxParam => Vector3Update(fxParam.EffectVariable, Game.CurrentRenderer.Camera.PositionV3));
+                    update = ((fxParam, renderer) => Vector3Update(fxParam.EffectVariable, renderer.Camera.PositionV3));
                     break;
 
                 case SceneVariable.FarClip:
                     varName = ParamHandles.Floats.FarClip;
                     eV = effect.GetVariableByName(varName).AsScalar();
-                    update = (fxParam => FloatUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.FarClip));
+                    update = ((fxParam, renderer) => FloatUpdate(fxParam.EffectVariable, renderer.Camera.FarClip));
                     break;
 
                 case SceneVariable.CameraProjection:
                     varName = ParamHandles.Matrices.Projection;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.Projection));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, renderer.Camera.Projection));
                     break;
 
                 case SceneVariable.CameraProjectionTranspose:
                     varName = ParamHandles.Matrices.Projection;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Transpose(Game.CurrentRenderer.Camera.Projection)));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Transpose(renderer.Camera.Projection)));
                     break;
 
                 //case SceneVariable.TextureBias:
@@ -120,54 +120,54 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 //                        );
                 //    break;
 
-                
+
                 case SceneVariable.CameraView:
                     varName = ParamHandles.Matrices.View;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.View));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, renderer.Camera.View));
                     break;
 
                 case SceneVariable.CameraRotation:
                     varName = ParamHandles.Matrices.View;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.Rotation));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, renderer.Camera.Rotation));
                     break;
 
                 case SceneVariable.CameraViewTranspose:
                     varName = ParamHandles.Matrices.View;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Transpose(Game.CurrentRenderer.Camera.View)));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Transpose(renderer.Camera.View)));
                     break;
 
                 case SceneVariable.CameraViewInverse:
                     varName = ParamHandles.Matrices.ViewInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                     update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.View)));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(renderer.Camera.View)));
                     break;
 
                 case SceneVariable.CameraWorld:
                     varName = ParamHandles.Matrices.World;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.World));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, renderer.Camera.World));
                     break;
 
                 case SceneVariable.CameraWorldInverse:
                     varName = ParamHandles.Matrices.WorldInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.World)));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(renderer.Camera.World)));
                     break;
 
                 case SceneVariable.CameraWorldViewInverse:
                     varName = ParamHandles.Matrices.WorldViewInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(Game.CurrentRenderer.Camera.World * Game.CurrentRenderer.Camera.View)));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(renderer.Camera.World * renderer.Camera.View)));
                     break;
 
                 case SceneVariable.CameraWorldViewProjection:
@@ -175,26 +175,26 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update =
-                        (fxParam =>
+                        ((fxParam, renderer) =>
                          MatrixUpdate(fxParam.EffectVariable,
-                                      Matrix.Invert(Game.CurrentRenderer.Camera.World*Game.CurrentRenderer.Camera.View*
-                                                    Game.CurrentRenderer.Camera.Projection)));
+                                      Matrix.Invert(renderer.Camera.World * renderer.Camera.View *
+                                                    renderer.Camera.Projection)));
                     break;
 
                 case SceneVariable.CameraOrthographicProjection:
                     varName = ParamHandles.Matrices.Projection;
                     eV = effect.GetVariableByName(varName).AsMatrix();
-                    update = (fxParam => MatrixUpdate(fxParam.EffectVariable, Game.CurrentRenderer.Camera.OrthoProjection));
+                    update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, renderer.Camera.OrthoProjection));
                     break;
 
             }
 
             return new SharedParameter(varName, effect, eV, update);
         }
-        
 
-       #region Static Methods
-		 /// <summary>
+
+        #region Static Methods
+        /// <summary>
         /// Creates a custom EffectParameter that sets a constant float value in the shader.
         /// </summary>
         /// <param name="varName">The variable name used in the shader.</param>
@@ -203,37 +203,37 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// <returns>An istance of EffectParameter containg all the needed information
         /// to correctly set and update this value into the shader.</returns>
         public static SharedParameter CreateCustom(string varName, Effect effect, float value)
-		 {
-		     EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
-		     UpdateSharedParameter update = (fxParam => FloatUpdate(fxParam.EffectVariable, value));
-		     return new SharedParameter(varName, effect, eV, update);
-		 }
+        {
+            EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
+            UpdateSharedParameter update = ((fxParam, renderer) => FloatUpdate(fxParam.EffectVariable, value));
+            return new SharedParameter(varName, effect, eV, update);
+        }
 
         public static SharedParameter CreateCustom(string varName, Effect effect, int value)
         {
             EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
-            UpdateSharedParameter update = (fxParam => IntUpdate(fxParam.EffectVariable, value));
+            UpdateSharedParameter update = ((fxParam, renderer) => IntUpdate(fxParam.EffectVariable, value));
             return new SharedParameter(varName, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Color4 value)
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
-            UpdateSharedParameter update = (fxParam =>Color44Update(fxParam.EffectVariable, value));
+            UpdateSharedParameter update = ((fxParam, renderer) => Color44Update(fxParam.EffectVariable, value));
             return new SharedParameter(varName, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Matrix value)
         {
             EffectMatrixVariable eV = effect.GetVariableByName(varName).AsMatrix();
-            UpdateSharedParameter update = (fxParam => MatrixUpdate(fxParam.EffectVariable, value));
+            UpdateSharedParameter update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, value));
             return new SharedParameter(varName, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Texture2D value)
         {
             EffectResourceVariable eV = effect.GetVariableByName(varName).AsResource();
-            UpdateSharedParameter update = (fxParam => TextureUpdate(fxParam.EffectVariable, value));
+            UpdateSharedParameter update = ((fxParam, renderer) => TextureUpdate(fxParam.EffectVariable, value));
             return new SharedParameter(varName, effect, eV, update);
         }
 
@@ -247,21 +247,21 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         public static SharedParameter CreateCustom(String varName, Effect effect, Vector4 value)
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
-            UpdateSharedParameter update = (fxParam => Vector4Update(fxParam.EffectVariable, value));
+            UpdateSharedParameter update = ((fxParam, renderer) => Vector4Update(fxParam.EffectVariable, value));
             return new SharedParameter(varName, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, FloatOp floatOp)
         {
             EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
-            UpdateSharedParameter update = (fxParam => FloatUpdate(fxParam.EffectVariable, floatOp()));
+            UpdateSharedParameter update = ((fxParam, renderer) => FloatUpdate(fxParam.EffectVariable, floatOp()));
             return new SharedParameter(varName, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, MatrixOp matrixOp)
         {
             EffectMatrixVariable eV = effect.GetVariableByName(varName).AsMatrix();
-            UpdateSharedParameter update = (fxParam => MatrixUpdate(fxParam.EffectVariable, matrixOp()));
+            UpdateSharedParameter update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, matrixOp()));
             return new SharedParameter(varName, effect, eV, update);
         }
 
@@ -276,14 +276,11 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         public static SharedParameter CreateCustom(String varName, Effect effect, VectorOp vectorOp)
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
-            UpdateSharedParameter update = (fxParam => Vector4Update(fxParam.EffectVariable, vectorOp()));
+            UpdateSharedParameter update = ((fxParam, renderer) => Vector4Update(fxParam.EffectVariable, vectorOp()));
             return new SharedParameter(varName, effect, eV, update);
         }
 
-        
-	#endregion
 
-
-
-   }
+        #endregion
+    }
 }

@@ -1,12 +1,14 @@
+#region Using directives
+
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using AvengersUtd.Odysseus.Properties;
-using AvengersUtd.Odysseus.UIControls;
-using AvengersUtd.Odysseus.Properties;
 
-namespace AvengersUtd.Odysseus
+#endregion
+
+namespace AvengersUtd.Odysseus.UIControls
 {
     public class ColorWheel : IDisposable
     {
@@ -89,7 +91,7 @@ namespace AvengersUtd.Odysseus
             // (colorRectangle), brightness "strip" (brightnessRectangle)
             // and location to display selected color (selectedColorRectangle).
 
-            using (var path = new GraphicsPath())
+            using (GraphicsPath path = new GraphicsPath())
             {
                 // Store away locations for later use. 
                 this.colorRectangle = colorRectangle;
@@ -131,7 +133,7 @@ namespace AvengersUtd.Odysseus
                 // the region, using the IsVisible method.
                 brightnessRegion = new Region(path);
 
-                // Set the location for the brightness indicator "marker".
+                // Set the location for the brightness indicator "Marker".
                 // Also calculate the scaling factor, scaling the height
                 // to be between 0 and 255. 
                 brightnessX = brightnessRectangle.Left + brightnessRectangle.Width;
@@ -170,7 +172,7 @@ namespace AvengersUtd.Odysseus
 
         protected void OnColorChanged(ColorHandler.ARGB argb, ColorHandler.HSV HSV)
         {
-            var e = new ColorChangedEventArgs(argb, HSV);
+            ColorChangedEventArgs e = new ColorChangedEventArgs(argb, HSV);
             ColorChanged(this, e);
         }
 
@@ -297,7 +299,7 @@ namespace AvengersUtd.Odysseus
                     HSV.Saturation = (int) (distance*255);
                     HSV.Value = brightness;
                     argb = ColorHandler.HSVtoRGB(HSV);
-                    fullColor = ColorHandler.HSVtoColor(HSV.Alpha,HSV.Hue, HSV.Saturation, 255);
+                    fullColor = ColorHandler.HSVtoColor(HSV.Alpha, HSV.Hue, HSV.Saturation, 255);
                     break;
             }
             selectedColor = ColorHandler.HSVtoColor(HSV);
@@ -354,7 +356,6 @@ namespace AvengersUtd.Odysseus
                 using (TextureBrush textureBrush = new TextureBrush(Resources.TransparentBackground))
                 {
                     g.FillRectangle(textureBrush, selectedColorRectangle);
-
                 }
                 g.FillRectangle(selectedBrush, selectedColorRectangle);
 
@@ -403,7 +404,7 @@ namespace AvengersUtd.Odysseus
             // Given the top color, draw a linear gradient
             // ranging from black to the top color. Use the 
             // brightness rectangle as the area to fill.
-            using (var lgb =
+            using (LinearGradientBrush lgb =
                 new LinearGradientBrush(brightnessRectangle, TopColor,
                                         Color.Black, LinearGradientMode.Vertical))
             {
@@ -411,7 +412,7 @@ namespace AvengersUtd.Odysseus
             }
         }
 
-        private int CalcDegrees(Point pt)
+        private static int CalcDegrees(Point pt)
         {
             int degrees;
 
@@ -422,14 +423,7 @@ namespace AvengersUtd.Odysseus
                 // corresponding angle. Note that the orientation of the
                 // y-coordinate is backwards. That is, A positive Y value 
                 // indicates a point BELOW the x-axis.
-                if (pt.Y > 0)
-                {
-                    degrees = 270;
-                }
-                else
-                {
-                    degrees = 90;
-                }
+                degrees = pt.Y > 0 ? 270 : 90;
             }
             else
             {
@@ -463,7 +457,7 @@ namespace AvengersUtd.Odysseus
             // Create a new PathGradientBrush, supplying
             // an array of points created by calling
             // the GetPoints method.
-            using (var pgb =
+            using (PathGradientBrush pgb =
                 new PathGradientBrush(GetPoints(radius, new Point(radius, radius))))
             {
                 // Set the various properties. Note the SurroundColors
@@ -501,10 +495,10 @@ namespace AvengersUtd.Odysseus
             // particularly well-suited for this, 
             // because the only value that changes
             // as you create colors is the Hue.
-            var Colors = new Color[COLOR_COUNT];
+            Color[] Colors = new Color[COLOR_COUNT];
 
             for (int i = 0; i <= COLOR_COUNT - 1; i++)
-                Colors[i] = ColorHandler.HSVtoColor(255,(int) ((double) (i*255)/COLOR_COUNT), 255, 255);
+                Colors[i] = ColorHandler.HSVtoColor(255, (int) ((double) (i*255)/COLOR_COUNT), 255, 255);
             return Colors;
         }
 
@@ -513,14 +507,14 @@ namespace AvengersUtd.Odysseus
             // Generate the array of points that describe
             // the locations of the COLOR_COUNT colors to be 
             // displayed on the color wheel.
-            var Points = new Point[COLOR_COUNT];
+            Point[] points = new Point[COLOR_COUNT];
 
             for (int i = 0; i <= COLOR_COUNT - 1; i++)
-                Points[i] = GetPoint((double) (i*360)/COLOR_COUNT, radius, centerPoint);
-            return Points;
+                points[i] = GetPoint((double) (i*360)/COLOR_COUNT, radius, centerPoint);
+            return points;
         }
 
-        private Point GetPoint(double degrees, double radius, Point centerPoint)
+        private static Point GetPoint(double degrees, double radius, Point centerPoint)
         {
             // Given the center of a circle and its radius, along
             // with the angle corresponding to the point, find the coordinates. 
@@ -537,9 +531,9 @@ namespace AvengersUtd.Odysseus
             // The constant SIZE represents half
             // the width -- the square will be twice
             // this value in width and height.
-            const int SIZE = 3;
+            const int size = 3;
             g.DrawRectangle(Pens.Black,
-                            pt.X - SIZE, pt.Y - SIZE, SIZE*2, SIZE*2);
+                            pt.X - size, pt.Y - size, size*2, size*2);
         }
 
         private void DrawBrightnessPointer(Point pt)
@@ -547,14 +541,14 @@ namespace AvengersUtd.Odysseus
             // Draw a triangle for the 
             // brightness indicator that "points"
             // at the provided point.
-            const int HEIGHT = 10;
-            const int WIDTH = 7;
+            const int height = 10;
+            const int width = 7;
 
-            var Points = new Point[3];
-            Points[0] = pt;
-            Points[1] = new Point(pt.X + WIDTH, pt.Y + HEIGHT/2);
-            Points[2] = new Point(pt.X + WIDTH, pt.Y - HEIGHT/2);
-            g.FillPolygon(Brushes.Black, Points);
+            Point[] points = new Point[3];
+            points[0] = pt;
+            points[1] = new Point(pt.X + width, pt.Y + height/2);
+            points[2] = new Point(pt.X + width, pt.Y - height/2);
+            g.FillPolygon(Brushes.Black, points);
         }
     }
 }

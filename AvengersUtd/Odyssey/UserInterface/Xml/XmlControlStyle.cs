@@ -56,7 +56,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     public struct XmlColorShader
     {
         [XmlAttribute]
-        public string Method { get; set; }
+        public GradientType GradientType { get; set; }
 
         [XmlAttribute]
         public string Name { get; set; }
@@ -89,8 +89,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
             return new ColorShader
                        {
+                           GradientType = GradientType,
                            Method =
-                               (Shader) Delegate.CreateDelegate(typeof (Shader), typeof (ColorShader).GetMethod(Method)),
+                               (Shader) Delegate.CreateDelegate(typeof (Shader), typeof (ColorShader).GetMethod(GradientType.ToString())),
                                WidthSegments = WidthSegments,
                                HeightSegments = HeightSegments,
                            Color = ColorValue != null ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber)) : default(Color4),

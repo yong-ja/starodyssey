@@ -81,16 +81,20 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             commandList.AddLast(rCommand);
         }
 
-        public void AddRenderCommand(ICommand rCommand)
+        public void AddRenderCommand(IRenderCommand rCommand)
         {
             Type renderCommandType = rCommand.GetType();
             if (renderCommandType != typeof(RenderCommand) && !renderCommandType.IsSubclassOf(typeof(RenderCommand)))
                 throw Error.ArgumentInvalid("mNode", GetType(), "AddRenderCommand", Properties.Resources.ERR_AddRenderCommand);
+
+            rCommand.Init();
             commandList.AddLast(rCommand);
         }
 
-        public void RunCommand(BaseCommand command)
+        public void RunCommand(BaseCommand command, bool waitRender=false)
         {
+            if (waitRender)
+                Game.RenderEvent.Wait();
             command.Execute();
         }
 

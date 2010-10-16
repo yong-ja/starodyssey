@@ -16,11 +16,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             : base(CommandType.RasterizerStateChange)
         {
             Description = rStateDesc;
+            rasterizerState = RasterizerState.FromDescription(Game.Context.Device, Description);
         }
 
         public override void Execute()
         {
-            rasterizerState = RasterizerState.FromDescription(Game.Context.Device, Description);
             Game.Context.Device.ImmediateContext.Rasterizer.State = rasterizerState; 
         }
 

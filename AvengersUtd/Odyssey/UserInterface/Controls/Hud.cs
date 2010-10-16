@@ -201,7 +201,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         }
 
 
-        public void AddToScene(SceneManager scene)
+        public void AddToScene(Renderer renderer, SceneManager scene)
         {
             TextMaterial textMaterial = new TextMaterial();
             UIMaterial uiMaterial = new UIMaterial();
@@ -209,22 +209,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             MaterialNode mTextNode = new MaterialNode(textMaterial);
             MaterialNode mUINode = new MaterialNode(uiMaterial);
             RenderableNode rNode = new RenderableNode(InterfaceMesh);
-            CameraOverlayNode caNode = new CameraOverlayNode();
+            CameraOverlayNode caNode = new CameraOverlayNode(renderer.Camera);
 
             caNode.AppendChild(mUINode);
             caNode.AppendChild(mTextNode);
-            
-            uiMaterial.InitParameters();
-            textMaterial.InitParameters();
+
             mUINode.AppendChild(rNode);
 
             uiRCommand = new UserInterfaceRenderCommand
-                (mUINode, mUINode.RenderableCollection,
+                (renderer, mUINode, mUINode.RenderableCollection,
                 mTextNode, this);
 
             uiUCommand = new UserInterfaceUpdateCommand(this, uiRCommand);
 
-            
             scene.Tree.RootNode.AppendChild(caNode);
             scene.CommandManager.AddUpdateCommand(uiUCommand);
             scene.CommandManager.AddBaseCommands(uiMaterial.PreRenderStates);

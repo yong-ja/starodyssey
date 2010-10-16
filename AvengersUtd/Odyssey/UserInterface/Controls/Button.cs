@@ -30,7 +30,7 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
-    public class Button : SimpleShapeControl, ISpriteObject, IXmlControl
+    public class Button : SimpleShapeControl, ISpriteObject
     {
         public const string ControlTag = "Button";
         static int count;
@@ -132,10 +132,5 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             
         } 
         #endregion
-
-        XmlBaseControl IXmlControl.ToXmlControl()
-        {
-            return new XmlButton(this);
-        }
     }
 }

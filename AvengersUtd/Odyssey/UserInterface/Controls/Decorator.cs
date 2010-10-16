@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             base.ComputeAbsolutePosition();
             decoratorVertexPosition = GetDecoratorVertex(DecorationType, Size);
-            orthoDecoratorVertexPosition = OrthographicTransform(AbsolutePosition + decoratorVertexPosition, Depth.ZOrder);
+            orthoDecoratorVertexPosition = Layout.OrthographicTransform(AbsolutePosition + decoratorVertexPosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
         }
 
         public override void CreateShape()

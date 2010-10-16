@@ -76,7 +76,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             for (int i = 0; i < horizontalLines; i++)
             {
                 Vector2 linePosition = new Vector2(0, GridSpacing * i);
-                Vector3 lineOrthoPosition = OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder);
+                Vector3 lineOrthoPosition = Layout.OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 if (i % MajorGridLinesFrequency == 0)
                     Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
                                                                majorHorizontalLineSize, Color.Silver);
@@ -88,7 +88,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             for (int i = horizontalLines; i < horizontalLines + verticalLines; i++)
             {
                 Vector2 linePosition = new Vector2(GridSpacing * (i - horizontalLines), 0);
-                Vector3 lineOrthoPosition = OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder);
+                Vector3 lineOrthoPosition = Layout.OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 if ((i - horizontalLines) % MajorGridLinesFrequency == 0)
                     Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
                                                            majorVerticalLineSize, Color.Silver);

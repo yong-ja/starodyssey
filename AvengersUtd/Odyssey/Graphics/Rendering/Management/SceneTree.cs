@@ -6,6 +6,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
     public class SceneTree
     {
         public SceneNode RootNode { get; private set; }
+        public Renderer Renderer { get; private set; }
 
         /// <summary>
         /// Initializes a new scenegraph.

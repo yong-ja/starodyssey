@@ -73,10 +73,5 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             
         }
 
-        public override void Init()
-        {
-            material.InitParameters();
-            base.Init();
-        }
     }
 }

@@ -24,25 +24,26 @@ namespace AvengersUtd.Odysseus
         public Main()
         {
             InitializeComponent();
-            
+
             InitDX11();
 
-            renderPanel.ClientSize= Game.Context.Settings.ScreenSize;
-            int diffW = 8+ renderPanel.Width + renderPanel.Location.X - Width;
+            renderPanel.ClientSize = Game.Context.Settings.ScreenSize;
+            int diffW = 8 + renderPanel.Width + renderPanel.Location.X - Width;
             int diffH = 32 + renderPanel.Height + renderPanel.Location.Y - Height;
 
             Width += diffW;
             Height += diffH;
 
             renderPanel.Location = new Point((ClientSize.Width - renderPanel.Width)/2,
-                menuStrip.Height + (ClientSize.Height- menuStrip.Height - renderPanel.Height)/2);
+                                             menuStrip.Height +
+                                             (ClientSize.Height - menuStrip.Height - renderPanel.Height)/2);
 
             toolbox = new Toolbox();
-       
-                        properties = new PropertyBox();
-                        UIRenderer.PropertyBox = properties;
 
-                     
+            properties = new PropertyBox();
+            UIRenderer.PropertyBox = properties;
+
+
             UIRenderer.Toolbox = toolbox;
             UIRenderer.Form = this;
         }
