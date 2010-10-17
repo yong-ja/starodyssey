@@ -61,16 +61,26 @@ namespace AvengersUtd.Odysseus.UIControls
             get { return ConvertToColorBlend(gradientContainer.Markers); }
         }
 
+        public GradientStop[] GradientStops
+        {
+            get { return ConvertToGradientStop(CurrentMarkers); }
+        }
+
         public void RefreshLabels(float value)
         {
             ctlOffset.Value = (decimal) value;
         }
 
-        public void SetMarkers(Marker[] Markers)
+        public void SetMarkers(Marker[] markers)
         {
-            gradientContainer.Markers = Markers.ToList();
+            gradientContainer.Markers = markers.ToList();
             gradientContainer.SelectedMarker = gradientContainer.Markers[0];
             gradientContainer.Invalidate();
+        }
+
+        public void SetMarkers(GradientStop[] gradient)
+        {
+            SetMarkers(ConvertToMarkers(gradient));
         }
 
         #region Events
@@ -160,5 +170,31 @@ namespace AvengersUtd.Odysseus.UIControls
             };
             return colorBlend;
         }
+
+        public static GradientStop[] ConvertToGradientStop(Marker[] markers)
+        {
+            GradientStop[] gradient = new GradientStop[markers.Length];
+
+            for (int i = 0; i < markers.Length; i++)
+            {
+                Marker marker = markers[i];
+                gradient[i] = new GradientStop(marker.Color, marker.Offset);
+            }
+            return gradient;
+        }
+
+        public static Marker[] ConvertToMarkers(GradientStop[] gradient)
+        {
+            Marker[] markers = new Marker[gradient.Length];
+
+            for (int i = 0; i < gradient.Length; i++)
+            {
+                GradientStop gradientStop = gradient[i];
+                markers[i] = new Marker(gradientStop.Color.ToColor(), gradientStop.Offset);
+            }
+            return markers;
+        }
+
+
     }
 }
