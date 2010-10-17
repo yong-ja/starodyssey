@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.ImageProcessing;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
-using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
-using LayoutManager = AvengersUtd.Odyssey.UserInterface.Style.Layout;
 
 namespace AvengersUtd.Odysseus.UIControls
 {
@@ -56,6 +52,8 @@ namespace AvengersUtd.Odysseus.UIControls
         private void GradientEditor_Load(object sender, EventArgs e)
         {
             textureRenderer.Init();
+            //textureRenderer.UpdateGradient(gradientBuilder.GradientStops);
+            gradientBuilder.SetMarkers(textureRenderer.Gradient);
             textureRenderer.Render();
             
             pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);

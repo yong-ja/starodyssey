@@ -15,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly RenderToTextureCommand command;
         private float width;
         private float height;
+        private BaseControl control;
 
         public Texture2D OutputTexture
         {
@@ -36,6 +37,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     ));
             Camera.ChangeScreenSize(width, height);
             command = new RenderToTextureCommand(width, height, Scene);
+
+        }
+
+        public GradientStop[] Gradient
+        {
+            get { return control.Description.ColorShader.Gradient; }
+            set { control.Description.ColorShader.Gradient = value; }
         }
 
         public override void Init()
@@ -56,6 +64,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             //Camera.Update();
             Scene.Update();
+
+            control = button;
         }
 
         public void FreeResources()
