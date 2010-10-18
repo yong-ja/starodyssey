@@ -27,16 +27,28 @@ namespace AvengersUtd.Odysseus.UIControls
 
             textureRenderer = new TextureRenderer(320, 320, Game.Context);
 
-            gradientBuilder.SelectedMarkerValueChanged += gradientBuilder_SelectedMarkerValueChanged;
+            gradientBuilder.SelectedMarkerOffsetChanged += GradientBuilderSelectedMarkerOffsetChanged;
+            gradientBuilder.SelectedMarkerColorChanged += new MarkerEventHandler(gradientBuilder_SelectedMarkerColorChanged);
 
         }
 
-        void gradientBuilder_SelectedMarkerValueChanged(object sender, MarkerEventArgs e)
+        void UpdateGradient()
         {
             textureRenderer.Gradient = gradientBuilder.GradientStops;
             textureRenderer.Render();
             pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);
             pictureBox1.Invalidate();
+        }
+
+        void gradientBuilder_SelectedMarkerColorChanged(object sender, MarkerEventArgs e)
+        {
+            UpdateGradient();
+        }
+
+
+        void GradientBuilderSelectedMarkerOffsetChanged(object sender, MarkerEventArgs e)
+        {
+            UpdateGradient();
         }
 
         private void btAdd_Click(object sender, EventArgs e)

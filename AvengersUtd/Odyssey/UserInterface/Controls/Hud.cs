@@ -443,6 +443,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             Controls.Sort();
             hudShapes.Clear();
+            spriteControls.Clear();
             ComputeAbsolutePosition();
 
             foreach (BaseControl ctl in
