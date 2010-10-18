@@ -6,6 +6,7 @@ using AvengersUtd.Odyssey.Graphics.ImageProcessing;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using Button = AvengersUtd.Odyssey.UserInterface.Controls.Button;
 
 namespace AvengersUtd.Odysseus.UIControls
 {
@@ -25,7 +26,18 @@ namespace AvengersUtd.Odysseus.UIControls
             mainHud = OdysseyUI.CurrentHud;
 
             textureRenderer = new TextureRenderer(320, 320, Game.Context);
- }
+
+            gradientBuilder.SelectedMarkerValueChanged += gradientBuilder_SelectedMarkerValueChanged;
+
+        }
+
+        void gradientBuilder_SelectedMarkerValueChanged(object sender, MarkerEventArgs e)
+        {
+            textureRenderer.Gradient = gradientBuilder.GradientStops;
+            textureRenderer.Render();
+            pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);
+            pictureBox1.Invalidate();
+        }
 
         private void btAdd_Click(object sender, EventArgs e)
         {
