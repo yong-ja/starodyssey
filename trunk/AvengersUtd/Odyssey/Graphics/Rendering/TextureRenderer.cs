@@ -43,7 +43,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public GradientStop[] Gradient
         {
             get { return control.Description.ColorShader.Gradient; }
-            set { control.Description.ColorShader.Gradient = value; }
+            set {
+                control.Description.ColorShader.Gradient = value; 
+                Hud.EndDesign();
+            }
         }
 
         public override void Init()

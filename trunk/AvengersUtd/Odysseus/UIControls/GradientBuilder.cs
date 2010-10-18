@@ -41,8 +41,9 @@ namespace AvengersUtd.Odysseus.UIControls
             Marker endMarker = new Marker(Color.Green, 1.0f);
             gradientContainer.Markers = new List<Marker> {startMarker, endMarker};
             gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
-            gradientContainer.OffsetChanged += gradientContainer_OffsetChanged;
+            gradientContainer.OffsetChanging += GradientContainerOffsetChanging;
             gradientContainer.SelectedMarker = startMarker;
+            gradientContainer.OffsetChanged += new MarkerEventHandler(gradientContainer_OffsetChanged);
 
             // Tooltip data
             toolTip.SetToolTip(cmdDel, "Delete selected Marker");
@@ -50,6 +51,20 @@ namespace AvengersUtd.Odysseus.UIControls
             toolTip.SetToolTip(tbHexColor, "Color ARGB in hexadecimal value");
             toolTip.SetToolTip(ctlOffset,"Selected Marker offset");
         }
+
+        void gradientContainer_OffsetChanged(object sender, MarkerEventArgs e)
+        {
+            OnSelectedMarkerValueChanged(e);
+        }
+
+        public event MarkerEventHandler SelectedMarkerValueChanged;
+
+        public void OnSelectedMarkerValueChanged(MarkerEventArgs e)
+        {
+            MarkerEventHandler handler = SelectedMarkerValueChanged;
+            if (handler != null) handler(this, e);
+        }
+
 
         public Marker[] CurrentMarkers
         {
@@ -85,7 +100,7 @@ namespace AvengersUtd.Odysseus.UIControls
 
         #region Events
 
-        private void gradientContainer_OffsetChanged(object sender, MarkerEventArgs e)
+        private void GradientContainerOffsetChanging(object sender, MarkerEventArgs e)
         {
             RefreshLabels(e.Marker.Offset);
         }

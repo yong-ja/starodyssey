@@ -83,7 +83,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             //Game.Context.SwapChain.Present(0, PresentFlags.None);
             //immediateContext.OutputMerger.SetTargets(Game.Context.DepthStencilView, Game.Context.RenderTargetView);
 
-            Texture2D.ToFile(Game.Context.Immediate, texture, ImageFileFormat.Png, "prova2.png");
+            //Texture2D.ToFile(Game.Context.Immediate, texture, ImageFileFormat.Png, "prova2.png");
         }
 
         protected override void OnDispose()
