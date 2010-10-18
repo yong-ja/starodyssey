@@ -33,7 +33,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     height: height,
                     zFar: Camera.FarClip,
                     zNear: Camera.NearClip,
-                    multithreaded: true
+                    multithreaded: false
                     ));
             Camera.ChangeScreenSize(width, height);
             command = new RenderToTextureCommand(width, height, Scene);
@@ -61,7 +61,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             button.Position = Layout.CenterControl(button, Hud);
             Hud.Controls.Add(button);
             Hud.EndDesign();
-            Hud.Init();
             Scene.BuildRenderScene();
             Hud.AddToScene(this,Scene);
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;

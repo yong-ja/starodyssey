@@ -70,20 +70,27 @@ namespace AvengersUtd.Odysseus.UIControls
         public event MarkerEventHandler SelectedMarkerChanged;
         public event MarkerEventHandler OffsetChanging;
         public event MarkerEventHandler OffsetChanged;
+        public event EventHandler MarkersChanged;
 
-        public void OnOffsetChanged(MarkerEventArgs e)
+        protected void OnMarkersChanged(EventArgs e)
+        {
+            EventHandler handler = MarkersChanged;
+            if (handler != null) handler(this, e);
+        }
+
+        protected void OnOffsetChanged(MarkerEventArgs e)
         {
             MarkerEventHandler handler = OffsetChanged;
             if (handler != null) handler(this, e);
         }
 
-        public void OnOffsetChanging(MarkerEventArgs e)
+        protected void OnOffsetChanging(MarkerEventArgs e)
         {
             MarkerEventHandler handler = OffsetChanging;
             if (handler != null) handler(this, e);
         }
 
-        public void OnSelectedMarkerChanged(MarkerEventArgs e)
+        protected void OnSelectedMarkerChanged(MarkerEventArgs e)
         {
             MarkerEventHandler handler = SelectedMarkerChanged;
             if (handler != null) handler(this, e);
@@ -137,6 +144,7 @@ namespace AvengersUtd.Odysseus.UIControls
             Markers.Remove(SelectedMarker);
             SelectedMarker = Markers[0];
             Invalidate();
+            OnMarkersChanged(EventArgs.Empty);
         }
 
         public void SortMarkers()
@@ -191,6 +199,7 @@ namespace AvengersUtd.Odysseus.UIControls
             SelectedMarker = newMarker;
             SortMarkers();
             Invalidate();
+            OnMarkersChanged(e);
         }
 
         private void GradientContainer_MouseDown(object sender, MouseEventArgs e)
