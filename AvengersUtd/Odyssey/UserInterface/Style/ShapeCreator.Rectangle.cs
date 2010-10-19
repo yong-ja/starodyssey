@@ -111,7 +111,27 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public static ShapeDescription DrawSubdividedRectangleWithOutline(Vector3 position, Size size, ColorShader colorShader, int borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
-            Color4[] shadedColors = colorShader.Method(colorShader, (1+colorShader.WidthSegments)*(1+colorShader.HeightSegments), Shape.Rectangle);
+            int widthSegments;
+            int heightSegments;
+            float[] offsets = colorShader.Gradient.Select(g => g.Offset).ToArray();
+            switch (colorShader.GradientType)
+            {
+                case GradientType.Uniform:
+                    widthSegments = heightSegments = 1;
+                    break;
+                case GradientType.LinearVerticalGradient:
+                    widthSegments = 1;
+                    heightSegments = offsets.Length-1;
+                    break;
+                case GradientType.LinearHorizontalGradient:
+                    widthSegments = offsets.Length-1;
+                    heightSegments = 1;
+                    break;
+                default:
+                    throw Error.WrongCase("colorshader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        colorShader.GradientType);
+            }
+            Color4[] shadedColors = colorShader.Method(colorShader, (1+widthSegments)*(1+heightSegments), Shape.Rectangle);
             Color4[] borderColors;
 
             switch (borderStyle)
@@ -133,21 +153,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             }
             ShapeDescription outline = DrawRectangularOutline(position, size, borderSize, borderColors, BorderStyle.Flat,
                 Border.All);
-            float[] offsets = colorShader.Gradient.Select(g => g.Offset).ToArray();
+            
             ShapeDescription inside;
 
             switch (colorShader.GradientType)
             {
-                case GradientType.Uniform:
-                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
-                shadedColors);
-                    break;
                 case GradientType.LinearVerticalGradient:
-                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+                    inside = DrawSubdividedRectangle(position, size, widthSegments, heightSegments,
                 shadedColors, heightOffsets: offsets);
                     break;
                 case GradientType.LinearHorizontalGradient:
-                    inside = DrawSubdividedRectangle(position, size, colorShader.WidthSegments, colorShader.HeightSegments,
+                    inside = DrawSubdividedRectangle(position, size, widthSegments, heightSegments,
                 shadedColors, widthOffsets: offsets);
                     break;
                 default:

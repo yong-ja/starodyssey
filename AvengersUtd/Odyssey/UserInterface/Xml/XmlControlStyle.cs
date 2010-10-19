@@ -63,11 +63,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlAttribute("Color")]
         public string ColorValue { get; set; }
 
-        [XmlAttribute]
-        public int WidthSegments { get; set; }
-        [XmlAttribute]
-        public int HeightSegments { get; set; }
-        
         [XmlArray("Gradient")]
         [XmlArrayItem("GradientStop")]
         public XmlGradientStop[] XmlFillColors { get; set; }
@@ -92,8 +87,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                            GradientType = GradientType,
                            Method =
                                (Shader) Delegate.CreateDelegate(typeof (Shader), typeof (ColorShader).GetMethod(GradientType.ToString())),
-                               WidthSegments = WidthSegments,
-                               HeightSegments = HeightSegments,
                            Color = ColorValue != null ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber)) : default(Color4),
                            Gradient = gradientColors
                        };

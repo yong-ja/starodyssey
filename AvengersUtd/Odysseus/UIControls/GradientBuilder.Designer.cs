@@ -52,7 +52,7 @@
             this.tableLayoutPanel.Controls.Add(this.groupBox, 0, 1);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 2;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 69F));
@@ -85,7 +85,7 @@
             this.groupBox.Location = new System.Drawing.Point(2, 74);
             this.groupBox.Margin = new System.Windows.Forms.Padding(2, 5, 2, 2);
             this.groupBox.Name = "groupBox";
-            this.groupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox.Size = new System.Drawing.Size(383, 56);
             this.groupBox.TabIndex = 3;
             this.groupBox.TabStop = false;
@@ -95,7 +95,7 @@
             // 
             this.cmdDel.Image = global::AvengersUtd.Odysseus.Properties.Resources.Delete;
             this.cmdDel.Location = new System.Drawing.Point(339, 12);
-            this.cmdDel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmdDel.Margin = new System.Windows.Forms.Padding(2);
             this.cmdDel.Name = "cmdDel";
             this.cmdDel.Size = new System.Drawing.Size(40, 40);
             this.cmdDel.TabIndex = 6;
@@ -112,15 +112,15 @@
             0,
             0,
             131072});
-            this.ctlOffset.Location = new System.Drawing.Point(237, 20);
-            this.ctlOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ctlOffset.Location = new System.Drawing.Point(266, 20);
+            this.ctlOffset.Margin = new System.Windows.Forms.Padding(2);
             this.ctlOffset.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.ctlOffset.Name = "ctlOffset";
-            this.ctlOffset.Size = new System.Drawing.Size(96, 23);
+            this.ctlOffset.Size = new System.Drawing.Size(63, 23);
             this.ctlOffset.TabIndex = 5;
             this.ctlOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.ctlOffset.ValueChanged += new System.EventHandler(this.ctlOffset_ValueChanged);
@@ -130,7 +130,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(191, 21);
+            this.label2.Location = new System.Drawing.Point(220, 20);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 17);
@@ -153,18 +153,19 @@
             this.tbHexColor.BackColor = System.Drawing.SystemColors.Window;
             this.tbHexColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbHexColor.Location = new System.Drawing.Point(117, 20);
-            this.tbHexColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbHexColor.Margin = new System.Windows.Forms.Padding(2);
             this.tbHexColor.Name = "tbHexColor";
-            this.tbHexColor.ReadOnly = true;
-            this.tbHexColor.Size = new System.Drawing.Size(70, 23);
+            this.tbHexColor.Size = new System.Drawing.Size(87, 23);
             this.tbHexColor.TabIndex = 2;
             this.tbHexColor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbHexColor.Enter += new System.EventHandler(this.tbHexColor_Enter);
+            this.tbHexColor.Validating += new System.ComponentModel.CancelEventHandler(this.tbHexColor_Validating);
             // 
             // cmdColorWheel
             // 
             this.cmdColorWheel.Image = global::AvengersUtd.Odysseus.Properties.Resources.ColorWheel;
             this.cmdColorWheel.Location = new System.Drawing.Point(3, 12);
-            this.cmdColorWheel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmdColorWheel.Margin = new System.Windows.Forms.Padding(2);
             this.cmdColorWheel.Name = "cmdColorWheel";
             this.cmdColorWheel.Size = new System.Drawing.Size(40, 40);
             this.cmdColorWheel.TabIndex = 1;
@@ -176,7 +177,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GradientBuilder";
             this.Size = new System.Drawing.Size(387, 132);
             this.tableLayoutPanel.ResumeLayout(false);

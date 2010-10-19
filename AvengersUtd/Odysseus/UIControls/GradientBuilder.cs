@@ -43,7 +43,7 @@ namespace AvengersUtd.Odysseus.UIControls
             gradientContainer.OffsetChanging += GradientContainerOffsetChanging;
             gradientContainer.SelectedMarker = startMarker;
             gradientContainer.OffsetChanged += gradientContainer_OffsetChanged;
-            gradientContainer.MarkersChanged += new EventHandler(gradientContainer_MarkersChanged);
+            gradientContainer.MarkersChanged += GradientContainerMarkersChanged;
 
             // Tooltip data
             toolTip.SetToolTip(cmdDel, "Delete selected Marker");
@@ -52,7 +52,7 @@ namespace AvengersUtd.Odysseus.UIControls
             toolTip.SetToolTip(ctlOffset, "Selected Marker offset");
         }
 
-        void gradientContainer_MarkersChanged(object sender, EventArgs e)
+        void GradientContainerMarkersChanged(object sender, EventArgs e)
         {
             OnMarkersChanged(e);
         }
@@ -231,5 +231,18 @@ namespace AvengersUtd.Odysseus.UIControls
         }
 
         #endregion
+
+        private void tbHexColor_Enter(object sender, EventArgs e)
+        {
+            ctlOffset.Select(0, ctlOffset.Text.Length);
+        }
+
+        private void tbHexColor_Validating(object sender, CancelEventArgs e)
+        {
+            int value;
+            if (!Int32.TryParse(tbHexColor.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value))
+                return;
+
+        }
     }
 }

@@ -157,7 +157,6 @@ namespace AvengersUtd.Odyssey.Geometry
                                                     Color = colors[vertexCount]
                                                 };
 
-
                     if (i < heightSegments && j < widthSegments)
                     {
 

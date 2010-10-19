@@ -167,6 +167,7 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="bin\Debug\Odyssey ControlDescriptions.ocd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -176,9 +177,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Styles\Odysseus ControlDescriptions.ocd" />
-    <None Include="Styles\Odyssey ControlDescriptions.ocd" />
-    <None Include="Styles\Odyssey TextDescriptions.otd" />
+    <None Include="bin\Debug\Odysseus ControlDescriptions.ocd" />
+    <None Include="bin\Debug\Odyssey TextDescriptions.otd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">
