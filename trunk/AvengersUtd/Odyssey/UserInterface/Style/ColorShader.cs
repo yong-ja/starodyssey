@@ -57,14 +57,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public GradientType GradientType { get; set; }
         public Shader Method { get; set; }
         public Color4 Color { get; set; }
-        public int WidthSegments { get; set; }
-        public int HeightSegments{ get; set; }
         public GradientStop[] Gradient { get; set; }
 
         public ColorShader()
         {
-            WidthSegments = 1;
-            HeightSegments = 1;
             Method = Uniform;
         }
 
@@ -107,8 +103,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
             }
             return colors;
-
-            
         }
 
         public static Color4[] BorderRaised(Color4 color, int numVertex, float startValue=1.0f, float endValue=0.5f, Shape shape = Shape.Rectangle)
@@ -134,22 +128,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public static Color4[] LinearVerticalGradient(ColorShader shader, int numVertex, Shape shape)
         {
-
-            //int numVertex = (1 + widthSegments)*(1 + heightSegments);
+            const int widthVertices = 2;
             Color4[] colors = new Color4[numVertex];
             switch (shape)
             {
                 default:
                 case Shape.SubdividedRectangle:
-                    if (numVertex != (1+ shader.WidthSegments) * (1+shader.HeightSegments))
-                        throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "LinearVerticalStepGradient",
-                             Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
-
                     int step = 0;
                     for (int i = 0; i < numVertex; i++)
                     {
 
-                        if (i > 0 && i % (shader.WidthSegments + 1) == 0)
+                        if (i > 0 && i % widthVertices == 0)
                             step++;
                         colors[i] = shader.Gradient[step].Color;
                     }

@@ -206,7 +206,7 @@
             this.btAdd.Size = new System.Drawing.Size(40, 40);
             this.btAdd.TabIndex = 8;
             this.btAdd.UseVisualStyleBackColor = true;
-            this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
+            this.btAdd.Click += new System.EventHandler(this.ButtonAddClick);
             // 
             // btRename
             // 
@@ -274,8 +274,8 @@
             this.MinimizeBox = false;
             this.Name = "GradientEditor";
             this.Text = "GradientEditor";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GradientEditor_FormClosed);
-            this.Load += new System.EventHandler(this.GradientEditor_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GradientEditorFormClosed);
+            this.Load += new System.EventHandler(this.GradientEditorLoad);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

@@ -14,7 +14,7 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="Panel" Shape="Rectangle" Size="Width:400 Height:300" BorderStyle="Sunken" BorderSize="2" Padding="2 2 2 2">
-	<ColorShader GradientType="LinearVerticalGradient" StartValue="1" EndValue="0.1" />
+	<ColorShader GradientType="LinearVerticalGradient"/>
     <ColorArray>
       <Color Type="Enabled" Name="TransparentCustom" HexValue="AA0096FF" />
       <Color Type="Highlighted" Name="MediumBlue" HexValue="FF0000CD" />
@@ -27,7 +27,7 @@
     </ColorArray>
   </ControlDescription>
    <ControlDescription Name="Button" Shape="SubdividedRectangle" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="1" TextDescriptionClass="Button">
-   <ColorShader GradientType="LinearVerticalGradient" WidthSegments="1" HeightSegments="4">
+   <ColorShader GradientType="LinearVerticalGradient">
 	<Gradient>
 		<GradientStop Color="FF4169E1" Offset="0"/> 
 		<GradientStop Color="FF3058AD" Offset="0.75"/>
@@ -87,7 +87,7 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="DropDownPanel" Shape="Rectangle" BorderStyle="Raised" BorderSize="2" Padding="2 2 2 5">
-    <ColorShader GradientType="LinearVerticalGradient" StartValue="1" EndValue="0.5" />
+    <ColorShader GradientType="LinearVerticalGradient"/>
     <ColorArray>
       <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Highlighted" Name="RoyalBlue" HexValue="FF4169E1" />
