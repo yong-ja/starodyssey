@@ -167,6 +167,7 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="bin\Debug\Odysseus ControlDescriptions.ocd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
