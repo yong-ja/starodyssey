@@ -90,12 +90,17 @@
     <Compile Include="UserInterface\Controls\ISpriteObject.cs" />
     <Compile Include="UserInterface\Controls\SelectionRectangle.cs" />
     <Compile Include="UserInterface\CSExporter.cs" />
+    <Compile Include="UserInterface\Drawing\ColorShader.cs" />
+    <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />
+    <Compile Include="UserInterface\Drawing\ShapeCreator.cs" />
+    <Compile Include="UserInterface\Drawing\ShapeCreator.Rectangle.cs" />
+    <Compile Include="UserInterface\Drawing\ShapeCreator.Triangle.cs" />
     <Compile Include="UserInterface\Extensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Geometry\Textured3DVertex.cs" />
     <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\Enums.cs" />
-    <Compile Include="UserInterface\Graphics.cs" />
+    <Compile Include="UserInterface\Drawing\Designer.cs" />
     <Compile Include="UserInterface\HitManager.cs" />
     <Compile Include="UserInterface\Input\CameraBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
@@ -104,7 +109,6 @@
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Polygon.Factory.cs" />
     <Compile Include="UserInterface\Structs.cs" />
-    <Compile Include="UserInterface\Style\ColorShader.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
     <Compile Include="UserInterface\Style\Layout.cs" />
     <Compile Include="UserInterface\Style\ShapeCollection.cs" />
@@ -178,8 +182,6 @@
     <Compile Include="UserInterface\Style\ColorArray.cs" />
     <Compile Include="UserInterface\Style\ControlDescription.cs" />
     <Compile Include="UserInterface\Style\Padding.cs" />
-    <Compile Include="UserInterface\Style\ShapeCreator.cs" />
-    <Compile Include="UserInterface\Style\ShapeCreator.Rectangle.cs" />
     <Compile Include="UserInterface\Style\ShapeDescription.cs" />
     <Compile Include="UserInterface\Style\StyleManager.cs" />
     <Compile Include="UserInterface\Text\DebugLogger.cs" />
@@ -190,7 +192,6 @@
     <Compile Include="UserInterface\Xml\UIParser.cs" />
     <Compile Include="UserInterface\Xml\XmlBasicControls.cs" />
     <Compile Include="UserInterface\Xml\XmlCommon.cs" />
-    <Compile Include="UserInterface\Style\ShapeCreator.Triangle.cs" />
     <None Include="UserInterface\Xml\XmlComplexControls.cs" />
     <Compile Include="UserInterface\Xml\XmlContainers.cs" />
     <Compile Include="UserInterface\Xml\XmlControlStyle.cs" />

@@ -128,14 +128,14 @@ namespace AvengersUtd.Odyssey.Geometry
             return vertices;
         }
 
-        public static ColoredVertex[] CreateSubdividedRectangle(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
+        public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
             out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
             if (widthOffsets != null && widthOffsets.Length != widthSegments+1)
-                throw Error.ArgumentInvalid("widthOffsets", typeof (float[]), "CreateSubdividedRectangle");
+                throw Error.ArgumentInvalid("widthOffsets", typeof (float[]), "CreateRectangleMesh");
             if (heightOffsets != null && heightOffsets.Length != heightSegments+1)
-                throw Error.ArgumentInvalid("heightSegments", typeof(float[]), "CreateSubdividedRectangle");
+                throw Error.ArgumentInvalid("heightSegments", typeof(float[]), "CreateRectangleMesh");
 
             float x = topLeftVertex.X;
             float y = topLeftVertex.Y;

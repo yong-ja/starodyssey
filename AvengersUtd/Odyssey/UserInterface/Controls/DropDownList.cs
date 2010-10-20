@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
@@ -299,13 +300,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             // Updates sub-parts shapes
             boxDescriptor.UpdateVertices(ShapeCreator.DrawFullRectangle(AbsoluteOrthoPosition, Size,
-                Description.ColorShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor).Vertices);
+                Description.FillShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor).Vertices);
         }
 
         public override void CreateShape()
         {
             boxDescriptor = ShapeCreator.DrawFullRectangle(AbsoluteOrthoPosition, Size,
-                Description.ColorShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor);
+                Description.FillShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor);
             boxDescriptor.Depth = Depth;
             boxDescriptor.Tag = Id;
             Shapes[0] = boxDescriptor;

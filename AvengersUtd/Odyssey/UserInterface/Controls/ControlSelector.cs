@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Drawing;
 using SlimDX;
@@ -73,11 +74,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 Vector2 topLeftCorner = new Vector2(point.X - handleSize.Width/2f, point.Y - handleSize.Height/2f);
                 Vector3 topLeftCornerOrtho = Layout.OrthographicTransform(topLeftCorner, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 Shapes[i] = ShapeCreator.DrawFullRectangle(topLeftCornerOrtho, handleSize,
-                    Description.ColorShader,
-                    Description.ColorArray[ColorIndex.Enabled],
+                    Description.FillShader,
+                    Description.ColorArray[StateIndex.Enabled],
                     Description.BorderSize,
                     Description.BorderStyle,
-                    Description.ColorArray[ColorIndex.BorderEnabled]);
+                    Description.ColorArray[StateIndex.BorderEnabled]);
 
                 Shapes[i].Depth = Depth;
             }
@@ -94,11 +95,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 Vector2 topLeftCorner = new Vector2(point.X - handleSize.Width / 2f, point.Y - handleSize.Height / 2f);
                 Vector3 topLeftCornerOrtho = Layout.OrthographicTransform(topLeftCorner, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 Shapes[i].UpdateVertices(ShapeCreator.DrawFullRectangle(topLeftCornerOrtho, handleSize,
-                    Description.ColorShader,
-                    Description.ColorArray[ColorIndex.Enabled],
+                    Description.FillShader,
+                    Description.ColorArray[StateIndex.Enabled],
                     Description.BorderSize,
                     Description.BorderStyle,
-                    Description.ColorArray[ColorIndex.BorderEnabled]).Vertices);
+                    Description.ColorArray[StateIndex.BorderEnabled]).Vertices);
                 Shapes[i].Depth = Depth;
             }
             //System.Diagnostics.Debug.WriteLine("C:{0} T:{1}", Position, bounds[0]);

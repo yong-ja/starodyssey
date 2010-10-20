@@ -4,11 +4,11 @@ Please do not modify it if you don't know what you are doing. Visit the Odyssey 
 Thanks for using the Odyssey UI!-->
 <ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
   <ControlDescription Name="ControlSelector" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
-   <ColorShader GradientType="Uniform"/>
+   <Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="Transparent" HexValue="00000000" />
       <Color Type="Highlighted" Name="Transparent" HexValue="00000000" />
-      <Color Type="Clicked" Name="Transparent" HexValue="00000000" />
+      <Color Type="Pressed" Name="Transparent" HexValue="00000000" />
       <Color Type="Disabled" Name="Transparent" HexValue="00000000" />
       <Color Type="Selected" Name="Transparent" HexValue="00000000" />
       <Color Type="Focused" Name="Transparent" HexValue="00000000" />

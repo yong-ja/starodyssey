@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using AvengersUtd.Odyssey.Geometry;
-using AvengersUtd.Odyssey.UserInterface.Controls;
+using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.Style
+namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public static partial class ShapeCreator
     {
@@ -178,7 +176,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public static ShapeDescription DrawSubdividedRectangle(Vector3 position, Size size, int widthSegments, int heightSegments, Color4[] colors, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             short[] indices;
-            ColoredVertex[] vertices = Polygon.CreateSubdividedRectangle(position.ToVector4(), size.Width, size.Height,
+            ColoredVertex[] vertices = Polygon.CreateRectangleMesh(position.ToVector4(), size.Width, size.Height,
                                                  widthSegments, heightSegments, colors, out indices, widthOffsets, heightOffsets);
             return new ShapeDescription
             {
