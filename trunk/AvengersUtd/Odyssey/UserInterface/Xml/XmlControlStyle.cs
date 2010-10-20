@@ -26,6 +26,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Xml.Serialization;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using System.Reflection;
@@ -51,7 +52,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     /// <summary>
     /// Xml Wrapper class for the ColorShader class.
     /// </summary>
-    [XmlType(TypeName = "ColorShader")]
+    [XmlType(TypeName = "FillShader")]
     [Serializable]
     public struct XmlColorShader
     {
@@ -80,15 +81,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                     gradientColors[i] = XmlFillColors[i].ToGradientStop();
                 }
             }
-
-
             return new ColorShader
                        {
-                           GradientType = GradientType,
-                           Method =
-                               (Shader) Delegate.CreateDelegate(typeof (Shader), typeof (ColorShader).GetMethod(GradientType.ToString())),
-                           Color = ColorValue != null ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber)) : default(Color4),
-                           Gradient = gradientColors
+                               GradientType = GradientType,
+                               Method = (Shader) Delegate.CreateDelegate
+                                               (typeof (Shader), typeof (ColorShader).GetMethod(GradientType.ToString())),
+                               Color = ColorValue != null
+                                               ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber))
+                                               : default(Color4),
+                               Gradient = gradientColors,
                        };
         }
     }
@@ -103,7 +104,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     {
 
         [XmlAttribute("Type")]
-        public ColorIndex ColorIndex { get; set; }
+        public StateIndex StateIndex { get; set; }
 
         [XmlAttribute]
         public string Name { get; set; }
@@ -136,8 +137,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             {
                 xmlColorArray[i] = new XmlColor
                                        {
-                                           ColorIndex = (ColorIndex) i,
-                                           ColorValue = colorArray[(ColorIndex) i].ToArgb().ToString("{0:X8}")
+                                           StateIndex = (StateIndex) i,
+                                           ColorValue = colorArray[(StateIndex) i].ToArgb().ToString("{0:X8}")
                                        };
             }
         }
@@ -208,8 +209,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlAttribute]
         public string TextDescriptionClass { get; set; }
 
-        [XmlElement("ColorShader")]
-        public XmlColorShader XmlColorShader { get; set; }
+        [XmlElement("Fill")]
+        public XmlColorShader FillShader { get; set; }
+
+        [XmlElement("BorderEnabled")]
+        public XmlColorShader BorderEnabledShader { get; set; }
 
         [XmlElement("ColorArray")]
         public XmlColorArray XmlColorArray { get; set; }
@@ -224,7 +228,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                            Padding = String.IsNullOrEmpty(XmlPadding) ? Padding.Empty : XmlCommon.DecodePadding(XmlPadding),
                            BorderStyle = BorderStyle,
                            BorderSize = BorderSize,
-                           ColorShader = XmlColorShader.ToColorShader(),
+                           FillShader = FillShader.ToColorShader(),
+                           BorderShader = BorderEnabledShader.ToColorShader(),
                            ColorArray =  XmlColorArray.ToColorArray(),
                            TextStyleClass = string.IsNullOrEmpty(TextDescriptionClass) ? "Default" : TextDescriptionClass
                        };

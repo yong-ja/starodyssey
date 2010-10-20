@@ -29,12 +29,13 @@
 
 using System;
 using System.Drawing;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 
 #endregion
 
 namespace AvengersUtd.Odyssey.UserInterface.Style
 {
-    public class ControlDescription : IEquatable<ControlDescription>
+    public class ControlDescription
     {
         public const int DefaultBorderSize = 2;
         internal const string Error = "Error";
@@ -50,8 +51,20 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public Padding Padding { get; internal set; }
         public ColorArray ColorArray { get; set; }
         public Shape Shape { get; set; }
-        public ColorShader ColorShader { get; set; }
+        public ColorShader FillShader { get; set; }
+        public ColorShader BorderShader { get; set; }
 
+         public Designer GetDesigner()
+         {
+             return new Designer
+                        {
+                                BorderSize = BorderSize,
+                                BorderShader = BorderShader,
+                                FillShader = FillShader,
+                                Width = Size.Width,
+                                Height = Size.Height
+                        };
+         }
         
         public static ControlDescription EmptyDescription
         {
@@ -61,7 +74,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                            {
                                BorderSize = 0,
                                BorderStyle = BorderStyle.None,
-                               ColorShader = new ColorShader(),
+                               FillShader = new ColorShader(),
+                               BorderShader = new ColorShader(),
                                ColorArray = ColorArray.Transparent,
                                Name = Empty,
                                Padding = Padding.Empty,
@@ -73,52 +87,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         #endregion
 
-        #region IEquatable<ControlDescription
-       
-
-        public static bool operator ==(ControlDescription cDesc1, ControlDescription cDesc2)
-        {
-            return cDesc1.Equals(cDesc2);
-        }
-
-        public static bool operator !=(ControlDescription cDesc1, ControlDescription cDesc2)
-        {
-            return !(cDesc1 == cDesc2);
-        }
-
-
-        public bool Equals(ControlDescription other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.Name, Name) && Equals(other.TextStyleClass, TextStyleClass) && Equals(other.BorderStyle, BorderStyle) && other.BorderSize == BorderSize && other.Size.Equals(Size) && other.Padding.Equals(Padding) && other.ColorArray.Equals(ColorArray) && Equals(other.Shape, Shape) && other.ColorShader.Equals(ColorShader);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (ControlDescription)) return false;
-            return Equals((ControlDescription) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int result = (Name != null ? Name.GetHashCode() : 0);
-                result = (result*397) ^ (TextStyleClass != null ? TextStyleClass.GetHashCode() : 0);
-                result = (result*397) ^ BorderStyle.GetHashCode();
-                result = (result*397) ^ BorderSize;
-                result = (result*397) ^ Size.GetHashCode();
-                result = (result*397) ^ Padding.GetHashCode();
-                result = (result*397) ^ ColorArray.GetHashCode();
-                result = (result*397) ^ Shape.GetHashCode();
-                result = (result*397) ^ ColorShader.GetHashCode();
-                return result;
-            }
-        }
-
-        #endregion
+        
     }
 }

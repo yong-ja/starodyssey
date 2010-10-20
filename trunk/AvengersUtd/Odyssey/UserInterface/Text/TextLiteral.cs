@@ -44,10 +44,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         {
             get
             {
-                ColorIndex colorIndex = IsHighlighted
-                                            ? ColorIndex.Highlighted
-                                            : IsSelected ? ColorIndex.Selected : ColorIndex.Enabled;
-                return string.Format("{0} {1}", TextDescription.ActiveCode(colorIndex), text);
+                StateIndex stateIndex = IsHighlighted
+                                            ? StateIndex.Highlighted
+                                            : IsSelected ? StateIndex.Selected : StateIndex.Enabled;
+                return string.Format("{0} {1}", TextDescription.ActiveCode(stateIndex), text);
             }
         }
 

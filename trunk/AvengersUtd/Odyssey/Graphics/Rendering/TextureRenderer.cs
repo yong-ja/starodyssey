@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX.Direct3D11;
 
@@ -42,9 +43,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public GradientStop[] Gradient
         {
-            get { return control.Description.ColorShader.Gradient; }
+            get { return control.Description.FillShader.Gradient; }
             set {
-                control.Description.ColorShader.Gradient = value; 
+                control.Description.FillShader.Gradient = value; 
                 Hud.EndDesign();
             }
         }

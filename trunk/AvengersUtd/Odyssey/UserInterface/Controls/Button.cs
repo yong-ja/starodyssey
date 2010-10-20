@@ -24,6 +24,7 @@
 
 using System;
 using System.Drawing;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX;
@@ -104,7 +105,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         
         #region ISpriteObject
 
-        Graphics.Meshes.IRenderable ISpriteObject.RenderableObject
+        IRenderable ISpriteObject.RenderableObject
         {
             get { return label.RenderableObject; }
         }

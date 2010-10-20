@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.Style
+namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public struct GradientStop
     {
@@ -19,6 +14,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             Offset = offset;
         }
 
+        #region Equality
         public static bool operator ==(GradientStop left, GradientStop right)
         {
             return left.Equals(right);
@@ -37,17 +33,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (obj.GetType() != typeof (GradientStop)) return false;
-            return Equals((GradientStop) obj);
+            if (obj.GetType() != typeof(GradientStop)) return false;
+            return Equals((GradientStop)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (Color.GetHashCode()*397) ^ Offset.GetHashCode();
+                return (Color.GetHashCode() * 397) ^ Offset.GetHashCode();
             }
-        }
+        } 
+        #endregion
     }
 
     public delegate Color4[] Shader(ColorShader shader, int numVertex, Shape shape);

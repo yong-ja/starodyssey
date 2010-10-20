@@ -63,13 +63,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
             StandardColor = new XmlColor
                                 {
-                                    ColorIndex = ColorIndex.Enabled,
+                                    StateIndex = StateIndex.Enabled,
                                     ColorValue = textDescription.Color.ToArgb().ToString("{0:X8}")
                                 };
             HighlightedColor = (ApplyHighlight)
                                    ? new XmlColor
                                          {
-                                             ColorIndex = ColorIndex.Highlighted,
+                                             StateIndex = StateIndex.Highlighted,
                                              ColorValue = textDescription.HighlightedColor.ToArgb().ToString("{0:X8}")
                                          }
                                    : default(XmlColor);

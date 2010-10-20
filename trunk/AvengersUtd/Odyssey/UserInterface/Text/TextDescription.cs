@@ -40,7 +40,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 HorizontalAlignment, VerticalAlignment);
         }
 
-        internal string ActiveCode(ColorIndex activeColor)
+        internal string ActiveCode(StateIndex activeState)
         {
             unchecked
             {
@@ -48,22 +48,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 result = (result * 397) ^ Size;
                 result = (result * 397) ^ FontStyle.GetHashCode();
 
-                switch (activeColor)
+                switch (activeState)
                 {
-                    case ColorIndex.Highlighted:
+                    case StateIndex.Highlighted:
                         result = (result * 397) ^ HighlightedColor.GetHashCode();
                         break;
 
-                    case ColorIndex.Selected:
+                    case StateIndex.Selected:
                         result = (result * 397) ^ SelectedColor.GetHashCode();
                         break;
 
-                    case ColorIndex.Enabled:
+                    case StateIndex.Enabled:
                         result = (result * 397) ^ Color.GetHashCode();
                         break;
 
                     default:
-                        throw Odyssey.Error.WrongCase("activeColor", "ActiveCode", activeColor);
+                        throw Odyssey.Error.WrongCase("activeState", "ActiveCode", activeState);
                 }
                 return result.ToString("X8");
             }

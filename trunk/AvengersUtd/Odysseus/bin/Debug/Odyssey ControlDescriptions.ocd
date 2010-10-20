@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
   <ControlDescription Name="Error" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
-	<ColorShader GradientType="Uniform"/>
+	<Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="Red" HexValue="FFFF0000" />
       <Color Type="Highlighted" Name="Violet" HexValue="FFEE82EE" />
-      <Color Type="Clicked" Name="Purple" HexValue="FF800080" />
+      <Color Type="Pressed" Name="Purple" HexValue="FF800080" />
       <Color Type="Disabled" Name="Crimson" HexValue="FFDC143C" />
       <Color Type="Selected" Name="Sienna" HexValue="FFA0522D" />
       <Color Type="Focused" Name="Maroon" HexValue="FF800000" />
@@ -14,11 +14,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="Panel" Shape="Rectangle" Size="Width:400 Height:300" BorderStyle="Sunken" BorderSize="2" Padding="2 2 2 2">
-	<ColorShader GradientType="LinearVerticalGradient"/>
+	<Fill GradientType="LinearVerticalGradient"/>
     <ColorArray>
       <Color Type="Enabled" Name="TransparentCustom" HexValue="AA0096FF" />
       <Color Type="Highlighted" Name="MediumBlue" HexValue="FF0000CD" />
-      <Color Type="Clicked" Name="TransparentCustom" HexValue="AA0096FF" />
+      <Color Type="Pressed" Name="TransparentCustom" HexValue="AA0096FF" />
       <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
       <Color Type="Selected" Name="BlueViolet" HexValue="FF8A2BE2" />
       <Color Type="Focused" Name="TransparentCustom" HexValue="AA0096FF" />
@@ -27,19 +27,19 @@
     </ColorArray>
   </ControlDescription>
    <ControlDescription Name="Button" Shape="SubdividedRectangle" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="1" TextDescriptionClass="Button">
-   <ColorShader GradientType="LinearVerticalGradient">
-	<Gradient>
-		<GradientStop Color="FF4169E1" Offset="0"/> 
-		<GradientStop Color="FF3058AD" Offset="0.75"/>
-		<GradientStop Color="FF1F336B" Offset="0.80"/> 
-		<GradientStop Color="FF0B1528" Offset="0.85"/>
-		<GradientStop Color="FF0B1428" Offset="1.0"/>
-	</Gradient>
-   </ColorShader>
+   <Fill GradientType="LinearVerticalGradient">
+     <Gradient>
+       <GradientStop Color="FF4169E1" Offset="0"/>
+       <GradientStop Color="FF3058AD" Offset="0.75"/>
+       <GradientStop Color="FF1F336B" Offset="0.80"/>
+       <GradientStop Color="FF0B1528" Offset="0.85"/>
+       <GradientStop Color="FF0B1428" Offset="1.0"/>
+     </Gradient>
+   </Fill>
     <ColorArray>
       <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Highlighted" Name="Blue" HexValue="FF00FFFF" />
-      <Color Type="Clicked" Name="Navy" HexValue="FF000080" />
+      <Color Type="Pressed" Name="Navy" HexValue="FF000080" />
       <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
       <Color Type="Selected" Name="Red" HexValue="FFFF0000" />
       <Color Type="Focused" Name="Yellow" HexValue="FFFFFF00" />
@@ -48,11 +48,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="DecoratorButton" Shape="Rectangle" Size="Width:20 Height:30" BorderStyle="Raised" BorderSize="2">
-	<ColorShader GradientType="Uniform"/>
+	<Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="Silver" HexValue="FFC0C0C0" />
       <Color Type="Highlighted" Name="DeepSkyBlue" HexValue="FF00BFFF" />
-      <Color Type="Clicked" Name="Red" HexValue="FFFF0000" />
+      <Color Type="Pressed" Name="Red" HexValue="FFFF0000" />
       <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
       <Color Type="Selected" Name="MediumBlue" HexValue="FF0000CD" />
       <Color Type="Focused" Name="Red" HexValue="FFFF0000" />
@@ -61,11 +61,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="Empty" Shape="None" BorderStyle="None" BorderSize="0" Padding="0 0 0 0">
-	<ColorShader GradientType="Uniform"/>
+	<Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="Empty" HexValue="00000000" />
       <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
-      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Pressed" Name="Empty" HexValue="00000000" />
       <Color Type="Disabled" Name="Empty" HexValue="00000000" />
       <Color Type="Selected" Name="Empty" HexValue="00000000" />
       <Color Type="Focused" Name="Empty" HexValue="00000000" />
@@ -74,11 +74,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="DropDownList" Shape="Custom" Size="Width:150 Height:30" BorderStyle="Raised" BorderSize="2" Padding="2 2 2 5" TextDescriptionClass="DropDownList">
-    <ColorShader GradientType="Uniform"/>
+    <Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Highlighted" Name="RoyalBlue" HexValue="FF4169E1" />
-      <Color Type="Clicked" Name="RoyalBlue" HexValue="FF4169E1" />
+      <Color Type="Pressed" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
       <Color Type="Selected" Name="Red" HexValue="FFFF0000" />
       <Color Type="Focused" Name="RoyalBlue" HexValue="FF4169E1" />
@@ -87,11 +87,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="DropDownPanel" Shape="Rectangle" BorderStyle="Raised" BorderSize="2" Padding="2 2 2 5">
-    <ColorShader GradientType="LinearVerticalGradient"/>
+    <Fill GradientType="LinearVerticalGradient"/>
     <ColorArray>
       <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Highlighted" Name="RoyalBlue" HexValue="FF4169E1" />
-      <Color Type="Clicked" Name="RoyalBlue" HexValue="FF4169E1" />
+      <Color Type="Pressed" Name="RoyalBlue" HexValue="FF4169E1" />
       <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
       <Color Type="Selected" Name="Red" HexValue="FFFF0000" />
       <Color Type="Focused" Name="RoyalBlue" HexValue="FF4169E1" />
@@ -100,11 +100,11 @@
     </ColorArray>
   </ControlDescription>
   <ControlDescription Name="SelectorRectangle" Shape="Rectangle" BorderStyle="Flat" BorderSize="2">
-    <ColorShader GradientType="Uniform"/>
+    <Fill GradientType="Uniform"/>
     <ColorArray>
       <Color Type="Enabled" Name="Empty" HexValue="00000000" />
       <Color Type="Highlighted" Name="Empty" HexValue="00000000" />
-      <Color Type="Clicked" Name="Empty" HexValue="00000000" />
+      <Color Type="Pressed" Name="Empty" HexValue="00000000" />
       <Color Type="Disabled" Name="Empty" HexValue="00000000" />
       <Color Type="Selected" Name="Empty" HexValue="00000000" />
       <Color Type="Focused" Name="Empty" HexValue="00000000" />

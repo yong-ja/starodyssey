@@ -28,11 +28,11 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Style
 {
-    public enum ColorIndex
+    public enum StateIndex
     {
         Enabled = 0,
         Highlighted = 1,
-        Clicked = 2,
+        Pressed = 2,
         Disabled = 3,
         Selected = 4,
         Focused = 5,
@@ -62,56 +62,56 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public Color4 Enabled
         {
-            get { return this[ColorIndex.Enabled]; }
-            private set { this[ColorIndex.Enabled] = value; }
+            get { return this[StateIndex.Enabled]; }
+            private set { this[StateIndex.Enabled] = value; }
         }
 
         public Color4 Highlighted
         {
-            get { return this[ColorIndex.Highlighted]; }
-            private set { this[ColorIndex.Highlighted] = value; }
+            get { return this[StateIndex.Highlighted]; }
+            private set { this[StateIndex.Highlighted] = value; }
         }
 
         public Color4 Clicked
         {
-            get { return this[ColorIndex.Clicked]; }
-            private set { this[ColorIndex.Clicked] = value; }
+            get { return this[StateIndex.Pressed]; }
+            private set { this[StateIndex.Pressed] = value; }
         }
 
         public Color4 Disabled
         {
-            get { return this[ColorIndex.Disabled]; }
-            private set { this[ColorIndex.Disabled] = value; }
+            get { return this[StateIndex.Disabled]; }
+            private set { this[StateIndex.Disabled] = value; }
         }
 
         public Color4 Focused
         {
-            get { return this[ColorIndex.Focused]; }
-            private set { this[ColorIndex.Focused] = value; }
+            get { return this[StateIndex.Focused]; }
+            private set { this[StateIndex.Focused] = value; }
         }
 
         public Color4 Selected
         {
-            get { return this[ColorIndex.Selected]; }
-            private set { this[ColorIndex.Selected] = value; }
+            get { return this[StateIndex.Selected]; }
+            private set { this[StateIndex.Selected] = value; }
         }
 
         public Color4 BorderEnabled
         {
-            get { return this[ColorIndex.BorderEnabled]; }
-            private set { this[ColorIndex.BorderEnabled] = value; }
+            get { return this[StateIndex.BorderEnabled]; }
+            private set { this[StateIndex.BorderEnabled] = value; }
         }
 
         public Color4 BorderHighlighted
         {
-            get { return this[ColorIndex.BorderHighlighted]; }
-            private set { this[ColorIndex.BorderHighlighted] = value; }
+            get { return this[StateIndex.BorderHighlighted]; }
+            private set { this[StateIndex.BorderHighlighted] = value; }
         }
 
-        public Color4 this[ColorIndex colorIndex]
+        public Color4 this[StateIndex stateIndex]
         {
-            get { return colorArray[(int) colorIndex]; }
-            private set { colorArray[(int) colorIndex] = value; }
+            get { return colorArray[(int) stateIndex]; }
+            private set { colorArray[(int) stateIndex] = value; }
         }
 
         public bool IsEmpty
@@ -146,7 +146,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         //    ColorArray = new Color4[Color44Count];
         //    Enabled = enabled;
         //    Highlighted = highlighted;
-        //    Clicked = clicked;
+        //    Pressed = clicked;
         //    Disabled = disabled;
         //    Selected = selected;
         //    Focused = focused;

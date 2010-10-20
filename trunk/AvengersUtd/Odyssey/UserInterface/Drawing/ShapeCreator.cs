@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AvengersUtd.Odyssey.Geometry;
+﻿
 using AvengersUtd.Odyssey.UserInterface.Controls;
-using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Style;
 
-namespace AvengersUtd.Odyssey.UserInterface.Style
+namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public static partial class ShapeCreator
     {
@@ -25,7 +21,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                     break;
 
                 case Shape.Rectangle:
-                    shape = DrawFullRectangle(ctl.AbsoluteOrthoPosition, ctl.Size, ctl.Description.ColorShader,
+                    shape = DrawFullRectangle(ctl.AbsoluteOrthoPosition, ctl.Size, ctl.Description.FillShader,
                                                        ctl.InnerAreaColor, ctl.Description.BorderSize, ctl.Description.BorderStyle,
                                                        ctl.BorderColor);
                     break;
@@ -41,8 +37,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                     break;
 
                 case Shape.SubdividedRectangle:
-                    shape = DrawSubdividedRectangleWithOutline(ctl.AbsoluteOrthoPosition, ctl.Size,
-                        ctl.Description.ColorShader, ctl.Description.BorderSize, ctl.Description.BorderStyle, ctl.BorderColor);
+                    shape = DrawRectangle(ctl);
                     break;
                 default:
                     throw Error.WrongCase("shape", "ComputeData", shape);
@@ -50,6 +45,20 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             shape.Tag = ctl.Id;
             shape.Depth = ctl.Depth;
             return shape;
+        }
+
+        static ShapeDescription DrawRectangle(BaseControl control)
+        {
+            ControlDescription desc = control.Description;
+            Designer d = desc.GetDesigner();
+            
+            d.BorderShader = desc.BorderShader;
+            d.FillShader = desc.FillShader;
+            d.Position = control.AbsoluteOrthoPosition;
+            
+            d.FillRectangle();
+            d.DrawRectangle();
+            return d.Output;
         }
     }
 }

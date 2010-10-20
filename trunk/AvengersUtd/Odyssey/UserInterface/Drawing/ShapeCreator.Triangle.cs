@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AvengersUtd.Odyssey.Geometry;
+﻿using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.UserInterface.Style
+namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
 	public static partial class ShapeCreator
 	{

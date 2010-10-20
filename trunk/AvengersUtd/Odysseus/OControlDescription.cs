@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Design;
 using AvengersUtd.Odyssey.UserInterface;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 
 namespace AvengersUtd.Odysseus
@@ -110,7 +111,7 @@ namespace AvengersUtd.Odysseus
             this.Name = cDesc.Name;
             this.Padding = cDesc.Padding;
             this.Selected = new OColor(cDesc.ColorArray.Selected.ToArgb());
-            this.ColorShader = cDesc.ColorShader;
+            this.ColorShader = cDesc.FillShader;
             this.Shape = cDesc.Shape;
             this.Size = cDesc.Size;
             this.TextStyleClass = cDesc.TextStyleClass;
