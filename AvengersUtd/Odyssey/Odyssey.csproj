@@ -95,6 +95,7 @@
     <Compile Include="Geometry\Textured3DVertex.cs" />
     <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\Enums.cs" />
+    <Compile Include="UserInterface\Graphics.cs" />
     <Compile Include="UserInterface\HitManager.cs" />
     <Compile Include="UserInterface\Input\CameraBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
