@@ -67,6 +67,7 @@ namespace AvengersUtd.Odysseus.UIControls
         }
 
 
+        #region Events
         public event MarkerEventHandler SelectedMarkerChanged;
         public event MarkerEventHandler OffsetChanging;
         public event MarkerEventHandler OffsetChanged;
@@ -94,7 +95,8 @@ namespace AvengersUtd.Odysseus.UIControls
         {
             MarkerEventHandler handler = SelectedMarkerChanged;
             if (handler != null) handler(this, e);
-        }
+        } 
+        #endregion
 
         private void DrawMarkers(Graphics graphics)
         {
@@ -208,7 +210,7 @@ namespace AvengersUtd.Odysseus.UIControls
             float offset = xLocation / (float)gradientRectangle.Width;
 
             Marker newSelectedMarker =
-                Markers.FirstOrDefault(m => Math.Abs(m.Offset - offset) <= 0.1f);
+                Markers.FirstOrDefault(m => Math.Abs(m.Offset - offset) <= 0.01f);
 
             if (newSelectedMarker == null) return;
 
@@ -257,7 +259,8 @@ namespace AvengersUtd.Odysseus.UIControls
 
         private void GradientContainer_KeyUp(object sender, KeyEventArgs e)
         {
-            DeleteSelectedMarker();
+            if (e.KeyCode == Keys.Cancel)
+                DeleteSelectedMarker();
         } 
         #endregion
 

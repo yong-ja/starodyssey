@@ -197,7 +197,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public static void LoadControlDescription(string filename)
         {
             if (!File.Exists(filename))
-                Error.MessageMissingFile(Properties.Resources.ERR_StyleNotFound, filename);
+                Error.MessageMissingFile(filename, Properties.Resources.ERR_StyleNotFound);
 
             XmlControlDescription[] xmlcStyle;
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlControlDescription[]));

@@ -33,16 +33,18 @@ namespace AvengersUtd.Odysseus.UIControls
 {
     public partial class GradientBuilder : UserControl
     {
+        private string previousHexColor;
+
         public GradientBuilder()
         {
             InitializeComponent();
             Marker startMarker = new Marker(Color.Red, 0.0f);
             Marker endMarker = new Marker(Color.Green, 1.0f);
             gradientContainer.Markers = new List<Marker> {startMarker, endMarker};
-            gradientContainer.SelectedMarkerChanged += gradientContainer_SelectedMarkerChanged;
+            gradientContainer.SelectedMarkerChanged += GradientContainerSelectedMarkerChanged;
             gradientContainer.OffsetChanging += GradientContainerOffsetChanging;
             gradientContainer.SelectedMarker = startMarker;
-            gradientContainer.OffsetChanged += gradientContainer_OffsetChanged;
+            gradientContainer.OffsetChanged += GradientContainerOffsetChanged;
             gradientContainer.MarkersChanged += GradientContainerMarkersChanged;
 
             // Tooltip data
@@ -52,11 +54,8 @@ namespace AvengersUtd.Odysseus.UIControls
             toolTip.SetToolTip(ctlOffset, "Selected Marker offset");
         }
 
-        void GradientContainerMarkersChanged(object sender, EventArgs e)
-        {
-            OnMarkersChanged(e);
-        }
 
+        #region Properties
         public Marker[] CurrentMarkers
         {
             get { return gradientContainer.Markers.ToArray(); }
@@ -70,9 +69,10 @@ namespace AvengersUtd.Odysseus.UIControls
         public GradientStop[] GradientStops
         {
             get { return ConvertToGradientStop(CurrentMarkers); }
-        }
+        } 
+        #endregion
 
-
+        #region Events
         public event MarkerEventHandler SelectedMarkerOffsetChanged;
         public event MarkerEventHandler SelectedMarkerColorChanged;
         public event EventHandler MarkersChanged;
@@ -93,11 +93,45 @@ namespace AvengersUtd.Odysseus.UIControls
         {
             MarkerEventHandler handler = SelectedMarkerOffsetChanged;
             if (handler != null) handler(this, e);
-        }
+        } 
+        #endregion
 
-        private void gradientContainer_OffsetChanged(object sender, MarkerEventArgs e)
+        #region Child controls events
+
+        private void GradientContainerOffsetChanged(object sender, MarkerEventArgs e)
         {
             OnSelectedMarkerOffsetChanged(e);
+        }
+        void GradientContainerMarkersChanged(object sender, EventArgs e)
+        {
+            OnMarkersChanged(e);
+        }
+
+        #endregion
+
+        private void TbHexColorEnter(object sender, EventArgs e)
+        {
+            int value;
+            if (Int32.TryParse(tbHexColor.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value))
+                previousHexColor = tbHexColor.Text;
+
+            ctlOffset.Select(0, ctlOffset.Text.Length);
+        }
+
+        private void TbHexColorValidating(object sender, CancelEventArgs e)
+        {
+            int value;
+            if (!Int32.TryParse(tbHexColor.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value))
+            {
+                tbHexColor.Text = previousHexColor;
+                return;
+            }
+            else
+            {
+                gradientContainer.SelectedMarker.Color = Color.FromArgb(value);
+                OnSelectedMarkerColorChanged(new MarkerEventArgs(gradientContainer.SelectedMarker));
+            }
+
         }
 
         public void RefreshLabels(float value)
@@ -117,6 +151,7 @@ namespace AvengersUtd.Odysseus.UIControls
             SetMarkers(ConvertToMarkers(gradient));
         }
 
+        #region Conversion methods
         public static ColorBlend ConvertToColorBlend(IEnumerable<Marker> markers)
         {
             ColorBlend colorBlend = new ColorBlend(markers.Count())
@@ -149,7 +184,8 @@ namespace AvengersUtd.Odysseus.UIControls
                 markers[i] = new Marker(gradientStop.Color.ToColor(), gradientStop.Offset);
             }
             return markers;
-        }
+        } 
+        #endregion
 
         #region Events
 
@@ -158,9 +194,10 @@ namespace AvengersUtd.Odysseus.UIControls
             RefreshLabels(e.Marker.Offset);
         }
 
-        private void gradientContainer_SelectedMarkerChanged(object sender, MarkerEventArgs e)
+        private void GradientContainerSelectedMarkerChanged(object sender, MarkerEventArgs e)
         {
             tbHexColor.Text = e.Marker.Color.ToArgb().ToString("X8");
+            previousHexColor = tbHexColor.Text;
             RefreshLabels(e.Marker.Offset);
             if (e.Marker.Offset == 0f || e.Marker.Offset == 1f)
             {
@@ -170,7 +207,7 @@ namespace AvengersUtd.Odysseus.UIControls
             cmdDel.Enabled = true;
         }
 
-        private void ctlOffset_ValueChanged(object sender, EventArgs e)
+        private void CtlOffsetValueChanged(object sender, EventArgs e)
         {
             if (ctlOffset.Value == 0 || ctlOffset.Value == 1.0m)
             {
@@ -207,7 +244,7 @@ namespace AvengersUtd.Odysseus.UIControls
         }
 
 
-        private void ctlOffset_Validating(object sender, CancelEventArgs e)
+        private void CtlOffsetValidating(object sender, CancelEventArgs e)
         {
             decimal value;
             if (!decimal.TryParse(ctlOffset.Text, out value))
@@ -223,26 +260,23 @@ namespace AvengersUtd.Odysseus.UIControls
                 ctlOffset.Value = 0.99m;
                 ctlOffset.Select(0, ctlOffset.Text.Length);
             }
+            if (value == 0)
+            {
+                e.Cancel = true;
+                ctlOffset.Value = 0.01m;
+                ctlOffset.Select(0, ctlOffset.Text.Length);
+            }
         }
 
-        private void cmdDel_Click(object sender, EventArgs e)
+        private void CmdDelClick(object sender, EventArgs e)
         {
             gradientContainer.DeleteSelectedMarker();
         }
 
         #endregion
 
-        private void tbHexColor_Enter(object sender, EventArgs e)
-        {
-            ctlOffset.Select(0, ctlOffset.Text.Length);
-        }
 
-        private void tbHexColor_Validating(object sender, CancelEventArgs e)
-        {
-            int value;
-            if (!Int32.TryParse(tbHexColor.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value))
-                return;
 
-        }
+
     }
 }

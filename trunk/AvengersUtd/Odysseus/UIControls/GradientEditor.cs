@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.ImageProcessing;
@@ -35,6 +36,7 @@ namespace AvengersUtd.Odysseus.UIControls
         private readonly SortedDictionary<string, Gradient> gradientDictionary;
         private readonly Hud mainHud;
         private readonly TextureRenderer textureRenderer;
+        private bool shouldSave;
 
         public GradientEditor()
         {
@@ -50,6 +52,10 @@ namespace AvengersUtd.Odysseus.UIControls
             gradientBuilder.SelectedMarkerOffsetChanged += GradientBuilderSelectedMarkerOffsetChanged;
             gradientBuilder.SelectedMarkerColorChanged += GradientBuilderSelectedMarkerColorChanged;
             gradientBuilder.MarkersChanged += GradientBuilderMarkersChanged;
+            shouldSave = true;
+            ListViewItem item = new ListViewItem("(Untitled Gradient)");
+                item.Font = new Font(item.Font, FontStyle.Italic);
+            listView1.Items.Add(item);
         }
 
         #region GradientBuilder events
@@ -86,7 +92,7 @@ namespace AvengersUtd.Odysseus.UIControls
             if (inputBox.DialogResult != DialogResult.OK) return;
 
             Gradient gradient = new Gradient(inputBox.InputValue, gradientBuilder.CurrentMarkers);
-            listBox.Items.Add(gradient.Name);
+            listView1.Items.Add(gradient.Name);
             gradientDictionary.Add(inputBox.InputValue, gradient);
         }
 
@@ -95,9 +101,9 @@ namespace AvengersUtd.Odysseus.UIControls
             gradientBuilder.SetMarkers(gradient.Markers);
         }
 
-        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectGradient(gradientDictionary[(string) listBox.SelectedItem]);
+            SelectGradient(gradientDictionary[listView1.SelectedItems[0].Text]);
         }
 
         private void GradientEditorLoad(object sender, EventArgs e)

@@ -100,7 +100,7 @@
             this.cmdDel.Size = new System.Drawing.Size(40, 40);
             this.cmdDel.TabIndex = 6;
             this.cmdDel.UseVisualStyleBackColor = true;
-            this.cmdDel.Click += new System.EventHandler(this.cmdDel_Click);
+            this.cmdDel.Click += new System.EventHandler(this.CmdDelClick);
             // 
             // ctlOffset
             // 
@@ -123,8 +123,8 @@
             this.ctlOffset.Size = new System.Drawing.Size(63, 23);
             this.ctlOffset.TabIndex = 5;
             this.ctlOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ctlOffset.ValueChanged += new System.EventHandler(this.ctlOffset_ValueChanged);
-            this.ctlOffset.Validating += new System.ComponentModel.CancelEventHandler(this.ctlOffset_Validating);
+            this.ctlOffset.ValueChanged += new System.EventHandler(this.CtlOffsetValueChanged);
+            this.ctlOffset.Validating += new System.ComponentModel.CancelEventHandler(this.CtlOffsetValidating);
             // 
             // label2
             // 
@@ -155,11 +155,11 @@
             this.tbHexColor.Location = new System.Drawing.Point(117, 20);
             this.tbHexColor.Margin = new System.Windows.Forms.Padding(2);
             this.tbHexColor.Name = "tbHexColor";
-            this.tbHexColor.Size = new System.Drawing.Size(87, 23);
+            this.tbHexColor.Size = new System.Drawing.Size(77, 23);
             this.tbHexColor.TabIndex = 2;
             this.tbHexColor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbHexColor.Enter += new System.EventHandler(this.tbHexColor_Enter);
-            this.tbHexColor.Validating += new System.ComponentModel.CancelEventHandler(this.tbHexColor_Validating);
+            this.tbHexColor.Enter += new System.EventHandler(this.TbHexColorEnter);
+            this.tbHexColor.Validating += new System.ComponentModel.CancelEventHandler(this.TbHexColorValidating);
             // 
             // cmdColorWheel
             // 
