@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
     public static partial class ShapeCreator
     {
 
-        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, ColorShader colorShader, Color4 fillColor, int borderSize, BorderStyle borderStyle, Color4 borderColor)
+        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, ColorShader colorShader, Color4 fillColor, Thickness borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
             Color4[] shadedColors = colorShader.Method(colorShader, 4,Shape.Rectangle);
             Color4[] borderColors;
@@ -33,7 +33,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     throw new ArgumentOutOfRangeException("borderStyle");
             }
             ShapeDescription inside = DrawRectangle(position, size, shadedColors);
-            ShapeDescription outline = DrawRectangularOutline(position, size, borderSize, borderColors, borderStyle, Border.All);
+            ShapeDescription outline = DrawRectangularOutline(position, size, borderSize.All, borderColors, borderStyle, Border.All);
 
             ShapeDescription result = ShapeDescription.Join(inside, outline);
             result.Shape = Shape.RectangleWithOutline;
@@ -183,7 +183,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 Vertices = vertices,
                 Indices = indices,
                 Primitives = indices.Length/3,
-                Shape = Shape.SubdividedRectangle
+                Shape = Shape.RectangleMesh
             };
         }
     }

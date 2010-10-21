@@ -11,7 +11,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public partial class Designer
     {
-        
+
 
         static GradientStop[] SplitGradient(GradientStop[] gradient, float lowerBound, float upperBound)
         {
@@ -26,14 +26,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 GradientStop currentStop = gradientStop;
                 GradientStop prevStop = gradient.First(g => g.Offset < currentStop.Offset);
                 GradientStop nextStop = gradient.First(g => g.Offset > currentStop.Offset);
-                float scaledValue = MathHelper.Scale(currentStop.Offset,
-                                                     prevStop.Offset,
-                                                     nextStop.Offset);
+                float scaledValue = MathHelper.Scale
+                        (currentStop.Offset,
+                         prevStop.Offset,
+                         nextStop.Offset);
                 GradientStop scaledStop = new GradientStop
                                               {
-                                                      Color = Color4.Lerp(prevStop.Color,
-                                                                          nextStop.Color,
-                                                                          scaledValue),
+                                                      Color = Color4.Lerp
+                                                              (prevStop.Color,
+                                                               nextStop.Color,
+                                                               scaledValue),
                                                       Offset = scaledValue
                                               };
                 gradientList.Add(scaledStop);
@@ -43,59 +45,62 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             GradientStop lastStop;
             GradientStop upperBoundStop;
             GradientStop lowerBoundStop;
-            try
+
+            lowerBoundStop = gradient.FirstOrDefault(g => g.Offset == lowerBound);
+            if (lowerBoundStop != null)
             {
-                lowerBoundStop = gradient.First(g => g.Offset == lowerBound);
+
                 firstStop = lowerBoundStop;
                 firstStop.Offset = 0;
-
             }
-            catch(InvalidOperationException)
+            else
             {
                 lowerBoundStop = gradient.First(g => g.Offset < lowerBound);
                 upperBoundStop = gradient.First(g => g.Offset > lowerBound);
-                firstStop = new GradientStop(
-                    Color4.Lerp(lowerBoundStop.Color,
-                                upperBoundStop.Color,
-                                MathHelper.Scale(lowerBound,
-                                                 lowerBoundStop.Offset,
-                                                 upperBoundStop.Offset)),
-                    0);
+                firstStop = new GradientStop
+                        (
+                        Color4.Lerp
+                                (lowerBoundStop.Color,
+                                 upperBoundStop.Color,
+                                 MathHelper.Scale
+                                         (lowerBound,
+                                          lowerBoundStop.Offset,
+                                          upperBoundStop.Offset)),
+                        0);
             }
-
             
-            try
+            upperBoundStop = gradient.FirstOrDefault(g => g.Offset == upperBound);
+            if (upperBoundStop != null)
             {
-                upperBoundStop = gradient.First(g => g.Offset == upperBound);
                 lastStop = upperBoundStop;
                 lastStop.Offset = 1;
             }
-            catch(InvalidOperationException)
+            else
             {
                 lowerBoundStop = gradient.First(g => g.Offset < upperBound);
                 upperBoundStop = gradient.First(g => g.Offset > upperBound);
-                lastStop  = new GradientStop(
-                    Color4.Lerp(lowerBoundStop.Color,
-                                upperBoundStop.Color,
-                                MathHelper.Scale(upperBound,
-                                                 lowerBoundStop.Offset,
-                                                 upperBoundStop.Offset)),
-                    1);
+                lastStop = new GradientStop
+                        (
+                        Color4.Lerp
+                                (lowerBoundStop.Color,
+                                 upperBoundStop.Color,
+                                 MathHelper.Scale
+                                         (upperBound,
+                                          lowerBoundStop.Offset,
+                                          upperBoundStop.Offset)),
+                        1);
             }
-      
 
             gradientList.Insert(0, firstStop);
             gradientList.Add(lastStop);
 
-            
             return gradientList.ToArray();
         }
 
         public void DrawRectangle()
         {
             CheckParameters(Options.Size | Options.BorderShader);
-            int widthSegments;
-            int heightSegments;
+
             float actualWidth = Width;
             float actualHeight = Height;
             Vector3 actualPosition = Position;
@@ -103,63 +108,26 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             float rightSegmentOffset = (Width - BorderSize.Right) / Width;
             float topSegmentOffset = BorderSize.Top / Height;
             float bottomSegmentOffset = (Height - BorderSize.Bottom) / Height;
-
-            float[] offsets = BorderShader.Gradient.Select(g => g.Offset).ToArray();
-            float[] widthOffsets = null;
-            float[] heightOffsets = null;
-
-            switch (BorderShader.GradientType)
-            {
-                case GradientType.Uniform:
-                    widthSegments = heightSegments = 1;
-                    break;
-                case GradientType.LinearVerticalGradient:
-                    widthSegments = 1;
-                    heightSegments = offsets.Length - 1;
-                    heightOffsets = offsets;
-                    break;
-                case GradientType.LinearHorizontalGradient:
-                    widthSegments = offsets.Length - 1;
-                    heightSegments = 1;
-                    widthOffsets = offsets;
-                    break;
-                default:
-                    throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        BorderShader.GradientType);
-            }
-
-            if (widthOffsets == null)
-                widthOffsets = new float[] { 0, leftSegmentOffset, rightSegmentOffset, 1 };
-            else
-            {
-                List<float> tempList = new List<float>(widthOffsets);
-                if (leftSegmentOffset > 0)
-                    tempList.Add(leftSegmentOffset);
-                if (rightSegmentOffset > 0)
-                    tempList.Add(rightSegmentOffset);
-                if (tempList.Count > widthOffsets.Length)
-                    tempList.Sort();
-            }
-            if (heightOffsets == null)
-                heightOffsets = new float[] { 0, topSegmentOffset, bottomSegmentOffset, 1 };
-            else
-            {
-                List<float> tempList = new List<float>(widthOffsets);
-                if (topSegmentOffset > 0)
-                    tempList.Add(topSegmentOffset);
-                if (bottomSegmentOffset > 0)
-                    tempList.Add(bottomSegmentOffset);
-                if (tempList.Count > heightOffsets.Length)
-                    tempList.Sort();
-            }
-  
+         
             SaveState();
             if (BorderSize.Top > 0)
             {
+                GradientStop[] gradient;
+                switch (BorderShader.GradientType)
+                {
+                    case GradientType.LinearVerticalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, 0, topSegmentOffset);
+                        break;
+                    case GradientType.LinearHorizontalGradient:
+                        gradient = BorderShader.Gradient;
+                        break;
+                    default:
+                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        BorderShader.GradientType);
+                }
                 ColorShader topShader = new ColorShader
                 {
-                    Gradient =
-                        SplitGradient(BorderShader.Gradient, 0, topSegmentOffset),
+                    Gradient = gradient,
                     GradientType = BorderShader.GradientType,
                     Method = BorderShader.Method
                 };
@@ -171,10 +139,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             }
             if (BorderSize.Left > 0)
             {
-                ColorShader leftShader = new ColorShader()
+                GradientStop[] gradient;
+                switch (BorderShader.GradientType)
                 {
-                    Gradient =
-                        SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset),
+                    case GradientType.LinearVerticalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        break;
+                    case GradientType.LinearHorizontalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, 0, leftSegmentOffset);
+                        break;
+                    default:
+                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        BorderShader.GradientType);
+                }
+                ColorShader leftShader = new ColorShader
+                                             {
+                    Gradient = gradient,
                     GradientType = BorderShader.GradientType,
                     Method = BorderShader.Method
                 };
@@ -187,12 +167,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             }
             if (BorderSize.Bottom > 0)
             {
+                GradientStop[] gradient;
+                switch (BorderShader.GradientType)
+                {
+                    case GradientType.LinearVerticalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, bottomSegmentOffset, 1);
+                        break;
+                    case GradientType.LinearHorizontalGradient:
+                        gradient = BorderShader.Gradient;
+                        break;
+                    default:
+                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        BorderShader.GradientType);
+                }
                 ColorShader bottomShader = new ColorShader
                 {
-                    Gradient =
-                            SplitGradient(BorderShader.Gradient,
-                                          bottomSegmentOffset,
-                                          1),
+                    Gradient = gradient,
                     GradientType = BorderShader.GradientType,
                     Method = BorderShader.Method
                 };
@@ -205,10 +195,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             }
             if (BorderSize.Right > 0)
             {
+                GradientStop[] gradient;
+                switch (BorderShader.GradientType)
+                {
+                    case GradientType.LinearVerticalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        break;
+                    case GradientType.LinearHorizontalGradient:
+                        gradient = SplitGradient(BorderShader.Gradient, rightSegmentOffset, 1);
+                        break;
+                    default:
+                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        BorderShader.GradientType);
+                }
                 ColorShader rightShader = new ColorShader
                 {
-                    Gradient =
-                        SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset),
+                    Gradient =gradient ,
                     GradientType = BorderShader.GradientType,
                     Method = BorderShader.Method
                 };
@@ -219,6 +221,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 FillShader = rightShader;
                 FillRectangle();
             }
+            RestoreState();
+            
         }
 
         public void FillRectangle()
@@ -270,7 +274,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 Vertices = vertices,
                 Indices = indices,
                 Primitives = indices.Length/3,
-                Shape = Shape.SubdividedRectangle
+                Shape = Shape.RectangleMesh
             };
 
             shapes.Add(rectangleShape);

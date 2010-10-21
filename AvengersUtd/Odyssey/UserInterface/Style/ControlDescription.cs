@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 {
     public class ControlDescription
     {
-        public const int DefaultBorderSize = 2;
+        public const int DefaultBorderSize = 1;
         internal const string Error = "Error";
         internal const string Empty = "Empty";
 
@@ -46,13 +46,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public string Name { get; internal set; }
         public string TextStyleClass { get; internal set; }
         public BorderStyle BorderStyle { get; internal set; }
-        public int BorderSize { get; set; }
         public Size Size { get; internal set; }
+        public Thickness BorderSize { get; internal set; }
         public Thickness Padding { get; internal set; }
         public ColorArray ColorArray { get; set; }
         public Shape Shape { get; set; }
         public ColorShader FillShader { get; set; }
-        public ColorShader BorderShader { get; set; }
+        public ColorShader[] BorderShaders { get; set; }
 
         public static ControlDescription EmptyDescription
         {
@@ -60,10 +60,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             {
                 return new ControlDescription
                            {
-                               BorderSize = 0,
+                               BorderSize = Thickness.Empty,
                                BorderStyle = BorderStyle.None,
                                FillShader = new ColorShader(),
-                               BorderShader = new ColorShader(),
+                               BorderShaders = null,
                                ColorArray = ColorArray.Transparent,
                                Name = Empty,
                                Padding = Thickness.Empty,

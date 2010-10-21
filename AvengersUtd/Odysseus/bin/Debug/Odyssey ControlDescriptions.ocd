@@ -26,13 +26,15 @@
       <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
     </ColorArray>
   </ControlDescription>
-   <ControlDescription Name="Button" Shape="SubdividedRectangle" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="1" TextDescriptionClass="Button">
-     <BorderEnabled GradientType="LinearVerticalGradient">
-       <Gradient>
-         <GradientStop Color="FFFFFFFF" Offset="0"/>
-         <GradientStop Color="FF000000" Offset="1"/>
-       </Gradient>
-     </BorderEnabled>
+   <ControlDescription Name="Button" Shape="RectangleMesh" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="10" TextDescriptionClass="Button">
+     <BorderShaders>
+       <Border GradientType="LinearHorizontalGradient" Borders="Top Left">
+         <Gradient>
+           <GradientStop Color="FFFFFFFF" Offset="0"/>
+           <GradientStop Color="FF000000" Offset="1"/>
+         </Gradient>
+       </Border>
+     </BorderShaders>
    <Fill GradientType="LinearVerticalGradient">
      <Gradient>
        <GradientStop Color="FF4169E1" Offset="0"/>

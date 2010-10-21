@@ -87,19 +87,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             float x;
             float y;
 
-            Thickness thickness = hostControl.Description.Padding;
-            int borderSize = hostControl.Description.BorderSize;
+            Thickness padding = hostControl.Description.Padding;
+            Thickness borderSize = hostControl.Description.BorderSize;
             switch (textControl.TextDescription.HorizontalAlignment)
             {
                 case HorizontalAlignment.NotSet:
                 case HorizontalAlignment.Left:
-                    x = thickness.Left;
+                    x = borderSize.Left + padding.Left;
                     break;
                 case HorizontalAlignment.Center:
-                    x = thickness.Horizontal + borderSize + (hostControl.ClientSize.Width/2 - textControl.Size.Width/2);
+                    x = padding.Left + borderSize.Left + (hostControl.ContentAreaSize.Width/2 - textControl.Size.Width/2);
                     break;
                 case HorizontalAlignment.Right:
-                    x = (hostControl.ClientSize.Width - textControl.Size.Width);
+                    x = (hostControl.ContentAreaSize.Width - textControl.Size.Width) - borderSize.Right - padding.Right;
                     break;
                 default:
                     throw Error.WrongCase("HorizontalAlignment", "ComputeTextPosition",
@@ -111,13 +111,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             {
                 case VerticalAlignment.NotSet:
                 case VerticalAlignment.Top:
-                    y = thickness.Top;
+                    y = borderSize.Top + padding.Top;
                     break;
                 case VerticalAlignment.Center:
-                    y = thickness.Top + (hostControl.ClientSize.Height/2 - textControl.Size.Height/2);
+                    y = borderSize.Top + padding.Top + (hostControl.ContentAreaSize.Height/2 - textControl.Size.Height/2);
                     break;
                 case VerticalAlignment.Bottom:
-                    y = (hostControl.ClientSize.Height - textControl.Size.Height);
+                    y = (hostControl.ContentAreaSize.Height - textControl.Size.Height) -borderSize.Bottom - padding.Bottom;
                     break;
                 default:
                     throw Error.WrongCase("VerticalAlignment", "ComputeTextPosition",

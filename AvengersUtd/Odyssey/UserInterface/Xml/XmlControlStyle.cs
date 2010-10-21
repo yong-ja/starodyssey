@@ -25,6 +25,7 @@
 using System;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Serialization;
 using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
@@ -34,65 +35,7 @@ using System.Reflection;
 namespace AvengersUtd.Odyssey.UserInterface.Xml
 {
 
-    public struct XmlGradientStop
-    {
-        [XmlAttribute]
-        public string Color { get; set; }
-        [XmlAttribute]
-        public float Offset { get; set; }
 
-        public GradientStop ToGradientStop()
-        {
-            int argbColor = Int32.Parse(Color, NumberStyles.HexNumber);
-            return new GradientStop(new Color4(argbColor), Offset);
-        }
-
-    }
-
-    /// <summary>
-    /// Xml Wrapper class for the ColorShader class.
-    /// </summary>
-    [XmlType(TypeName = "FillShader")]
-    [Serializable]
-    public struct XmlColorShader
-    {
-        [XmlAttribute]
-        public GradientType GradientType { get; set; }
-
-        [XmlAttribute]
-        public string Name { get; set; }
-        [XmlAttribute("Color")]
-        public string ColorValue { get; set; }
-
-        [XmlArray("Gradient")]
-        [XmlArrayItem("GradientStop")]
-        public XmlGradientStop[] XmlFillColors { get; set; }
-
-        public ColorShader ToColorShader()
-        {
-            GradientStop[] gradientColors=null;
-
-            if (XmlFillColors != null)
-            {
-                gradientColors = new GradientStop[XmlFillColors.Length];
-
-                for (int i = 0; i < XmlFillColors.Length; i++)
-                {
-                    gradientColors[i] = XmlFillColors[i].ToGradientStop();
-                }
-            }
-            return new ColorShader
-                       {
-                               GradientType = GradientType,
-                               Method = (Shader) Delegate.CreateDelegate
-                                               (typeof (Shader), typeof (ColorShader).GetMethod(GradientType.ToString())),
-                               Color = ColorValue != null
-                                               ? new Color4(Int32.Parse(ColorValue, NumberStyles.HexNumber))
-                                               : default(Color4),
-                               Gradient = gradientColors,
-                       };
-        }
-    }
 
 
     /// <summary>
@@ -177,11 +120,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 throw Error.InCreatingFromObject("ControlDescription", GetType(), typeof (ControlDescription));
 
             Name = controlDescription.Name;
-            BorderSize = controlDescription.BorderSize;
+            BorderSize = XmlCommon.EncodeThickness(controlDescription.BorderSize);
             BorderStyle = controlDescription.BorderStyle;
             Shape = controlDescription.Shape;
             XmlSize = XmlCommon.EncodeSize(controlDescription.Size);
-            XmlPadding = XmlCommon.EncodePadding(controlDescription.Padding);
+            XmlPadding = XmlCommon.EncodeThickness(controlDescription.Padding);
             TextDescriptionClass = controlDescription.TextStyleClass;
             XmlColorArray = new XmlColorArray(controlDescription.ColorArray);
         }
@@ -201,7 +144,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public BorderStyle BorderStyle { get; set; }
 
         [XmlAttribute]
-        public int BorderSize { get; set; }
+        public string BorderSize { get; set; }
 
         [XmlAttribute("Padding")]
         public string XmlPadding { get; set; }
@@ -212,8 +155,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlElement("Fill")]
         public XmlColorShader FillShader { get; set; }
 
-        [XmlElement("BorderEnabled")]
-        public XmlColorShader BorderEnabledShader { get; set; }
+        [XmlArray("BorderShaders")]
+        [XmlArrayItem("Border")]
+        public XmlColorShader[] BorderEnabledShaders { get; set; }
 
         [XmlElement("ColorArray")]
         public XmlColorArray XmlColorArray { get; set; }
@@ -225,12 +169,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                            Name = Name,
                            Shape = Shape,
                            Size = String.IsNullOrEmpty(XmlSize) ? Size.Empty : XmlCommon.DecodeSize(XmlSize),
-                           Padding = String.IsNullOrEmpty(XmlPadding) ? Thickness.Empty : XmlCommon.DecodePadding(XmlPadding),
+                           Padding = String.IsNullOrEmpty(XmlPadding) ? Thickness.Empty : XmlCommon.DecodeThickness(XmlPadding),
                            BorderStyle = BorderStyle,
-                           BorderSize = BorderSize,
+                           BorderSize = String.IsNullOrEmpty(BorderSize) ? Thickness.Empty : XmlCommon.DecodeThickness(BorderSize),
                            FillShader = FillShader.ToColorShader(),
-                           BorderShader = BorderEnabledShader.ToColorShader(),
-                           ColorArray =  XmlColorArray.ToColorArray(),
+                           BorderShaders = (from borderShader in BorderEnabledShaders
+                                            select borderShader.ToColorShader()).ToArray(),
+                           ColorArray = XmlColorArray.ToColorArray(),
                            TextStyleClass = string.IsNullOrEmpty(TextDescriptionClass) ? "Default" : TextDescriptionClass
                        };
          }
@@ -251,7 +196,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public XmlTableStyle(TableStyle tableStyle):
             base(tableStyle)
         {
-            xmlCellPadding = XmlCommon.EncodePadding(tableStyle.Cellpadding);
+            xmlCellPadding = XmlCommon.EncodeThickness(tableStyle.Cellpadding);
             cellSpacingX = tableStyle.CellSpacingX;
             cellSpacingY = tableStyle.CellSpacingY;
             tableBorders = tableStyle.TableBorders;
@@ -289,8 +234,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             TableStyle tableStyle = new TableStyle(
                 Name,
                 XmlCommon.DecodeSize(Size),
-                XmlCommon.DecodePadding(XmlPadding),
-                XmlCommon.DecodePadding(xmlCellPadding),
+                XmlCommon.DecodeThickness(XmlPadding),
+                XmlCommon.DecodeThickness(xmlCellPadding),
                 cellSpacingX,
                 cellSpacingY,
                 tableBorders,

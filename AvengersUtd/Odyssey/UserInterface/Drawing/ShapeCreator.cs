@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 case Shape.RightTrapezoidDownside:
                     break;
 
-                case Shape.SubdividedRectangle:
+                case Shape.RectangleMesh:
                     shape = DrawRectangle(ctl);
                     break;
                 default:
@@ -57,10 +57,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             
             d.Position = control.AbsoluteOrthoPosition;
             d.FillShader = desc.FillShader;
-            d.BorderShader = desc.BorderShader;
-            d.BorderSize = new Thickness(10);
+            foreach (ColorShader borderShader in desc.BorderShaders)
+            {
+                d.BorderSize = desc.BorderSize;
+                d.BorderShader = borderShader;
+                d.DrawRectangle();
+            }
+            
+
+            d.Position = new Vector3
+                    (d.Position.X + desc.BorderSize.Left, d.Position.Y - desc.BorderSize.Top, d.Position.Z);
+            d.Width = control.ClientSize.Width;
+            d.Height = control.ClientSize.Height;
             d.FillRectangle();
-            d.DrawRectangle();
             
             return d.Output;
         }

@@ -1,9 +1,11 @@
-﻿using AvengersUtd.Odyssey.UserInterface.Style;
+﻿using System;
+using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
+using AvengersUtd.Odyssey.Utils.Xml;
 
 namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
-    public struct GradientStop
+    public class GradientStop : IEquatable<GradientStop>
     {
         public Color4 Color { get; set; }
         public float Offset { get; set; }
@@ -14,36 +16,46 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Offset = offset;
         }
 
-        #region Equality
-        public static bool operator ==(GradientStop left, GradientStop right)
+        public GradientStop()
         {
-            return left.Equals(right);
+            Offset = -1;
         }
 
-        public static bool operator !=(GradientStop left, GradientStop right)
-        {
-            return !left.Equals(right);
-        }
+        #region Equality
 
         public bool Equals(GradientStop other)
         {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
             return other.Color.Equals(Color) && other.Offset.Equals(Offset);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (obj.GetType() != typeof(GradientStop)) return false;
-            return Equals((GradientStop)obj);
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (GradientStop)) return false;
+            return Equals((GradientStop) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (Color.GetHashCode() * 397) ^ Offset.GetHashCode();
+                return (Color.GetHashCode()*397) ^ Offset.GetHashCode();
             }
-        } 
+        }
+
+        public static bool operator ==(GradientStop left, GradientStop right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(GradientStop left, GradientStop right)
+        {
+            return !Equals(left, right);
+        }
+
         #endregion
     }
 
@@ -61,26 +73,28 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Method = Uniform;
         }
 
-        public static Color4[] LinearHorizontalGradient(Color4 color, int numVertex, float startValue, float endValue, Shape shape)
+        public static Color4[] LinearHorizontalGradient(ColorShader shader, int numVertex, Shape shape)
         {
-            Color4 lightColor = startValue == 1.0 ? color : Color4.Scale(color, startValue);
-            Color4 darkColor = Color4.Scale(color, endValue);
-            Color4[] colors;
+            const int heightVertices = 2;
+            Color4[] colors = new Color4[numVertex];
             switch (shape)
             {
                 default:
-                case Shape.Rectangle:
-                    if (numVertex != 4)
-                        throw Error.ArgumentInvalid("numVertex", typeof (ColorShader), "LinearHorizontalGradient",
-                            Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
+                case Shape.RectangleMesh:
+                    int step = 0;
+                    for (int i = 0; i < numVertex; i++)
+                    {
+                        colors[i] = shader.Gradient[step].Color;
+                        step++;
+                        if (i > 0 && i % shader.Gradient.Length-1 == 0)
+                            step=0;
+                    }
 
-                    colors= new[] {lightColor, darkColor, darkColor, lightColor};
-                    break;
-
+                    return colors;
             }
-            return colors;
         }
 
+        #region deprecated
         public static Color4[] BorderSunken(Color4 color, int numVertex, float startValue = 0.5f, float endValue = 1.0f, Shape shape = Shape.Rectangle)
         {
             Color4 lightColor = Color4.Scale(color, startValue);
@@ -95,14 +109,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "BorderSunken",
                             Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
 
-                    colors = new[] {lightColor, lightColor, darkColor, darkColor};
+                    colors = new[] { lightColor, lightColor, darkColor, darkColor };
                     break;
 
             }
             return colors;
         }
 
-        public static Color4[] BorderRaised(Color4 color, int numVertex, float startValue=1.0f, float endValue=0.5f, Shape shape = Shape.Rectangle)
+        public static Color4[] BorderRaised(Color4 color, int numVertex, float startValue = 1.0f, float endValue = 0.5f, Shape shape = Shape.Rectangle)
         {
             Color4 lightColor = Color4.Scale(color, startValue);
             Color4 darkColor = Color4.Scale(color, endValue);
@@ -121,7 +135,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
             }
             return colors;
-        }
+        } 
+        #endregion
 
         public static Color4[] LinearVerticalGradient(ColorShader shader, int numVertex, Shape shape)
         {
@@ -130,7 +145,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             switch (shape)
             {
                 default:
-                case Shape.SubdividedRectangle:
+                case Shape.RectangleMesh:
                     int step = 0;
                     for (int i = 0; i < numVertex; i++)
                     {

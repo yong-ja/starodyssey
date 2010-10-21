@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace AvengersUtd.Odyssey.UserInterface
 {
@@ -34,7 +35,17 @@ namespace AvengersUtd.Odyssey.UserInterface
         Bottom = 2,
         Left = 4,
         Right = 8,
-        All = Top | Bottom | Left | Right
+        All = Top | Bottom | Left | Right,
+        /*LeftRight = Left | Right,
+        LeftTop = Left | Top,
+        LeftBottom = Left | Bottom,
+        TopRight = Top | Right,
+        TopBottom = Top| Bottom,
+        LeftTopRight = Left | Top | Right,
+        LeftRightBottom = Left| Right| Bottom,
+        LeftTopBottom = Left | Top | Bottom,
+        TopRightBottom = Top|Right|Bottom,*/
+
     }
 
     public enum Shape
@@ -49,7 +60,7 @@ namespace AvengersUtd.Odyssey.UserInterface
         RightTrapezoidDownside,
         Triangle,
         RectangleWithOutline,
-        SubdividedRectangle
+        RectangleMesh
     }
 
     public enum DecorationType
