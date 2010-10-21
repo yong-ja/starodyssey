@@ -87,16 +87,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             float x;
             float y;
 
-            Padding padding = hostControl.Description.Padding;
+            Thickness thickness = hostControl.Description.Padding;
             int borderSize = hostControl.Description.BorderSize;
             switch (textControl.TextDescription.HorizontalAlignment)
             {
                 case HorizontalAlignment.NotSet:
                 case HorizontalAlignment.Left:
-                    x = padding.Left;
+                    x = thickness.Left;
                     break;
                 case HorizontalAlignment.Center:
-                    x = padding.Horizontal + borderSize + (hostControl.ClientSize.Width/2 - textControl.Size.Width/2);
+                    x = thickness.Horizontal + borderSize + (hostControl.ClientSize.Width/2 - textControl.Size.Width/2);
                     break;
                 case HorizontalAlignment.Right:
                     x = (hostControl.ClientSize.Width - textControl.Size.Width);
@@ -111,10 +111,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             {
                 case VerticalAlignment.NotSet:
                 case VerticalAlignment.Top:
-                    y = padding.Top;
+                    y = thickness.Top;
                     break;
                 case VerticalAlignment.Center:
-                    y = padding.Top + (hostControl.ClientSize.Height/2 - textControl.Size.Height/2);
+                    y = thickness.Top + (hostControl.ClientSize.Height/2 - textControl.Size.Height/2);
                     break;
                 case VerticalAlignment.Bottom:
                     y = (hostControl.ClientSize.Height - textControl.Size.Height);

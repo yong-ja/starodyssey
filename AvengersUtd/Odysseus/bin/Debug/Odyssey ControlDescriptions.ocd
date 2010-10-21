@@ -27,6 +27,12 @@
     </ColorArray>
   </ControlDescription>
    <ControlDescription Name="Button" Shape="SubdividedRectangle" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="1" TextDescriptionClass="Button">
+     <BorderEnabled GradientType="LinearVerticalGradient">
+       <Gradient>
+         <GradientStop Color="FFFFFFFF" Offset="0"/>
+         <GradientStop Color="FF000000" Offset="1"/>
+       </Gradient>
+     </BorderEnabled>
    <Fill GradientType="LinearVerticalGradient">
      <Gradient>
        <GradientStop Color="FF4169E1" Offset="0"/>

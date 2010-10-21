@@ -10,5 +10,10 @@ namespace AvengersUtd.Odyssey.Geometry
         public const float Pi = (float)Math.PI;
         public const float PiOver2 = Pi/2;
         public const float TwoPi = Pi*2;
+
+        public static float Scale(float value, float min, float max)
+        {
+            return (value/(max - min));
+        }
     }
 }

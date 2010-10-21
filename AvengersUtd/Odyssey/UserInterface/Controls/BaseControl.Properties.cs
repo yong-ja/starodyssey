@@ -169,7 +169,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <value>The top left position.</value>
         /// <remarks>
         ///   The top left position is computed considering the <see cref = "BorderSize" /> value
-        ///   and the <see cref = "Padding" />value.
+        ///   and the <see cref = "Thickness" />value.
         /// </remarks>
         protected internal Vector2 TopLeftPosition { get; private set; }
 

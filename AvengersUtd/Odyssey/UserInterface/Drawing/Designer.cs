@@ -14,7 +14,29 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         Size = 2,
         BorderSize = 4,
         FillShader = 8,
-        BorderShader = 16
+        BorderShader = 16,
+    }
+
+    internal struct MainParameters
+    {
+        public Vector3 Position { get; private set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
+        public Thickness BorderSize { get; set; }
+        public ColorShader FillShader { get; set; }
+        public ColorShader BorderShader { get; set; }
+
+        internal static MainParameters FromDesigner(Designer designer)
+        {
+            return new MainParameters
+                       {
+                               Position = designer.Position,
+                               Width = designer.Width,
+                               Height = designer.Height,
+                               FillShader = designer.FillShader,
+                               BorderShader = designer.BorderShader
+                       };
+        }
     }
 
     public partial class Designer
@@ -22,9 +44,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public Vector3 Position { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
-        public float BorderSize { get; set; }
+        public Thickness BorderSize { get; set; }
         public ColorShader FillShader { get; set; }
         public ColorShader BorderShader { get; set; }
+
+        private readonly Stack<MainParameters> parameterStack;
 
         readonly List<ShapeDescription> shapes;
 
@@ -36,12 +60,30 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public Designer()
         {
             shapes = new List<ShapeDescription>();
+            parameterStack = new Stack<MainParameters>();
+        }
+
+        void SaveState()
+        {
+            parameterStack.Push(MainParameters.FromDesigner(this));
+        }
+
+        void RestoreState()
+        {
+            MainParameters mainParameters = parameterStack.Pop();
+            Position = mainParameters.Position;
+            Width = mainParameters.Width;
+            Height = mainParameters.Height;
+            BorderSize = mainParameters.BorderSize;
+            FillShader = mainParameters.FillShader;
+            BorderShader = mainParameters.BorderShader;
         }
 
         static bool CheckFlag(Options flags, Options check)
         {
             return ((flags & check) == check);
         }
+
 
         void CheckParameters(Options flags)
         {
@@ -52,13 +94,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 if (Width == 0 || Height == 0)               
                     throw Error.ArgumentInvalid("Size", typeof (Designer), "CheckParameters");
             }
-            
+
+
             if (CheckFlag(flags, Options.BorderSize))
             {
-                if (BorderSize == 0)
+                if (BorderSize.IsEmpty)
                     throw Error.ArgumentInvalid("BorderSize", typeof(Designer), "CheckParameters");
             }
-
+            
             if (CheckFlag(flags, Options.FillShader))
             {
                 if (FillShader == null)
@@ -70,7 +113,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 if (FillShader == null)
                     throw Error.ArgumentInvalid("BorderShader", typeof(Designer), "CheckParameters");
             }
-
 
         }
     }

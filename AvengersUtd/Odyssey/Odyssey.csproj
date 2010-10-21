@@ -75,7 +75,7 @@
     <Compile Include="Graphics\Rendering\Management\CameraOverlayNode.cs" />
     <Compile Include="Graphics\Rendering\Management\CameraAnchorNode.cs" />
     <Compile Include="Graphics\Rendering\RenderToTextureCommand.cs" />
-    <Compile Include="Graphics\Rendering\TextureRenderer.cs" />
+    <Compile Include="Graphics\Rendering\WidgetTextureRenderer.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />
@@ -181,7 +181,7 @@
     <Compile Include="UserInterface\OdysseyUI.cs" />
     <Compile Include="UserInterface\Style\ColorArray.cs" />
     <Compile Include="UserInterface\Style\ControlDescription.cs" />
-    <Compile Include="UserInterface\Style\Padding.cs" />
+    <Compile Include="UserInterface\Style\Thickness.cs" />
     <Compile Include="UserInterface\Style\ShapeDescription.cs" />
     <Compile Include="UserInterface\Style\StyleManager.cs" />
     <Compile Include="UserInterface\Text\DebugLogger.cs" />

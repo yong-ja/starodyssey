@@ -114,12 +114,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             if (Size != Size.Empty)
                 sb.AppendFormat("\t\tSize = new Size({0},{1}),\n", Size.Width, Size.Height);
 
-            WriteCustomCSCode(sb);
+            WriteCustomCsCode(sb);
 
             sb.Append("\t};\n\n");
         }
 
-        protected abstract void WriteCustomCSCode(StringBuilder sb);
+        protected abstract void WriteCustomCsCode(StringBuilder sb);
     }
 
     /// <summary>
@@ -171,13 +171,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             return string.Format(CultureInfo.InvariantCulture, "Width:{0:D0} Height:{1:D0}", size.Width, size.Height);
         }
 
-        internal static string EncodePadding(Padding padding)
+        internal static string EncodePadding(Thickness padding)
         {
             return string.Format(CultureInfo.InvariantCulture,
                                  "{0} {1} {2} {3}", padding.Top, padding.Right, padding.Bottom, padding.Left);
         }
 
-        internal static Padding DecodePadding(string xmlPadding)
+        internal static Thickness DecodePadding(string xmlPadding)
         {
             Regex regex = new Regex(@"\s?(?<top>\d+)\s?(?<right>\d+)\s?(?<bottom>\d+)\s?(?<left>\d+)");
             Match m = regex.Match(xmlPadding);
@@ -185,9 +185,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             int right = Int16.Parse(m.Groups["right"].Value, CultureInfo.InvariantCulture);
             int bottom = Int16.Parse(m.Groups["bottom"].Value, CultureInfo.InvariantCulture);
             int left = Int16.Parse(m.Groups["left"].Value, CultureInfo.InvariantCulture);
-            Padding p= new Padding();
+            Thickness p= new Thickness();
             p.Left = 10;
-            return new Padding
+            return new Thickness
                        {
                            Bottom = bottom,
                            Left = left,

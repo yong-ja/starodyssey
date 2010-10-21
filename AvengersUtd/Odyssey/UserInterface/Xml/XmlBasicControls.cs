@@ -68,7 +68,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [Category("Appearance")]
         public string Content { get; set; }
 
-        protected override void WriteCustomCSCode(StringBuilder sb)
+        protected override void WriteCustomCsCode(StringBuilder sb)
         {
             sb.AppendFormat("\t\tContent = {0},\n", Content);
         }
@@ -213,7 +213,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
     public class XmlUnknownControl : XmlBaseControl
     {
-        protected override void WriteCustomCSCode(StringBuilder sb)
+        protected override void WriteCustomCsCode(StringBuilder sb)
         {
             return;
         }
