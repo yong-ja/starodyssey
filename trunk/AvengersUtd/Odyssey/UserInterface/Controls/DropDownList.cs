@@ -171,7 +171,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                                        {
                                            highlightedTextLiteralIndex = (int)
                                                                          ((e.Location.Y - listPanel.AbsolutePosition.Y +
-                                                                           Description.BorderSize)/
+                                                                           Description.BorderSize.Top + Description.Padding.Top)/
                                                                           (itemSize.Height));
 
                                            if (highlightedTextLiteralIndex >= listPanel.Controls.Count)
@@ -357,7 +357,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 listPanel.Add(textLiteral);
                 listPanel.Size = new Size(itemSize.Width,
-                    itemSize.Height*listPanel.Controls.Count + 2*Description.BorderSize +
+                    itemSize.Height*listPanel.Controls.Count + Description.BorderSize.Vertical +
                     listPanel.Description.Padding.Vertical);
 
                 // let the panel handle highlights

@@ -179,6 +179,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <value>A <see cref = "System.Drawing.Size" /> that represents the dimensions of the client area of the control. </value>
         public Size ClientSize { get; set; }
 
+        public Size ContentAreaSize { get; set; }
+
         /// <summary>
         ///   Gets or sets the Color of the inner area.
         /// </summary>
@@ -386,9 +388,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 if (size == value) return;
                 size = value;
-                ClientSize = new Size(Size.Width - (Description.BorderSize * 2 + Description.Padding.Horizontal),
-                                  Size.Height - (Description.BorderSize * 2 + Description.Padding.Vertical));
-                
+                ContentAreaSize = new Size(Size.Width - (Description.BorderSize.Horizontal + Description.Padding.Horizontal),
+                                 Size.Height - (Description.BorderSize.Vertical + Description.Padding.Vertical));
+
+                ClientSize = new Size(Size.Width - Description.BorderSize.Horizontal,
+                                      Size.Height - Description.BorderSize.Vertical);
 
                 if (DesignMode) return;
                 OnSizeChanged(EventArgs.Empty);

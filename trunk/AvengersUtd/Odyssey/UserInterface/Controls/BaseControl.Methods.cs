@@ -75,7 +75,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             return new Designer
             {
                 Position = AbsoluteOrthoPosition,
-                BorderSize = new Thickness(Description.BorderSize),
+                BorderSize = Description.BorderSize,
                 Width = Size.Width,
                 Height = Size.Height
             };
@@ -180,13 +180,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (!description.Size.IsEmpty)
                 Size = description.Size;
 
-            ClientSize = new Size(Size.Width - (Description.BorderSize * 2 + Description.Padding.Horizontal),
-                                  Size.Height - (Description.BorderSize * 2 + Description.Padding.Vertical));
+            ContentAreaSize = new Size(Size.Width - (Description.BorderSize.Horizontal + Description.Padding.Horizontal),
+                                  Size.Height - (Description.BorderSize.Vertical + Description.Padding.Vertical));
+
+            ClientSize = new Size(Size.Width - Description.BorderSize.Horizontal,
+                                  Size.Height - Description.BorderSize.Vertical);
 
             InnerAreaColor = description.ColorArray.Enabled;
             BorderColor = description.ColorArray.BorderEnabled;
-            TopLeftPosition = new Vector2(description.Padding.Left + description.BorderSize,
-                                          description.Padding.Top + description.BorderSize);
+            TopLeftPosition = new Vector2(description.Padding.Left + description.BorderSize.Left,
+                                          description.Padding.Top + description.BorderSize.Top);
 
             textDescription = StyleManager.GetTextDescription(description.TextStyleClass);
         }

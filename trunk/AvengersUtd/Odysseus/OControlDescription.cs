@@ -19,7 +19,7 @@ namespace AvengersUtd.Odysseus
         public BorderStyle BorderStyle { get; set; }
 
         [Category("Appearance"), Description("Border Size.")]
-        public int BorderSize { get; set; }
+        public Thickness BorderSize { get; set; }
 
         [Category("Appearance"), Description("Element shape.")]
         public Shape Shape { get; set; }

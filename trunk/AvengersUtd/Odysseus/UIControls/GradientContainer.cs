@@ -24,7 +24,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using AvengersUtd.Odyssey.UserInterface.Style;
 
 #endregion
 
@@ -38,7 +37,7 @@ namespace AvengersUtd.Odysseus.UIControls
         private const int TriangleHeight = 15;
         private const int CircleRadius = 10;
 
-        private readonly Pen MarkerPen;
+        private readonly Pen markerPen;
         private Rectangle gradientRectangle;
         private bool isDragMode;
 
@@ -47,7 +46,7 @@ namespace AvengersUtd.Odysseus.UIControls
         public GradientContainer()
         {
             InitializeComponent();
-            MarkerPen = new Pen(Brushes.Black, 1f);
+            markerPen = new Pen(Brushes.Black, 1f);
         }
 
         internal List<Marker> Markers { get; set; }
@@ -115,29 +114,29 @@ namespace AvengersUtd.Odysseus.UIControls
                               CircleRadius);
             graphics.FillRectangle(Markers[0].Selected ? Brushes.Green : Brushes.Gray,
                                    startRectangle);
-            graphics.DrawRectangle(MarkerPen, startRectangle);
+            graphics.DrawRectangle(markerPen, startRectangle);
 
             graphics.FillRectangle(Markers[Markers.Count - 1].Selected ? Brushes.Green : Brushes.Gray, endRectangle);
-            graphics.DrawRectangle(MarkerPen, endRectangle);
+            graphics.DrawRectangle(markerPen, endRectangle);
 
             for (int i = 1; i < Markers.Count - 1; i++)
             {
-                Marker Marker = Markers[i];
-                int MarkerXLocation = (int)(Marker.Offset * gradientRectangle.Width) +
+                Marker marker = Markers[i];
+                int markerXLocation = (int)(marker.Offset * gradientRectangle.Width) +
                                       gradientRectangle.Location.X;
                 Point[] triangleArray = new[]
                                         {
-                                            new Point(MarkerXLocation - TriangleHalfSize,
+                                            new Point(markerXLocation - TriangleHalfSize,
                                                       ClientSize.Height - 5),
-                                            new Point(MarkerXLocation + TriangleHalfSize,
+                                            new Point(markerXLocation + TriangleHalfSize,
                                                       ClientSize.Height - 5),
-                                            new Point(MarkerXLocation,
+                                            new Point(markerXLocation,
                                                       ClientSize.Height - TriangleHeight)
                                         };
 
-                Brush triangleFill = Marker.Selected ? Brushes.Green : Brushes.Gray;
+                Brush triangleFill = marker.Selected ? Brushes.Green : Brushes.Gray;
                 graphics.FillPolygon(triangleFill, triangleArray);
-                graphics.DrawPolygon(MarkerPen, triangleArray);
+                graphics.DrawPolygon(markerPen, triangleArray);
             }
         }
 
@@ -190,7 +189,7 @@ namespace AvengersUtd.Odysseus.UIControls
             DrawMarkers(e.Graphics);
         }
 
-        private void GradientContainer_DoubleClick(object sender, EventArgs e)
+        private void GradientContainerDoubleClick(object sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
             int xLocation = me.X - 2 * TriangleHalfSize;
