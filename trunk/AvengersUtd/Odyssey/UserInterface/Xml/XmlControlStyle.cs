@@ -225,7 +225,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                            Name = Name,
                            Shape = Shape,
                            Size = String.IsNullOrEmpty(XmlSize) ? Size.Empty : XmlCommon.DecodeSize(XmlSize),
-                           Padding = String.IsNullOrEmpty(XmlPadding) ? Padding.Empty : XmlCommon.DecodePadding(XmlPadding),
+                           Padding = String.IsNullOrEmpty(XmlPadding) ? Thickness.Empty : XmlCommon.DecodePadding(XmlPadding),
                            BorderStyle = BorderStyle,
                            BorderSize = BorderSize,
                            FillShader = FillShader.ToColorShader(),

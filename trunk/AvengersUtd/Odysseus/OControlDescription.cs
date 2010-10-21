@@ -27,7 +27,7 @@ namespace AvengersUtd.Odysseus
         [Category("Appearance"), Description("Element size.")]
         public Size Size { get; set; }
 
-        public Padding Padding { get; set; }
+        public Thickness Thickness { get; set; }
 
         public ColorShader ColorShader { get; set; }
         
@@ -109,7 +109,7 @@ namespace AvengersUtd.Odysseus
             this.Focused = new OColor(cDesc.ColorArray.Focused.ToArgb());
             this.Highlighted = new OColor(cDesc.ColorArray.Highlighted.ToArgb());
             this.Name = cDesc.Name;
-            this.Padding = cDesc.Padding;
+            this.Thickness = cDesc.Padding;
             this.Selected = new OColor(cDesc.ColorArray.Selected.ToArgb());
             this.ColorShader = cDesc.FillShader;
             this.Shape = cDesc.Shape;

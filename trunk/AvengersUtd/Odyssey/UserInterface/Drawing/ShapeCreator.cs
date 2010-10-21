@@ -1,6 +1,9 @@
 ﻿
+using System;
+using System.Linq;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
@@ -50,14 +53,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         static ShapeDescription DrawRectangle(BaseControl control)
         {
             ControlDescription desc = control.Description;
-            Designer d = desc.GetDesigner();
+            Designer d = control.GetDesigner();
             
-            d.BorderShader = desc.BorderShader;
-            d.FillShader = desc.FillShader;
             d.Position = control.AbsoluteOrthoPosition;
-            
+            d.FillShader = desc.FillShader;
+            d.BorderShader = desc.BorderShader;
+            d.BorderSize = new Thickness(10);
             d.FillRectangle();
             d.DrawRectangle();
+            
             return d.Output;
         }
     }

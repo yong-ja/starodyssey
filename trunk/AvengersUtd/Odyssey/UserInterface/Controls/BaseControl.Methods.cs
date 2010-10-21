@@ -25,6 +25,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
@@ -67,6 +68,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 OdysseyUI.CurrentHud.EnqueueForUpdate(this, updateAction);
             }
             return;
+        }
+
+        public Designer GetDesigner()
+        {
+            return new Designer
+            {
+                Position = AbsoluteOrthoPosition,
+                BorderSize = new Thickness(Description.BorderSize),
+                Width = Size.Width,
+                Height = Size.Height
+            };
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace AvengersUtd.Odysseus.UIControls
     {
         private readonly SortedDictionary<string, Gradient> gradientDictionary;
         private readonly Hud mainHud;
-        private readonly TextureRenderer textureRenderer;
+        private readonly WidgetTextureRenderer widgetTextureRenderer;
         private bool shouldSave;
 
         public GradientEditor()
@@ -47,7 +47,7 @@ namespace AvengersUtd.Odysseus.UIControls
             tbSize.Text = "96; 32";
             mainHud = OdysseyUI.CurrentHud;
 
-            textureRenderer = new TextureRenderer(320, 320, Game.Context);
+            widgetTextureRenderer = new WidgetTextureRenderer(320, 320, Game.Context);
 
             gradientBuilder.SelectedMarkerOffsetChanged += GradientBuilderSelectedMarkerOffsetChanged;
             gradientBuilder.SelectedMarkerColorChanged += GradientBuilderSelectedMarkerColorChanged;
@@ -61,9 +61,9 @@ namespace AvengersUtd.Odysseus.UIControls
         #region GradientBuilder events
         private void UpdateGradient()
         {
-            textureRenderer.Gradient = gradientBuilder.GradientStops;
-            textureRenderer.Render();
-            pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);
+            widgetTextureRenderer.Gradient = gradientBuilder.GradientStops;
+            widgetTextureRenderer.Render();
+            pictureBox1.Image = ImageHelper.BitmapFromTexture(widgetTextureRenderer.OutputTexture);
             pictureBox1.Invalidate();
         }
 
@@ -108,19 +108,19 @@ namespace AvengersUtd.Odysseus.UIControls
 
         private void GradientEditorLoad(object sender, EventArgs e)
         {
-            textureRenderer.Init();
-            //textureRenderer.UpdateGradient(gradientBuilder.GradientStops);
-            gradientBuilder.SetMarkers(textureRenderer.Gradient);
-            textureRenderer.Render();
+            widgetTextureRenderer.Init();
+            //WidgetTextureRenderer.UpdateGradient(gradientBuilder.GradientStops);
+            gradientBuilder.SetMarkers(widgetTextureRenderer.Gradient);
+            widgetTextureRenderer.Render();
 
-            pictureBox1.Image = ImageHelper.BitmapFromTexture(textureRenderer.OutputTexture);
+            pictureBox1.Image = ImageHelper.BitmapFromTexture(widgetTextureRenderer.OutputTexture);
             pictureBox1.Invalidate();
         }
 
         private void GradientEditorFormClosed(object sender, FormClosedEventArgs e)
         {
             OdysseyUI.CurrentHud = mainHud;
-            textureRenderer.FreeResources();
+            widgetTextureRenderer.FreeResources();
         }
     }
 }

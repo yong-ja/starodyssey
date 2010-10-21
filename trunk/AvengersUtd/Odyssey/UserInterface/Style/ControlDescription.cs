@@ -48,24 +48,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public BorderStyle BorderStyle { get; internal set; }
         public int BorderSize { get; set; }
         public Size Size { get; internal set; }
-        public Padding Padding { get; internal set; }
+        public Thickness Padding { get; internal set; }
         public ColorArray ColorArray { get; set; }
         public Shape Shape { get; set; }
         public ColorShader FillShader { get; set; }
         public ColorShader BorderShader { get; set; }
 
-         public Designer GetDesigner()
-         {
-             return new Designer
-                        {
-                                BorderSize = BorderSize,
-                                BorderShader = BorderShader,
-                                FillShader = FillShader,
-                                Width = Size.Width,
-                                Height = Size.Height
-                        };
-         }
-        
         public static ControlDescription EmptyDescription
         {
             get
@@ -78,7 +66,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                                BorderShader = new ColorShader(),
                                ColorArray = ColorArray.Transparent,
                                Name = Empty,
-                               Padding = Padding.Empty,
+                               Padding = Thickness.Empty,
                                Size = Size.Empty,
                                TextStyleClass = "Default"
                            };

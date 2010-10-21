@@ -1,16 +1,8 @@
-﻿#region #Disclaimer
-
+﻿#region Disclaimer
 // /* 
-//  * Timer
-//  *
-//  * Created on 21 August 2007
-//  * Last update on 29 July 2010
-//  * 
 //  * Author: Adalberto L. Simeone (Taranto, Italy)
-//  * E-Mail: avengerdragon@gmail.com
-//  * Website: http://www.avengersutd.com
-//  *
-//  * Part of the Odyssey Engine.
+//  * E-mail: avengerdragon@gmail.com
+//  * Website: http://www.avengersutd.com/blog
 //  *
 //  * This source code is Intellectual property of the Author
 //  * and is released under the Creative Commons Attribution 
@@ -22,16 +14,14 @@
 //  * the Author.
 //  *
 //  */
-
 #endregion
-
-#region Using directives
+#region Using Directives
 
 using System;
-using System.Drawing;
-using AvengersUtd.Odyssey.UserInterface;
+using System.Collections.Generic;
+using System.Linq;
+using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
-using SlimDX.Direct3D11;
 
 #endregion
 
@@ -184,6 +174,55 @@ namespace AvengersUtd.Odyssey.Geometry
         //    coloredPolygon.Init();
         //    return coloredPolygon;
         //}
+
+        //public static ColoredVertex[] CreateRectangleOutline(Vector4 topLeftVertex, float width,
+        //    float height, Thickness borderSize, int widthSegments, int heightSegments, Color4[] colors,
+        //    out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        //{
+        //    float leftSegmentOffset = borderSize.Left/width;
+        //    float rightSegmentOffset = (width - borderSize.Right)/width;
+        //    float topSegmentOffset = borderSize.Top/height;
+        //    float bottomSegmentOffset = (height - borderSize.Bottom)/height;
+
+        //    if (widthOffsets == null)
+        //        widthOffsets = new float[]{0, leftSegmentOffset, rightSegmentOffset, 1};
+        //    else
+        //    {
+        //        List<float> tempList = new List<float>(widthOffsets);
+        //        if (leftSegmentOffset > 0)
+        //            tempList.Add(leftSegmentOffset);
+        //        if (rightSegmentOffset>0)
+        //            tempList.Add(rightSegmentOffset);
+        //        if (tempList.Count > widthOffsets.Length)
+        //            tempList.Sort();
+        //    }
+        //    if (heightOffsets == null)
+        //        heightOffsets = new float[] {0, topSegmentOffset, bottomSegmentOffset, 1};
+        //    else
+        //    {
+        //        List<float> tempList = new List<float>(widthOffsets);
+        //        if (topSegmentOffset > 0)
+        //            tempList.Add(topSegmentOffset);
+        //        if (bottomSegmentOffset > 0)
+        //            tempList.Add(bottomSegmentOffset);
+        //        if (tempList.Count > heightOffsets.Length)
+        //            tempList.Sort();
+        //    }
+
+        //    List<ColoredVertex> vertices = new List<ColoredVertex>();
+        //    int topHeightSegments= heightOffsets.Count(f => f <= topSegmentOffset);
+        //    short[] tempIndices;
+        //    // Draw top border
+        //    vertices.AddRange(CreateRectangleMesh(topLeftVertex,
+        //        width, borderSize.Top,
+        //        widthSegments,
+        //        topHeightSegments,
+        //        colors,
+        //        out tempIndices,
+        //        widthOffsets,
+        //        heightOffsets));
+        // }
+
 
         #endregion
     }

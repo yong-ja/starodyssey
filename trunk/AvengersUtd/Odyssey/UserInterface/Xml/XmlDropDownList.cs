@@ -15,7 +15,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlArrayItem("Item")]
         [Category("Appearance")]
         public string[] Items { get; set; }
-        protected override void WriteCustomCSCode(StringBuilder sb)
+        protected override void WriteCustomCsCode(StringBuilder sb)
         {
             string items = Items.Aggregate(string.Empty, (current, item) => current + (item + ','));
 

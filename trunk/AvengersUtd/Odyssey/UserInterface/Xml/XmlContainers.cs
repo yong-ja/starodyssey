@@ -58,7 +58,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         //    }
         //}
 
-        protected override void WriteCustomCSCode(StringBuilder sb)
+        protected override void WriteCustomCsCode(StringBuilder sb)
         {
             return;
         }
