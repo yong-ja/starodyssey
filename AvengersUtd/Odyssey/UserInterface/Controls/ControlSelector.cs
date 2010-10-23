@@ -74,7 +74,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 Vector2 topLeftCorner = new Vector2(point.X - handleSize.Width/2f, point.Y - handleSize.Height/2f);
                 Vector3 topLeftCornerOrtho = Layout.OrthographicTransform(topLeftCorner, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 Shapes[i] = ShapeCreator.DrawFullRectangle(topLeftCornerOrtho, handleSize,
-                    Description.FillShader,
+                    Description.Enabled[0],
                     Description.ColorArray[StateIndex.Enabled],
                     Description.BorderSize,
                     Description.BorderStyle,
@@ -95,7 +95,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 Vector2 topLeftCorner = new Vector2(point.X - handleSize.Width / 2f, point.Y - handleSize.Height / 2f);
                 Vector3 topLeftCornerOrtho = Layout.OrthographicTransform(topLeftCorner, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
                 Shapes[i].UpdateVertices(ShapeCreator.DrawFullRectangle(topLeftCornerOrtho, handleSize,
-                    Description.FillShader,
+                    Description.Enabled[0],
                     Description.ColorArray[StateIndex.Enabled],
                     Description.BorderSize,
                     Description.BorderStyle,

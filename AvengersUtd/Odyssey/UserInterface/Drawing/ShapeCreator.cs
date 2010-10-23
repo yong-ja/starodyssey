@@ -23,11 +23,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 case Shape.Triangle:
                     break;
 
-                case Shape.Rectangle:
-                    shape = DrawFullRectangle(ctl.AbsoluteOrthoPosition, ctl.Size, ctl.Description.FillShader,
-                                                       ctl.InnerAreaColor, ctl.Description.BorderSize, ctl.Description.BorderStyle,
-                                                       ctl.BorderColor);
-                    break;
                 case Shape.Circle:
                     break;
                 case Shape.LeftTrapezoidUpside:
@@ -39,6 +34,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 case Shape.RightTrapezoidDownside:
                     break;
 
+                case Shape.Rectangle:
                 case Shape.RectangleMesh:
                     shape = DrawRectangle(ctl);
                     break;
@@ -56,22 +52,44 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Designer d = control.GetDesigner();
             
             d.Position = control.AbsoluteOrthoPosition;
-            d.FillShader = desc.FillShader;
-            foreach (ColorShader borderShader in desc.BorderShaders)
+            
+
+            foreach (BorderShader borderShader in desc.BorderShaders)
             {
-                d.BorderSize = desc.BorderSize;
-                d.BorderShader = borderShader;
+
+                d.BorderSize = borderShader.Borders != Borders.All
+                                       ? MaskBorderSize(borderShader.Borders, desc.BorderSize)
+                                       : desc.BorderSize;
+                d.Shader = borderShader;
                 d.DrawRectangle();
             }
             
-
             d.Position = new Vector3
                     (d.Position.X + desc.BorderSize.Left, d.Position.Y - desc.BorderSize.Top, d.Position.Z);
             d.Width = control.ClientSize.Width;
             d.Height = control.ClientSize.Height;
-            d.FillRectangle();
-            
+            foreach (ColorShader colorShader in desc.Enabled)
+            {
+                d.Shader = colorShader;
+                d.FillRectangle();
+            }
+
             return d.Output;
+        }
+
+        static Thickness MaskBorderSize(Borders borders, Thickness borderSize)
+        {
+            int left=0, top=0, bottom=0, right=0;
+            if ((borders & Borders.Left) == Borders.Left)
+                left = borderSize.Left;
+            if ((borders & Borders.Top) == Borders.Top)
+                top = borderSize.Top;
+            if ((borders & Borders.Right) == Borders.Right)
+                right = borderSize.Right;
+            if ((borders & Borders.Bottom) == Borders.Bottom)
+                bottom = borderSize.Bottom;
+
+            return new Thickness(left,top,right,bottom);
         }
     }
 }

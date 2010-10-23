@@ -7,6 +7,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public class BorderShader : ColorShader
     {
-        public Border Borders { get; set; }
+        public Borders Borders { get; set; }
     }
 }

@@ -22,26 +22,52 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             return new GradientStop(new Color4(argbColor), Offset);
         }
 
+        public XmlGradientStop(GradientStop gradientStop) :this()
+        {
+            Color = gradientStop.Color.ToArgb().ToString("X8");
+            Offset = gradientStop.Offset;
+        }
+
     }
 
     /// <summary>
     /// Xml Wrapper class for the ColorShader class.
     /// </summary>
+    [XmlType("Gradient")]
     public class XmlColorShader
     {
-        [XmlAttribute]
-        public GradientType GradientType { get; set; }
+        public XmlColorShader()
+        {}
+
+        public XmlColorShader(ColorShader cs)
+        {
+            Name = cs.Name;
+            GradientType = cs.GradientType;
+            if (cs.Gradient != null)
+            {
+                XmlGradient = new XmlGradientStop[cs.Gradient.Length];
+                for (int i = 0; i < cs.Gradient.Length; i++)
+                {
+                    XmlGradient[i] = new XmlGradientStop(cs.Gradient[i]);
+                }
+            }
+            ColorValue = cs.Color != default(Color4) ? cs.Color.ToArgb().ToString("X8"): string.Empty;
+        }
 
         [XmlAttribute]
         public string Name { get; set; }
+
+        [XmlAttribute]
+        public GradientType GradientType { get; set; }
+        
         [XmlAttribute("Color")]
         public string ColorValue { get; set; }
 
-        [XmlArray("XmlGradient")]
+        [XmlArray("Gradient")]
         [XmlArrayItem("GradientStop")]
         public XmlGradientStop[] XmlGradient { get; set; }
 
-        public ColorShader ToColorShader()
+        public virtual ColorShader ToColorShader()
         {
             GradientStop[] gradientColors = null;
 
@@ -56,6 +82,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             }
             return new ColorShader
             {
+                Name = Name,
                 GradientType = GradientType,
                 Method = (Shader)Delegate.CreateDelegate
                                 (typeof(Shader), typeof(ColorShader).GetMethod(GradientType.ToString())),
@@ -65,19 +92,39 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 Gradient = gradientColors,
             };
         }
-
     }
  
+    [XmlType("Border")]
     public class XmlBorderShader : XmlColorShader
     {
-        [XmlAttribute]
-        public Border Borders { get; set; }
+        public XmlBorderShader()
+        {}
 
-        public new BorderShader ToColorShader()
+        public XmlBorderShader(BorderShader borderShader)
+            : base(borderShader)
         {
-            BorderShader borderShader = (BorderShader)base.ToColorShader();
-            borderShader.Borders = Borders;
-            return borderShader;
+            Borders = borderShader.Borders;
+        }
+
+        public XmlBorderShader(ColorShader cs) : base(cs)
+        {}
+
+        [XmlAttribute]
+        public Borders Borders { get; set; }
+
+        public override ColorShader ToColorShader()
+        {
+            ColorShader cs =  base.ToColorShader();
+            BorderShader bs = new BorderShader
+                                  {
+                                          Borders = Borders,
+                                          Color = cs.Color,
+                                          Gradient = cs.Gradient,
+                                          GradientType = cs.GradientType,
+                                          Method = cs.Method,
+                                          Name = cs.Name
+                                  };
+            return bs;
         } 
     }
 }

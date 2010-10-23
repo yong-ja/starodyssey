@@ -152,33 +152,45 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlAttribute]
         public string TextDescriptionClass { get; set; }
 
-        [XmlElement("Fill")]
-        public XmlColorShader FillShader { get; set; }
+        [XmlArray("Enabled")]
+        [XmlArrayItem("Layer")]
+        public XmlColorShader[] Enabled { get; set; }
 
         [XmlArray("BorderShaders")]
         [XmlArrayItem("Border")]
-        public XmlColorShader[] BorderEnabledShaders { get; set; }
+        public XmlBorderShader[] BorderEnabledShaders { get; set; }
 
         [XmlElement("ColorArray")]
         public XmlColorArray XmlColorArray { get; set; }
 
         public ControlDescription ToControlDescription()
         {
+
             return new ControlDescription
                        {
-                           Name = Name,
-                           Shape = Shape,
-                           Size = String.IsNullOrEmpty(XmlSize) ? Size.Empty : XmlCommon.DecodeSize(XmlSize),
-                           Padding = String.IsNullOrEmpty(XmlPadding) ? Thickness.Empty : XmlCommon.DecodeThickness(XmlPadding),
-                           BorderStyle = BorderStyle,
-                           BorderSize = String.IsNullOrEmpty(BorderSize) ? Thickness.Empty : XmlCommon.DecodeThickness(BorderSize),
-                           FillShader = FillShader.ToColorShader(),
-                           BorderShaders = (from borderShader in BorderEnabledShaders
-                                            select borderShader.ToColorShader()).ToArray(),
-                           ColorArray = XmlColorArray.ToColorArray(),
-                           TextStyleClass = string.IsNullOrEmpty(TextDescriptionClass) ? "Default" : TextDescriptionClass
+                               Name = Name,
+                               Shape = Shape,
+                               Size = String.IsNullOrEmpty(XmlSize) ? Size.Empty : XmlCommon.DecodeSize(XmlSize),
+                               Padding = String.IsNullOrEmpty(XmlPadding)
+                                               ? Thickness.Empty
+                                               : XmlCommon.DecodeThickness(XmlPadding),
+                               BorderStyle = BorderStyle,
+                               BorderSize = String.IsNullOrEmpty(BorderSize)
+                                               ? Thickness.Empty
+                                               : XmlCommon.DecodeThickness(BorderSize),
+                               Enabled = Enabled != null
+                                                       ? (from cs in Enabled
+                                                         select cs.ToColorShader()).ToArray()
+                                                       : null,
+                               BorderShaders = BorderEnabledShaders != null
+                                                       ? (from bs in BorderEnabledShaders
+                                                         select bs.ToColorShader()).ToArray()
+                                                       : null,
+                               ColorArray = XmlColorArray.ToColorArray(),
+                               TextStyleClass =
+                                       string.IsNullOrEmpty(TextDescriptionClass) ? "Default" : TextDescriptionClass
                        };
-         }
+        }
 
         #endregion
     }

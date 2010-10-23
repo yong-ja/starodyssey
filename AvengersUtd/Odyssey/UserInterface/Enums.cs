@@ -28,7 +28,7 @@ namespace AvengersUtd.Odyssey.UserInterface
     }
 
     [Flags]
-    public enum Border
+    public enum Borders
     {
         None = 0,
         Top = 1,
@@ -36,17 +36,7 @@ namespace AvengersUtd.Odyssey.UserInterface
         Left = 4,
         Right = 8,
         All = Top | Bottom | Left | Right,
-        /*LeftRight = Left | Right,
-        LeftTop = Left | Top,
-        LeftBottom = Left | Bottom,
-        TopRight = Top | Right,
-        TopBottom = Top| Bottom,
-        LeftTopRight = Left | Top | Right,
-        LeftRightBottom = Left| Right| Bottom,
-        LeftTopBottom = Left | Top | Bottom,
-        TopRightBottom = Top|Right|Bottom,*/
-
-    }
+   }
 
     public enum Shape
     {

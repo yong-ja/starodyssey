@@ -33,7 +33,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     throw new ArgumentOutOfRangeException("borderStyle");
             }
             ShapeDescription inside = DrawRectangle(position, size, shadedColors);
-            ShapeDescription outline = DrawRectangularOutline(position, size, borderSize.All, borderColors, borderStyle, Border.All);
+            ShapeDescription outline = DrawRectangularOutline(position, size, borderSize.All, borderColors, borderStyle, Borders.All);
 
             ShapeDescription result = ShapeDescription.Join(inside, outline);
             result.Shape = Shape.RectangleWithOutline;
@@ -61,7 +61,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                        };
         }
 
-        public static ShapeDescription DrawRectangularOutline(Vector3 position, Size size, int borderSize, Color4[] colors, BorderStyle borderStyle, Border borders)
+        public static ShapeDescription DrawRectangularOutline(Vector3 position, Size size, int borderSize, Color4[] colors, BorderStyle borderStyle, Borders borders)
         {
             ShapeDescription vBorderTop = default(ShapeDescription);
             ShapeDescription vBorderSideL = default(ShapeDescription);
@@ -85,13 +85,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Color4 cBottom = colors[2];
             Color4 cRight = colors[3];
 
-            if ((borders & Border.Top) != 0)
+            if ((borders & Borders.Top) != 0)
                 vBorderTop = DrawRectangle(position, borderTop, cTop);
-            if ((borders & Border.Left) != 0)
+            if ((borders & Borders.Left) != 0)
                 vBorderSideL = DrawRectangle(position, borderSide, cLeft);
-            if ((borders & Border.Right) != 0)
+            if ((borders & Borders.Right) != 0)
                 vBorderSideR = DrawRectangle(borderPositionTopRight, borderSide, cRight);
-            if ((borders & Border.Bottom) != 0)
+            if ((borders & Borders.Bottom) != 0)
                 vBorderBottom = DrawRectangle(borderPositionBottomLeft, borderTop, cBottom);
 
             switch (borderStyle)
@@ -150,7 +150,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     throw new ArgumentOutOfRangeException("borderStyle");
             }
             ShapeDescription outline = DrawRectangularOutline(position, size, borderSize, borderColors, BorderStyle.Flat,
-                Border.All);
+                Borders.All);
             
             ShapeDescription inside;
 

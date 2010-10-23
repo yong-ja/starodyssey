@@ -24,6 +24,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             get { return command.Texture; }
         }
 
+        public BaseControl Control
+        {
+            get { return control; }
+        }
+
+        public ColorShader ActiveShader { get; private set; }
+
         public WidgetTextureRenderer(int width, int height, DeviceContext11 deviceContext11) : base(deviceContext11)
         {
             this.width = width;
@@ -40,15 +47,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             Camera.ChangeScreenSize(width, height);
             command = new RenderToTextureCommand(width, height, Scene);
 
-        }
-
-        public GradientStop[] Gradient
-        {
-            get { return control.Description.FillShader.Gradient; }
-            set {
-                control.Description.FillShader.Gradient = value; 
-                Hud.EndDesign();
-            }
         }
 
         public override void Init()
@@ -70,6 +68,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             Scene.Update();
 
             control = button;
+            ActiveShader = control.Description.Enabled[0];
         }
 
         public void FreeResources()

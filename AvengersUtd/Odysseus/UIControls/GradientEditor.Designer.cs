@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gradientBuilder = new AvengersUtd.Odysseus.UIControls.GradientBuilder();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.cmdOpen = new System.Windows.Forms.Button();
+            this.cmdSave = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
@@ -40,22 +43,29 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tbSize = new System.Windows.Forms.TextBox();
             this.listButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.buttonPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.btCancel = new System.Windows.Forms.Button();
-            this.btOk = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cmdOpen = new System.Windows.Forms.Button();
-            this.cmdSave = new System.Windows.Forms.Button();
             this.btAdd = new System.Windows.Forms.Button();
             this.btRename = new System.Windows.Forms.Button();
             this.btDelete = new System.Windows.Forms.Button();
+            this.buttonPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.btOk = new System.Windows.Forms.Button();
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sendToBorderLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.border1MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.border2MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.applyToFillLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fill1MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.listButtons.SuspendLayout();
             this.buttonPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -82,6 +92,17 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(676, 513);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Location = new System.Drawing.Point(154, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.MaximumSize = new System.Drawing.Size(512, 512);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(320, 320);
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
+            // 
             // gradientBuilder
             // 
             this.gradientBuilder.AutoSize = true;
@@ -96,7 +117,6 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.listView1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
@@ -115,26 +135,37 @@
             this.flowLayoutPanel3.Size = new System.Drawing.Size(146, 46);
             this.flowLayoutPanel3.TabIndex = 11;
             // 
-            // label1
+            // cmdOpen
             // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(40, 56);
-            this.label1.Margin = new System.Windows.Forms.Padding(40, 6, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 17);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Gradients";
+            this.cmdOpen.Image = global::AvengersUtd.Odysseus.Properties.Resources.open;
+            this.cmdOpen.Location = new System.Drawing.Point(2, 2);
+            this.cmdOpen.Margin = new System.Windows.Forms.Padding(2);
+            this.cmdOpen.Name = "cmdOpen";
+            this.cmdOpen.Size = new System.Drawing.Size(40, 40);
+            this.cmdOpen.TabIndex = 8;
+            this.cmdOpen.UseVisualStyleBackColor = true;
+            // 
+            // cmdSave
+            // 
+            this.cmdSave.Image = global::AvengersUtd.Odysseus.Properties.Resources.save;
+            this.cmdSave.Location = new System.Drawing.Point(46, 2);
+            this.cmdSave.Margin = new System.Windows.Forms.Padding(2);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(40, 40);
+            this.cmdSave.TabIndex = 9;
+            this.cmdSave.UseVisualStyleBackColor = true;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // listView1
             // 
-            this.listView1.Location = new System.Drawing.Point(4, 77);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
-            this.listView1.MinimumSize = new System.Drawing.Size(136, 424);
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listView1.Location = new System.Drawing.Point(3, 53);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(136, 424);
-            this.listView1.TabIndex = 5;
+            this.listView1.Size = new System.Drawing.Size(140, 402);
+            this.listView1.TabIndex = 12;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
+            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
             // 
             // flowLayoutPanel2
             // 
@@ -203,6 +234,37 @@
             this.listButtons.Size = new System.Drawing.Size(146, 46);
             this.listButtons.TabIndex = 10;
             // 
+            // btAdd
+            // 
+            this.btAdd.Image = global::AvengersUtd.Odysseus.Properties.Resources.Add;
+            this.btAdd.Location = new System.Drawing.Point(2, 2);
+            this.btAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Size = new System.Drawing.Size(40, 40);
+            this.btAdd.TabIndex = 8;
+            this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.Click += new System.EventHandler(this.ButtonAddClick);
+            // 
+            // btRename
+            // 
+            this.btRename.Image = global::AvengersUtd.Odysseus.Properties.Resources.Rename;
+            this.btRename.Location = new System.Drawing.Point(46, 2);
+            this.btRename.Margin = new System.Windows.Forms.Padding(2);
+            this.btRename.Name = "btRename";
+            this.btRename.Size = new System.Drawing.Size(40, 40);
+            this.btRename.TabIndex = 9;
+            this.btRename.UseVisualStyleBackColor = true;
+            // 
+            // btDelete
+            // 
+            this.btDelete.Image = global::AvengersUtd.Odysseus.Properties.Resources.Delete;
+            this.btDelete.Location = new System.Drawing.Point(90, 2);
+            this.btDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(40, 40);
+            this.btDelete.TabIndex = 10;
+            this.btDelete.UseVisualStyleBackColor = true;
+            // 
             // buttonPanel
             // 
             this.buttonPanel.Controls.Add(this.btCancel);
@@ -237,67 +299,71 @@
             this.btOk.Text = "Ok";
             this.btOk.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // contextMenu
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(154, 4);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.MaximumSize = new System.Drawing.Size(512, 512);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(320, 320);
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renameToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.sendToBorderLayerToolStripMenuItem,
+            this.applyToFillLayerToolStripMenuItem});
+            this.contextMenu.Name = "contextMenu";
+            this.contextMenu.Size = new System.Drawing.Size(189, 120);
             // 
-            // cmdOpen
+            // renameToolStripMenuItem
             // 
-            this.cmdOpen.Image = global::AvengersUtd.Odysseus.Properties.Resources.open;
-            this.cmdOpen.Location = new System.Drawing.Point(2, 2);
-            this.cmdOpen.Margin = new System.Windows.Forms.Padding(2);
-            this.cmdOpen.Name = "cmdOpen";
-            this.cmdOpen.Size = new System.Drawing.Size(40, 40);
-            this.cmdOpen.TabIndex = 8;
-            this.cmdOpen.UseVisualStyleBackColor = true;
+            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.renameToolStripMenuItem.Text = "&Rename";
             // 
-            // cmdSave
+            // deleteToolStripMenuItem
             // 
-            this.cmdSave.Image = global::AvengersUtd.Odysseus.Properties.Resources.save;
-            this.cmdSave.Location = new System.Drawing.Point(46, 2);
-            this.cmdSave.Margin = new System.Windows.Forms.Padding(2);
-            this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(40, 40);
-            this.cmdSave.TabIndex = 9;
-            this.cmdSave.UseVisualStyleBackColor = true;
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.deleteToolStripMenuItem.Text = "&Delete";
             // 
-            // btAdd
+            // toolStripSeparator1
             // 
-            this.btAdd.Image = global::AvengersUtd.Odysseus.Properties.Resources.Add;
-            this.btAdd.Location = new System.Drawing.Point(2, 2);
-            this.btAdd.Margin = new System.Windows.Forms.Padding(2);
-            this.btAdd.Name = "btAdd";
-            this.btAdd.Size = new System.Drawing.Size(40, 40);
-            this.btAdd.TabIndex = 8;
-            this.btAdd.UseVisualStyleBackColor = true;
-            this.btAdd.Click += new System.EventHandler(this.ButtonAddClick);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(185, 6);
             // 
-            // btRename
+            // sendToBorderLayerToolStripMenuItem
             // 
-            this.btRename.Image = global::AvengersUtd.Odysseus.Properties.Resources.Rename;
-            this.btRename.Location = new System.Drawing.Point(46, 2);
-            this.btRename.Margin = new System.Windows.Forms.Padding(2);
-            this.btRename.Name = "btRename";
-            this.btRename.Size = new System.Drawing.Size(40, 40);
-            this.btRename.TabIndex = 9;
-            this.btRename.UseVisualStyleBackColor = true;
+            this.sendToBorderLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.border1MenuItem,
+            this.border2MenuItem});
+            this.sendToBorderLayerToolStripMenuItem.Name = "sendToBorderLayerToolStripMenuItem";
+            this.sendToBorderLayerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.sendToBorderLayerToolStripMenuItem.Text = "Apply to &Border Layer";
             // 
-            // btDelete
+            // border1MenuItem
             // 
-            this.btDelete.Image = global::AvengersUtd.Odysseus.Properties.Resources.Delete;
-            this.btDelete.Location = new System.Drawing.Point(90, 2);
-            this.btDelete.Margin = new System.Windows.Forms.Padding(2);
-            this.btDelete.Name = "btDelete";
-            this.btDelete.Size = new System.Drawing.Size(40, 40);
-            this.btDelete.TabIndex = 10;
-            this.btDelete.UseVisualStyleBackColor = true;
+            this.border1MenuItem.CheckOnClick = true;
+            this.border1MenuItem.Name = "border1MenuItem";
+            this.border1MenuItem.Size = new System.Drawing.Size(156, 22);
+            this.border1MenuItem.Text = "Border Layer #1";
+            // 
+            // border2MenuItem
+            // 
+            this.border2MenuItem.Name = "border2MenuItem";
+            this.border2MenuItem.Size = new System.Drawing.Size(156, 22);
+            this.border2MenuItem.Text = "Border Layer #2";
+            // 
+            // applyToFillLayerToolStripMenuItem
+            // 
+            this.applyToFillLayerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fill1MenuItem});
+            this.applyToFillLayerToolStripMenuItem.Name = "applyToFillLayerToolStripMenuItem";
+            this.applyToFillLayerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.applyToFillLayerToolStripMenuItem.Text = "Apply to &Fill Layer";
+            // 
+            // fill1MenuItem
+            // 
+            this.fill1MenuItem.CheckOnClick = true;
+            this.fill1MenuItem.Name = "fill1MenuItem";
+            this.fill1MenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fill1MenuItem.Text = "Fill Layer #1";
+            this.fill1MenuItem.Click += new System.EventHandler(this.fill1MenuItem_Click);
             // 
             // GradientEditor
             // 
@@ -315,13 +381,14 @@
             this.Load += new System.EventHandler(this.GradientEditorLoad);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.listButtons.ResumeLayout(false);
             this.buttonPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -339,15 +406,23 @@
         private System.Windows.Forms.Button btOk;
         private UIControls.GradientBuilder gradientBuilder;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbControls;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbSize;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button cmdOpen;
         private System.Windows.Forms.Button cmdSave;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem sendToBorderLayerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem border1MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem border2MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem applyToFillLayerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fill1MenuItem;
+        private System.Windows.Forms.ListView listView1;
     }
 }

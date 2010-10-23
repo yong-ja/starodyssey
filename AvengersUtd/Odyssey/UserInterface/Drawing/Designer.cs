@@ -13,8 +13,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         Position =1,
         Size = 2,
         BorderSize = 4,
-        FillShader = 8,
-        BorderShader = 16,
+        Shader = 8,
     }
 
     internal struct MainParameters
@@ -33,8 +32,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                                Position = designer.Position,
                                Width = designer.Width,
                                Height = designer.Height,
-                               FillShader = designer.FillShader,
-                               BorderShader = designer.BorderShader
+                               FillShader = designer.Shader,
                        };
         }
     }
@@ -45,8 +43,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public float Width { get; set; }
         public float Height { get; set; }
         public Thickness BorderSize { get; set; }
-        public ColorShader FillShader { get; set; }
-        public ColorShader BorderShader { get; set; }
+        public ColorShader Shader { get; set; }
 
         private readonly Stack<MainParameters> parameterStack;
 
@@ -75,8 +72,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Width = mainParameters.Width;
             Height = mainParameters.Height;
             BorderSize = mainParameters.BorderSize;
-            FillShader = mainParameters.FillShader;
-            BorderShader = mainParameters.BorderShader;
         }
 
         static bool CheckFlag(Options flags, Options check)
@@ -89,11 +84,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         {
             // Position = Empty is allowed
 
-            if (CheckFlag(flags, Options.Size))
-            {
-                if (Width == 0 || Height == 0)               
-                    throw Error.ArgumentInvalid("Size", typeof (Designer), "CheckParameters");
-            }
+            //if (CheckFlag(flags, Options.Size))
+            //{
+            //    if (Width == 0 || Height == 0)               
+            //        throw Error.ArgumentInvalid("Size", typeof (Designer), "CheckParameters");
+            //}
 
 
             if (CheckFlag(flags, Options.BorderSize))
@@ -102,18 +97,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     throw Error.ArgumentInvalid("BorderSize", typeof(Designer), "CheckParameters");
             }
             
-            if (CheckFlag(flags, Options.FillShader))
+            if (CheckFlag(flags, Options.Shader))
             {
-                if (FillShader == null)
-                    throw Error.ArgumentInvalid("FillShader", typeof (Designer), "CheckParameters");
+                if (Shader == null)
+                    throw Error.ArgumentInvalid("Shader", typeof (Designer), "CheckParameters");
             }
 
-            if (CheckFlag(flags, Options.BorderShader))
-            {
-                if (FillShader == null)
-                    throw Error.ArgumentInvalid("BorderShader", typeof(Designer), "CheckParameters");
-            }
-
+           
         }
     }
 }
