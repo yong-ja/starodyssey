@@ -111,7 +111,7 @@ namespace AvengersUtd.Odysseus
             this.Name = cDesc.Name;
             this.Thickness = cDesc.Padding;
             this.Selected = new OColor(cDesc.ColorArray.Selected.ToArgb());
-            this.ColorShader = cDesc.FillShader;
+            this.ColorShader = cDesc.Enabled[0];
             this.Shape = cDesc.Shape;
             this.Size = cDesc.Size;
             this.TextStyleClass = cDesc.TextStyleClass;

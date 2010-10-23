@@ -63,6 +63,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
     
     public class ColorShader
     {
+        public string Name { get; set; }
         public GradientType GradientType { get; set; }
         public Shader Method { get; set; }
         public Color4 Color { get; set; }

@@ -99,8 +99,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
         public void DrawRectangle()
         {
-            CheckParameters(Options.Size | Options.BorderShader);
+            CheckParameters(Options.Size | Options.Shader);
 
+            
             float actualWidth = Width;
             float actualHeight = Height;
             Vector3 actualPosition = Position;
@@ -108,133 +109,154 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             float rightSegmentOffset = (Width - BorderSize.Right) / Width;
             float topSegmentOffset = BorderSize.Top / Height;
             float bottomSegmentOffset = (Height - BorderSize.Bottom) / Height;
-         
+
             SaveState();
             if (BorderSize.Top > 0)
             {
-                GradientStop[] gradient;
-                switch (BorderShader.GradientType)
+                GradientStop[] gradient = null;
+                Color4 color = new Color4();
+                switch (Shader.GradientType)
                 {
+                    case GradientType.Uniform:
+                        color = Shader.Color;
+                        break;
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, 0, topSegmentOffset);
+                        gradient = SplitGradient(Shader.Gradient, 0, topSegmentOffset);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = BorderShader.Gradient;
+                        gradient = Shader.Gradient;
                         break;
                     default:
-                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        BorderShader.GradientType);
+                        throw Error.WrongCase("Shader.GradientType", "DrawRectangle",
+                        Shader.GradientType);
                 }
                 ColorShader topShader = new ColorShader
                 {
+                    Color = color,
                     Gradient = gradient,
-                    GradientType = BorderShader.GradientType,
-                    Method = BorderShader.Method
+                    GradientType = Shader.GradientType,
+                    Method = Shader.Method
                 };
-                
+
                 Width = actualWidth;
                 Height = BorderSize.Top;
-                FillShader = topShader;
+                Shader = topShader;
                 FillRectangle();
             }
             if (BorderSize.Left > 0)
             {
-                GradientStop[] gradient;
-                switch (BorderShader.GradientType)
+                GradientStop[] gradient = null;
+                Color4 color = new Color4();
+                switch (Shader.GradientType)
                 {
+                    case GradientType.Uniform:
+                        color = Shader.Color;
+                        break;  
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, 0, leftSegmentOffset);
+                        gradient = SplitGradient(Shader.Gradient, 0, leftSegmentOffset);
                         break;
                     default:
-                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        BorderShader.GradientType);
+                        throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        Shader.GradientType);
                 }
                 ColorShader leftShader = new ColorShader
-                                             {
+                {
+                    Color = color,
                     Gradient = gradient,
-                    GradientType = BorderShader.GradientType,
-                    Method = BorderShader.Method
+                    GradientType = Shader.GradientType,
+                    Method = Shader.Method
                 };
 
                 Width = BorderSize.Left;
                 Height = actualHeight - BorderSize.Vertical;
                 Position = new Vector3(actualPosition.X, actualPosition.Y - BorderSize.Top, actualPosition.Z);
-                FillShader = leftShader;
+                Shader = leftShader;
                 FillRectangle();
             }
             if (BorderSize.Bottom > 0)
             {
-                GradientStop[] gradient;
-                switch (BorderShader.GradientType)
+                GradientStop[] gradient = null;
+                Color4 color = new Color4();
+                switch (Shader.GradientType)
                 {
+                    case GradientType.Uniform:
+                        color = Shader.Color;
+                        break;  
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, bottomSegmentOffset, 1);
+                        gradient = SplitGradient(Shader.Gradient, bottomSegmentOffset, 1);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = BorderShader.Gradient;
+                        gradient = Shader.Gradient;
                         break;
                     default:
-                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        BorderShader.GradientType);
+                        throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        Shader.GradientType);
                 }
                 ColorShader bottomShader = new ColorShader
                 {
+                    Color = color,
                     Gradient = gradient,
-                    GradientType = BorderShader.GradientType,
-                    Method = BorderShader.Method
+                    GradientType = Shader.GradientType,
+                    Method = Shader.Method
                 };
 
                 Width = actualWidth;
                 Height = BorderSize.Bottom;
                 Position = new Vector3(actualPosition.X, actualPosition.Y - actualHeight + BorderSize.Bottom, actualPosition.Z);
-                FillShader = bottomShader;
+                Shader = bottomShader;
                 FillRectangle();
             }
             if (BorderSize.Right > 0)
             {
-                GradientStop[] gradient;
-                switch (BorderShader.GradientType)
+                GradientStop[] gradient = null;
+                Color4 color = new Color4();
+                switch (Shader.GradientType)
                 {
+                    case GradientType.Uniform:
+                        color = Shader.Color;
+                        break;  
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = SplitGradient(BorderShader.Gradient, rightSegmentOffset, 1);
+                        gradient = SplitGradient(Shader.Gradient, rightSegmentOffset, 1);
                         break;
                     default:
-                        throw Error.WrongCase("BorderShader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        BorderShader.GradientType);
+                        throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
+                        Shader.GradientType);
                 }
                 ColorShader rightShader = new ColorShader
                 {
-                    Gradient =gradient ,
-                    GradientType = BorderShader.GradientType,
-                    Method = BorderShader.Method
+                    Color = color,
+                    Gradient = gradient,
+                    GradientType = Shader.GradientType,
+                    Method = Shader.Method
                 };
 
                 Width = BorderSize.Right;
                 Height = actualHeight - BorderSize.Vertical;
                 Position = new Vector3(actualPosition.X + actualWidth - BorderSize.Right, actualPosition.Y - BorderSize.Top, actualPosition.Z);
-                FillShader = rightShader;
+                Shader = rightShader;
                 FillRectangle();
             }
             RestoreState();
-            
         }
 
         public void FillRectangle()
         {
-            CheckParameters(Options.Size | Options.FillShader);
+            CheckParameters(Options.Size | Options.Shader);
             int widthSegments;
             int heightSegments;
-            float[] offsets = FillShader.Gradient.Select(g => g.Offset).ToArray();
+            float[] offsets = Shader.GradientType != GradientType.Uniform
+                                      ? Shader.Gradient.Select(g => g.Offset).ToArray()
+                                      : null;
             float[] widthOffsets = null;
             float[] heightOffsets = null;
 
-            switch (FillShader.GradientType)
+            switch (Shader.GradientType)
             {
                 case GradientType.Uniform:
                     widthSegments = heightSegments = 1;
@@ -251,11 +273,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     break;
                 default:
                     throw Error.WrongCase("colorshader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        FillShader.GradientType);
+                        Shader.GradientType);
             }
-            Color4[] colors = FillShader.Method(FillShader, (1 + widthSegments) * (1 + heightSegments), Shape.Rectangle);
-
-
+            Color4[] colors = Shader.Method(Shader, (1 + widthSegments) * (1 + heightSegments), Shape.Rectangle);
 
             short[] indices;
             ColoredVertex[] vertices = Polygon.CreateRectangleMesh

@@ -51,7 +51,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public Thickness Padding { get; internal set; }
         public ColorArray ColorArray { get; set; }
         public Shape Shape { get; set; }
-        public ColorShader FillShader { get; set; }
+        public ColorShader[] Enabled { get; set; }
         public ColorShader[] BorderShaders { get; set; }
 
         public static ControlDescription EmptyDescription
@@ -62,7 +62,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                            {
                                BorderSize = Thickness.Empty,
                                BorderStyle = BorderStyle.None,
-                               FillShader = new ColorShader(),
+                               Enabled = null,
                                BorderShaders = null,
                                ColorArray = ColorArray.Transparent,
                                Name = Empty,

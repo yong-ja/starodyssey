@@ -36,6 +36,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             Left = Top = Right = Bottom = padding;
         }
 
+        public Thickness(int left, int top, int right, int bottom) : this()
+        {
+            symmetricPadding = false;
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
         public int All
         {
             get

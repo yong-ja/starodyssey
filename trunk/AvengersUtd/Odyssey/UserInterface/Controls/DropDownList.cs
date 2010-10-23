@@ -300,13 +300,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             // Updates sub-parts shapes
             boxDescriptor.UpdateVertices(ShapeCreator.DrawFullRectangle(AbsoluteOrthoPosition, Size,
-                Description.FillShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor).Vertices);
+                Description.Enabled[0],InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor).Vertices);
         }
 
         public override void CreateShape()
         {
             boxDescriptor = ShapeCreator.DrawFullRectangle(AbsoluteOrthoPosition, Size,
-                Description.FillShader,InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor);
+                Description.Enabled[0],InnerAreaColor,Description.BorderSize, Description.BorderStyle, BorderColor);
             boxDescriptor.Depth = Depth;
             boxDescriptor.Tag = Id;
             Shapes[0] = boxDescriptor;

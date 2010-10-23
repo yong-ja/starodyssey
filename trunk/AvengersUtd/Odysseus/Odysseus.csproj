@@ -167,6 +167,7 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="bin\Debug\OLD.ocd" />
     <None Include="bin\Debug\Odysseus ControlDescriptions.ocd" />
     <None Include="bin\Debug\Odyssey ControlDescriptions.ocd" />
     <None Include="bin\Debug\Odyssey TextDescriptions.otd" />

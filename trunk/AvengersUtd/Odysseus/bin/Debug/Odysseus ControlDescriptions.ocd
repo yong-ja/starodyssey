@@ -4,7 +4,9 @@ Please do not modify it if you don't know what you are doing. Visit the Odyssey 
 Thanks for using the Odyssey UI!-->
 <ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
   <ControlDescription Name="ControlSelector" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
-   <Fill GradientType="Uniform"/>
+    <Enabled>
+    <Layer Color="FFFF0000" GradientType="Uniform"/>
+    </Enabled>
     <ColorArray>
       <Color Type="Enabled" Name="Transparent" HexValue="00000000" />
       <Color Type="Highlighted" Name="Transparent" HexValue="00000000" />

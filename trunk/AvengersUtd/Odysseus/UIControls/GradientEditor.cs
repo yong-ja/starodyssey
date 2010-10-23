@@ -20,12 +20,16 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Graphics.ImageProcessing;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
+using AvengersUtd.Odyssey.UserInterface.Xml;
+using AvengersUtd.Odyssey.Utils.Xml;
 
 #endregion
 
@@ -53,15 +57,14 @@ namespace AvengersUtd.Odysseus.UIControls
             gradientBuilder.SelectedMarkerColorChanged += GradientBuilderSelectedMarkerColorChanged;
             gradientBuilder.MarkersChanged += GradientBuilderMarkersChanged;
             shouldSave = true;
-            ListViewItem item = new ListViewItem("(Untitled Gradient)");
-                item.Font = new Font(item.Font, FontStyle.Italic);
-            listView1.Items.Add(item);
+
+
         }
 
         #region GradientBuilder events
         private void UpdateGradient()
         {
-            widgetTextureRenderer.Gradient = gradientBuilder.GradientStops;
+            widgetTextureRenderer.ActiveShader.Gradient = gradientBuilder.GradientStops;
             widgetTextureRenderer.Render();
             pictureBox1.Image = ImageHelper.BitmapFromTexture(widgetTextureRenderer.OutputTexture);
             pictureBox1.Invalidate();
@@ -81,12 +84,12 @@ namespace AvengersUtd.Odysseus.UIControls
         private void GradientBuilderSelectedMarkerOffsetChanged(object sender, MarkerEventArgs e)
         {
             UpdateGradient();
-        } 
+        }
         #endregion
 
         private void ButtonAddClick(object sender, EventArgs e)
         {
-            InputBox inputBox = new InputBox {Text = "Create new gradient", DialogTitle = "New gradient name:"};
+            InputBox inputBox = new InputBox { Text = "Create new gradient", DialogTitle = "New gradient name:" };
             inputBox.ShowDialog();
 
             if (inputBox.DialogResult != DialogResult.OK) return;
@@ -109,8 +112,16 @@ namespace AvengersUtd.Odysseus.UIControls
         private void GradientEditorLoad(object sender, EventArgs e)
         {
             widgetTextureRenderer.Init();
+            IEnumerable<ColorShader> shaders = from c in widgetTextureRenderer.Control.Description.BorderShaders
+                                               select c;
+
+            ListViewItem item = new ListViewItem(shaders.First().Name);
+            item.Font = new Font(item.Font, FontStyle.Italic);
+            item.Tag = widgetTextureRenderer.Control.Description.BorderShaders[0];
+            listView1.Items.Add(item);
+            
             //WidgetTextureRenderer.UpdateGradient(gradientBuilder.GradientStops);
-            gradientBuilder.SetMarkers(widgetTextureRenderer.Gradient);
+            gradientBuilder.SetMarkers(widgetTextureRenderer.ActiveShader.Gradient);
             widgetTextureRenderer.Render();
 
             pictureBox1.Image = ImageHelper.BitmapFromTexture(widgetTextureRenderer.OutputTexture);
@@ -121,6 +132,38 @@ namespace AvengersUtd.Odysseus.UIControls
         {
             OdysseyUI.CurrentHud = mainHud;
             widgetTextureRenderer.FreeResources();
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ListViewHitTestInfo hitTestInfo =listView1.HitTest(e.X, e.Y);
+                if (hitTestInfo.Item != null)
+                {
+                    //show the context menu strip
+                    contextMenu.Show(this, e.X, e.Y);
+                }
+            }
+        }
+
+        private void cmdSave_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            ColorShader[] shaders = (from ListViewItem item in listView1.Items
+                           select item.Tag).Cast<ColorShader>().ToArray();
+            XmlColorShader[] xmlShaders = new XmlColorShader[shaders.Length];
+            for (int i = 0; i < xmlShaders.Length; i++)
+            {
+                xmlShaders[i] = new XmlColorShader(shaders[i]);
+            }
+            Data.Serialize(xmlShaders, "UIshaders.xml");
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
+        }
+
+        private void fill1MenuItem_Click(object sender, EventArgs e)
+        {
+            widgetTextureRenderer.4
         }
     }
 }
