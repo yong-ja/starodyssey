@@ -148,7 +148,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         internal static Vector3 DecodeVector2(string s)
         {
-            Regex regex = new Regex(@"?(?<x>\d+)\s?Y:\s?(?<y>\d+)\s?Z:\s?(?<z>\d+)\s?");
+            Regex regex = new Regex(@"(?<x>\d+),(?<y>\d+)");
             Match m = regex.Match(s);
             int x = Int16.Parse(m.Groups["x"].Value, CultureInfo.InvariantCulture);
             int y = Int16.Parse(m.Groups["y"].Value, CultureInfo.InvariantCulture);
