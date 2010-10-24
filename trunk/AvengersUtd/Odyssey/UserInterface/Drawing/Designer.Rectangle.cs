@@ -114,15 +114,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             if (BorderSize.Top > 0)
             {
                 GradientStop[] gradient = null;
-                Color4 color = new Color4();
+                
                 switch (Shader.GradientType)
                 {
-                    case GradientType.Uniform:
-                        color = Shader.Color;
-                        break;
+                    
                     case GradientType.LinearVerticalGradient:
                         gradient = SplitGradient(Shader.Gradient, 0, topSegmentOffset);
                         break;
+                    case GradientType.Uniform:
                     case GradientType.LinearHorizontalGradient:
                         gradient = Shader.Gradient;
                         break;
@@ -130,9 +129,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         throw Error.WrongCase("Shader.GradientType", "DrawRectangle",
                         Shader.GradientType);
                 }
-                ColorShader topShader = new ColorShader
+                LinearShader topShader = new LinearShader
                 {
-                    Color = color,
                     Gradient = gradient,
                     GradientType = Shader.GradientType,
                     Method = Shader.Method
@@ -146,11 +144,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             if (BorderSize.Left > 0)
             {
                 GradientStop[] gradient = null;
-                Color4 color = new Color4();
+                
                 switch (Shader.GradientType)
                 {
                     case GradientType.Uniform:
-                        color = Shader.Color;
+                        gradient = Shader.Gradient;
                         break;  
                     case GradientType.LinearVerticalGradient:
                         gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
@@ -162,9 +160,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
                         Shader.GradientType);
                 }
-                ColorShader leftShader = new ColorShader
+                LinearShader leftShader = new LinearShader
                 {
-                    Color = color,
                     Gradient = gradient,
                     GradientType = Shader.GradientType,
                     Method = Shader.Method
@@ -179,25 +176,25 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             if (BorderSize.Bottom > 0)
             {
                 GradientStop[] gradient = null;
-                Color4 color = new Color4();
                 switch (Shader.GradientType)
                 {
-                    case GradientType.Uniform:
-                        color = Shader.Color;
-                        break;  
+ 
                     case GradientType.LinearVerticalGradient:
                         gradient = SplitGradient(Shader.Gradient, bottomSegmentOffset, 1);
                         break;
+                    case GradientType.Uniform:
+
                     case GradientType.LinearHorizontalGradient:
                         gradient = Shader.Gradient;
                         break;
                     default:
-                        throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        Shader.GradientType);
+                        throw Error.WrongCase
+                                ("Shader.GradientType",
+                                 "DrawSubdividedRectangleWithOutline",
+                                 Shader.GradientType);
                 }
-                ColorShader bottomShader = new ColorShader
+                LinearShader bottomShader = new LinearShader
                 {
-                    Color = color,
                     Gradient = gradient,
                     GradientType = Shader.GradientType,
                     Method = Shader.Method
@@ -212,12 +209,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             if (BorderSize.Right > 0)
             {
                 GradientStop[] gradient = null;
-                Color4 color = new Color4();
-                switch (Shader.GradientType)
+               switch (Shader.GradientType)
                 {
                     case GradientType.Uniform:
-                        color = Shader.Color;
-                        break;  
+                        gradient = Shader.Gradient;
+                        break;
+
                     case GradientType.LinearVerticalGradient:
                         gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
                         break;
@@ -228,9 +225,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
                         Shader.GradientType);
                 }
-                ColorShader rightShader = new ColorShader
+                LinearShader rightShader = new LinearShader
                 {
-                    Color = color,
                     Gradient = gradient,
                     GradientType = Shader.GradientType,
                     Method = Shader.Method

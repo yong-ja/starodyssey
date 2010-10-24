@@ -91,8 +91,9 @@
     <Compile Include="UserInterface\Controls\SelectionRectangle.cs" />
     <Compile Include="UserInterface\CSExporter.cs" />
     <Compile Include="UserInterface\Drawing\BorderShader.cs" />
-    <Compile Include="UserInterface\Drawing\ColorShader.cs" />
+    <Compile Include="UserInterface\Drawing\LinearShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />
+    <Compile Include="UserInterface\Drawing\RadialShader.cs" />
     <Compile Include="UserInterface\Drawing\ShapeCreator.cs" />
     <Compile Include="UserInterface\Drawing\ShapeCreator.Rectangle.cs" />
     <Compile Include="UserInterface\Drawing\ShapeCreator.Triangle.cs" />

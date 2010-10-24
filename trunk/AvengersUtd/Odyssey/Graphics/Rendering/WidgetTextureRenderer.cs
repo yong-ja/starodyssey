@@ -29,7 +29,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             get { return control; }
         }
 
-        public ColorShader ActiveShader { get; private set; }
+        public LinearShader ActiveShader { get; set; }
+
+        public GradientStop[] GradientStops
+        {
+            get { return ActiveShader.Gradient; }
+            set
+            {
+                ActiveShader.Gradient = value;
+                Hud.EndDesign();
+            }
+        }
 
         public WidgetTextureRenderer(int width, int height, DeviceContext11 deviceContext11) : base(deviceContext11)
         {

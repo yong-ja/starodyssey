@@ -51,8 +51,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public Thickness Padding { get; internal set; }
         public ColorArray ColorArray { get; set; }
         public Shape Shape { get; set; }
-        public ColorShader[] Enabled { get; set; }
-        public ColorShader[] BorderShaders { get; set; }
+        public LinearShader[] Enabled { get; set; }
+        public LinearShader[] BorderShaders { get; set; }
 
         public static ControlDescription EmptyDescription
         {

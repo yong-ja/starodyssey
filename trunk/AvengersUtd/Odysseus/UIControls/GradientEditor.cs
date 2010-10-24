@@ -37,7 +37,7 @@ namespace AvengersUtd.Odysseus.UIControls
 {
     public partial class GradientEditor : Form
     {
-        private readonly SortedDictionary<string, Gradient> gradientDictionary;
+        private readonly SortedDictionary<string, LinearShader> shaderDictionary;
         private readonly Hud mainHud;
         private readonly WidgetTextureRenderer widgetTextureRenderer;
         private bool shouldSave;
@@ -45,11 +45,13 @@ namespace AvengersUtd.Odysseus.UIControls
         public GradientEditor()
         {
             InitializeComponent();
-            gradientDictionary = new SortedDictionary<string, Gradient>();
+            shaderDictionary = new SortedDictionary<string, LinearShader>();
             cbControls.Items.Add("Button");
             cbControls.SelectedIndex = 0;
             tbSize.Text = "96; 32";
             mainHud = OdysseyUI.CurrentHud;
+
+            cbGType.SelectedIndex = 2;
 
             widgetTextureRenderer = new WidgetTextureRenderer(320, 320, Game.Context);
 
@@ -64,7 +66,7 @@ namespace AvengersUtd.Odysseus.UIControls
         #region GradientBuilder events
         private void UpdateGradient()
         {
-            widgetTextureRenderer.ActiveShader.Gradient = gradientBuilder.GradientStops;
+            widgetTextureRenderer.GradientStops = gradientBuilder.GradientStops;
             widgetTextureRenderer.Render();
             pictureBox1.Image = ImageHelper.BitmapFromTexture(widgetTextureRenderer.OutputTexture);
             pictureBox1.Invalidate();
@@ -89,38 +91,50 @@ namespace AvengersUtd.Odysseus.UIControls
 
         private void ButtonAddClick(object sender, EventArgs e)
         {
-            InputBox inputBox = new InputBox { Text = "Create new gradient", DialogTitle = "New gradient name:" };
+            InputBox inputBox = new InputBox { Text = "Create new shader", DialogTitle = "New shader name:" };
             inputBox.ShowDialog();
 
             if (inputBox.DialogResult != DialogResult.OK) return;
 
-            Gradient gradient = new Gradient(inputBox.InputValue, gradientBuilder.CurrentMarkers);
-            listView1.Items.Add(gradient.Name);
-            gradientDictionary.Add(inputBox.InputValue, gradient);
+            LinearShader shader = new LinearShader
+                                      {
+                                              Name = inputBox.InputValue,
+                                              Gradient = gradientBuilder.GradientStops,
+                                              GradientType = GradientType.LinearVerticalGradient,
+                                              Method = LinearShader.LinearVerticalGradient
+                                      };
+            ListViewItem item = new ListViewItem
+                                    {
+                                            Name = shader.Name,
+                                            Text = shader.Name
+                                    };
+            shaderList.Items.Add(item);
+            shaderDictionary.Add(shader.Name, shader);
         }
 
-        public void SelectGradient(Gradient gradient)
+        public void SelectGradient(LinearShader gradient)
         {
-            gradientBuilder.SetMarkers(gradient.Markers);
+            gradientBuilder.SetMarkers(gradient.Gradient);
         }
 
-        private void ListViewSelectedIndexChanged(object sender, EventArgs e)
-        {
-            SelectGradient(gradientDictionary[listView1.SelectedItems[0].Text]);
-        }
 
         private void GradientEditorLoad(object sender, EventArgs e)
         {
             widgetTextureRenderer.Init();
-            IEnumerable<ColorShader> shaders = from c in widgetTextureRenderer.Control.Description.BorderShaders
+            IEnumerable<LinearShader> shaders = from c in widgetTextureRenderer.Control.Description.BorderShaders
                                                select c;
 
-            ListViewItem item = new ListViewItem(shaders.First().Name);
+            LinearShader shader = shaders.First();
+            shaderDictionary.Add(shader.Name, shader);
+            ListViewItem item = new ListViewItem
+                                    {
+                                            Name = shader.Name,
+                                            Text = shader.Name,
+                                    };
             item.Font = new Font(item.Font, FontStyle.Italic);
-            item.Tag = widgetTextureRenderer.Control.Description.BorderShaders[0];
-            listView1.Items.Add(item);
+
+            shaderList.Items.Add(item);
             
-            //WidgetTextureRenderer.UpdateGradient(gradientBuilder.GradientStops);
             gradientBuilder.SetMarkers(widgetTextureRenderer.ActiveShader.Gradient);
             widgetTextureRenderer.Render();
 
@@ -134,11 +148,11 @@ namespace AvengersUtd.Odysseus.UIControls
             widgetTextureRenderer.FreeResources();
         }
 
-        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        private void ShaderListMouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                ListViewHitTestInfo hitTestInfo =listView1.HitTest(e.X, e.Y);
+                ListViewHitTestInfo hitTestInfo =shaderList.HitTest(e.X, e.Y);
                 if (hitTestInfo.Item != null)
                 {
                     //show the context menu strip
@@ -150,8 +164,8 @@ namespace AvengersUtd.Odysseus.UIControls
         private void cmdSave_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            ColorShader[] shaders = (from ListViewItem item in listView1.Items
-                           select item.Tag).Cast<ColorShader>().ToArray();
+            LinearShader[] shaders = (from ListViewItem item in shaderList.Items
+                           select item.Tag).Cast<LinearShader>().ToArray();
             XmlColorShader[] xmlShaders = new XmlColorShader[shaders.Length];
             for (int i = 0; i < xmlShaders.Length; i++)
             {
@@ -163,7 +177,29 @@ namespace AvengersUtd.Odysseus.UIControls
 
         private void fill1MenuItem_Click(object sender, EventArgs e)
         {
-            widgetTextureRenderer.4
+            widgetTextureRenderer.Control.Description.Enabled[0] = shaderDictionary[shaderList.SelectedItems[0].Name];
+        }
+
+        private void ShaderListSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (shaderList.SelectedItems.Count == 0)
+                return;
+
+            LinearShader newShader = shaderDictionary[shaderList.SelectedItems[0].Name];
+            gradientBuilder.SetMarkers(newShader.Gradient);
+
+            switch (newShader.GradientType)
+            {
+                case GradientType.Uniform:
+                    cbGType.SelectedIndex = 3;
+                    break;
+                case GradientType.LinearVerticalGradient:
+                    cbGType.SelectedIndex = 0;
+                    break;
+                case GradientType.LinearHorizontalGradient:
+                    cbGType.SelectedIndex = 1;
+                    break;
+            }
         }
     }
 }
