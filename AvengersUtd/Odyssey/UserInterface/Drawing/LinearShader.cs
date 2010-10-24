@@ -149,7 +149,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     int step = 0;
                     for (int i = 0; i < numVertex; i++)
                     {
-
                         if (i > 0 && i % widthVertices == 0)
                             step++;
                         colors[i] = shader.Gradient[step].Color;

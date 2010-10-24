@@ -15,5 +15,12 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             return (value/(max - min));
         }
+
+        public static float Clamp(float value, float min, float max)
+        {
+            return (value > max) ? max
+                           : (value < min) ? min
+                                     : value;
+        }
     }
 }

@@ -100,8 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public void DrawRectangle()
         {
             CheckParameters(Options.Size | Options.Shader);
-
-            
+           
             float actualWidth = Width;
             float actualHeight = Height;
             Vector3 actualPosition = Position;
@@ -183,7 +182,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         gradient = SplitGradient(Shader.Gradient, bottomSegmentOffset, 1);
                         break;
                     case GradientType.Uniform:
-
                     case GradientType.LinearHorizontalGradient:
                         gradient = Shader.Gradient;
                         break;
@@ -267,6 +265,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     heightSegments = 1;
                     widthOffsets = offsets;
                     break;
+                case GradientType.Radial:
+                    widthSegments = offsets.Length;
+                    heightSegments = widthSegments;
+                    
+
                 default:
                     throw Error.WrongCase("colorshader.GradientType", "DrawSubdividedRectangleWithOutline",
                         Shader.GradientType);

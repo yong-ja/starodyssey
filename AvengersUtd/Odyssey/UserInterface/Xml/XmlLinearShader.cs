@@ -34,12 +34,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     /// Xml Wrapper class for the LinearShader class.
     /// </summary>
     [XmlType("Gradient")]
-    public class XmlColorShader
+    public class XmlLinearShader
     {
-        public XmlColorShader()
+        public XmlLinearShader()
         {}
 
-        public XmlColorShader(LinearShader cs)
+        public XmlLinearShader(LinearShader cs)
         {
             Name = cs.Name;
             GradientType = cs.GradientType;
@@ -103,7 +103,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     }
  
     [XmlType("Border")]
-    public class XmlBorderShader : XmlColorShader
+    public class XmlBorderShader : XmlLinearShader
     {
         public XmlBorderShader()
         {}
@@ -133,6 +133,43 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                                   };
             return bs;
         } 
+    }
+
+    [XmlType("Radial")]
+    public class XmlRadialShader : XmlLinearShader
+    {
+        public XmlRadialShader()
+        { }
+
+        public XmlRadialShader(RadialShader borderShader)
+            : base(borderShader)
+        {
+            Center
+        }
+
+
+        [XmlAttribute]
+        public string Center { get; set; }
+        [XmlAttribute]
+        public string GradientOrigin { get; set; }
+        [XmlAttribute]
+        public float RadiusX { get; set; }
+        [XmlAttribute]
+        public float RadiusY { get; set; }
+
+        public override LinearShader ToColorShader()
+        {
+            LinearShader linearShader = base.ToColorShader();
+            RadialShader radialShader = new RadialShader
+            {
+                Center = XmlCommon.EncodeVector2()
+                Gradient = linearShader.Gradient,
+                GradientType = linearShader.GradientType,
+                Method = linearShader.Method,
+                Name = linearShader.Name
+            };
+            return radialShader;
+        }
     }
 }
 
