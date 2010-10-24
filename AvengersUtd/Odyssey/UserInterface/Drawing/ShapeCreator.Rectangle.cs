@@ -10,24 +10,24 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
     public static partial class ShapeCreator
     {
 
-        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, ColorShader colorShader, Color4 fillColor, Thickness borderSize, BorderStyle borderStyle, Color4 borderColor)
+        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, LinearShader linearShader, Color4 fillColor, Thickness borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
-            Color4[] shadedColors = colorShader.Method(colorShader, 4,Shape.Rectangle);
+            Color4[] shadedColors = linearShader.Method(linearShader, 4,Shape.Rectangle);
             Color4[] borderColors;
 
             switch (borderStyle)
             {
                 case BorderStyle.None:
-                    borderColors = ColorShader.FillColorArray(new Color4(0), 4);
+                    borderColors = LinearShader.FillColorArray(new Color4(0), 4);
                     break;
                 case BorderStyle.Flat:
-                    borderColors = ColorShader.FillColorArray(borderColor, 4);
+                    borderColors = LinearShader.FillColorArray(borderColor, 4);
                     break;
                 case BorderStyle.Raised:
-                    borderColors = ColorShader.BorderRaised(borderColor, 4);
+                    borderColors = LinearShader.BorderRaised(borderColor, 4);
                     break;
                 case BorderStyle.Sunken:
-                    borderColors = ColorShader.BorderSunken(borderColor, 4);
+                    borderColors = LinearShader.BorderSunken(borderColor, 4);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("borderStyle");
@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
         public static ShapeDescription DrawRectangle(Vector3 position, Size size, Color4 color)
         {
-            Color4[] shadedColors = ColorShader.FillColorArray(color, 4);
+            Color4[] shadedColors = LinearShader.FillColorArray(color, 4);
             return DrawRectangle(position, size, shadedColors);
         }
 
@@ -107,12 +107,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             
         }
 
-        public static ShapeDescription DrawSubdividedRectangleWithOutline(Vector3 position, Size size, ColorShader colorShader, int borderSize, BorderStyle borderStyle, Color4 borderColor)
+        public static ShapeDescription DrawSubdividedRectangleWithOutline(Vector3 position, Size size, LinearShader linearShader, int borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
             int widthSegments;
             int heightSegments;
-            float[] offsets = colorShader.Gradient.Select(g => g.Offset).ToArray();
-            switch (colorShader.GradientType)
+            float[] offsets = linearShader.Gradient.Select(g => g.Offset).ToArray();
+            switch (linearShader.GradientType)
             {
                 case GradientType.Uniform:
                     widthSegments = heightSegments = 1;
@@ -127,24 +127,24 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     break;
                 default:
                     throw Error.WrongCase("colorshader.GradientType", "DrawSubdividedRectangleWithOutline",
-                        colorShader.GradientType);
+                        linearShader.GradientType);
             }
-            Color4[] shadedColors = colorShader.Method(colorShader, (1+widthSegments)*(1+heightSegments), Shape.Rectangle);
+            Color4[] shadedColors = linearShader.Method(linearShader, (1+widthSegments)*(1+heightSegments), Shape.Rectangle);
             Color4[] borderColors;
 
             switch (borderStyle)
             {
                 case BorderStyle.None:
-                    borderColors = ColorShader.FillColorArray(new Color4(0), 4);
+                    borderColors = LinearShader.FillColorArray(new Color4(0), 4);
                     break;
                 case BorderStyle.Flat:
-                    borderColors = ColorShader.FillColorArray(borderColor, 4);
+                    borderColors = LinearShader.FillColorArray(borderColor, 4);
                     break;
                 case BorderStyle.Raised:
-                    borderColors = ColorShader.BorderRaised(borderColor, 4);
+                    borderColors = LinearShader.BorderRaised(borderColor, 4);
                     break;
                 case BorderStyle.Sunken:
-                    borderColors = ColorShader.BorderSunken(borderColor, 4);
+                    borderColors = LinearShader.BorderSunken(borderColor, 4);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("borderStyle");
@@ -154,7 +154,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             
             ShapeDescription inside;
 
-            switch (colorShader.GradientType)
+            switch (linearShader.GradientType)
             {
                 case GradientType.LinearVerticalGradient:
                     inside = DrawSubdividedRectangle(position, size, widthSegments, heightSegments,

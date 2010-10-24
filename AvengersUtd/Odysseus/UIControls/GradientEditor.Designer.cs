@@ -36,12 +36,16 @@
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.cmdOpen = new System.Windows.Forms.Button();
             this.cmdSave = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.shaderList = new System.Windows.Forms.ListView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.cbControls = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tbSize = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbGType = new System.Windows.Forms.ComboBox();
             this.listButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btAdd = new System.Windows.Forms.Button();
             this.btRename = new System.Windows.Forms.Button();
@@ -63,6 +67,8 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
             this.listButtons.SuspendLayout();
             this.buttonPanel.SuspendLayout();
             this.contextMenu.SuspendLayout();
@@ -117,7 +123,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel1.Controls.Add(this.listView1);
+            this.flowLayoutPanel1.Controls.Add(this.shaderList);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -156,23 +162,21 @@
             this.cmdSave.UseVisualStyleBackColor = true;
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
-            // listView1
+            // shaderList
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.listView1.Location = new System.Drawing.Point(3, 53);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(140, 402);
-            this.listView1.TabIndex = 12;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
-            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
+            this.shaderList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.shaderList.Location = new System.Drawing.Point(3, 53);
+            this.shaderList.Name = "shaderList";
+            this.shaderList.Size = new System.Drawing.Size(140, 402);
+            this.shaderList.TabIndex = 12;
+            this.shaderList.UseCompatibleStateImageBehavior = false;
+            this.shaderList.View = System.Windows.Forms.View.List;
+            this.shaderList.SelectedIndexChanged += new System.EventHandler(this.ShaderListSelectedIndexChanged);
+            this.shaderList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ShaderListMouseClick);
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.Controls.Add(this.label2);
-            this.flowLayoutPanel2.Controls.Add(this.cbControls);
-            this.flowLayoutPanel2.Controls.Add(this.label3);
-            this.flowLayoutPanel2.Controls.Add(this.tbSize);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox1);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(480, 2);
@@ -183,11 +187,37 @@
             this.flowLayoutPanel2.TabIndex = 18;
             this.flowLayoutPanel2.WrapContents = false;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.flowLayoutPanel4);
+            this.groupBox1.Location = new System.Drawing.Point(7, 8);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(177, 229);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Properties";
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.label2);
+            this.flowLayoutPanel4.Controls.Add(this.cbControls);
+            this.flowLayoutPanel4.Controls.Add(this.label3);
+            this.flowLayoutPanel4.Controls.Add(this.tbSize);
+            this.flowLayoutPanel4.Controls.Add(this.label1);
+            this.flowLayoutPanel4.Controls.Add(this.cbGType);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Padding = new System.Windows.Forms.Padding(6, 4, 4, 4);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(171, 210);
+            this.flowLayoutPanel4.TabIndex = 0;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 7);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 0);
+            this.label2.Location = new System.Drawing.Point(6, 4);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 1;
@@ -198,8 +228,8 @@
             this.cbControls.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbControls.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cbControls.FormattingEnabled = true;
-            this.cbControls.Location = new System.Drawing.Point(6, 22);
-            this.cbControls.Margin = new System.Windows.Forms.Padding(2);
+            this.cbControls.Location = new System.Drawing.Point(6, 17);
+            this.cbControls.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.cbControls.Name = "cbControls";
             this.cbControls.Size = new System.Drawing.Size(91, 21);
             this.cbControls.TabIndex = 0;
@@ -207,8 +237,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 50);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 5, 2, 0);
+            this.label3.Location = new System.Drawing.Point(6, 44);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 2;
@@ -217,11 +247,37 @@
             // tbSize
             // 
             this.tbSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbSize.Location = new System.Drawing.Point(6, 65);
-            this.tbSize.Margin = new System.Windows.Forms.Padding(2);
+            this.tbSize.Location = new System.Drawing.Point(6, 57);
+            this.tbSize.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.tbSize.Name = "tbSize";
             this.tbSize.Size = new System.Drawing.Size(91, 23);
             this.tbSize.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 86);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Gradient Type:";
+            // 
+            // cbGType
+            // 
+            this.cbGType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGType.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.cbGType.FormattingEnabled = true;
+            this.cbGType.Items.AddRange(new object[] {
+            "Uniform",
+            "Horizontal",
+            "Vertical",
+            "Radial"});
+            this.cbGType.Location = new System.Drawing.Point(6, 99);
+            this.cbGType.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
+            this.cbGType.Name = "cbGType";
+            this.cbGType.Size = new System.Drawing.Size(152, 21);
+            this.cbGType.TabIndex = 1;
             // 
             // listButtons
             // 
@@ -361,7 +417,7 @@
             // 
             this.fill1MenuItem.CheckOnClick = true;
             this.fill1MenuItem.Name = "fill1MenuItem";
-            this.fill1MenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fill1MenuItem.Size = new System.Drawing.Size(136, 22);
             this.fill1MenuItem.Text = "Fill Layer #1";
             this.fill1MenuItem.Click += new System.EventHandler(this.fill1MenuItem_Click);
             // 
@@ -385,7 +441,9 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.listButtons.ResumeLayout(false);
             this.buttonPanel.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
@@ -423,6 +481,10 @@
         private System.Windows.Forms.ToolStripMenuItem border2MenuItem;
         private System.Windows.Forms.ToolStripMenuItem applyToFillLayerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fill1MenuItem;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView shaderList;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbGType;
     }
 }

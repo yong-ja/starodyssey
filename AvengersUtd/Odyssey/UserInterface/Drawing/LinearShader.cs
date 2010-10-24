@@ -59,22 +59,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         #endregion
     }
 
-    public delegate Color4[] Shader(ColorShader shader, int numVertex, Shape shape);
+    public delegate Color4[] Shader(LinearShader shader, int numVertex, Shape shape);
     
-    public class ColorShader
+    public class LinearShader
     {
         public string Name { get; set; }
         public GradientType GradientType { get; set; }
         public Shader Method { get; set; }
-        public Color4 Color { get; set; }
         public GradientStop[] Gradient { get; set; }
 
-        public ColorShader()
+        public LinearShader()
         {
             Method = Uniform;
         }
 
-        public static Color4[] LinearHorizontalGradient(ColorShader shader, int numVertex, Shape shape)
+        public static Color4[] LinearHorizontalGradient(LinearShader shader, int numVertex, Shape shape)
         {
             const int heightVertices = 2;
             Color4[] colors = new Color4[numVertex];
@@ -107,7 +106,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 default:
                 case Shape.Rectangle:
                     if (numVertex != 4)
-                        throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "BorderSunken",
+                        throw Error.ArgumentInvalid("numVertex", typeof(LinearShader), "BorderSunken",
                             Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
 
                     colors = new[] { lightColor, lightColor, darkColor, darkColor };
@@ -128,7 +127,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 default:
                 case Shape.Rectangle:
                     if (numVertex != 4)
-                        throw Error.ArgumentInvalid("numVertex", typeof(ColorShader), "BorderRaised",
+                        throw Error.ArgumentInvalid("numVertex", typeof(LinearShader), "BorderRaised",
                             Properties.Resources.ERR_InvalidNumVertices, numVertex.ToString());
 
                     colors = new[] { lightColor, lightColor, darkColor, darkColor };
@@ -139,7 +138,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         } 
         #endregion
 
-        public static Color4[] LinearVerticalGradient(ColorShader shader, int numVertex, Shape shape)
+        public static Color4[] LinearVerticalGradient(LinearShader shader, int numVertex, Shape shape)
         {
             const int widthVertices = 2;
             Color4[] colors = new Color4[numVertex];
@@ -163,9 +162,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             }
         }
 
-        public static Color4[] Uniform(ColorShader shader, int numVertex, Shape shape=Shape.None)
+        public static Color4[] Uniform(LinearShader shader, int numVertex, Shape shape=Shape.None)
         {
-            return FillColorArray(shader.Color,4);
+            return FillColorArray(shader.Gradient[0].Color,numVertex);
         }
 
         public static Color4[] FillColorArray(Color4 color, int numVertex)

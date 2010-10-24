@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
-    public class BorderShader : ColorShader
+    public class BorderShader : LinearShader
     {
         public Borders Borders { get; set; }
     }

@@ -68,7 +68,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     (d.Position.X + desc.BorderSize.Left, d.Position.Y - desc.BorderSize.Top, d.Position.Z);
             d.Width = control.ClientSize.Width;
             d.Height = control.ClientSize.Height;
-            foreach (ColorShader colorShader in desc.Enabled)
+            foreach (LinearShader colorShader in desc.Enabled)
             {
                 d.Shader = colorShader;
                 d.FillRectangle();

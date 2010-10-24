@@ -29,7 +29,7 @@ namespace AvengersUtd.Odysseus
 
         public Thickness Thickness { get; set; }
 
-        public ColorShader ColorShader { get; set; }
+        public LinearShader LinearShader { get; set; }
         
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
         [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Enabled background color.")]
@@ -111,7 +111,7 @@ namespace AvengersUtd.Odysseus
             this.Name = cDesc.Name;
             this.Thickness = cDesc.Padding;
             this.Selected = new OColor(cDesc.ColorArray.Selected.ToArgb());
-            this.ColorShader = cDesc.Enabled[0];
+            this.LinearShader = cDesc.Enabled[0];
             this.Shape = cDesc.Shape;
             this.Size = cDesc.Size;
             this.TextStyleClass = cDesc.TextStyleClass;
