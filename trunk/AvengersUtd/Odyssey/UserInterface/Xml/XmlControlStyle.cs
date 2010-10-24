@@ -154,7 +154,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         [XmlArray("Enabled")]
         [XmlArrayItem("Layer")]
-        public XmlColorShader[] Enabled { get; set; }
+        public XmlLinearShader[] Enabled { get; set; }
 
         [XmlArray("BorderShaders")]
         [XmlArrayItem("Border")]
@@ -253,7 +253,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 tableBorders,
                 BorderStyle,
                 BorderSize,
-                XmlColorShader.ToShading(),
+                XmlLinearShader.ToShading(),
                 XmlColorArray.ToColorArray());
 
             return tableStyle;

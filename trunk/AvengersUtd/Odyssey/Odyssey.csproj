@@ -193,7 +193,7 @@
     <Compile Include="UserInterface\TreeTraversal.cs" />
     <Compile Include="UserInterface\Xml\UIParser.cs" />
     <Compile Include="UserInterface\Xml\XmlBasicControls.cs" />
-    <Compile Include="UserInterface\Xml\XmlColorShader.cs" />
+    <Compile Include="UserInterface\Xml\XmlLinearShader.cs" />
     <Compile Include="UserInterface\Xml\XmlCommon.cs" />
     <None Include="UserInterface\Xml\XmlComplexControls.cs" />
     <Compile Include="UserInterface\Xml\XmlContainers.cs" />

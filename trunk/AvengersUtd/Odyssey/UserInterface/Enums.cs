@@ -75,7 +75,8 @@ namespace AvengersUtd.Odyssey.UserInterface
     {
         Uniform,
         LinearVerticalGradient,
-        LinearHorizontalGradient
+        LinearHorizontalGradient,
+        Radial
     }
 
     public enum IntersectionLocation
