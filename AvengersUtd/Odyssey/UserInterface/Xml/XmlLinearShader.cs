@@ -159,10 +159,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         public override LinearShader ToColorShader()
         {
+            const float defaultValue = 0.5f;
+            Vector2 defaultCenter = new Vector2(defaultValue, defaultValue);
             LinearShader linearShader = base.ToColorShader();
             RadialShader radialShader = new RadialShader
             {
-                Center = XmlCommon.EncodeVector2()
+                Center = string.IsNullOrEmpty(Center) ? defaultCenter  : XmlCommon.DecodeVector2(Center),
+                GradientOrigin = string.IsNullOrEmpty(GradientOrigin) ? defaultCenter : XmlCommon.DecodeVector2(GradientOrigin),
+                RadiusX = RadiusX == 0 ? defaultValue : RadiusX,
+                RadiusY = RadiusY == 0 ? defaultValue : RadiusY,
                 Gradient = linearShader.Gradient,
                 GradientType = linearShader.GradientType,
                 Method = linearShader.Method,
