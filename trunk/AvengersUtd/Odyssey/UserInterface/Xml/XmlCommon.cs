@@ -146,15 +146,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             return new Vector3(x, y,z);
         }
 
-        internal static Vector3 DecodeVector2(string s)
+        internal static Vector2 DecodeVector2(string s)
         {
             Regex regex = new Regex(@"(?<x>\d+),(?<y>\d+)");
             Match m = regex.Match(s);
             int x = Int16.Parse(m.Groups["x"].Value, CultureInfo.InvariantCulture);
             int y = Int16.Parse(m.Groups["y"].Value, CultureInfo.InvariantCulture);
-            int z = Int16.Parse(m.Groups["z"].Value, CultureInfo.InvariantCulture);
 
-            return new Vector3(x, y, z);
+            return new Vector3(x, y);
         }
 
         internal static Size DecodeSize(string s)
