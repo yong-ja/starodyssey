@@ -5,7 +5,7 @@ Thanks for using the Odyssey UI!-->
 <ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
   <ControlDescription Name="ControlSelector" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
     <Enabled>
-    <Layer Color="FFFF0000" GradientType="Uniform"/>
+      <LinearGradient Color="FFFF0000" GradientType="Uniform"/>
     </Enabled>
     <ColorArray>
       <Color Type="Enabled" Name="Transparent" HexValue="00000000" />

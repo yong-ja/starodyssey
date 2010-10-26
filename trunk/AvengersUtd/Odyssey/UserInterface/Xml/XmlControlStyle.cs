@@ -153,8 +153,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public string TextDescriptionClass { get; set; }
 
         [XmlArray("Enabled")]
-        [XmlArrayItem("Layer")]
-        public XmlLinearShader[] Enabled { get; set; }
+        [XmlArrayItem("LinearGradient", typeof(XmlGradientShader))]
+        [XmlArrayItem("RadialGradient", typeof(XmlRadialShader))]
+        public XmlGradientShader[] Enabled { get; set; }
 
         [XmlArray("BorderShaders")]
         [XmlArrayItem("Border")]
@@ -163,11 +164,29 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         [XmlElement("ColorArray")]
         public XmlColorArray XmlColorArray { get; set; }
 
+
+        static IGradientShader[] ConvertShaders(XmlGradientShader[] shaderArray)
+        {
+             IGradientShader[] convertedShaders = new IGradientShader[shaderArray.Length];
+
+            for (int i = 0; i < shaderArray.Length; i++ )
+            {
+                switch (shaderArray[i].GradientType)
+                {
+                    default:
+                        convertedShaders[i] = shaderArray[i].ToColorShader();
+                        break;
+
+                }
+            }
+
+            return convertedShaders;
+        }
+
         public ControlDescription ToControlDescription()
         {
-
-            return new ControlDescription
-                       {
+                return new ControlDescription
+                           {
                                Name = Name,
                                Shape = Shape,
                                Size = String.IsNullOrEmpty(XmlSize) ? Size.Empty : XmlCommon.DecodeSize(XmlSize),
@@ -179,17 +198,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                                                ? Thickness.Empty
                                                : XmlCommon.DecodeThickness(BorderSize),
                                Enabled = Enabled != null
-                                                       ? (from cs in Enabled
-                                                         select cs.ToColorShader()).ToArray()
+                                                       ? ConvertShaders(Enabled)
                                                        : null,
                                BorderShaders = BorderEnabledShaders != null
                                                        ? (from bs in BorderEnabledShaders
-                                                         select bs.ToColorShader()).ToArray()
+                                                          select bs.ToColorShader()).ToArray()
                                                        : null,
                                ColorArray = XmlColorArray.ToColorArray(),
                                TextStyleClass =
                                        string.IsNullOrEmpty(TextDescriptionClass) ? "Default" : TextDescriptionClass
-                       };
+                           };
         }
 
         #endregion
@@ -253,7 +271,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 tableBorders,
                 BorderStyle,
                 BorderSize,
-                XmlLinearShader.ToShading(),
+                XmlGradientShader.ToShading(),
                 XmlColorArray.ToColorArray());
 
             return tableStyle;

@@ -153,7 +153,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             int x = Int16.Parse(m.Groups["x"].Value, CultureInfo.InvariantCulture);
             int y = Int16.Parse(m.Groups["y"].Value, CultureInfo.InvariantCulture);
 
-            return new Vector3(x, y);
+            return new Vector2(x, y);
         }
 
         internal static Size DecodeSize(string s)

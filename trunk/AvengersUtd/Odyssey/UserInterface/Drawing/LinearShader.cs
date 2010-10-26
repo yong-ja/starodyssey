@@ -59,9 +59,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         #endregion
     }
 
-    public delegate Color4[] Shader(LinearShader shader, int numVertex, Shape shape);
+    public delegate Color4[] Shader(IGradientShader shader, int numVertex, Shape shape);
     
-    public class LinearShader
+    public class LinearShader : IGradientShader
     {
         public string Name { get; set; }
         public GradientType GradientType { get; set; }
@@ -73,7 +73,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Method = Uniform;
         }
 
-        public static Color4[] LinearHorizontalGradient(LinearShader shader, int numVertex, Shape shape)
+        public static Color4[] LinearHorizontalGradient(IGradientShader shader, int numVertex, Shape shape)
         {
             const int heightVertices = 2;
             Color4[] colors = new Color4[numVertex];
@@ -138,7 +138,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         } 
         #endregion
 
-        public static Color4[] LinearVerticalGradient(LinearShader shader, int numVertex, Shape shape)
+        public static Color4[] LinearVerticalGradient(IGradientShader shader, int numVertex, Shape shape)
         {
             const int widthVertices = 2;
             Color4[] colors = new Color4[numVertex];
@@ -161,7 +161,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             }
         }
 
-        public static Color4[] Uniform(LinearShader shader, int numVertex, Shape shape=Shape.None)
+
+        public static Color4[] Uniform(IGradientShader shader, int numVertex, Shape shape = Shape.None)
         {
             return FillColorArray(shader.Gradient[0].Color,numVertex);
         }

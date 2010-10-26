@@ -7,7 +7,7 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
-    public class RadialShader : LinearShader
+    public class RadialShader : LinearShader, IRadialShader
     {
         public Vector2 Center { get; set; }
         public Vector2 GradientOrigin { get; set; }
@@ -42,9 +42,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             return offsets.ToArray();
         }
 
-        public static Color4[] RadialGradient(LinearShader shader, int numVertex, Shape shape)
+        public static Color4[] Radial(IGradientShader shader, int numVertex, Shape shape)
         {
-            RadialShader rs = (RadialShader) shader;
+            RadialShader rs = (RadialShader)shader;
             Color4[] colors = new Color4[numVertex];
             switch (shape)
             {
@@ -52,10 +52,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 case Shape.RectangleMesh:
                     // A radial gradient needs  rectangle mesh composed by n*n segments.
                     // The total vertex count
-                    //
+                    for (int i = 0; i < colors.Length; i++)
+                    {
+                        colors[i] = rs.Gradient[rs.Gradient.Length - 1].Color;
+                    }
+                    colors[4] = rs.Gradient[0].Color;
                     break;
             }
+            return colors;
         }
+
 
         
     }

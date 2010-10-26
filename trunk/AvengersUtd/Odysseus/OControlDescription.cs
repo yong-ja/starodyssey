@@ -29,7 +29,7 @@ namespace AvengersUtd.Odysseus
 
         public Thickness Thickness { get; set; }
 
-        public LinearShader LinearShader { get; set; }
+        public IGradientShader LinearShader { get; set; }
         
         [EditorAttribute(typeof(OColorEditor), typeof(UITypeEditor))]
         [Category("Design"), DefaultValueAttribute(typeof(OColor), "A:0 R:0 G:0 B:0"), DescriptionAttribute("Enabled background color.")]

@@ -29,7 +29,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             get { return control; }
         }
 
-        public LinearShader ActiveShader { get; set; }
+        public IGradientShader ActiveShader { get; set; }
 
         public GradientStop[] GradientStops
         {
