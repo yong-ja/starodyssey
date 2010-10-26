@@ -6,15 +6,17 @@
       <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
     </BorderShaders>
     <Enabled>
-      <Layer GradientType="LinearVerticalGradient">
+      <RadialGradient GradientType="Radial">
         <Gradient>
-          <GradientStop Color="FF4169E1" Offset="0"/>
+          <!--GradientStop Color="FF4169E1" Offset="0"/>
           <GradientStop Color="FF3058AD" Offset="0.75"/>
           <GradientStop Color="FF1F336B" Offset="0.80"/>
           <GradientStop Color="FF0B1528" Offset="0.85"/>
-          <GradientStop Color="FF0B1428" Offset="1.0"/>
+          <GradientStop Color="FF0B1428" Offset="1.0"/-->
+          <GradientStop Color="FFFFFFFF" Offset="0.0"/>
+          <GradientStop Color="FF4169E1" Offset="1.0"/>
         </Gradient>
-      </Layer>
+      </RadialGradient>
     </Enabled>
     <ColorArray>
       <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
@@ -33,7 +35,7 @@
       <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
     </BorderShaders>
     <Enabled>
-      <Layer Color="FFFF0000" GradientType="Uniform"/>
+      <LinearGradient Color="FFFF0000" GradientType="Uniform"/>
     </Enabled>
     <ColorArray>
       <Color Type="Enabled" Name="Red" HexValue="FFFF0000" />

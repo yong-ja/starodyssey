@@ -268,7 +268,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 case GradientType.Radial:
                     widthSegments = offsets.Length;
                     heightSegments = widthSegments;
-                    
+                    break;
 
                 default:
                     throw Error.WrongCase("colorshader.GradientType", "DrawSubdividedRectangleWithOutline",

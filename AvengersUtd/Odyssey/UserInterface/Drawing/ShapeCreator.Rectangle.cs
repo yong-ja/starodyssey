@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
     public static partial class ShapeCreator
     {
 
-        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, LinearShader linearShader, Color4 fillColor, Thickness borderSize, BorderStyle borderStyle, Color4 borderColor)
+        public static ShapeDescription DrawFullRectangle(Vector3 position, Size size, IGradientShader linearShader, Color4 fillColor, Thickness borderSize, BorderStyle borderStyle, Color4 borderColor)
         {
             Color4[] shadedColors = linearShader.Method(linearShader, 4,Shape.Rectangle);
             Color4[] borderColors;

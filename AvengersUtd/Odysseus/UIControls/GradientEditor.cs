@@ -166,10 +166,10 @@ namespace AvengersUtd.Odysseus.UIControls
             Cursor.Current = Cursors.WaitCursor;
             LinearShader[] shaders = (from ListViewItem item in shaderList.Items
                            select item.Tag).Cast<LinearShader>().ToArray();
-            XmlLinearShader[] xmlShaders = new XmlLinearShader[shaders.Length];
+            XmlGradientShader[] xmlShaders = new XmlGradientShader[shaders.Length];
             for (int i = 0; i < xmlShaders.Length; i++)
             {
-                xmlShaders[i] = new XmlLinearShader(shaders[i]);
+                xmlShaders[i] = new XmlGradientShader(shaders[i]);
             }
             Data.Serialize(xmlShaders, "UIshaders.xml");
             System.Windows.Forms.Cursor.Current = Cursors.Default;
