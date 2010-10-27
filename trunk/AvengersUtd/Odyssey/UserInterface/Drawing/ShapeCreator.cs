@@ -71,7 +71,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             foreach (LinearShader colorShader in desc.Enabled)
             {
                 d.Shader = colorShader;
-                d.FillRectangle();
+                //d.FillRectangle();
+                d.DrawEllipse();
             }
 
             return d.Output;

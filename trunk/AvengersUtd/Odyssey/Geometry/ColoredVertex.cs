@@ -10,7 +10,7 @@ using SlimDX.DXGI;
 namespace AvengersUtd.Odyssey.Geometry
 {
     /// <summary>
-    /// Represents a vertex with a position and a texture coordinate.
+    /// Represents a vertex with a position and a color vector.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ColoredVertex :IVertex, IEquatable<ColoredVertex>

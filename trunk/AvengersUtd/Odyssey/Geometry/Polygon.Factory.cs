@@ -63,6 +63,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return vertices;
         }
         #endregion
+
         #region Quads
         public static ColoredVertex[] CreateQuad(Vector4 topLeftVertex, float width, float height, Color4[] colors,
                                                 out short[] indices)
@@ -224,6 +225,47 @@ namespace AvengersUtd.Odyssey.Geometry
         // }
 
 
+        #endregion
+
+        #region Ellipse
+        public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
+            out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        {
+            float x = center.X;
+            float y = center.Y;
+            const float radFrom = 0;
+            const float radTo = 2;
+            float deltaRad = radTo/slices;
+            float delta = radFrom;
+            ColoredVertex[] vertices = new ColoredVertex[slices +2 ];
+
+            vertices[0] = new ColoredVertex(center, colors[0]);
+
+            for (int i=1; i<slices; i++)
+            {
+                Vector4 vertexPos = new Vector4
+                        ((float) Math.Cos(delta)*radiusX + x,
+                         (float) Math.Sin(delta)*radiusY + y,
+                         center.Z,
+                         1.0f);
+                delta -= deltaRad;
+                
+                vertices[i] = new ColoredVertex(vertexPos, colors[i]);
+            }
+
+            indices = new short[slices*3];
+            indices[0] = 0;
+            indices[1] = 1;
+
+            for (int i = 0; i < slices; i++)
+            {
+                indices[3 * i] = 0;
+                indices[(3 * i) + 1] = (short)(i + 2);
+                indices[(3 * i) + 2] = (short)(i + 1);
+            }
+
+            return vertices;
+        }
         #endregion
     }
 }
