@@ -92,6 +92,7 @@
     <Compile Include="UserInterface\CSExporter.cs" />
     <Compile Include="UserInterface\Drawing\BorderShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Ellipse.cs" />
+    <Compile Include="UserInterface\Drawing\IGradientShader.cs" />
     <Compile Include="UserInterface\Drawing\LinearShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />
     <Compile Include="UserInterface\Drawing\RadialShader.cs" />
@@ -194,7 +195,7 @@
     <Compile Include="UserInterface\TreeTraversal.cs" />
     <Compile Include="UserInterface\Xml\UIParser.cs" />
     <Compile Include="UserInterface\Xml\XmlBasicControls.cs" />
-    <Compile Include="UserInterface\Xml\XmlLinearShader.cs" />
+    <Compile Include="UserInterface\Xml\XmlGradientShader.cs" />
     <Compile Include="UserInterface\Xml\XmlCommon.cs" />
     <None Include="UserInterface\Xml\XmlComplexControls.cs" />
     <Compile Include="UserInterface\Xml\XmlContainers.cs" />

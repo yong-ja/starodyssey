@@ -22,5 +22,10 @@ namespace AvengersUtd.Odyssey.Geometry
                            : (value < min) ? min
                                      : value;
         }
+
+        public static float DegreesToRadians(float degrees)
+        {
+            return degrees*(Pi/180);
+        }
     }
 }
