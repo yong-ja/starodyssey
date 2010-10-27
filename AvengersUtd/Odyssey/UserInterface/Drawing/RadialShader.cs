@@ -49,7 +49,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             switch (shape)
             {
                 default:
-<<<<<<< .mine
                 //case Shape.RectangleMesh:
                     colors[0] = shader.Gradient[0].Color;
                     for (int i = 1; i < colors.Length; i++ )
@@ -57,17 +56,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         colors[i] = shader.Gradient[1].Color;
                     }
                         break;
-=======
-                case Shape.RectangleMesh:
-                    // A radial gradient needs  rectangle mesh composed by n*n segments.
-                    // The total vertex count
-                    for (int i = 0; i < colors.Length; i++)
-                    {
-                        colors[i] = rs.Gradient[rs.Gradient.Length - 1].Color;
-                    }
-                    colors[4] = rs.Gradient[0].Color;
-                    break;
->>>>>>> .r185
+
             }
             return colors;
         }

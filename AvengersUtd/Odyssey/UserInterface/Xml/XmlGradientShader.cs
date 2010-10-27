@@ -34,12 +34,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     /// Xml Wrapper class for the LinearShader class.
     /// </summary>
     [XmlType("Gradient")]
-    public class XmlLinearShader
+    public class XmlGradientShader
     {
-        public XmlLinearShader()
+        public XmlGradientShader()
         {}
 
-        public XmlLinearShader(LinearShader cs)
+        public XmlGradientShader(LinearShader cs)
         {
             Name = cs.Name;
             GradientType = cs.GradientType;
@@ -91,19 +91,30 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                 gradientColors[0] = new GradientStop(new Color4(Int32.Parse(ColorValue,NumberStyles.HexNumber)),0);
                 gradientColors[1] = gradientColors[0];
             }
+            Type shaderType;
+            switch (GradientType)
+            {
+                case GradientType.Radial:
+                    shaderType = typeof (RadialShader);
+                    break;
+                default:
+                    shaderType = typeof (LinearShader);
+                    break;
+            }
+
             return new LinearShader
             {
                 Name = Name,
                 GradientType = GradientType,
                 Method = (Shader)Delegate.CreateDelegate
-                                (typeof(Shader), typeof(LinearShader).GetMethod(GradientType.ToString())),
+                                (typeof(Shader), shaderType.GetMethod(GradientType.ToString())),
                 Gradient = gradientColors,
             };
         }
     }
  
     [XmlType("Border")]
-    public class XmlBorderShader : XmlLinearShader
+    public class XmlBorderShader : XmlGradientShader
     {
         public XmlBorderShader()
         {}
@@ -136,7 +147,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
     }
 
     [XmlType("Radial")]
-    public class XmlRadialShader : XmlLinearShader
+    public class XmlRadialShader : XmlGradientShader
     {
         public XmlRadialShader()
         { }
