@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public float Width { get; set; }
         public float Height { get; set; }
         public Thickness BorderSize { get; set; }
-        public LinearShader FillShader { get; set; }
+        public IGradientShader FillShader { get; set; }
         public LinearShader BorderShader { get; set; }
 
         internal static MainParameters FromDesigner(Designer designer)
@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public float Width { get; set; }
         public float Height { get; set; }
         public Thickness BorderSize { get; set; }
-        public LinearShader Shader { get; set; }
+        public IGradientShader Shader { get; set; }
 
         private readonly Stack<MainParameters> parameterStack;
 
@@ -60,12 +60,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             parameterStack = new Stack<MainParameters>();
         }
 
-        void SaveState()
+        public void SaveState()
         {
             parameterStack.Push(MainParameters.FromDesigner(this));
         }
 
-        void RestoreState()
+        public void RestoreState()
         {
             MainParameters mainParameters = parameterStack.Pop();
             Position = mainParameters.Position;

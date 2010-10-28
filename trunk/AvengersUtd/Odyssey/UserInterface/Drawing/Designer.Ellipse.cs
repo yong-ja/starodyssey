@@ -20,7 +20,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Color4[] colors = Shader.Method(Shader, slices +1, Shape.Rectangle);
 
             short[] indices;
-            ColoredVertex[] vertices = Polygon.CreateEllipseMesh
+            ColoredVertex[] vertices = ColoredShape.CreateEllipseMesh
                     (Position.ToVector4(),
                      Width,
                      Height,
