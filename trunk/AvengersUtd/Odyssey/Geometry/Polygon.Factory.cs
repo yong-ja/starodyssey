@@ -234,14 +234,14 @@ namespace AvengersUtd.Odyssey.Geometry
             float x = center.X;
             float y = center.Y;
             const float radFrom = 0;
-            float radTo = MathHelper.DegreesToRadians(360);
+            const float radTo = MathHelper.TwoPi;
             float delta = radTo/slices;
 
-            ColoredVertex[] vertices = new ColoredVertex[slices +2 ];
+            ColoredVertex[] vertices = new ColoredVertex[slices + 1];
 
             vertices[0] = new ColoredVertex(center, colors[0]);
 
-            for (int i=1; i<=slices; i++)
+            for (int i=0; i<slices; i++)
             {
                 float theta = i*delta;
                 Vector4 vertexPos = new Vector4
@@ -250,25 +250,17 @@ namespace AvengersUtd.Odyssey.Geometry
                          center.Z,
                          1.0f);
                 
-                vertices[i] = new ColoredVertex(vertexPos, colors[i]);
+                vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
-
             indices = new short[slices*3];
-            indices[0] = 0;
             
-
             for (int i = 0; i < slices; i++)
             {
                 indices[3 * i] = 0;
                 indices[(3 * i) + 1] = (short)(i + 2);
                 indices[(3 * i) + 2] = (short)(i + 1);
-
-                //indices[3 * i] = (short)(i + 2);
-                //indices[(3 * i) + 1] = 0;
-                //indices[(3*i) + 2] = (short)(i +1);
-
             }
-            //indices[indices.Length-1] = 1;
+            indices[indices.Length - 2] = 1;
 
             return vertices;
         }
