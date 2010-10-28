@@ -4,13 +4,13 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public partial class Polygon : BaseMesh<ColoredVertex>
+    public partial class ColoredShape : BaseMesh<ColoredVertex>
     {
 
-        public Polygon(Vector3 topLeftVertex, float width, float height, Color4[] Color4s) : base(ColoredVertex.Description)
+        public ColoredShape(Vector3 topLeftVertex, float width, float height, Color4[] Color4s) : base(ColoredVertex.Description)
         {
             short[] indices;
-            Vertices = Polygon.CreateQuad(topLeftVertex.ToVector4(), width, height, Color4s, out indices);
+            Vertices = CreateQuad(topLeftVertex.ToVector4(), width, height, Color4s, out indices);
             Indices = indices;
            
         }

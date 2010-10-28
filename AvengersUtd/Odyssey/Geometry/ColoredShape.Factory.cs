@@ -27,7 +27,7 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public partial class Polygon
+    public partial class ColoredShape
     {
         #region Triangles
         public static ColoredVertex[] CreateEquilateralTriangle(Vector4 leftVertex, float sideLength, Color4[] colors,
@@ -169,9 +169,9 @@ namespace AvengersUtd.Odyssey.Geometry
             return vertices;
         }
 
-        //public static Polygon CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
+        //public static ColoredShape CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
         //{
-        //    Polygon coloredPolygon = new Polygon(topLeftVertex, width, height, colors);
+        //    ColoredShape coloredPolygon = new ColoredShape(topLeftVertex, width, height, colors);
         //    coloredPolygon.Init();
         //    return coloredPolygon;
         //}

@@ -50,7 +50,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public static ShapeDescription DrawRectangle(Vector3 position, Size size, Color4[] colors)
         {
             short[] indices;
-            ColoredVertex[] vertices = Polygon.CreateQuad(position.ToVector4(), size.Width, size.Height,
+            ColoredVertex[] vertices = ColoredShape.CreateQuad(position.ToVector4(), size.Width, size.Height,
                                                  colors, out indices);
             return new ShapeDescription
                        {
@@ -176,7 +176,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public static ShapeDescription DrawSubdividedRectangle(Vector3 position, Size size, int widthSegments, int heightSegments, Color4[] colors, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             short[] indices;
-            ColoredVertex[] vertices = Polygon.CreateRectangleMesh(position.ToVector4(), size.Width, size.Height,
+            ColoredVertex[] vertices = ColoredShape.CreateRectangleMesh(position.ToVector4(), size.Width, size.Height,
                                                  widthSegments, heightSegments, colors, out indices, widthOffsets, heightOffsets);
             return new ShapeDescription
             {

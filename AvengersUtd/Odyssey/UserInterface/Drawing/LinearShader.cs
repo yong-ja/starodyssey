@@ -73,6 +73,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Method = Uniform;
         }
 
+        public static LinearShader CreateUniform(Color4 color)
+        {
+            return new LinearShader
+                   {
+                       Name = "DefaultUniform",
+                       Gradient = new[]
+                                  {
+                                      new GradientStop(color, 0), new GradientStop(color, 1.0f)
+                                  },
+                   };
+        }
+
         public static Color4[] LinearHorizontalGradient(IGradientShader shader, int numVertex, Shape shape)
         {
             const int heightVertices = 2;

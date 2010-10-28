@@ -68,15 +68,37 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     (d.Position.X + desc.BorderSize.Left, d.Position.Y - desc.BorderSize.Top, d.Position.Z);
             d.Width = control.ClientSize.Width;
             d.Height = control.ClientSize.Height;
-            foreach (LinearShader colorShader in desc.Enabled)
+            foreach (IGradientShader colorShader in desc.Enabled)
             {
-                d.Shader = colorShader;
-                //d.FillRectangle();
-                d.DrawEllipse();
+                
+
+                switch (colorShader.GradientType)
+                {
+                    default:
+                        d.Shader = colorShader;
+                        d.FillRectangle();
+                        break;
+
+                    case GradientType.Radial:
+                        d.Shader = LinearShader.CreateUniform
+                            (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
+                        d.FillRectangle();
+                        RadialShader rs = (RadialShader)colorShader;
+                        
+                        d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
+                        d.Shader = rs;
+                        d.Width = rs.RadiusX * d.Width;
+                        d.Height = rs.RadiusY * d.Height;
+                        d.DrawEllipse();
+                        break;
+                }
+
             }
 
             return d.Output;
         }
+
+      
 
         static Thickness MaskBorderSize(Borders borders, Thickness borderSize)
         {

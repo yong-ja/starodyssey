@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                                                                bool isTriangleUpside)
         {
             short[] indices;
-            ColoredVertex[] vertices = Polygon.CreateEquilateralTriangle(leftVertex.ToVector4(), sideLength, Color4s,
+            ColoredVertex[] vertices = ColoredShape.CreateEquilateralTriangle(leftVertex.ToVector4(), sideLength, Color4s,
                 isTriangleUpside, out indices);
             return new ShapeDescription
                        {
