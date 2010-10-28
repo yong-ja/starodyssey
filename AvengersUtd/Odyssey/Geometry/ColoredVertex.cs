@@ -66,12 +66,12 @@ namespace AvengersUtd.Odyssey.Geometry
         /// Initializes a new instance of the <see cref="ColoredVertex"/> struct.
         /// </summary>
         /// <param name="position">The position.</param>
-        /// <param name="Color4">The Color.</param>
-        public ColoredVertex(Vector4 position, Color4 Color4)
+        /// <param name="color">The color.</param>
+        public ColoredVertex(Vector4 position, Color4 color)
             : this()
         {
             Position = position;
-            Color4 = Color4;
+            Color = color;
         }
 
         /// <summary>

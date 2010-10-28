@@ -13,11 +13,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public void DrawEllipse()
         {
             CheckParameters(Options.Size | Options.Shader);
-            int slices=16;
+            int slices=32;
             int segments=1;
             float[] offsets = Shader.Gradient.Select(g => g.Offset).ToArray();
 
-            Color4[] colors = Shader.Method(Shader, slices +2, Shape.Rectangle);
+            Color4[] colors = Shader.Method(Shader, slices +1, Shape.Rectangle);
 
             short[] indices;
             ColoredVertex[] vertices = Polygon.CreateEllipseMesh
