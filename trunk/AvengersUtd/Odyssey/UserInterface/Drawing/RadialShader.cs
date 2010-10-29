@@ -21,27 +21,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         {
             Center = GradientOrigin = new Vector2(0.5f, 0.5f);
             RadiusX = RadiusY = 0.5f;
-            Slices = 16;
-        }
-
-        float[] BuildWidthOffsets()
-        {
-            List<float> offsets = new List<float>();
-            float center = Center.X;
-
-            offsets.Add(center);
-            foreach (GradientStop t in Gradient)
-            {
-                float offset = (t.Offset * RadiusX);
-                float leftOffset = center - offset;
-                float rightOffset = center + offset;
-                
-                offsets.AddRange(new[] {leftOffset, rightOffset});
-            }
-
-            offsets.Sort();
-            CenterXIndex = offsets.IndexOf(center);
-            return offsets.ToArray();
+            Slices = 32;
         }
 
         public static Color4[] Radial(IGradientShader shader, int numVertex, Shape shape)

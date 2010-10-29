@@ -7,15 +7,10 @@ Thanks for using the Odyssey UI!-->
     <Enabled>
       <LinearGradient Color="FFFF0000" GradientType="Uniform"/>
     </Enabled>
-    <ColorArray>
-      <Color Type="Enabled" Name="Transparent" HexValue="00000000" />
-      <Color Type="Highlighted" Name="Transparent" HexValue="00000000" />
-      <Color Type="Pressed" Name="Transparent" HexValue="00000000" />
-      <Color Type="Disabled" Name="Transparent" HexValue="00000000" />
-      <Color Type="Selected" Name="Transparent" HexValue="00000000" />
-      <Color Type="Focused" Name="Transparent" HexValue="00000000" />
-      <Color Type="BorderEnabled" Name="Aqua" HexValue="FFFF8C00" />
-      <Color Type="BorderHighlighted" Name="Orange" HexValue="FFFFA500" />
-    </ColorArray>
+  </ControlDescription>
+  <ControlDescription Name="SelectorRectangle" Shape="Rectangle" BorderSize="2">
+    <BorderShaders>
+      <Border Color="FF808080" />
+    </BorderShaders>
   </ControlDescription>
 </ArrayOfControlDescription>

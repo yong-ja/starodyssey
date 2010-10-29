@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
     {
         const string ControlTag = "Grid";
         public const int DefaultMajorGridLinesFrequency = 5;
-        public const int DefaultGridSpacing = 256;
+        public const int DefaultGridSpacing = 32;
 
         static int count;
 
@@ -33,6 +33,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             count++;
             GridSpacing = DefaultGridSpacing;
             MajorGridLinesFrequency = DefaultMajorGridLinesFrequency;
+            IsSubComponent = true;
             CanRaiseEvents = false;
         }
 
@@ -74,35 +75,59 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Size majorHorizontalLineSize = new Size(Size.Width, 2);
             Size majorVerticalLineSize = new Size(2, Size.Height);
 
+            Designer d = GetDesigner();
+
             for (int i = 0; i < horizontalLines; i++)
             {
                 Vector2 linePosition = new Vector2(0, GridSpacing * i);
                 Vector3 lineOrthoPosition = Layout.OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
+
+                d.Position = lineOrthoPosition;
+
                 if (i % MajorGridLinesFrequency == 0)
-                    Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
-                                                               majorHorizontalLineSize, Color.Silver);
+                {
+                    d.Width = majorHorizontalLineSize.Width;
+                    d.Height = majorHorizontalLineSize.Height;
+                    d.Shader = LinearShader.CreateUniform(Color.Silver);
+                }
                 else
-                    Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
-                                                               horizontalLineSize, Color.DarkGray);
+                {
+                    d.Width = horizontalLineSize.Width;
+                    d.Height = horizontalLineSize.Height;
+                    d.Shader = LinearShader.CreateUniform(Color.DarkGray);
+                }
+                d.FillRectangle();
 
             }
+
             for (int i = horizontalLines; i < horizontalLines + verticalLines; i++)
             {
                 Vector2 linePosition = new Vector2(GridSpacing * (i - horizontalLines), 0);
                 Vector3 lineOrthoPosition = Layout.OrthographicTransform(AbsolutePosition + linePosition, Depth.ZOrder, OdysseyUI.CurrentHud.Size);
+                d.Position = lineOrthoPosition;
                 if ((i - horizontalLines) % MajorGridLinesFrequency == 0)
-                    Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
-                                                           majorVerticalLineSize, Color.Silver);
+                {
+                    d.Width = majorVerticalLineSize.Width;
+                    d.Height = majorVerticalLineSize.Height;
+                    d.Shader = LinearShader.CreateUniform(Color.Silver);
+                }
                 else
-                    Shapes[i] = ShapeCreator.DrawRectangle(lineOrthoPosition,
-                                                           verticalLineSize, Color.DarkGray);
+                {
+                    d.Width = verticalLineSize.Width;
+                    d.Height = verticalLineSize.Height;
+                    d.Shader = LinearShader.CreateUniform(Color.DarkGray);
+                }
+                d.FillRectangle();
             }
+
+            Shapes = d.Shapes;
 
             foreach (ShapeDescription shape in Shapes)
             {
                 shape.Tag = Id;
                 shape.Depth = Depth;
             }
+
         }
 
         

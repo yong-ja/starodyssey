@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public XmlGradientShader()
         {}
 
-        public XmlGradientShader(LinearShader cs)
+        public XmlGradientShader(IGradientShader cs)
         {
             Name = cs.Name;
             GradientType = cs.GradientType;
@@ -119,24 +119,39 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public XmlBorderShader()
         {}
 
-        public XmlBorderShader(BorderShader borderShader)
+        public XmlBorderShader(IBorderShader borderShader)
             : base(borderShader)
         {
             Borders = borderShader.Borders;
         }
 
-        public XmlBorderShader(LinearShader cs) : base(cs)
+        public XmlBorderShader(IGradientShader cs) : base(cs)
         {}
 
-        [XmlAttribute]
-        public Borders Borders { get; set; }
+        [XmlIgnore]
+        public Borders? Borders { get; set; }
+
+        [XmlAttribute("Borders")]
+        public string DoBstring
+        {
+            get {
+                return Borders.HasValue
+                ? Borders.ToString()
+                : string.Empty;
+            }
+            set
+            {
+                Borders borders;
+                Borders = Enum.TryParse(value, out borders) ? borders : UserInterface.Borders.All;
+            }
+        }
 
         public override LinearShader ToColorShader()
         {
             LinearShader cs =  base.ToColorShader();
             BorderShader bs = new BorderShader
                                   {
-                                          Borders = Borders,
+                                          Borders = Borders.HasValue? Borders.Value : UserInterface.Borders.All,
                                           Gradient = cs.Gradient,
                                           GradientType = cs.GradientType,
                                           Method = cs.Method,
