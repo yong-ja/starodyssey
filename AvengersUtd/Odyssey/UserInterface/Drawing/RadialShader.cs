@@ -15,11 +15,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public float RadiusY { get; set; }
 
         internal int CenterXIndex { get; private set; }
+        internal int Slices { get; private set; }
 
         public RadialShader()
         {
             Center = GradientOrigin = new Vector2(0.5f, 0.5f);
             RadiusX = RadiusY = 0.5f;
+            Slices = 16;
         }
 
         float[] BuildWidthOffsets()
@@ -51,11 +53,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 default:
                 //case Shape.RectangleMesh:
                     colors[0] = shader.Gradient[0].Color;
+                    int k = 1;
                     for (int i = 1; i < colors.Length; i++ )
                     {
-                        colors[i] = shader.Gradient[1].Color;
+                        
+                        if (i > 1 && (i - 1) % rs.Slices == 0)
+                            k++;
+                        colors[i] = shader.Gradient[k].Color;
                     }
-                        break;
+                    break;
 
             }
             return colors;

@@ -27,7 +27,7 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public partial class ColoredShape
+    public partial class PolyMesh
     {
         #region Triangles
         public static ColoredVertex[] CreateEquilateralTriangle(Vector4 leftVertex, float sideLength, Color4[] colors,
@@ -169,9 +169,9 @@ namespace AvengersUtd.Odyssey.Geometry
             return vertices;
         }
 
-        //public static ColoredShape CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
+        //public static PolyMesh CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
         //{
-        //    ColoredShape coloredPolygon = new ColoredShape(topLeftVertex, width, height, colors);
+        //    PolyMesh coloredPolygon = new PolyMesh(topLeftVertex, width, height, colors);
         //    coloredPolygon.Init();
         //    return coloredPolygon;
         //}
@@ -229,39 +229,86 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #region Ellipse
         public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
-            out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+            out short[] indices, float[] ringOffsets=null)
         {
             float x = center.X;
             float y = center.Y;
             const float radFrom = 0;
             const float radTo = MathHelper.TwoPi;
             float delta = radTo/slices;
-
-            ColoredVertex[] vertices = new ColoredVertex[slices + 1];
+            if (ringOffsets == null)
+                ringOffsets = new[] {0.0f, 1.0f};
+            int rings = ringOffsets.Length;
+            ColoredVertex[] vertices = new ColoredVertex[((rings-1)*slices) + 1];
 
             vertices[0] = new ColoredVertex(center, colors[0]);
 
+            // First ring vertices
+            // ringOffsets[0] is assumed to be the center
+            // ringOffsets[1] the first ring
             for (int i=0; i<slices; i++)
             {
+                float ringOffset = ringOffsets[1];
                 float theta = i*delta;
                 Vector4 vertexPos = new Vector4
-                        (x+(float)Math.Cos(theta) * radiusX ,
-                         y-(float)Math.Sin(theta) * radiusY ,
+                        (x+(float)Math.Cos(theta) * (ringOffset * radiusX) ,
+                         y-(float)Math.Sin(theta) * (ringOffset * radiusY) ,
                          center.Z,
                          1.0f);
                 
                 vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
-            indices = new short[slices*3];
+            indices = new short[(rings*slices)*3];
             
+            // First ring indices
             for (int i = 0; i < slices; i++)
             {
                 indices[3 * i] = 0;
                 indices[(3 * i) + 1] = (short)(i + 2);
                 indices[(3 * i) + 2] = (short)(i + 1);
             }
-            indices[indices.Length - 2] = 1;
+            indices[(slices*3) - 2] = 1;
 
+            int indexCount = 0;
+            for (int r = 1; r < rings-1; r++)
+            {
+                // Other rings vertices
+                for (int i = 0; i < slices; i++)
+                {
+                    float ringOffset = ringOffsets[r+1];
+                    float theta = i * delta;
+                    Vector4 vertexPos = new Vector4
+                            (x + (float)Math.Cos(theta) * (ringOffset * radiusX),
+                             y - (float)Math.Sin(theta) * (ringOffset * radiusY),
+                             center.Z,
+                             1.0f);
+
+                    vertices[(r*slices) + i+1] = new ColoredVertex(vertexPos, colors[(r*slices) + i + 1]);
+                }
+
+                // Other rings indices
+                int j = r * slices;
+                int k = (r - 1) * slices;
+                for (int i = 0; i < slices; i++)
+                {
+                    // current ring
+                    
+                    // first face
+                    indices[3*j + indexCount] = (short) (j + i+2);
+                    indices[3*j + indexCount+1] = (short)(j + i+1);
+                    indices[3 * j + indexCount + 2] = (short)(k + i+1);
+                    // second face
+                    indices[3 * j + indexCount + 3] = (short)(k + i+2);
+                    indices[3 * j + indexCount + 4] = (short)(j + i+2);
+                    indices[3 * j + indexCount + 5] = (short)(k + i+1);
+                    indexCount += 6;
+                }
+                // Wrap faces
+                indices[3 * j + indexCount - 2] = (short) (r*slices+1);
+                indices[3 * j + indexCount - 3] = (short)((r-1) * slices + 1);
+                
+                indices[3 * j + indexCount - 6] = (short)(r * slices+1);
+            }
             return vertices;
         }
         #endregion

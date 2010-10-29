@@ -80,9 +80,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         break;
 
                     case GradientType.Radial:
-                        d.Shader = LinearShader.CreateUniform
-                            (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
-                        d.FillRectangle();
+                        //d.Shader = LinearShader.CreateUniform
+                        //    (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
+                        //d.FillRectangle();
                         RadialShader rs = (RadialShader)colorShader;
                         
                         d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
