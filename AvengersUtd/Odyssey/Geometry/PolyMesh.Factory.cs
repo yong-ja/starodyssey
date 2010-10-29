@@ -228,6 +228,19 @@ namespace AvengersUtd.Odyssey.Geometry
         #endregion
 
         #region Ellipse
+
+        static Vector4 CreateEllipseVertex(Vector4 center, float theta, float radiusX, float radiusY, float ringOffset=1)
+        {
+            float x = center.X;
+            float y = center.Y;
+            float z = center.Z;
+            return new Vector4
+                        (x+(float)Math.Cos(theta) * (ringOffset * radiusX) ,
+                         y-(float)Math.Sin(theta) * (ringOffset * radiusY) ,
+                         z,
+                         1.0f);
+        }
+
         public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
             out short[] indices, float[] ringOffsets=null)
         {
@@ -250,12 +263,8 @@ namespace AvengersUtd.Odyssey.Geometry
             {
                 float ringOffset = ringOffsets[1];
                 float theta = i*delta;
-                Vector4 vertexPos = new Vector4
-                        (x+(float)Math.Cos(theta) * (ringOffset * radiusX) ,
-                         y-(float)Math.Sin(theta) * (ringOffset * radiusY) ,
-                         center.Z,
-                         1.0f);
-                
+                Vector4 vertexPos = CreateEllipseVertex(center, theta, radiusX, radiusY, ringOffset);
+
                 vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
             indices = new short[3*slices*((2*(rings-2))+1)];
@@ -278,11 +287,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 {
                     float ringOffset = ringOffsets[r+1];
                     float theta = i * delta;
-                    Vector4 vertexPos = new Vector4
-                            (x + (float)Math.Cos(theta) * (ringOffset * radiusX),
-                             y - (float)Math.Sin(theta) * (ringOffset * radiusY),
-                             center.Z,
-                             1.0f);
+                    Vector4 vertexPos = CreateEllipseVertex(center, theta, radiusX, radiusY, ringOffset);
 
                     vertices[(r*slices) + i+1] = new ColoredVertex(vertexPos, colors[(r*slices) + i + 1]);
                 }
