@@ -18,6 +18,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         public GradientStop ToGradientStop()
         {
+            if (Color[0] == '#')
+                Color = Color.Remove(0, 1);
+
             int argbColor = Int32.Parse(Color, NumberStyles.HexNumber);
             return new GradientStop(new Color4(argbColor), Offset);
         }

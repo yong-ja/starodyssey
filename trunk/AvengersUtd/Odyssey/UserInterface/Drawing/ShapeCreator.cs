@@ -70,8 +70,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             d.Height = control.ClientSize.Height;
             foreach (IGradientShader colorShader in desc.Enabled)
             {
-                
-
+ 
                 switch (colorShader.GradientType)
                 {
                     default:
@@ -85,11 +84,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         d.FillRectangle();
                         RadialShader rs = (RadialShader)colorShader;
                         
+                        d.SaveState();
                         d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
                         d.Shader = rs;
                         d.Width = rs.RadiusX * d.Width;
                         d.Height = rs.RadiusY * d.Height;
                         d.DrawEllipse();
+                        d.RestoreState();
                         break;
                 }
 
