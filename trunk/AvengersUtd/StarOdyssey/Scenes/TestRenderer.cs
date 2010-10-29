@@ -27,8 +27,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             Camera.LookAt(Vector3.Zero, new Vector3(0,0,-10f));
             
-            //triangle = ColoredShape.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
-            //triangle = ColoredShape.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
+            //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
+            //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
 
             StyleManager.LoadControlDescription("Odyssey ControlDescriptions.ocd");
             StyleManager.LoadTextDescription("Odyssey TextDescriptions.otd");

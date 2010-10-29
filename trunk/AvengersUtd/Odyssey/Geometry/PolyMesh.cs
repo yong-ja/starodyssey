@@ -4,10 +4,10 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public partial class ColoredShape : BaseMesh<ColoredVertex>
+    public partial class PolyMesh : BaseMesh<ColoredVertex>
     {
 
-        public ColoredShape(Vector3 topLeftVertex, float width, float height, Color4[] Color4s) : base(ColoredVertex.Description)
+        public PolyMesh(Vector3 topLeftVertex, float width, float height, Color4[] Color4s) : base(ColoredVertex.Description)
         {
             short[] indices;
             Vertices = CreateQuad(topLeftVertex.ToVector4(), width, height, Color4s, out indices);
