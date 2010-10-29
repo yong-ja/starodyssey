@@ -258,7 +258,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 
                 vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
-            indices = new short[(rings*slices)*3];
+            indices = new short[3*slices*((2*(rings-2))+1)];
             
             // First ring indices
             for (int i = 0; i < slices; i++)
@@ -270,6 +270,7 @@ namespace AvengersUtd.Odyssey.Geometry
             indices[(slices*3) - 2] = 1;
 
             int indexCount = 0;
+            int baseIndex = 3*slices;
             for (int r = 1; r < rings-1; r++)
             {
                 // Other rings vertices
@@ -289,25 +290,26 @@ namespace AvengersUtd.Odyssey.Geometry
                 // Other rings indices
                 int j = r * slices;
                 int k = (r - 1) * slices;
+                
                 for (int i = 0; i < slices; i++)
                 {
                     // current ring
                     
                     // first face
-                    indices[3*j + indexCount] = (short) (j + i+2);
-                    indices[3*j + indexCount+1] = (short)(j + i+1);
-                    indices[3 * j + indexCount + 2] = (short)(k + i+1);
+                    indices[baseIndex + indexCount] = (short) (j + i+2);
+                    indices[baseIndex + indexCount + 1] = (short)(j + i + 1);
+                    indices[baseIndex + indexCount + 2] = (short)(k + i + 1);
                     // second face
-                    indices[3 * j + indexCount + 3] = (short)(k + i+2);
-                    indices[3 * j + indexCount + 4] = (short)(j + i+2);
-                    indices[3 * j + indexCount + 5] = (short)(k + i+1);
+                    indices[baseIndex + indexCount + 3] = (short)(k + i + 2);
+                    indices[baseIndex + indexCount + 4] = (short)(j + i + 2);
+                    indices[baseIndex + indexCount + 5] = (short)(k + i + 1);
                     indexCount += 6;
                 }
                 // Wrap faces
-                indices[3 * j + indexCount - 2] = (short) (r*slices+1);
-                indices[3 * j + indexCount - 3] = (short)((r-1) * slices + 1);
-                
-                indices[3 * j + indexCount - 6] = (short)(r * slices+1);
+                indices[baseIndex + indexCount - 2] = (short) (r*slices+1);
+                indices[baseIndex+indexCount - 3] = (short)((r - 1) * slices + 1);
+
+                indices[baseIndex +indexCount - 6] = (short)(r * slices + 1);
             }
             return vertices;
         }

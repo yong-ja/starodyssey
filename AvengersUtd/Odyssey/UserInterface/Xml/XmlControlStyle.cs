@@ -96,6 +96,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public ColorArray ToColorArray()
         {
             Color4[] colors = new Color4[ColorArray.ColorCount];
+            if (xmlColorArray == null)
+                return new ColorArray(colors);
             for (int i = 0; i < ColorArray.ColorCount; i++)
             {
                 colors[i] = xmlColorArray[i].ToColor4();
@@ -199,7 +201,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
                                                : XmlCommon.DecodeThickness(BorderSize),
                                Enabled = Enabled != null
                                                        ? ConvertShaders(Enabled)
-                                                       : null,
+                                                       : new IGradientShader[0],
                                BorderShaders = BorderEnabledShaders != null
                                                        ? (from bs in BorderEnabledShaders
                                                           select bs.ToColorShader()).ToArray()

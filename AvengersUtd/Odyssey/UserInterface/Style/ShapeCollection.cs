@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
 
 namespace AvengersUtd.Odyssey.UserInterface.Style
 {
     public class ShapeCollection : IEnumerable<ShapeDescription>
     {
-        ShapeDescription[] shapeDescriptions;
+        readonly ShapeDescription[] shapeDescriptions;
 
         public ShapeCollection(int capacity)
         {
             shapeDescriptions = new ShapeDescription[capacity];
+        }
+
+        public ShapeCollection(IEnumerable<ShapeDescription> shapes)
+        {
+            shapeDescriptions = shapes.ToArray();
         }
 
         public ShapeDescription this[int index]

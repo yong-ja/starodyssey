@@ -54,6 +54,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             get { return ShapeDescription.Join(shapes.ToArray()); }
         }
 
+        public ShapeCollection Shapes
+        {
+            get { return new ShapeCollection(shapes); }
+        }
+
         public Designer()
         {
             shapes = new List<ShapeDescription>();
@@ -103,7 +108,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                     throw Error.ArgumentInvalid("Shader", typeof (Designer), "CheckParameters");
             }
 
-           
         }
     }
 }

@@ -99,7 +99,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
         public void DrawRectangle()
         {
-            CheckParameters(Options.Size | Options.Shader);
+            CheckParameters(Options.BorderSize | Options.Shader);
            
             float actualWidth = Width;
             float actualHeight = Height;
@@ -116,7 +116,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 
                 switch (Shader.GradientType)
                 {
-                    
                     case GradientType.LinearVerticalGradient:
                         gradient = SplitGradient(Shader.Gradient, 0, topSegmentOffset);
                         break;

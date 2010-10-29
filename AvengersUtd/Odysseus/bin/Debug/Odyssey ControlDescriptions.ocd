@@ -8,14 +8,15 @@
     <Enabled>
       <RadialGradient GradientType="Radial">
         <Gradient>
-          <!--GradientStop Color="FF4169E1" Offset="0"/>
+          <GradientStop Color="FF4169E1" Offset="0"/>
           <GradientStop Color="FF3058AD" Offset="0.75"/>
           <GradientStop Color="FF1F336B" Offset="0.80"/>
           <GradientStop Color="FF0B1528" Offset="0.85"/>
+          <GradientStop Color="FF0B1428" Offset="1.0"/>
+          <!--GradientStop Color="FF4169E1" Offset="0.0"/>
+          <GradientStop Color="FF3058AD" Offset="0.25"/>
+          <GradientStop Color="FF0B1528" Offset="0.6"/>
           <GradientStop Color="FF0B1428" Offset="1.0"/-->
-          <GradientStop Color="FFFFFFFF" Offset="0.0"/>
-          <GradientStop Color="FFFF0000" Offset="0.5"/>
-          <GradientStop Color="FF4169E1" Offset="1.0"/>
         </Gradient>
       </RadialGradient>
     </Enabled>
