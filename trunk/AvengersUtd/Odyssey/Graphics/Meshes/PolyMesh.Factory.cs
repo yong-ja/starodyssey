@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Vector2 v2i = new Vector2(v2.X, v2.Y);
 
             Vector2 vDir = (v1i - v2i);
-            vDir = new Vector2(-vDir.Y, vDir.X);
+            vDir = vDir.Perp();
             vDir.Normalize();
             float vLength = (float)Math.Sqrt(vDir.X * vDir.X + vDir.Y * vDir.Y);
             vDir = new Vector2(vDir.X / vLength, vDir.Y / vLength);

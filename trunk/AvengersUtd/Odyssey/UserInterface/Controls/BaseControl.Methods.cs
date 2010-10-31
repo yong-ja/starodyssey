@@ -273,7 +273,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// </summary>
         /// <param name="control">The control whose bounds to compute.</param>
         /// <returns>The array of points, stored in clockwise order.</returns>
-        public Vector2[] ComputeBounds(BaseControl control)
+        public static Vector2[] ComputeBounds(BaseControl control)
         {
             Vector2 cornerNE = control.AbsolutePosition;
             int width = control.Size.Width;

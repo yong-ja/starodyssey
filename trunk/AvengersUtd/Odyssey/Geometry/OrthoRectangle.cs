@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -43,5 +44,39 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public float Right
         { get { return X + Width; } }
+
+        public Vector2 TopLeft
+        {
+            get { return new Vector2(X,Y);}
+        }
+
+        public Vector2 TopRight
+        {
+            get { return new Vector2(Right,Y);}
+        }
+
+        public Vector2 BottomRight
+        {
+            get { return new Vector2(Right, Bottom); }
+        }
+
+        public Vector2 BottomLeft
+        { get { return new Vector2(Bottom, X); } }
+
+
+        public static explicit operator PathGeometry(OrthoRectangle rectangle)
+        {
+            Segment top = new Segment(rectangle.TopLeft, rectangle.TopRight);
+            Segment right = new Segment(rectangle.TopRight, rectangle.BottomRight);
+            Segment bottom = new Segment(rectangle.BottomLeft, rectangle.BottomRight);
+            Segment left = new Segment(rectangle.TopLeft, rectangle.BottomLeft);
+
+            return new PathGeometry(new[] { top, right, bottom, left });
+        }
+        
+        public static explicit operator Polygon(OrthoRectangle rectangle)
+        {
+            return new Polygon(new[] { rectangle.TopLeft, rectangle.TopRight, rectangle.BottomRight, rectangle.BottomLeft }); 
+        }
     }
 }

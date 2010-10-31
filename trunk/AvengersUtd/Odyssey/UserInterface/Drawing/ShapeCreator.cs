@@ -100,10 +100,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
             }
 
+            Segment a = new Segment(new Vector2(0,0), new Vector2(5,5) );
+            Segment b = new Segment(new Vector2(5,0), new Vector2(0,5));
+
+            Vector2 p = Geometry.Intersection.SegmentSegmentIntersection(a, b);
+            p.ToString();
             float actualWidth = d.Width;
             d.Width = 2;
             d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-            Polygon poly = Polygon.CreateEllipse(new PointF(d.Position.X, d.Position.Y), 50, 125, 24);
+            Polygon poly = Polygon.CreateEllipse(new Vector2(d.Position.X, d.Position.Y), 50, 125, 24);
+            PathGeometry pg = (PathGeometry)control.OrthoRectangle;
+            
+            p = Geometry.Intersection.SegmentSegmentIntersection(pg[0], pg[1]);
+            p.ToString();
             if (actualWidth > 50)
                 poly = Polygon.SutherlandHodgmanClip(new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height), poly);
             d.Points = poly.ComputeVector4Array(99);
