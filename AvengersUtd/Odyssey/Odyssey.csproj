@@ -55,7 +55,9 @@
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\Extensions.cs" />
+    <Compile Include="Geometry\Intersection.cs" />
     <Compile Include="Geometry\Line.cs" />
+    <Compile Include="Geometry\PathGeometry.cs" />
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
     <Compile Include="Geometry\OrthoRectangle.cs" />

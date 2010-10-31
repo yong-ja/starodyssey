@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -11,19 +13,52 @@ namespace AvengersUtd.Odyssey.Geometry
     /// </summary>
     public struct Segment : IEquatable<Segment>
     {
-        public PointF P1 { get; set; }
-        public PointF P2 { get; set; }
+        public Vector2 StartPoint { get; set; }
+        public Vector2 EndPoint { get; set; }
 
-        public Segment(PointF p1, PointF p2) : this()
+        /// <summary>
+        /// Returns the vector going from the start point to the end point.
+        /// </summary>
+        public Vector2 Direction
         {
-            P1 = p1;
-            P2 = p2;
+            get { return EndPoint - StartPoint; }
+        }
+
+        public Vector2 Normal
+        {
+            get
+            {
+                Vector2 dir = Direction;
+                return dir.Perp();
+            }
+        }
+
+        public Segment(Vector2 startPoint, Vector2 endPoint) : this()
+        {
+            StartPoint = startPoint;
+            EndPoint = endPoint;
+        }
+
+        public bool Intersects(Segment segment)
+        {
+            return Intersection.SegmentIntersectsSegment(this, segment);
+        }
+
+
+        /// <summary>
+        /// Inverts the start point with the end point and vice versa.
+        /// </summary>
+        public void Invert()
+        {
+            Vector2 temp = StartPoint;
+            StartPoint = EndPoint;
+            EndPoint = temp;
         }
 
         #region Equality
         public bool Equals(Segment other)
         {
-            return other.P1.Equals(P1) && other.P2.Equals(P2);
+            return other.StartPoint.Equals(StartPoint) && other.EndPoint.Equals(EndPoint);
         }
 
         public override bool Equals(object obj)
@@ -37,7 +72,7 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             unchecked
             {
-                return (P1.GetHashCode() * 397) ^ P2.GetHashCode();
+                return (StartPoint.GetHashCode() * 397) ^ EndPoint.GetHashCode();
             }
         }
 
@@ -51,5 +86,26 @@ namespace AvengersUtd.Odyssey.Geometry
             return !left.Equals(right);
         } 
         #endregion
+
+
+        public static Segment Invert(Segment segment)
+        {
+            return new Segment(segment.EndPoint, segment.StartPoint);
+        }
+
+        public static int DetermineSide(Segment segment, Vector2 point)
+        {
+            float c = Vector2.Dot(-segment.EndPoint, segment.Normal);
+            float fp = Vector2.Dot(segment.Normal, point) + c;
+            if (fp > 0) return -1; // Left side
+            if (fp < 0) return 1; // Right side
+            return 0; // p belongs to segment
+        }
+
+        public override string ToString()
+        {
+            return string.Format
+                (CultureInfo.InvariantCulture,"P1({0:f2},{1:f2}) -> P2({2:f2},{3:f2})", StartPoint.X, StartPoint.Y, EndPoint.X, EndPoint.Y);
+        }
     }
 }

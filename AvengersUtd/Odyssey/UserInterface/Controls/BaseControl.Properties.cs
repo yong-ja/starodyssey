@@ -30,6 +30,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
@@ -316,6 +317,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             get { return isEnabled; }
             set { isEnabled = canRaiseEvents = value; }
+        }
+
+        /// <summary>
+        /// Gets a rectangle structure in Orthographic projection space bounding this control.
+        /// </summary>
+        public OrthoRectangle OrthoRectangle
+        {
+            get { return new OrthoRectangle(AbsoluteOrthoPosition.X, AbsoluteOrthoPosition.Y, Width, Height); }
         }
 
         /// <summary>

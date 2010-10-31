@@ -11,6 +11,17 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             return new Vector4(vector2, 0f, 1.0f);
         }
+
+        /// <summary>
+        /// Returns a vector perpendicular to this one. Perp unary operator.
+        /// </summary>
+        /// <param name="vector2"></param>
+        /// <returns></returns>
+        public static Vector2 Perp(this Vector2 vector2)
+        {
+            return new Vector2(-vector2.Y, vector2.X);
+        }
+
         #endregion
         #region Vector3 extensions
         public static Vector4 ToVector4(this Vector3 vector3)
