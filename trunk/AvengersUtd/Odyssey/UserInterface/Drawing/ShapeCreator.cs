@@ -105,7 +105,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
             Polygon poly = Polygon.CreateEllipse(new PointF(d.Position.X, d.Position.Y), 50, 125, 24);
             if (actualWidth > 50)
-                poly = Polygon.SutherlandHodgmanClip(new OrthoRectangleF(d.Position.X, d.Position.Y, actualWidth, d.Height), poly);
+                poly = Polygon.SutherlandHodgmanClip(new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height), poly);
             d.Points = poly.ComputeVector4Array(99);
 
             //d.Points = new Vector4[] { d.Position.ToVector4(), d.Position.ToVector4() + new Vector4(50, -50f, 0, 1.0f),

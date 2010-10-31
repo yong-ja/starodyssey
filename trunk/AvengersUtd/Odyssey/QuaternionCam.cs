@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.Direct3D11;

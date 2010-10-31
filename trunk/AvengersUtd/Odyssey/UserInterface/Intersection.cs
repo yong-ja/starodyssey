@@ -53,9 +53,6 @@ namespace AvengersUtd.Odyssey.UserInterface
                 return false;
         }
 
-
-
-
         public static bool RayPlaneTest(Ray ray, Plane plane, out Vector3 intersectionPoint)
         {
             bool result;
@@ -77,10 +74,6 @@ namespace AvengersUtd.Odyssey.UserInterface
             if (t > 0)
             {
                 result = true;
-                //intersectionPoint = new Vector3(
-                //    r0.X + rD.X * t,
-                //    r0.Y + rD.X * t,
-                //    r0.Z + rD.Z * t);
                 intersectionPoint = r0 + t * rD;
             }
             else

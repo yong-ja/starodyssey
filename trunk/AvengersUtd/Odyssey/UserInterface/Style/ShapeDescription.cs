@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX;
 using SlimDX.Direct3D11;
 

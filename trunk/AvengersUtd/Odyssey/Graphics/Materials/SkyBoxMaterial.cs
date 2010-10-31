@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Effects;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using SlimDX.Direct3D11;
