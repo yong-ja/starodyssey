@@ -44,6 +44,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public float Height { get; set; }
         public Thickness BorderSize { get; set; }
         public IGradientShader Shader { get; set; }
+        public Vector4[] Points { get; set; }
 
         private readonly Stack<MainParameters> parameterStack;
 

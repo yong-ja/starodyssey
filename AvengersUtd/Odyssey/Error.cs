@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -50,9 +51,9 @@ namespace AvengersUtd.Odyssey
                 string.Format(Properties.Resources.ERR_ArrayElements, arrayName, element));
         }
 
-        internal static ArgumentOutOfRangeException WrongCase(string param, string method, object value)
+        internal static InvalidEnumArgumentException WrongCase(string param, string method, object value)
         {
-            return new ArgumentOutOfRangeException(param, value, string.Format(Properties.Resources.ERR_WrongCase, param, method));
+            return new InvalidEnumArgumentException(string.Format(Properties.Resources.ERR_WrongCase, param, method));
         }
 
         internal static InvalidOperationException InvalidOperation(string message)

@@ -55,6 +55,9 @@
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\CBUpdateEveryFrame.cs" />
+    <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\Polygon.Tools.cs" />
+    <Compile Include="Geometry\RectangleF.cs" />
     <Compile Include="Geometry\SkyBox.cs" />
     <Compile Include="Geometry\TexturedPolygon.Factory.cs" />
     <Compile Include="Geometry\TexturedVertex.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="UserInterface\CSExporter.cs" />
     <Compile Include="UserInterface\Drawing\BorderShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Ellipse.cs" />
+    <Compile Include="UserInterface\Drawing\Designer.Lines.cs" />
     <Compile Include="UserInterface\Drawing\IGradientShader.cs" />
     <Compile Include="UserInterface\Drawing\LinearShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />

@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
     {
         const string ControlTag = "Grid";
         public const int DefaultMajorGridLinesFrequency = 5;
-        public const int DefaultGridSpacing = 32;
+        public const int DefaultGridSpacing = 256;
 
         static int count;
 

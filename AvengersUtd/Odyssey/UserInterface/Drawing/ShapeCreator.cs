@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Drawing;
 using System.Linq;
+using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
@@ -79,23 +81,36 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         break;
 
                     case GradientType.Radial:
-                        d.Shader = LinearShader.CreateUniform
-                            (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
-                        d.FillRectangle();
-                        RadialShader rs = (RadialShader)colorShader;
+                        //d.Shader = LinearShader.CreateUniform
+                        //    (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
+                        //d.FillRectangle();
+                        //RadialShader rs = (RadialShader)colorShader;
                         
-                        d.SaveState();
-                        d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
-                        d.Shader = rs;
-                        d.Width = rs.RadiusX * d.Width;
-                        d.Height = rs.RadiusY * d.Height;
-                        d.DrawEllipse();
-                        d.RestoreState();
+                        //d.SaveState();
+                        //d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
+                        //d.Shader = rs;
+                        //d.Width = rs.RadiusX * d.Width;
+                        //d.Height = rs.RadiusY * d.Height;
+                        //d.DrawEllipse();
+                        //d.RestoreState();
+
+
                         break;
                 }
 
             }
 
+            float actualWidth = d.Width;
+            d.Width = 2;
+            d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
+            Polygon poly = Polygon.CreateEllipse(new PointF(d.Position.X, d.Position.Y), 50, 125, 24);
+            if (actualWidth > 50)
+                poly = Polygon.SutherlandHodgmanClip(new OrthoRectangleF(d.Position.X, d.Position.Y, actualWidth, d.Height), poly);
+            d.Points = poly.ComputeVector4Array(99);
+
+            //d.Points = new Vector4[] { d.Position.ToVector4(), d.Position.ToVector4() + new Vector4(50, -50f, 0, 1.0f),
+            //    d.Position.ToVector4() + new Vector4(75, 200, 0, 1.0f) };
+            d.DrawClosedPath();
             return d.Output;
         }
 

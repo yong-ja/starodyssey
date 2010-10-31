@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
@@ -11,92 +7,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public partial class Designer
     {
-
-
-        static GradientStop[] SplitGradient(GradientStop[] gradient, float lowerBound, float upperBound)
-        {
-            IEnumerable<GradientStop> gradientOffsets = from g in gradient
-                                                        where
-                                                                g.Offset > lowerBound &&
-                                                                g.Offset < upperBound
-                                                        select g;
-            List<GradientStop> gradientList = new List<GradientStop>();
-            foreach (GradientStop gradientStop in gradientOffsets)
-            {
-                GradientStop currentStop = gradientStop;
-                GradientStop prevStop = gradient.First(g => g.Offset < currentStop.Offset);
-                GradientStop nextStop = gradient.First(g => g.Offset > currentStop.Offset);
-                float scaledValue = MathHelper.Scale
-                        (currentStop.Offset,
-                         prevStop.Offset,
-                         nextStop.Offset);
-                GradientStop scaledStop = new GradientStop
-                                              {
-                                                      Color = Color4.Lerp
-                                                              (prevStop.Color,
-                                                               nextStop.Color,
-                                                               scaledValue),
-                                                      Offset = scaledValue
-                                              };
-                gradientList.Add(scaledStop);
-            }
-
-            GradientStop firstStop;
-            GradientStop lastStop;
-            GradientStop upperBoundStop;
-            GradientStop lowerBoundStop;
-
-            lowerBoundStop = gradient.FirstOrDefault(g => g.Offset == lowerBound);
-            if (lowerBoundStop != null)
-            {
-
-                firstStop = lowerBoundStop;
-                firstStop.Offset = 0;
-            }
-            else
-            {
-                lowerBoundStop = gradient.First(g => g.Offset < lowerBound);
-                upperBoundStop = gradient.First(g => g.Offset > lowerBound);
-                firstStop = new GradientStop
-                        (
-                        Color4.Lerp
-                                (lowerBoundStop.Color,
-                                 upperBoundStop.Color,
-                                 MathHelper.Scale
-                                         (lowerBound,
-                                          lowerBoundStop.Offset,
-                                          upperBoundStop.Offset)),
-                        0);
-            }
-            
-            upperBoundStop = gradient.FirstOrDefault(g => g.Offset == upperBound);
-            if (upperBoundStop != null)
-            {
-                lastStop = upperBoundStop;
-                lastStop.Offset = 1;
-            }
-            else
-            {
-                lowerBoundStop = gradient.First(g => g.Offset < upperBound);
-                upperBoundStop = gradient.First(g => g.Offset > upperBound);
-                lastStop = new GradientStop
-                        (
-                        Color4.Lerp
-                                (lowerBoundStop.Color,
-                                 upperBoundStop.Color,
-                                 MathHelper.Scale
-                                         (upperBound,
-                                          lowerBoundStop.Offset,
-                                          upperBoundStop.Offset)),
-                        1);
-            }
-
-            gradientList.Insert(0, firstStop);
-            gradientList.Add(lastStop);
-
-            return gradientList.ToArray();
-        }
-
         public void DrawRectangle()
         {
             CheckParameters(Options.BorderSize | Options.Shader);
@@ -117,7 +27,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 switch (Shader.GradientType)
                 {
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(Shader.Gradient, 0, topSegmentOffset);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, 0, topSegmentOffset);
                         break;
                     case GradientType.Uniform:
                     case GradientType.LinearHorizontalGradient:
@@ -149,10 +59,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         gradient = Shader.Gradient;
                         break;  
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = SplitGradient(Shader.Gradient, 0, leftSegmentOffset);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, 0, leftSegmentOffset);
                         break;
                     default:
                         throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
@@ -178,7 +88,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 {
  
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(Shader.Gradient, bottomSegmentOffset, 1);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, bottomSegmentOffset, 1);
                         break;
                     case GradientType.Uniform:
                     case GradientType.LinearHorizontalGradient:
@@ -213,10 +123,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         break;
 
                     case GradientType.LinearVerticalGradient:
-                        gradient = SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, topSegmentOffset, bottomSegmentOffset);
                         break;
                     case GradientType.LinearHorizontalGradient:
-                        gradient = SplitGradient(Shader.Gradient, rightSegmentOffset, 1);
+                        gradient = LinearShader.SplitGradient(Shader.Gradient, rightSegmentOffset, 1);
                         break;
                     default:
                         throw Error.WrongCase("Shader.GradientType", "DrawSubdividedRectangleWithOutline",
