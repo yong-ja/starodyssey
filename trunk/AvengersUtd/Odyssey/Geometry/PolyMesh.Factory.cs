@@ -29,6 +29,81 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public partial class PolyMesh
     {
+        #region Lines
+        public static ColoredVertex[] CreateLineMesh(float width, Color4 color, Vector4 v1, Vector4 v2, out short[] indices, short baseIndex=(short) 0)
+        {
+            ColoredVertex[] vertices = new ColoredVertex[4];
+            float z = v1.Z;
+            const float w = 1.0f;
+            Vector2 v1i = new Vector2(v1.X, v1.Y);
+            Vector2 v2i = new Vector2(v2.X, v2.Y);
+
+            Vector2 vDir = (v1i - v2i);
+            vDir = new Vector2(-vDir.Y, vDir.X);
+            vDir.Normalize();
+            float vLength = (float)Math.Sqrt(vDir.X * vDir.X + vDir.Y * vDir.Y);
+            vDir = new Vector2(vDir.X / vLength, vDir.Y / vLength);
+            width /= 2;
+
+            Vector2 vTopRight = v1i + (-width * vDir);
+            Vector2 vTopLeft = v1i + (width * vDir);
+            Vector2 vBottomRight = v2i + (-width * vDir);
+            Vector2 vBottomLeft = v2i + (width * vDir);
+
+            vertices[0] = new ColoredVertex(new Vector4(vTopLeft,z, w), color );
+            vertices[1] = new ColoredVertex(new Vector4(vTopRight, z, w), color);
+            vertices[2] = new ColoredVertex(new Vector4(vBottomRight, z, w), color);
+            vertices[3] = new ColoredVertex(new Vector4(vBottomLeft, z, w), color);
+
+            // Top left 0
+            // Top right 1
+            // Bottom right 2
+            // Bottom left 3
+            indices = new short[]
+                      {
+                          1, 0, 3,
+                          2, 1, 3
+                      };
+
+            if (baseIndex>0)
+                for (int i = 0; i < indices.Length; i++)
+                {
+                    indices[i] += baseIndex;
+                }
+
+            return vertices;
+
+        }
+
+        public static ColoredVertex[] DrawPolyLine(int width, Color4[] colors, bool closed, IEnumerable<Vector4> points, out short[] indices)
+        {
+            Vector4[] pointsArray = points.ToArray();
+            int length = closed ? pointsArray.Length : pointsArray.Length - 1;
+            
+            ColoredVertex[] vertices = new ColoredVertex[4*length];
+            indices = new short[6*length];
+            short vertexCount = 0;
+            short indexCount = 0;
+            Vector4 v1 = pointsArray[0];
+            for (int i = 1; i <= length; i++)
+            {
+                int index = i < length ? i : 0;
+                Vector4 v2 = pointsArray[index];
+                Color4 color = colors[index];
+                short[] tempIndices;
+                Array.Copy(CreateLineMesh(width, color, v1, v2, out tempIndices, vertexCount), 0, vertices, vertexCount, 4);
+                Array.Copy(tempIndices, 0, indices, indexCount, 6);
+                vertexCount += 4;
+                indexCount += 6;
+                v1 = v2;
+            }
+
+            return vertices;
+        }
+
+        #endregion
+        
+
         #region Triangles
         public static ColoredVertex[] CreateEquilateralTriangle(Vector4 leftVertex, float sideLength, Color4[] colors,
                                                                bool isTriangleUpside, out short[] indices)
