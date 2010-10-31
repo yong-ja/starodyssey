@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.UserInterface.Input;

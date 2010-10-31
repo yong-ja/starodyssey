@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using AvengersUtd.Odyssey.UserInterface;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
     public partial class Polygon
     {
 
-        public static Polygon SutherlandHodgmanClip(OrthoRectangleF bounds, Polygon p)
+        public static Polygon SutherlandHodgmanClip(OrthoRectangle bounds, Polygon p)
         {
             Polygon p1 = SutherlandHodgmanOneAxis(bounds, Borders.Left, p.Points);
             Polygon p2 = SutherlandHodgmanOneAxis(bounds, Borders.Right, p1.Points);
@@ -21,20 +18,20 @@ namespace AvengersUtd.Odyssey.Geometry
             return p4;
         }
 
-        private static Polygon SutherlandHodgmanOneAxis(OrthoRectangleF bounds, Borders edge, List<PointF> v)
+        private static Polygon SutherlandHodgmanOneAxis(OrthoRectangle bounds, Borders edge, List<Vector2> v)
         {
             if (v.Count == 0)
             {
                 return new Polygon();
             }
 
-            List<PointF> polygon = new List<PointF>();
+            List<Vector2> polygon = new List<Vector2>();
 
-            PointF s = v[v.Count - 1];
+            Vector2 s = v[v.Count - 1];
 
             for (int i = 0; i < v.Count; ++i)
             {
-                PointF p = v[i];
+                Vector2 p = v[i];
                 bool pIn = IsInside(bounds, edge, p);
                 bool sIn = IsInside(bounds, edge, s);
 
@@ -66,7 +63,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return new Polygon(polygon);
         }
 
-        private static bool IsInside(OrthoRectangleF bounds, Borders edge, PointF p)
+        private static bool IsInside(OrthoRectangle bounds, Borders edge, Vector2 p)
         {
             switch (edge)
             {
@@ -88,7 +85,7 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
 
-        private static PointF LineIntercept(OrthoRectangleF bounds, Borders edge, PointF a, PointF b)
+        private static Vector2 LineIntercept(OrthoRectangle bounds, Borders edge, Vector2 a, Vector2 b)
         {
             if (a == b)
             {
@@ -103,7 +100,7 @@ namespace AvengersUtd.Odyssey.Geometry
                         throw new ArgumentException("no intercept found");
                     }
 
-                    return new PointF(a.X + (((b.X - a.X) * (bounds.Bottom - a.Y)) / (b.Y - a.Y)), bounds.Bottom);
+                    return new Vector2(a.X + (((b.X - a.X) * (bounds.Bottom - a.Y)) / (b.Y - a.Y)), bounds.Bottom);
 
                 case Borders.Left:
                     if (b.X == a.X)
@@ -111,7 +108,7 @@ namespace AvengersUtd.Odyssey.Geometry
                         throw new ArgumentException("no intercept found");
                     }
 
-                    return new PointF(bounds.Left, a.Y + (((b.Y - a.Y) * (bounds.Left - a.X)) / (b.X - a.X)));
+                    return new Vector2(bounds.Left, a.Y + (((b.Y - a.Y) * (bounds.Left - a.X)) / (b.X - a.X)));
 
                 case Borders.Right:
                     if (b.X == a.X)
@@ -119,7 +116,7 @@ namespace AvengersUtd.Odyssey.Geometry
                         throw new ArgumentException("no intercept found");
                     }
 
-                    return new PointF(bounds.Right, a.Y + (((b.Y - a.Y) * (bounds.Right - a.X)) / (b.X - a.X)));
+                    return new Vector2(bounds.Right, a.Y + (((b.Y - a.Y) * (bounds.Right - a.X)) / (b.X - a.X)));
 
                 case Borders.Top:
                     if (b.Y == a.Y)
@@ -127,7 +124,7 @@ namespace AvengersUtd.Odyssey.Geometry
                         throw new ArgumentException("no intercept found");
                     }
 
-                    return new PointF(a.X + (((b.X - a.X) * (bounds.Top - a.Y)) / (b.Y - a.Y)), bounds.Top);
+                    return new Vector2(a.X + (((b.X - a.X) * (bounds.Top - a.Y)) / (b.Y - a.Y)), bounds.Top);
             }
 
             throw new ArgumentException("no intercept found");

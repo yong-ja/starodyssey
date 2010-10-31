@@ -9,21 +9,21 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public partial class Polygon
     {
-        private readonly List<System.Drawing.PointF> points;
+        private readonly List<Vector2> points;
 
-        public List<PointF> Points
+        public List<Vector2> Points
         {
             get { return points; }
         }
 
-        public Polygon(IEnumerable<PointF> points):this()
+        public Polygon(IEnumerable<Vector2> points):this()
         {
             this.points.AddRange(points);
         }
 
         private Polygon()
         {
-            this.points = new List<PointF>();
+            this.points = new List<Vector2>();
         }
 
         public Vector4[] ComputeVector4Array(float zIndex)
@@ -31,22 +31,22 @@ namespace AvengersUtd.Odyssey.Geometry
             Vector4[] pointsArray = new Vector4[points.Count];
             for (int i = 0; i < points.Count; i++)
             {
-                PointF point = points[i];
+                Vector2 point = points[i];
                 pointsArray[i] = new Vector4(point.X, point.Y, zIndex, 1.0f);
             }
             return pointsArray;
         }
 
-        public static Polygon CreateEllipse(PointF center, float radiusX, float radiusY, int slices)
+        public static Polygon CreateEllipse(Vector2 center, float radiusX, float radiusY, int slices)
         {
             float x = center.X;
             float y = center.Y;
             float delta = MathHelper.TwoPi / slices;
-            PointF[] points = new PointF[slices];
+            Vector2[] points = new Vector2[slices];
             for (int i = 0; i < slices; i++)
             {
                 float theta = i * delta;
-                points[i] = new PointF
+                points[i] = new Vector2
                     (x + (float) Math.Cos(theta)*radiusX,
                     y - (float) Math.Sin(theta)*radiusY);
             }
