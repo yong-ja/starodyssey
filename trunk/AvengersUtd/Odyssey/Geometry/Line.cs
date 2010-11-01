@@ -10,11 +10,44 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         public Vector2 Origin { get; set; }
         public Vector2 Direction { get; set; }
+        public Vector2 Normal { get; set; }
+
+        public float Ax { get; set; }
+        public float By { get; set; }
+        public float C { get; set; }
+
 
         public Line(Vector2 origin, Vector2 direction) : this()
         {
             Origin = origin;
             Direction = direction;
+
+            Normal = Direction.Perp();
+            Ax = Normal.X;
+            By = Normal.Y;
+            C = Vector2.Dot(-PointAtDistance(1.0f), Normal);
+        }
+
+        public Vector2 PointAtDistance(float distance)
+        {
+           return Origin + distance*Direction; 
+        }
+
+        public static int DetermineSide(Line line, Vector2 point)
+        {
+            return DetermineSide(line, line.Normal, point);
+        }
+
+        public static int DetermineSide(Line line, Vector2 normal, Vector2 point)
+        {
+            float value = Vector2.Dot(line.Normal, point) + line.C;
+
+            if (Math.Abs(value) < MathHelper.Epsilon)
+                return 0;
+            else if (value < 0)
+                return -1;
+            else //if (value > 0)
+                return 1;
         }
 
         public static Line FromTwoPoints(Vector2 point1, Vector2 point2)

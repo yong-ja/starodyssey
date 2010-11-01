@@ -106,6 +106,7 @@
     <Compile Include="UserInterface\Drawing\BorderShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Ellipse.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Lines.cs" />
+    <Compile Include="UserInterface\Drawing\Designer.Points.cs" />
     <Compile Include="UserInterface\Drawing\IGradientShader.cs" />
     <Compile Include="UserInterface\Drawing\LinearShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />
