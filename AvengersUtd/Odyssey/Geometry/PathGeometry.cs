@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public class PathGeometry
+    public class PathGeometry : IEnumerable<Segment>
     {
         private readonly List<Segment> segments;
 
@@ -27,6 +28,16 @@ namespace AvengersUtd.Odyssey.Geometry
         public Segment StartSegment
         {
             get { return segments[0]; }
+        }
+
+        public IEnumerator<Segment> GetEnumerator()
+        {
+            return segments.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

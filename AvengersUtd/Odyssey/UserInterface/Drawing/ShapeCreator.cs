@@ -100,26 +100,41 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
             }
 
-            Segment a = new Segment(new Vector2(0,0), new Vector2(5,5) );
-            Segment b = new Segment(new Vector2(5,0), new Vector2(0,5));
-
-            Vector2 p = Geometry.Intersection.SegmentSegmentIntersection(a, b);
-            p.ToString();
+         
             float actualWidth = d.Width;
             d.Width = 2;
             d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-            Polygon poly = Polygon.CreateEllipse(new Vector2(d.Position.X, d.Position.Y), 50, 125, 24);
-            PathGeometry pg = (PathGeometry)control.OrthoRectangle;
-            
-            p = Geometry.Intersection.SegmentSegmentIntersection(pg[0], pg[1]);
-            p.ToString();
-            if (actualWidth > 50)
-                poly = Polygon.SutherlandHodgmanClip(new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height), poly);
-            d.Points = poly.ComputeVector4Array(99);
+            Polygon poly = Polygon.CreateEllipse(new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
+            Polygon rectangle = (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
+            Vector2 c = rectangle.Centroid;
+            //c = de;
 
-            //d.Points = new Vector4[] { d.Position.ToVector4(), d.Position.ToVector4() + new Vector4(50, -50f, 0, 1.0f),
-            //    d.Position.ToVector4() + new Vector4(75, 200, 0, 1.0f) };
+            Polygon rh = new Polygon(new [] {c + new Vector2(0, 100), c+new Vector2(-100,0), c+new Vector2(0, -100), c+new Vector2(100,0),   });
+
+            d.Points = rh.ComputeVector4Array(99);
             d.DrawClosedPath();
+
+            if (actualWidth > 50)
+            {
+                IGradientShader s = d.Shader;
+                poly = Polygon.SutherlandHodgmanClip(rh, poly);
+                d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
+
+                d.Points = poly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
+               // d.DrawClosedPath();
+                d.DrawPoints();
+                d.Shader = s;
+            }
+            else
+            {
+                d.Points = poly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
+                d.DrawClosedPath();
+                d.DrawClosedPath();
+            }
+
+            //d.Vertices = new Vector4[] { d.Position.ToVector4(), d.Position.ToVector4() + new Vector4(50, -50f, 0, 1.0f),
+            //    d.Position.ToVector4() + new Vector4(75, 200, 0, 1.0f) };
+            
             return d.Output;
         }
 
