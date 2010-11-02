@@ -105,6 +105,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             d.Width = 2;
             d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
             Polygon poly = Polygon.CreateEllipse(new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
+            float segmentLength = Polygon.ComputeEllipseSegmentLength
+                (new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
             Polygon rectangle = (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
             Vector2 c = rectangle.Centroid;
             //c = de;
@@ -119,8 +121,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 IGradientShader s = d.Shader;
                 poly = Polygon.SutherlandHodgmanClip(rh, poly);
                 d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
+                PathFigure pf = (PathFigure) poly;
+                pf.Optimize(segmentLength / 2);
+                pf.Detail(segmentLength);
 
-                d.Points = poly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
+                d.Points = ((Polygon)pf).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
                // d.DrawClosedPath();
                 d.DrawPoints();
                 d.Shader = s;

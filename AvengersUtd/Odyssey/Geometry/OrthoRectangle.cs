@@ -15,18 +15,11 @@ namespace AvengersUtd.Odyssey.Geometry
     /// </summary>
     public struct OrthoRectangle
     {
+        #region Properties
         public float X { get; set; }
         public float Y { get; set; }
         public float Width { get; set; }
         public float Heigth { get; set; }
-
-        public OrthoRectangle(float x, float y, float width, float heigth) : this()
-        {
-            X = x;
-            Y = y;
-            Width = width;
-            Heigth = heigth;
-        }
 
         public float Top
         {
@@ -48,12 +41,12 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public Vector2 TopLeft
         {
-            get { return new Vector2(X,Y);}
+            get { return new Vector2(X, Y); }
         }
 
         public Vector2 TopRight
         {
-            get { return new Vector2(Right,Y);}
+            get { return new Vector2(Right, Y); }
         }
 
         public Vector2 BottomRight
@@ -62,19 +55,29 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         public Vector2 BottomLeft
-        { get { return new Vector2(X, Bottom); } }
+        { get { return new Vector2(X, Bottom); } } 
+        #endregion
 
+        public OrthoRectangle(float x, float y, float width, float heigth)
+            : this()
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Heigth = heigth;
+        }
 
-        public static explicit operator PathGeometry(OrthoRectangle rectangle)
+        #region Type conversion operators
+        public static explicit operator PathFigure(OrthoRectangle rectangle)
         {
             Segment top = new Segment(rectangle.TopLeft, rectangle.TopRight);
             Segment right = new Segment(rectangle.TopRight, rectangle.BottomRight);
             Segment bottom = new Segment(rectangle.BottomRight, rectangle.BottomLeft);
             Segment left = new Segment(rectangle.BottomLeft, rectangle.TopLeft);
 
-            return new PathGeometry(new[] { top, left, bottom, right});
+            return new PathFigure(new[] { top, left, bottom, right });
         }
-        
+
         /// <summary>
         /// Returns a polygon composed of the rectangles' vertices arranged in
         /// counter-clockwise order;
@@ -83,8 +86,9 @@ namespace AvengersUtd.Odyssey.Geometry
         /// <returns>A polygon structure.</returns>
         public static explicit operator Polygon(OrthoRectangle rectangle)
         {
-            return new Polygon(new[] { rectangle.TopRight, rectangle.TopLeft, rectangle.BottomLeft, rectangle.BottomRight }); 
-        }
+            return new Polygon(new[] { rectangle.TopRight, rectangle.TopLeft, rectangle.BottomLeft, rectangle.BottomRight });
+        } 
+        #endregion
 
         public static bool IsInside(OrthoRectangle bounds, Borders edge, Vector2 p)
         {

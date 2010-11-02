@@ -20,8 +20,8 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public static Polygon SutherlandHodgmanClip(Polygon bounds, Polygon p)
         {
-            PathGeometry segments = (PathGeometry) bounds;
-            foreach (Segment segment in segments)
+            PathFigure figure = (PathFigure) bounds;
+            foreach (Segment segment in figure.Segments)
             {
                 Polygon polygon = SutherlandHodgman(segment, bounds, p);
                 p = polygon;
