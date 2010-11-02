@@ -36,6 +36,11 @@ namespace AvengersUtd.Odyssey.Geometry
                 return dir.Perp();
             }
         } 
+
+        public float Length
+        {
+            get { return Direction.Length(); }
+        }
         #endregion
 
         public Segment(Vector2 startPoint, Vector2 endPoint) : this()
@@ -135,6 +140,25 @@ namespace AvengersUtd.Odyssey.Geometry
             return PointAtDistance(new Segment(startPoint, endPoint), distance);
         }
 
+        public static IEnumerable<Segment> Subdivide(Segment segment, int subSegments)
+        {
+            Line line = (Line) segment;
+            float segmentLength = segment.Length;
+            float subSegmentLegnth = segmentLength/subSegments;
+            List<Segment> newSegments= new List<Segment>();
+
+            Vector2 s = segment.StartPoint;
+            for (int i=1; i < subSegments; i++)
+            {
+                Vector2 p = line.PointAtDistance(i*subSegmentLegnth);
+                newSegments.Add(new Segment(s, p));
+                s = p;
+            }
+
+            newSegments.Add(new Segment(s, segment.EndPoint));
+
+            return newSegments;
+        }
 
         #endregion
 

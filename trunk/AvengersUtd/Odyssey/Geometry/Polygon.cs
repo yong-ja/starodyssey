@@ -147,6 +147,13 @@ namespace AvengersUtd.Odyssey.Geometry
       
         #endregion
 
+        static Vector2 CreateEllipseVertex(float x, float y, float radiusX, float radiusY, float theta)
+        {
+            return new Vector2
+                    (x + (float) Math.Cos(theta)*radiusX,
+                    y - (float) Math.Sin(theta)*radiusY);
+        }
+
         public static Polygon CreateEllipse(Vector2 center, float radiusX, float radiusY, int slices)
         {
             float x = center.X;
@@ -156,19 +163,33 @@ namespace AvengersUtd.Odyssey.Geometry
             for (int i = 0; i < slices; i++)
             {
                 float theta = i * delta;
-                points[i] = new Vector2
-                    (x + (float) Math.Cos(theta)*radiusX,
-                    y - (float) Math.Sin(theta)*radiusY);
+                points[i] = CreateEllipseVertex(x, y, radiusX, radiusY, theta);
             }
             
             return new Polygon(points);
         }
 
-        public static explicit operator PathGeometry(Polygon v)
+        public static float ComputeEllipseSegmentLength(Vector2 center, float radiusX, float radiusY, int slices)
+        {
+            float x = center.X;
+            float y = center.Y;
+            float delta = MathHelper.TwoPi / slices;
+            Vector2[] points = new Vector2[2];
+            for (int i = 0; i < 2; i++)
+            {
+                float theta = i * delta;
+                points[i] = CreateEllipseVertex(x, y, radiusX, radiusY, theta);
+            }
+
+            Segment segment = new Segment(points[0], points[1]);
+            return segment.Length;
+        }
+
+        public static explicit operator PathFigure(Polygon v)
         {
             List<Segment> segments = new List<Segment>();
             Vector2 s = v[v.VertexCount - 1];
-            for (int i = 0; i < v.VertexCount -1; i++)
+            for (int i = 0; i < v.VertexCount; i++)
             {
                 Vector2 p = v[i];
                 segments.Add(new Segment(s,p));
@@ -176,7 +197,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 s = p;
             }
 
-            return new PathGeometry(segments);
+            return new PathFigure(segments);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public Vector2 PointAtDistance(float distance)
         {
-           return Origin + distance*Direction; 
+           return Origin + distance*Vector2.Normalize(Direction); 
         }
 
         public static int DetermineSide(Line line, Vector2 point)
