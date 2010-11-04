@@ -168,7 +168,9 @@
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="bin\Debug\OLD.ocd" />
-    <None Include="bin\Debug\Odysseus ControlDescriptions.ocd" />
+    <None Include="bin\Debug\Odysseus ControlDescriptions.ocd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="bin\Debug\Odyssey ControlDescriptions.ocd">
       <SubType>Designer</SubType>
     </None>

@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -64,7 +63,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		/// </remarks>
 		/// <param name="vertex">List of vertices to triangulate.</param>
 		/// <returns>Triangles referencing vertex indices arranged in clockwise order</returns>
-		public static List<Geometry.Triangle> Triangulate(List<Vector2> vertex)
+		public static List<Triangle> Triangulate(List<Vector2D> vertex)
 		{
 			ushort nv = (ushort)vertex.Count;
 			if (nv < 3)
@@ -74,10 +73,10 @@ namespace AvengersUtd.Odyssey.Geometry
 
 			// Find the maximum and minimum vertex bounds.
 			// This is to allow calculation of the bounding supertriangle
-			float xmin = vertex[0].X;
-			float ymin = vertex[0].Y;
-			float xmax = xmin;
-			float ymax = ymin;
+			double xmin = vertex[0].X;
+			double ymin = vertex[0].Y;
+			double xmax = xmin;
+			double ymax = ymin;
 			for (int i = 1; i < nv; i++)
 			{
 				if (vertex[i].X < xmin) xmin = vertex[i].X;
@@ -85,13 +84,13 @@ namespace AvengersUtd.Odyssey.Geometry
 				if (vertex[i].Y < ymin) ymin = vertex[i].Y;
 				if (vertex[i].Y > ymax) ymax = vertex[i].Y;
 			}
-			float dx = xmax - xmin;
-			float dy = ymax - ymin;
+			double dx = xmax - xmin;
+			double dy = ymax - ymin;
 
-			float dmax = (dx > dy) ? dx : dy;
+			double dmax = (dx > dy) ? dx : dy;
 
-			float xmid = (xmax + xmin) * 0.5f;
-			float ymid = (ymax + ymin) * 0.5f;
+			double xmid = (xmax + xmin) * 0.5f;
+			double ymid = (ymax + ymin) * 0.5f;
 
 			
 			// Set up the supertriangle
@@ -99,10 +98,10 @@ namespace AvengersUtd.Odyssey.Geometry
 			// The supertriangle coordinates are added to the end of the
 			// vertex list. The supertriangle is the first triangle in
 			// the triangle list.
-			vertex.Add(new Vector2((xmid - 2 * dmax), (ymid - dmax)));
-            vertex.Add(new Vector2(xmid, (ymid + 2 * dmax)));
-            vertex.Add(new Vector2((xmid + 2 * dmax), (ymid - dmax)));
-			List<Geometry.Triangle> triangles = new List<Geometry.Triangle> {new Geometry.Triangle(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
+			vertex.Add(new Vector2D((xmid - 2 * dmax), (ymid - dmax)));
+            vertex.Add(new Vector2D(xmid, (ymid + 2 * dmax)));
+            vertex.Add(new Vector2D((xmid + 2 * dmax), (ymid - dmax)));
+			List<Triangle> triangles = new List<Geometry.Triangle> {new Geometry.Triangle(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
 
 		    // Include each point one at a time into the existing mesh
 			for (int i = 0; i < nv; i++)
@@ -115,9 +114,9 @@ namespace AvengersUtd.Odyssey.Geometry
 				{
 					if (InCircle(vertex[i], vertex[triangles[j].Point1], vertex[triangles[j].Point2], vertex[triangles[j].Point3]))
 					{
-						edges.Add(new Geometry.Edge(triangles[j].Point1, triangles[j].Point2));
-						edges.Add(new Geometry.Edge(triangles[j].Point2, triangles[j].Point3));
-						edges.Add(new Geometry.Edge(triangles[j].Point3, triangles[j].Point1));
+						edges.Add(new Edge(triangles[j].Point1, triangles[j].Point2));
+						edges.Add(new Edge(triangles[j].Point2, triangles[j].Point3));
+						edges.Add(new Edge(triangles[j].Point3, triangles[j].Point1));
 						triangles.RemoveAt(j);
 						j--;
 					}
@@ -179,7 +178,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		/// <param name="p2">Second point on circle</param>
 		/// <param name="p3">Third point on circle</param>
 		/// <returns>true if p is inside circle</returns>
-		private static bool InCircle(Vector2 p, Vector2 p1, Vector2 p2, Vector2 p3)
+		private static bool InCircle(Vector2D p, Vector2D p1, Vector2D p2, Vector2D p3)
 		{
 			//Return TRUE if the point (xp,yp) lies inside the circumcircle
 			//made up by points (x1,y1) (x2,y2) (x3,y3)

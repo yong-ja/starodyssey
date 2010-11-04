@@ -33,19 +33,19 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public static Polygon SutherlandHodgman(Segment segment, Polygon bounds, Polygon vertices)
         {
-            if (vertices.VertexCount== 0)
+            if (vertices.Count== 0)
             {
                 return new Polygon();
             }
 
-            List<Vector2> polygon = new List<Vector2>();
+            List<Vector2D> polygon = new List<Vector2D>();
 
-            Vector2 centroid = bounds.Centroid;
+            Vector2D centroid = bounds.Centroid;
 
-            Vector2 s = vertices[vertices.VertexCount - 1];
-            for (int i = 0; i < vertices.VertexCount; ++i)
+            Vector2D s = vertices[vertices.Count - 1];
+            for (int i = 0; i < vertices.Count; ++i)
             {
-                Vector2 p = vertices[i];
+                Vector2D p = vertices[i];
                 Line line = (Line) segment;
 
                 int sign = Line.DetermineSide(line, centroid);
@@ -88,20 +88,20 @@ namespace AvengersUtd.Odyssey.Geometry
 
         private static Polygon SutherlandHodgmanOneAxis(OrthoRectangle bounds, Borders edge, Polygon v)
         {
-            if (v.VertexCount == 0)
+            if (v.Count == 0)
             {
                 return new Polygon();
             }
 
-            List<Vector2> polygon = new List<Vector2>();
+            List<Vector2D> polygon = new List<Vector2D>();
 
-            Vector2 s = v[v.VertexCount - 1];
+            Vector2D s = v[v.Count - 1];
 
-            for (int i = 0; i < v.VertexCount; ++i)
+            for (int i = 0; i < v.Count; ++i)
             {
-                Vector2 p = v[i];
-                bool pIn = OrthoRectangle.IsInside(bounds, edge, p);
-                bool sIn = OrthoRectangle.IsInside(bounds, edge, s);
+                Vector2D p = v[i];
+                bool pIn = OrthoRectangle.IsPointInside(bounds, edge, p);
+                bool sIn = OrthoRectangle.IsPointInside(bounds, edge, s);
 
                 if (sIn && pIn)
                 {

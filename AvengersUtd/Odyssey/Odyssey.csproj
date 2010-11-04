@@ -58,6 +58,7 @@
     <Compile Include="Geometry\Edge.cs" />
     <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\Intersection.cs" />
+    <Compile Include="Geometry\IPolygon.cs" />
     <Compile Include="Geometry\Line.cs" />
     <Compile Include="Geometry\PathFigure.cs" />
     <Compile Include="Geometry\Polygon.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
     <Compile Include="Geometry\Triangle.cs" />
+    <Compile Include="Geometry\Vector2D.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
