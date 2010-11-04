@@ -16,9 +16,52 @@ namespace AvengersUtd.Odyssey.Geometry
 	/// with Applications in Terrain Modelling"
 	/// http://astronomy.swin.edu.au/~pbourke/modelling/triangulate/
 	/// </remarks>
-	public class Delauney	
-	{
-		/// <summary>
+	/// 
+	/// 
+    public class Delauney
+    {
+
+        public static ushort[] TriangulateBrute(IList<Vector2D> vertex)
+        {
+            int n = vertex.Count;
+            bool pointValid;
+            List<ushort> indices = new List<ushort>();
+            for (int i = 0;i < n - 2; i++)
+            {
+                for (int j = i + 1; j < n - 1; j++)
+                {
+                    for (int k = j + 1;
+                    k < n;
+                    k++)
+                    {
+                        Circle circle = Circle.CircumCircle3(vertex[i], vertex[j], vertex[k]);
+
+                        pointValid = true;
+                        for (int l = 0; l < n; l++)
+                        {
+                            if(l != i && l != j && l != k)
+                            {
+                                if(circle.IsInside(vertex[l]))
+                                {
+                                    pointValid = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(pointValid)
+                        {
+                            // Add triangle as graph links
+                            indices.AddRange(new ushort[] {(ushort)i, (ushort)j, (ushort)k});
+                        }
+                    }
+                }
+            }
+            return indices.ToArray();
+        }
+
+
+	    /// <summary>
 		/// Performs Delauney triangulation on a set of points.
 		/// </summary>
 		/// <remarks>
@@ -63,7 +106,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		/// </remarks>
 		/// <param name="vertex">List of vertices to triangulate.</param>
 		/// <returns>Triangles referencing vertex indices arranged in clockwise order</returns>
-		public static List<Triangle> Triangulate(List<Vector2D> vertex)
+		public static List<Triangle> Triangulate(IList<Vector2D> vertex)
 		{
 			ushort nv = (ushort)vertex.Count;
 			if (nv < 3)
@@ -89,8 +132,8 @@ namespace AvengersUtd.Odyssey.Geometry
 
 			double dmax = (dx > dy) ? dx : dy;
 
-			double xmid = (xmax + xmin) * 0.5f;
-			double ymid = (ymax + ymin) * 0.5f;
+			double xmid = (xmax + xmin) * 0.5;
+			double ymid = (ymax + ymin) * 0.5;
 
 			
 			// Set up the supertriangle
@@ -112,7 +155,12 @@ namespace AvengersUtd.Odyssey.Geometry
 				// three edges of that triangle are added to the edge buffer and the triangle is removed from list.
 				for (int j = 0; j < triangles.Count; j++)
 				{
-					if (InCircle(vertex[i], vertex[triangles[j].Point1], vertex[triangles[j].Point2], vertex[triangles[j].Point3]))
+				    Vector2D p1 = vertex[triangles[j].Point1];
+                    Vector2D p2 = vertex[triangles[j].Point2];
+                    Vector2D p3 = vertex[triangles[j].Point3];
+				    Circle circle = Circle.CircumCircle3(p1, p2, p3);
+					//if (InCircle(vertex[i], vertex[triangles[j].Point1], vertex[triangles[j].Point2], vertex[triangles[j].Point3]))
+                    if (circle.IsInside(vertex[i]))
 					{
 						edges.Add(new Edge(triangles[j].Point1, triangles[j].Point2));
 						edges.Add(new Edge(triangles[j].Point2, triangles[j].Point3));

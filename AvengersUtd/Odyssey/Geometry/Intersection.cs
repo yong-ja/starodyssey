@@ -29,6 +29,11 @@ namespace AvengersUtd.Odyssey.Geometry
             return true;
         }
 
+        public static bool CirclePointTest(Circle circle, Vector2D point)
+        {
+            return Vector2D.DistanceSquared(circle.Center, point) < circle.Radius * circle.Radius;
+        }
+
         public static Vector2D LineLineIntersection(Line line1, Line line2)
         {
             // Source: Real-Time Rendering, Third Edition
@@ -92,6 +97,8 @@ namespace AvengersUtd.Odyssey.Geometry
 
         }
 
+
+       
 
     }
 }

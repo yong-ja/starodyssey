@@ -469,6 +469,28 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         /// <summary>
+        /// Calculates the cross product of two vectors.
+        /// </summary>
+        /// <param name="left">First source vector.</param>
+        /// <param name="right">Second source vector.</param>
+        /// <param name="result">When the method completes, contains the cross product of the two vectors.</param>
+        public static void Cross(ref Vector2D left, ref Vector2D right, out double result)
+        {
+            result = (left.X * right.Y) - (left.Y * right.X);
+        }
+
+        /// <summary>
+        /// Calculates the cross product of two vectors.
+        /// </summary>
+        /// <param name="left">First source vector.</param>
+        /// <param name="right">Second source vector.</param>
+        /// <returns>The cross product of the two vectors.</returns>
+        public static double Cross(Vector2D left, Vector2D right)
+        {
+            return (left.X * right.Y) - (left.Y * right.X);
+        }
+
+        /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>
         /// <param name="left">First source vector.</param>

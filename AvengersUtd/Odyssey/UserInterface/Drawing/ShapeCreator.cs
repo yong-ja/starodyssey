@@ -100,7 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                             (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
                         Vector2D c = rectangle.Centroid;
                         d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-                        Polygon poly = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100, 6);
+                        Polygon poly = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100, 16);
                         double segmentLength = Polygon.ComputeEllipseSegmentLength
                             (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
                         
@@ -122,17 +122,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         pf.Optimize(segmentLength/2);
                         //pf.Detail(segmentLength);
                         Polygon clippedPoly = ((Polygon) pf);
-                        clippedPoly.Add(clippedPoly.Centroid);
-                        //List<Triangle> triangles = Delauney.Triangulate(clippedPoly.Vertices);
-                        
+                        clippedPoly.Insert(0,clippedPoly.Centroid);
+                        //clippedPoly.Add(clippedPoly.Centroid);
+                        //List<Triangle> triangles = Delauney.Triangulate(clippedPoly);
+                        ushort[] indices = Delauney.TriangulateBrute(clippedPoly);
+
                         //ushort[] indices = triangles.SelectMany(t => t.ArrayCCW).ToArray();
                         //indices.Length.ToString();
 
                         d.Points = clippedPoly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
                         //d.Points = new Polygon(ComputeSuperTriangle(clippedPoly.Vertices)).ComputeVector4Array(99);
-                        d.DrawClosedPath();
+                        //d.DrawClosedPath();
                         //d.DrawPoints();
-                        //d.DrawPolygon(indices);
+                        d.DrawPolygon(indices);
                         d.Shader = s;
                         break;
                 }
