@@ -11,82 +11,82 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public static bool SegmentSegmentTest(Segment a, Segment b)
         {
-            Vector2 u = a.Direction;
-            Vector2 v = b.Direction;
+            Vector2D u = a.Direction;
+            Vector2D v = b.Direction;
             
-            float d = u.X*v.Y - u.Y*v.X;
+            double d = u.X*v.Y - u.Y*v.X;
             
             if (Math.Abs(d) < MathHelper.Epsilon) return false; //parallel test
 
-            Vector2 w = a.StartPoint - b.StartPoint;
+            Vector2D w = a.StartPoint - b.StartPoint;
 
-            float s = v.X*w.Y - v.Y*w.X;
+            double s = v.X*w.Y - v.Y*w.X;
             if (s < 0 || s > d) return false;
 
-            float t = u.X*w.Y - u.Y*w.X;
+            double t = u.X*w.Y - u.Y*w.X;
             if (t < 0 || t > d) return false;
 
             return true;
         }
 
-        public static Vector2 LineLineIntersection(Line line1, Line line2)
+        public static Vector2D LineLineIntersection(Line line1, Line line2)
         {
             // Source: Real-Time Rendering, Third Edition
             // Reference: Page 780
 
-            Vector2 d1 = line1.Direction;
-            Vector2 d2 = line2.Direction;
-            Vector2 d1P = d1.Perp();
-            Vector2 d2P = d2.Perp();
+            Vector2D d1 = line1.Direction;
+            Vector2D d2 = line2.Direction;
+            Vector2D d1P = Vector2D.Perp(d1);
+            Vector2D d2P = Vector2D.Perp(d2);
 
-            float d1d2P = Vector2.Dot(d1, d2P);
+            double d1d2P = Vector2D.Dot(d1, d2P);
 
             if (d1d2P==0) 
-                return new Vector2(float.NaN); // parallel
+                return new Vector2D(double.NaN); // parallel
 
-            Vector2 o1 = line1.Origin;
-            Vector2 o2 = line2.Origin;
+            Vector2D o1 = line1.Origin;
+            Vector2D o2 = line2.Origin;
 
-            float s = Vector2.Dot((o2 - o1), d2P)/d1d2P;
+            double s = Vector2D.Dot((o2 - o1), d2P)/d1d2P;
             return o1 + s*d1;
 
         }
 
-        public static Vector2 SegmentSegmentIntersection(Segment segment1, Segment segment2)
+        public static Vector2D SegmentSegmentIntersection(Segment segment1, Segment segment2)
         {
             //Source: Real-Time Rendering, Third Edition
             //Reference: Page 781
 
-            Vector2 a = segment2.Direction;
-            Vector2 b = segment1.Direction;
+            Vector2D a = segment2.Direction;
+            Vector2D b = segment1.Direction;
 
-            Vector2 c = segment1.StartPoint - segment2.StartPoint;
-            Vector2 aP = a.Perp();
-            Vector2 bP = b.Perp();
+            Vector2D c = segment1.StartPoint - segment2.StartPoint;
+            Vector2D aP = Vector2D.Perp(a);
+            Vector2D bP = Vector2D.Perp(b);
 
-            if (Math.Abs(Vector2.Dot(b, aP)) < MathHelper.Epsilon) 
-                return new Vector2(float.NaN); // parallel test
+            if (Math.Abs(Vector2D.Dot(b, aP)) < MathHelper.Epsilon) 
+                return new Vector2D(double.NaN); // parallel test
 
-            float d = Vector2.Dot(c, aP);
-            float f = Vector2.Dot(a, bP);
+            double d = Vector2D.Dot(c, aP);
+            double f = Vector2D.Dot(a, bP);
 
             if (f > 0)
             {
                 if (d < 0 || d > f) 
-                    return new Vector2(float.NaN);
+                    return new Vector2D(double.NaN);
             }
             else if (d > 0 || d < f) 
-                return new Vector2(float.NaN);
+                return new Vector2D(double.NaN);
             
 
-            float e = Vector2.Dot(c, bP);
+            double e = Vector2D.Dot(c, bP);
             if (f>0)
             {
                 if (e < 0 || e> f)
-                    return new Vector2(float.NaN);
+                    return new Vector2D(double.NaN);
             }
             else if (e > 0 || e < f) 
-                return new Vector2(float.NaN);
+                return new Vector2D(double.NaN);
 
             return segment1.StartPoint + (d/f) * b;
 

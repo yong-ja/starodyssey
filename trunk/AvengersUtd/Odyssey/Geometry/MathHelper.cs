@@ -32,6 +32,7 @@ namespace AvengersUtd.Odyssey.Geometry
         /// The value for which all absolute numbers smaller than are considered equal to zero.
         /// </summary>
         public const float Epsilon = 1e-6f;
+        public const double EpsilonD = 1e-6d;
 
         public static float Scale(float value, float min, float max)
         {

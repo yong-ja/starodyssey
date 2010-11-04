@@ -13,40 +13,38 @@ namespace AvengersUtd.Odyssey.Geometry
     /// </summary>
     public struct Segment : IEquatable<Segment>
     {
-        #region Properties
-        public Vector2 StartPoint { get; private set; }
-        public Vector2 EndPoint { get; private set; }
+        public Vector2D StartPoint;
+        public Vector2D EndPoint;
 
         /// <summary>
         /// Returns the vector going from the start point to the end point.
         /// </summary>
-        public Vector2 Direction
-        {
-            get { return EndPoint - StartPoint; }
-        }
-
+        public Vector2D Direction;
+        
+        #region Properties
         /// <summary>
         /// Returns a vector perpendicular to the direction of the segment.
         /// </summary>
-        public Vector2 Normal
+        
+        public Vector2D Normal
         {
             get
             {
-                Vector2 dir = Direction;
-                return dir.Perp();
+                return Vector2D.Perp(Direction);
             }
         } 
 
-        public float Length
+        public double Length
         {
             get { return Direction.Length(); }
         }
         #endregion
 
-        public Segment(Vector2 startPoint, Vector2 endPoint) : this()
+        public Segment(Vector2D startPoint, Vector2D endPoint) : this()
         {
             StartPoint = startPoint;
             EndPoint = endPoint;
+            Direction = EndPoint - StartPoint;
         }
 
         #region Public Methods
@@ -61,7 +59,7 @@ namespace AvengersUtd.Odyssey.Geometry
         /// </summary>
         public void Invert()
         {
-            Vector2 temp = StartPoint;
+            Vector2D temp = StartPoint;
             StartPoint = EndPoint;
             EndPoint = temp;
         } 
@@ -120,22 +118,22 @@ namespace AvengersUtd.Odyssey.Geometry
         /// <returns>It returns 0 if the point belongs to the segment.
         /// It returns 1 if it is on the right side.
         /// It returns -1 if it is on the left side.</returns>
-        public static int DetermineSide(Segment segment, Vector2 point)
+        public static int DetermineSide(Segment segment, Vector2D point)
         {
-            float c = Vector2.Dot(-segment.EndPoint, segment.Normal);
-            float fp = Vector2.Dot(segment.Normal, point) + c;
+            double c = Vector2D.Dot(-segment.EndPoint, segment.Normal);
+            double fp = Vector2D.Dot(segment.Normal, point) + c;
             if (fp > 0) return -1; // Left side
             if (fp < 0) return 1; // Right side
             return 0; // p belongs to segment
         } 
 
-        public static Vector2 PointAtDistance(Segment segment, float distance)
+        public static Vector2D PointAtDistance(Segment segment, double distance)
         {
             //C = A + k(B - A
             return segment.StartPoint + distance*segment.Direction;
         }
 
-        public static Vector2 PointAtDistance(Vector2 startPoint, Vector2 endPoint, float distance)
+        public static Vector2D PointAtDistance(Vector2D startPoint, Vector2D endPoint, double distance)
         {
             return PointAtDistance(new Segment(startPoint, endPoint), distance);
         }
@@ -143,14 +141,14 @@ namespace AvengersUtd.Odyssey.Geometry
         public static IEnumerable<Segment> Subdivide(Segment segment, int subSegments)
         {
             Line line = (Line) segment;
-            float segmentLength = segment.Length;
-            float subSegmentLegnth = segmentLength/subSegments;
+            double segmentLength = segment.Length;
+            double subSegmentLegnth = segmentLength/subSegments;
             List<Segment> newSegments= new List<Segment>();
 
-            Vector2 s = segment.StartPoint;
+            Vector2D s = segment.StartPoint;
             for (int i=1; i < subSegments; i++)
             {
-                Vector2 p = line.PointAtDistance(i*subSegmentLegnth);
+                Vector2D p = line.PointAtDistance(i*subSegmentLegnth);
                 newSegments.Add(new Segment(s, p));
                 s = p;
             }

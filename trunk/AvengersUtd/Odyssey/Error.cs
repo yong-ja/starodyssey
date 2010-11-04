@@ -10,7 +10,8 @@ namespace AvengersUtd.Odyssey
 {
     internal static class Error
     {
-        internal static ArgumentException ArgumentInvalid(string argument, Type type, string method, string message = null, string objValue= null)
+        #region Arguments
+        internal static ArgumentException ArgumentInvalid(string argument, Type type, string method, string message = null, string objValue = null)
         {
             if (message == null)
                 message = Properties.Resources.ERR_NoDetails;
@@ -37,6 +38,20 @@ namespace AvengersUtd.Odyssey
                         instance.Name, argument.Name));
         }
 
+        internal static ArgumentOutOfRangeException IndexNotPresentInArray(string arrayName, int element, string message = null)
+        {
+            return new ArgumentOutOfRangeException(arrayName, element,
+                string.IsNullOrEmpty(message) ? string.Format(Properties.Resources.ERR_ArrayElements, arrayName, element):message);
+        }
+
+
+
+        internal static InvalidEnumArgumentException WrongCase(string param, string method, object value)
+        {
+            return new InvalidEnumArgumentException(string.Format(Properties.Resources.ERR_WrongCase, param, method));
+        }
+        #endregion
+
         internal static KeyNotFoundException KeyNotFound(string key, string collection, string message=null)
         {
             if (message == null)
@@ -45,16 +60,7 @@ namespace AvengersUtd.Odyssey
             return new KeyNotFoundException(string.Format(message, collection, key));
         }
 
-        internal static ArgumentOutOfRangeException IndexNotPresentInArray(string arrayName, int element)
-        {
-            return new ArgumentOutOfRangeException(arrayName, element,
-                string.Format(Properties.Resources.ERR_ArrayElements, arrayName, element));
-        }
-
-        internal static InvalidEnumArgumentException WrongCase(string param, string method, object value)
-        {
-            return new InvalidEnumArgumentException(string.Format(Properties.Resources.ERR_WrongCase, param, method));
-        }
+        
 
         internal static InvalidOperationException InvalidOperation(string message)
         {

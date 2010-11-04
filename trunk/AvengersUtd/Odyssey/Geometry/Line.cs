@@ -8,38 +8,38 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public struct Line : IEquatable<Line>
     {
-        public Vector2 Origin { get; private set; }
-        public Vector2 Direction { get; private set; }
-        public Vector2 Normal { get; private set; }
+        public Vector2D Origin;
+        public Vector2D Direction;
+        public Vector2D Normal;
 
-        public float Ax { get; private set; }
-        public float By { get; private set; }
-        public float C { get; private set; }
+        public double Ax;
+        public double By;
+        public double C;
 
-        public Line(Vector2 origin, Vector2 direction) : this()
+        public Line(Vector2D origin, Vector2D direction) : this()
         {
             Origin = origin;
             Direction = direction;
 
-            Normal = Direction.Perp();
+            Normal = Vector2D.Perp(Direction);
             Ax = Normal.X;
             By = Normal.Y;
-            C = Vector2.Dot(-PointAtDistance(1.0f), Normal);
+            C = Vector2D.Dot(-PointAtDistance(1.0), Normal);
         }
 
-        public Vector2 PointAtDistance(float distance)
+        public Vector2D PointAtDistance(double distance)
         {
-           return Origin + distance*Vector2.Normalize(Direction); 
+           return Origin + distance*Vector2D.Normalize(Direction); 
         }
 
-        public static int DetermineSide(Line line, Vector2 point)
+        public static int DetermineSide(Line line, Vector2D point)
         {
             return DetermineSide(line, line.Normal, point);
         }
 
-        public static int DetermineSide(Line line, Vector2 normal, Vector2 point)
+        public static int DetermineSide(Line line, Vector2D normal, Vector2D point)
         {
-            float value = Vector2.Dot(line.Normal, point) + line.C;
+            double value = Vector2D.Dot(line.Normal, point) + line.C;
 
             if (Math.Abs(value) < MathHelper.Epsilon)
                 return 0;
@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 return 1;
         }
 
-        public static Line FromTwoPoints(Vector2 point1, Vector2 point2)
+        public static Line FromTwoPoints(Vector2D point1, Vector2D point2)
         {
             return new Line(point1, point2-point1);
         }
