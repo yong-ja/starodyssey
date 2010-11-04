@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
+    <Compile Include="Geometry\Delauney.cs" />
+    <Compile Include="Geometry\Edge.cs" />
     <Compile Include="Geometry\Extensions.cs" />
     <Compile Include="Geometry\Intersection.cs" />
     <Compile Include="Geometry\Line.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Geometry\IVertex.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
+    <Compile Include="Geometry\Triangle.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="UserInterface\Drawing\Designer.Ellipse.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Lines.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Points.cs" />
+    <Compile Include="UserInterface\Drawing\Designer.Polygon.cs" />
     <Compile Include="UserInterface\Drawing\IGradientShader.cs" />
     <Compile Include="UserInterface\Drawing\LinearShader.cs" />
     <Compile Include="UserInterface\Drawing\Designer.Rectangle.cs" />

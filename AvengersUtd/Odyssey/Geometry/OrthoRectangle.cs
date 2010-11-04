@@ -16,10 +16,10 @@ namespace AvengersUtd.Odyssey.Geometry
     public struct OrthoRectangle
     {
         #region Properties
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Width { get; set; }
-        public float Heigth { get; set; }
+        public float X { get; private set; }
+        public float Y { get; private set; }
+        public float Width { get; private set; }
+        public float Heigth { get; private set; }
 
         public float Top
         {

@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.UserInterface
     {
         public Hud OwnerHud { get; set; }
 
-        public InterfaceMesh(ColoredVertex[] vertices, short[] indices) : base(ColoredVertex.Description)
+        public InterfaceMesh(ColoredVertex[] vertices, ushort[] indices) : base(ColoredVertex.Description)
         {
             Vertices = vertices;
             Indices = indices;
@@ -19,7 +19,7 @@ namespace AvengersUtd.Odyssey.UserInterface
             VertexDescription = ColoredVertex.Description;
         }
 
-        public void UpdateBuffers(ColoredVertex[] vertices, short[] indices)
+        public void UpdateBuffers(ColoredVertex[] vertices, ushort[] indices)
         {
             DataBox dbVertices = Game.Context.Device.ImmediateContext.MapSubresource(VertexBuffer, 0,
                                                                                  VertexBuffer.Description.SizeInBytes,

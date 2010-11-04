@@ -51,7 +51,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
         public static ShapeDescription DrawRectangle(Vector3 position, Size size, Color4[] colors)
         {
-            short[] indices;
+            ushort[] indices;
             ColoredVertex[] vertices = PolyMesh.CreateQuad(position.ToVector4(), size.Width, size.Height,
                                                  colors, out indices);
             return new ShapeDescription

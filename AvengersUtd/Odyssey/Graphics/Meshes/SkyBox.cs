@@ -238,17 +238,17 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                                };
             #endregion
 
-            Indices = new short[6 * 6];
+            Indices = new ushort[6 * 6];
 
             for (int x = 0; x < 6; x++)
             {
-                Indices[x * 6 + 0] = (short)(x * 4 + 0);
-                Indices[x * 6 + 2] = (short)(x * 4 + 1);
-                Indices[x * 6 + 1] = (short)(x * 4 + 2);
+                Indices[x * 6 + 0] = (ushort)(x * 4 + 0);
+                Indices[x * 6 + 2] = (ushort)(x * 4 + 1);
+                Indices[x * 6 + 1] = (ushort)(x * 4 + 2);
 
-                Indices[x * 6 + 3] = (short)(x * 4 + 2);
-                Indices[x * 6 + 5] = (short)(x * 4 + 3);
-                Indices[x * 6 + 4] = (short)(x * 4 + 0);
+                Indices[x * 6 + 3] = (ushort)(x * 4 + 2);
+                Indices[x * 6 + 5] = (ushort)(x * 4 + 3);
+                Indices[x * 6 + 4] = (ushort)(x * 4 + 0);
             }
 
         }

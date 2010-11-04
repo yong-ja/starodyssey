@@ -56,7 +56,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             nextVertex = 0;
 
             int numFaces = 8 * numStrips * numStrips;
-            Indices = new short[numFaces * 3];
+            Indices = new ushort[numFaces * 3];
 
             // nodes in a given strip = (4 x (n-1)) + 1
             // and there are 2n - 1 strips. So:
@@ -215,20 +215,20 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Debug.Assert(nextIndex < (Indices.Length / 2));
 
 
-            // yes, I know that the vectorIndex should be a short, but due to the nature of
+            // yes, I know that the vectorIndex should be a ushort, but due to the nature of
             // how it's called, its cleaner to put one cast in here than multiple elsewhere
-            Indices[nextIndex] = (short)vectorIndex;
+            Indices[nextIndex] = (ushort)vectorIndex;
 
             // we put southern faces at end of list, in reverse order, because
             // vertex order needs to change (because faces are inverted)
-            Indices[IndexCount - nextIndex - 1] = GetSouthernVertexIndex((short)vectorIndex);
+            Indices[IndexCount - nextIndex - 1] = GetSouthernVertexIndex((ushort)vectorIndex);
             ++nextIndex;
         }
 
         /// <summary>
         /// return the index to where the matching vertex in southern hemisphere is
         /// </summary>
-        private short GetSouthernVertexIndex(short index)
+        private ushort GetSouthernVertexIndex(ushort index)
         {
             // if we're on the equator then vertex is it's own complement
             // otherwise, it's the next vertex in the array

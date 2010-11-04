@@ -76,7 +76,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 {
                     // case 4: outside -> inside
                     //polygon.Add(Intersection.SegmentSegmentIntersection(segment, new Segment(s, p)));
-                    polygon.Add(Intersection.LineLineIntersection(line, Line.FromTwoPoints(s, p)));
+                    //polygon.Add(Intersection.LineLineIntersection(line, Line.FromTwoPoints(s, p)));
                     polygon.Add(p);
                 }
 

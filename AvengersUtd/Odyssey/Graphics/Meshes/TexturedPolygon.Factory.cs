@@ -13,7 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         }
 
         public static TexturedVertex[] CreateTexturedQuad(Vector3 topLeftVertex, float width, float height,
-                                                          out short[] indices)
+                                                          out ushort[] indices)
         {
             TexturedVertex[] vertices = new[]
                                             {
@@ -31,7 +31,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                                                     new Vector4(topLeftVertex.X + width, topLeftVertex.Y - height,
                                                                 topLeftVertex.Z, 1.0f), new Vector2(1.0f, 1.0f))
                                             };
-            indices = new short[]
+            indices = new ushort[]
                           {
                               2, 1, 0,
                               2, 0, 3

@@ -30,7 +30,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     public partial class PolyMesh
     {
         #region Lines
-        public static ColoredVertex[] CreateLineMesh(float width, Color4 color, Vector4 v1, Vector4 v2, out short[] indices, short baseIndex=(short) 0)
+        public static ColoredVertex[] CreateLineMesh(float width, Color4 color, Vector4 v1, Vector4 v2, out ushort[] indices, ushort baseIndex=(ushort) 0)
         {
             ColoredVertex[] vertices = new ColoredVertex[4];
             float z = v1.Z;
@@ -59,7 +59,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             // Top right 1
             // Bottom right 2
             // Bottom left 3
-            indices = new short[]
+            indices = new ushort[]
                       {
                           1, 0, 3,
                           2, 1, 3
@@ -75,22 +75,22 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         }
 
-        public static ColoredVertex[] DrawPolyLine(int width, Color4[] colors, bool closed, IEnumerable<Vector4> points, out short[] indices)
+        public static ColoredVertex[] DrawPolyLine(int width, Color4[] colors, bool closed, IEnumerable<Vector4> points, out ushort[] indices)
         {
             Vector4[] pointsArray = points.ToArray();
             int length = closed ? pointsArray.Length : pointsArray.Length - 1;
             
             ColoredVertex[] vertices = new ColoredVertex[4*length];
-            indices = new short[6*length];
-            short vertexCount = 0;
-            short indexCount = 0;
+            indices = new ushort[6*length];
+            ushort vertexCount = 0;
+            ushort indexCount = 0;
             Vector4 v1 = pointsArray[0];
             for (int i = 1; i <= length; i++)
             {
                 int index = i < length ? i : 0;
                 Vector4 v2 = pointsArray[index];
                 Color4 color = colors[index];
-                short[] tempIndices;
+                ushort[] tempIndices;
                 Array.Copy(CreateLineMesh(width, color, v1, v2, out tempIndices, vertexCount), 0, vertices, vertexCount, 4);
                 Array.Copy(tempIndices, 0, indices, indexCount, 6);
                 vertexCount += 4;
@@ -106,7 +106,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #region Triangles
         public static ColoredVertex[] CreateEquilateralTriangle(Vector4 leftVertex, float sideLength, Color4[] colors,
-                                                               bool isTriangleUpside, out short[] indices)
+                                                               bool isTriangleUpside, out ushort[] indices)
         {
             ColoredVertex[] vertices = new ColoredVertex[3];
             // Left vertex
@@ -133,15 +133,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                               };
 
             indices = isTriangleUpside
-                          ? new short[] {0, 1, 2}
-                          : new short[] {1, 0, 2};
+                          ? new ushort[] {0, 1, 2}
+                          : new ushort[] {1, 0, 2};
             return vertices;
         }
         #endregion
 
         #region Quads
         public static ColoredVertex[] CreateQuad(Vector4 topLeftVertex, float width, float height, Color4[] colors,
-                                                out short[] indices)
+                                                out ushort[] indices)
         {
             ColoredVertex[] vertices = new ColoredVertex[4];
             // Top left 0
@@ -185,7 +185,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             // Top right 1
             // Bottom right 2
             // Bottom left 3
-            indices = new short[]
+            indices = new ushort[]
                           {
                               1, 0, 3,
                               2, 1, 3
@@ -195,7 +195,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         }
 
         public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
-            out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+            out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
         {
             ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
             if (widthOffsets != null && widthOffsets.Length != widthSegments+1)
@@ -208,7 +208,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             float z = topLeftVertex.Z;
 
             int vertexCount=0, indexCount = 0;
-            indices = new short[widthSegments*heightSegments*6];
+            indices = new ushort[widthSegments*heightSegments*6];
             // Compute vertices, one row at a time
             for (int i=0; i < heightSegments+1;i++)
             {
@@ -226,11 +226,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                     if (i < heightSegments && j < widthSegments)
                     {
 
-                        indices[indexCount] = (short) (vertexCount + 1);
-                        indices[indexCount + 1] = (short) (vertexCount);
-                        indices[indexCount + 2] = (short) (vertexCount + widthSegments + 1);
+                        indices[indexCount] = (ushort) (vertexCount + 1);
+                        indices[indexCount + 1] = (ushort) (vertexCount);
+                        indices[indexCount + 2] = (ushort) (vertexCount + widthSegments + 1);
 
-                        indices[indexCount + 3] = (short) (indices[indexCount + 2] + 1);
+                        indices[indexCount + 3] = (ushort) (indices[indexCount + 2] + 1);
                         indices[indexCount + 4] = indices[indexCount];
                         indices[indexCount + 5] = indices[indexCount + 2];
                         indexCount += 6;
@@ -253,7 +253,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         //public static ColoredVertex[] CreateRectangleOutline(Vector4 topLeftVertex, float width,
         //    float height, Thickness borderSize, int widthSegments, int heightSegments, Color4[] colors,
-        //    out short[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        //    out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
         //{
         //    float leftSegmentOffset = borderSize.Left/width;
         //    float rightSegmentOffset = (width - borderSize.Right)/width;
@@ -287,7 +287,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         //    List<ColoredVertex> vertices = new List<ColoredVertex>();
         //    int topHeightSegments= heightOffsets.Count(f => f <= topSegmentOffset);
-        //    short[] tempIndices;
+        //    ushort[] tempIndices;
         //    // Draw top border
         //    vertices.AddRange(CreateRectangleMesh(topLeftVertex,
         //        width, borderSize.Top,
@@ -317,7 +317,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         }
 
         public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
-            out short[] indices, float[] ringOffsets=null)
+            out ushort[] indices, float[] ringOffsets=null)
         {
             float x = center.X;
             float y = center.Y;
@@ -342,14 +342,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
                 vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
-            indices = new short[3*slices*((2*(rings-2))+1)];
+            indices = new ushort[3*slices*((2*(rings-2))+1)];
             
             // First ring indices
             for (int i = 0; i < slices; i++)
             {
                 indices[3 * i] = 0;
-                indices[(3 * i) + 1] = (short)(i + 2);
-                indices[(3 * i) + 2] = (short)(i + 1);
+                indices[(3 * i) + 1] = (ushort)(i + 2);
+                indices[(3 * i) + 2] = (ushort)(i + 1);
             }
             indices[(slices*3) - 2] = 1;
 
@@ -376,20 +376,20 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                     // current ring
                     
                     // first face
-                    indices[baseIndex + indexCount] = (short) (j + i+2);
-                    indices[baseIndex + indexCount + 1] = (short)(j + i + 1);
-                    indices[baseIndex + indexCount + 2] = (short)(k + i + 1);
+                    indices[baseIndex + indexCount] = (ushort) (j + i+2);
+                    indices[baseIndex + indexCount + 1] = (ushort)(j + i + 1);
+                    indices[baseIndex + indexCount + 2] = (ushort)(k + i + 1);
                     // second face
-                    indices[baseIndex + indexCount + 3] = (short)(k + i + 2);
-                    indices[baseIndex + indexCount + 4] = (short)(j + i + 2);
-                    indices[baseIndex + indexCount + 5] = (short)(k + i + 1);
+                    indices[baseIndex + indexCount + 3] = (ushort)(k + i + 2);
+                    indices[baseIndex + indexCount + 4] = (ushort)(j + i + 2);
+                    indices[baseIndex + indexCount + 5] = (ushort)(k + i + 1);
                     indexCount += 6;
                 }
                 // Wrap faces
-                indices[baseIndex + indexCount - 2] = (short) (r*slices+1);
-                indices[baseIndex+indexCount - 3] = (short)((r - 1) * slices + 1);
+                indices[baseIndex + indexCount - 2] = (ushort) (r*slices+1);
+                indices[baseIndex+indexCount - 3] = (ushort)((r - 1) * slices + 1);
 
-                indices[baseIndex +indexCount - 6] = (short)(r * slices + 1);
+                indices[baseIndex +indexCount - 6] = (ushort)(r * slices + 1);
             }
             return vertices;
         }

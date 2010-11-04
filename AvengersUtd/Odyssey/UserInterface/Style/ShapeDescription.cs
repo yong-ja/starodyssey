@@ -16,7 +16,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public int Primitives { get; set; }
         public int ArrayOffset {get; set;}
         public ColoredVertex[] Vertices { get; set; }
-        public short[] Indices { get; set; }
+        public ushort[] Indices { get; set; }
         public Depth Depth { get; set; }
 
         public bool IsDirty { get; set; }
@@ -58,7 +58,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
             }
 
             ColoredVertex[] vertices = new ColoredVertex[vbTotal];
-            short[] indices = new short[ibTotal];
+            ushort[] indices = new ushort[ibTotal];
 
             int vbOffset = 0;
             int ibOffset = 0;
@@ -68,7 +68,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                 Array.Copy(shape.Vertices, 0, vertices, vbOffset, shape.Vertices.Length);
 
                 for (int j = 0; j < shape.Indices.Length; j++)
-                    indices[j + ibOffset] = (short) (shape.Indices[j] + vbOffset);
+                    indices[j + ibOffset] = (ushort) (shape.Indices[j] + vbOffset);
 
                 vbOffset += shape.Vertices.Length;
                 ibOffset += shape.Indices.Length;

@@ -96,7 +96,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             }
             else
             {
-                short[] indices;
+                ushort[] indices;
                 TexturedVertex[] vertices = TexturedPolygon.CreateTexturedQuad
                     (Vector3.Zero, Size.Width, Size.Height, out indices);
 

@@ -8,14 +8,13 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public struct Line : IEquatable<Line>
     {
-        public Vector2 Origin { get; set; }
-        public Vector2 Direction { get; set; }
-        public Vector2 Normal { get; set; }
+        public Vector2 Origin { get; private set; }
+        public Vector2 Direction { get; private set; }
+        public Vector2 Normal { get; private set; }
 
-        public float Ax { get; set; }
-        public float By { get; set; }
-        public float C { get; set; }
-
+        public float Ax { get; private set; }
+        public float By { get; private set; }
+        public float C { get; private set; }
 
         public Line(Vector2 origin, Vector2 direction) : this()
         {

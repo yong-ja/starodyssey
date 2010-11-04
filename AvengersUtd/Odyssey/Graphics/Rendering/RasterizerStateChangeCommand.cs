@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                                                             {
                                                                 CullMode = CullMode.Back,
                                                                 IsDepthClipEnabled = true,
-                                                                FillMode = FillMode.Solid,
+                                                                FillMode = FillMode.Wireframe,
                                                                 IsAntialiasedLineEnabled = true,
                                                                 IsFrontCounterclockwise = true,
                                                                 IsMultisampleEnabled = true
