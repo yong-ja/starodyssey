@@ -31,6 +31,11 @@ namespace AvengersUtd.Odyssey.Geometry
 	        Point3 = point3;
 	    }
 
+        public override string ToString()
+        {
+            return string.Format("({0}, {1}, {2})", Point1, Point2, Point3);
+        }
+
 	    public ushort[] Array
 	    {
 	        get { return new [] {Point1, Point2, Point3};}

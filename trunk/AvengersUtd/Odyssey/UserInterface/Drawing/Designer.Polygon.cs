@@ -20,6 +20,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 Vector4 vertex = Points[i];
                 vertices[i] = new ColoredVertex(vertex, colors[i]);
             }
+            vertices[1].Color = new Color4(0, 1, 0);
+            vertices[Points.Length-1].Color = new Color4(0, 0, 1);
 
             ShapeDescription polygonShape = new ShapeDescription
             {

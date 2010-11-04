@@ -3,19 +3,22 @@ using System;
 namespace AvengersUtd.Odyssey.Geometry
 {
 	/// <summary>
-	/// Edge made from two point indexes
+	/// Edge made from two point indexes and two face references.
+	/// Required for delaunay triangulation
 	/// </summary>
-	public class Edge : IEquatable<Edge>
+	internal struct Edge : IEquatable<Edge>
 	{
 	    /// <summary>
 	    /// Start of edge index
 	    /// </summary>
-	    public ushort Start { get; private set; }
+	    public ushort Start;
+
 		/// <summary>
 		/// End of edge index
 		/// </summary>
-        public ushort End { get; private set; }
-		/// <summary>
+        public ushort End;
+
+        /// <summary>
 		/// Initializes a new edge instance
 		/// </summary>
         /// <param name="startPoint">Start edge vertex index</param>
@@ -24,13 +27,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		{
             Start = startPoint; End = endPoint;
 		}
-		/// <summary>
-		/// Initializes a new edge instance with start/end indexes of '0'
-		/// </summary>
-		public Edge()
-			: this(0, 0)
-		{
-		}
+		
 
 		#region IEquatable<dEdge> Members
 

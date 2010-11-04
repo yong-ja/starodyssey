@@ -20,7 +20,19 @@ namespace AvengersUtd.Odyssey.Geometry
         } 
 
         public double Area
-        { get { return PolygonArea(this); } }
+        { get { return ComputeArea(this); } }
+
+        public bool IsCounterClockWise
+        {
+            get
+            {
+                //We just return true for lines
+                if(Count < 3)
+                    return true;
+
+                return (Polygon.ComputeSignedArea(this) > 0.0);
+            }
+        }
         #endregion
 
         #region Constructors
@@ -71,6 +83,11 @@ namespace AvengersUtd.Odyssey.Geometry
             return inside;
         }
 
+        public void Reverse()
+        {
+            vertices.Reverse();
+        }
+
         #region Static methods
         public static Vector2D ComputeCentroid(Polygon polygon)
         {
@@ -114,7 +131,13 @@ namespace AvengersUtd.Odyssey.Geometry
             return centroid;
         }
 
-        public static double PolygonArea(Polygon polygon)
+        public static double ComputeArea(Polygon polygon)
+        {
+            // Return the result.
+            return Math.Abs(ComputeSignedArea(polygon));
+        }
+
+        static double ComputeSignedArea(Polygon polygon)
         {
             // Add the first point to the end.
             int numPoints = polygon.Count;
@@ -128,8 +151,7 @@ namespace AvengersUtd.Odyssey.Geometry
                     (polygon[(i + 1) % numPoints].Y + polygon[i].Y) / 2;
             }
 
-            // Return the result.
-            return Math.Abs(area);
+            return area;
         }
       
         #endregion
