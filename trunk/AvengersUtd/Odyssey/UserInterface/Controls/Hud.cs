@@ -188,7 +188,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             Shapes[0] = hudInterface;
             ColoredVertex[] vertices = new ColoredVertex[Shapes[0].Vertices.Length + hiddenVertices];
-            short[] indices = new short[Shapes[0].Indices.Length+hiddenIndices];
+            ushort[] indices = new ushort[Shapes[0].Indices.Length+hiddenIndices];
             Array.Copy(Shapes[0].Vertices, vertices, Shapes[0].Vertices.Length);
             Array.Copy(Shapes[0].Indices, indices, Shapes[0].Indices.Length);
 

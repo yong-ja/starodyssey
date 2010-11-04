@@ -13,7 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 
         public TexturedPolygon(Vector3 topLeftVertex, float width, float height, bool dynamic = false) : base(TexturedVertex.Description)
         {
-            short[] indices;
+            ushort[] indices;
             Vertices = CreateTexturedQuad(topLeftVertex, width, height, out indices);
             Indices = indices;
             if (dynamic)

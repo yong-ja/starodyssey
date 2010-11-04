@@ -137,7 +137,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #region Properties
 
         protected TVertex[] Vertices { get; set; }
-        protected short[] Indices { get; set; }
+        protected ushort[] Indices { get; set; }
         protected CpuAccessFlags CpuAccessFlags { get; set; }
         protected ResourceUsage ResourceUsage { get; set; }
 
@@ -282,7 +282,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
             stream.Close();
 
-            stream = new DataStream(IndexCount * sizeof(short), true, true);
+            stream = new DataStream(IndexCount * sizeof(ushort), true, true);
             stream.WriteRange(Indices);
             stream.Position = 0;
             IndexBuffer = new Buffer(Game.Context.Device, stream, new BufferDescription
@@ -300,7 +300,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Inited = true;
         }
 
-        public void Rebuild(TVertex[] vertices, short[] indices)
+        public void Rebuild(TVertex[] vertices, ushort[] indices)
         {
             Vertices = vertices;
             Indices = indices;

@@ -11,7 +11,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
         public static ShapeDescription DrawEquilateralTriangle(Vector3 leftVertex, float sideLength, Color4[] Color4s,
                                                                bool isTriangleUpside)
         {
-            short[] indices;
+            ushort[] indices;
             ColoredVertex[] vertices = PolyMesh.CreateEquilateralTriangle(leftVertex.ToVector4(), sideLength, Color4s,
                 isTriangleUpside, out indices);
             return new ShapeDescription

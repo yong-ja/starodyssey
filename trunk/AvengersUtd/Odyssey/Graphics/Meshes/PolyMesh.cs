@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public PolyMesh(Vector3 topLeftVertex, float width, float height, Color4[] Color4s) : base(ColoredVertex.Description)
         {
-            short[] indices;
+            ushort[] indices;
             Vertices = CreateQuad(topLeftVertex.ToVector4(), width, height, Color4s, out indices);
             Indices = indices;
            

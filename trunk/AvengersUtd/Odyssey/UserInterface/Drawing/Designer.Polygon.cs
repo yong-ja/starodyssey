@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
-using PolyMesh = AvengersUtd.Odyssey.Graphics.Meshes.PolyMesh;
 
 namespace AvengersUtd.Odyssey.UserInterface.Drawing
 {
     public partial class Designer
     {
-
-        public void DrawClosedPath()
+        public void DrawPolygon(ushort[] indices)
         {
-            CheckParameters(Options.Shader);
-
             Color4[] colors = Shader.Method(Shader, Points.Length, Shape.Rectangle);
-            ushort[] indices;
-            ColoredVertex[] vertices = PolyMesh.DrawPolyLine((int)Width, colors, true, Points, out indices);
+            ColoredVertex[] vertices = new ColoredVertex[Points.Length];
 
-            ShapeDescription pathShape = new ShapeDescription
+            for (int i = 0; i < Points.Length; i++)
+            {
+                Vector4 vertex = Points[i];
+                vertices[i] = new ColoredVertex(vertex, colors[i]);
+            }
+
+            ShapeDescription polygonShape = new ShapeDescription
             {
                 Vertices = vertices,
                 Indices = indices,
@@ -29,9 +29,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 Shape = Shape.RectangleMesh
             };
 
-            shapes.Add(pathShape);
+            shapes.Add(polygonShape);
         }
-
-        
     }
 }

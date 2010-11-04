@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
@@ -72,7 +73,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             d.Height = control.ClientSize.Height;
             foreach (IGradientShader colorShader in desc.Enabled)
             {
- 
+
                 switch (colorShader.GradientType)
                 {
                     default:
@@ -85,7 +86,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //    (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
                         //d.FillRectangle();
                         //RadialShader rs = (RadialShader)colorShader;
-                        
+
                         //d.SaveState();
                         //d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
                         //d.Shader = rs;
@@ -93,49 +94,51 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //d.Height = rs.RadiusY * d.Height;
                         //d.DrawEllipse();
                         //d.RestoreState();
+                        float actualWidth = d.Width;
+                        d.Width = 2;
+                        Polygon rectangle =
+                            (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
+                        Vector2 c = rectangle.Centroid;
+                        d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
+                        Polygon poly = Polygon.CreateEllipse(new Vector2(c.X, c.Y), 200, 100, 6);
+                        float segmentLength = Polygon.ComputeEllipseSegmentLength
+                            (new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
+                        
+                        //c = de;
 
+                        Polygon rh = new Polygon
+                            (new[]
+                             {
+                                 c + new Vector2(0, 200), c + new Vector2(-200, 0), c + new Vector2(0, -200),
+                                 c + new Vector2(200, 0),
+                             });
 
+                        d.Points = rh.ComputeVector4Array(99);
+                        d.DrawClosedPath();
+                        IGradientShader s = d.Shader;
+                        poly = Polygon.SutherlandHodgmanClip(rh, poly);
+                        d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
+                        PathFigure pf = (PathFigure) poly;
+                        pf.Optimize(segmentLength/2);
+                        //pf.Detail(segmentLength);
+                        Polygon clippedPoly = ((Polygon) pf);
+                        clippedPoly.Vertices.Add(clippedPoly.Centroid);
+                        //List<Triangle> triangles = Delauney.Triangulate(clippedPoly.Vertices);
+                        
+                        //ushort[] indices = triangles.SelectMany(t => t.ArrayCCW).ToArray();
+                        //indices.Length.ToString();
+
+                        //d.Points = clippedPoly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
+                        d.Points = new Polygon(ComputeSuperTriangle(clippedPoly.Vertices)).ComputeVector4Array(99);
+                        d.DrawClosedPath();
+                        //d.DrawPoints();
+                        //d.DrawPolygon(indices);
+                        d.Shader = s;
                         break;
                 }
 
             }
 
-         
-            float actualWidth = d.Width;
-            d.Width = 2;
-            d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-            Polygon poly = Polygon.CreateEllipse(new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
-            float segmentLength = Polygon.ComputeEllipseSegmentLength
-                (new Vector2(d.Position.X, d.Position.Y), 125, 55, 16);
-            Polygon rectangle = (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
-            Vector2 c = rectangle.Centroid;
-            //c = de;
-
-            Polygon rh = new Polygon(new [] {c + new Vector2(0, 100), c+new Vector2(-100,0), c+new Vector2(0, -100), c+new Vector2(100,0),   });
-
-            d.Points = rh.ComputeVector4Array(99);
-            d.DrawClosedPath();
-
-            if (actualWidth > 50)
-            {
-                IGradientShader s = d.Shader;
-                poly = Polygon.SutherlandHodgmanClip(rh, poly);
-                d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
-                PathFigure pf = (PathFigure) poly;
-                pf.Optimize(segmentLength / 2);
-                pf.Detail(segmentLength);
-
-                d.Points = ((Polygon)pf).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
-               // d.DrawClosedPath();
-                d.DrawPoints();
-                d.Shader = s;
-            }
-            else
-            {
-                d.Points = poly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
-                d.DrawClosedPath();
-                d.DrawClosedPath();
-            }
 
             //d.Vertices = new Vector4[] { d.Position.ToVector4(), d.Position.ToVector4() + new Vector4(50, -50f, 0, 1.0f),
             //    d.Position.ToVector4() + new Vector4(75, 200, 0, 1.0f) };
@@ -143,7 +146,44 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             return d.Output;
         }
 
-      
+        static List<Vector2> ComputeSuperTriangle(List<Vector2> vertex)
+        {
+            List<Vector2> vertices = new List<Vector2>();
+            int nv = vertex.Count;
+            // Find the maximum and minimum vertex bounds.
+            // This is to allow calculation of the bounding supertriangle
+            float xmin = vertex[0].X;
+            float ymin = vertex[0].Y;
+            float xmax = xmin;
+            float ymax = ymin;
+            for (int i = 1; i < nv; i++)
+            {
+                if (vertex[i].X < xmin) xmin = vertex[i].X;
+                if (vertex[i].X > xmax) xmax = vertex[i].X;
+                if (vertex[i].Y < ymin) ymin = vertex[i].Y;
+                if (vertex[i].Y > ymax) ymax = vertex[i].Y;
+            }
+            float dx = xmax - xmin;
+            float dy = ymax - ymin;
+
+            float dmax = (dx > dy) ? dx : dy;
+
+            float xmid = (xmax + xmin) * 0.5f;
+            float ymid = (ymax + ymin) * 0.5f;
+
+
+            // Set up the supertriangle
+            // This is a triangle which encompasses all the sample points.
+            // The supertriangle coordinates are added to the end of the
+            // vertex list. The supertriangle is the first triangle in
+            // the triangle list.
+            vertices.Add(new Vector2((xmid - 2 * dmax), (ymid - dmax)));
+            vertices.Add(new Vector2(xmid, (ymid + 2 * dmax)));
+            vertices.Add(new Vector2((xmid + 2 * dmax), (ymid - dmax)));
+
+            return vertices;
+        }
+     
 
         static Thickness MaskBorderSize(Borders borders, Thickness borderSize)
         {

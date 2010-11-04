@@ -14,8 +14,8 @@ namespace AvengersUtd.Odyssey.Geometry
     public struct Segment : IEquatable<Segment>
     {
         #region Properties
-        public Vector2 StartPoint { get; set; }
-        public Vector2 EndPoint { get; set; }
+        public Vector2 StartPoint { get; private set; }
+        public Vector2 EndPoint { get; private set; }
 
         /// <summary>
         /// Returns the vector going from the start point to the end point.
