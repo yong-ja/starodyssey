@@ -30,29 +30,31 @@ namespace AvengersUtd.Odyssey.Geometry
             {
                 for (int j = i + 1; j < n - 1; j++)
                 {
-                    for (int k = j + 1;
-                    k < n;
-                    k++)
+                    for (int k = j + 1; k < n; k++)
                     {
                         Circle circle = Circle.CircumCircle3(vertex[i], vertex[j], vertex[k]);
 
                         pointValid = true;
                         for (int l = 0; l < n; l++)
                         {
-                            if(l != i && l != j && l != k)
-                            {
-                                if(circle.IsInside(vertex[l]))
-                                {
-                                    pointValid = false;
-                                    break;
-                                }
-                            }
+                            if(l == i || l == j || l == k) continue;
+
+                            if(!circle.IsInside(vertex[l])) continue;
+
+                            pointValid = false;
+                            break;
                         }
 
                         if(pointValid)
                         {
                             // Add triangle as graph links
-                            indices.AddRange(new ushort[] {(ushort)i, (ushort)j, (ushort)k});
+                            Polygon t = new Polygon(new[] {vertex[i],vertex[j], vertex[k]} );
+                            double a = Polygon.ComputeSignedArea(t);
+
+                            if (a > 0)
+                                indices.AddRange(new[] { (ushort)k, (ushort)j, (ushort)i });
+                            else
+                                indices.AddRange(new[] { (ushort)i, (ushort)j, (ushort)k });
                         }
                     }
                 }
@@ -106,7 +108,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		/// </remarks>
 		/// <param name="vertex">List of vertices to triangulate.</param>
 		/// <returns>Triangles referencing vertex indices arranged in clockwise order</returns>
-		public static List<Triangle> Triangulate(IList<Vector2D> vertex)
+		public static List<Face> Triangulate(IList<Vector2D> vertex)
 		{
 			ushort nv = (ushort)vertex.Count;
 			if (nv < 3)
@@ -144,7 +146,7 @@ namespace AvengersUtd.Odyssey.Geometry
 			vertex.Add(new Vector2D((xmid - 2 * dmax), (ymid - dmax)));
             vertex.Add(new Vector2D(xmid, (ymid + 2 * dmax)));
             vertex.Add(new Vector2D((xmid + 2 * dmax), (ymid - dmax)));
-			List<Triangle> triangles = new List<Geometry.Triangle> {new Geometry.Triangle(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
+			List<Face> triangles = new List<Geometry.Face> {new Geometry.Face(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
 
 		    // Include each point one at a time into the existing mesh
 			for (int i = 0; i < nv; i++)
@@ -155,16 +157,16 @@ namespace AvengersUtd.Odyssey.Geometry
 				// three edges of that triangle are added to the edge buffer and the triangle is removed from list.
 				for (int j = 0; j < triangles.Count; j++)
 				{
-				    Vector2D p1 = vertex[triangles[j].Point1];
-                    Vector2D p2 = vertex[triangles[j].Point2];
-                    Vector2D p3 = vertex[triangles[j].Point3];
+				    Vector2D p1 = vertex[triangles[j].Index1];
+                    Vector2D p2 = vertex[triangles[j].Index2];
+                    Vector2D p3 = vertex[triangles[j].Index3];
 				    Circle circle = Circle.CircumCircle3(p1, p2, p3);
-					//if (InCircle(vertex[i], vertex[triangles[j].Point1], vertex[triangles[j].Point2], vertex[triangles[j].Point3]))
+					//if (InCircle(vertex[i], vertex[triangles[j].Index1], vertex[triangles[j].Index2], vertex[triangles[j].Index3]))
                     if (circle.IsInside(vertex[i]))
 					{
-						edges.Add(new Edge(triangles[j].Point1, triangles[j].Point2));
-						edges.Add(new Edge(triangles[j].Point2, triangles[j].Point3));
-						edges.Add(new Edge(triangles[j].Point3, triangles[j].Point1));
+						edges.Add(new Edge(triangles[j].Index1, triangles[j].Index2));
+						edges.Add(new Edge(triangles[j].Index2, triangles[j].Index3));
+						edges.Add(new Edge(triangles[j].Index3, triangles[j].Index1));
 						triangles.RemoveAt(j);
 						j--;
 					}
@@ -194,8 +196,8 @@ namespace AvengersUtd.Odyssey.Geometry
 				{
                     if (triangles.Count >= trimax)
                         throw new ApplicationException("Exceeded maximum edges");
-					triangles.Add(new Geometry.Triangle(edges[j].Start, edges[j].End, (ushort)i));
-                    //triangles.Add(new Triangle((ushort)i, edges[j].End, edges[j].Start));
+					triangles.Add(new Geometry.Face(edges[j].Start, edges[j].End, (ushort)i));
+                    //triangles.Add(new Face((ushort)i, edges[j].End, edges[j].Start));
 				}
 				edges.Clear();
 				edges = null;
@@ -204,7 +206,7 @@ namespace AvengersUtd.Odyssey.Geometry
 			// These are triangles which have a vertex number greater than nv
 			for (int i = triangles.Count - 1; i >= 0; i--)
 			{
-				if (triangles[i].Point1 >= nv || triangles[i].Point2 >= nv || triangles[i].Point3 >= nv)
+				if (triangles[i].Index1 >= nv || triangles[i].Index2 >= nv || triangles[i].Index3 >= nv)
 					triangles.RemoveAt(i);
 			}
 			//Remove SuperTriangle vertices

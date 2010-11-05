@@ -103,6 +103,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         Polygon poly = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100, 16);
                         double segmentLength = Polygon.ComputeEllipseSegmentLength
                             (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
+
+                        d.Points = poly.ComputeVector4Array(99);
+                        d.DrawClosedPath();
                         
                         //c = de;
 
@@ -123,6 +126,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //pf.Detail(segmentLength);
                         Polygon clippedPoly = ((Polygon) pf);
                         clippedPoly.Insert(0,clippedPoly.Centroid);
+                        clippedPoly.Insert(0, clippedPoly.Centroid + new Vector2D(20,20)) ;
                         //clippedPoly.Add(clippedPoly.Centroid);
                         //List<Triangle> triangles = Delauney.Triangulate(clippedPoly);
                         ushort[] indices = Delauney.TriangulateBrute(clippedPoly);
