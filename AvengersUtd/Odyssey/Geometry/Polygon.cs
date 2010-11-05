@@ -137,7 +137,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return Math.Abs(ComputeSignedArea(polygon));
         }
 
-        static double ComputeSignedArea(Polygon polygon)
+        public static double ComputeSignedArea(Polygon polygon)
         {
             // Add the first point to the end.
             int numPoints = polygon.Count;

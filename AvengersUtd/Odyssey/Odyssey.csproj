@@ -69,7 +69,7 @@
     <Compile Include="Geometry\IVertex.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
-    <Compile Include="Geometry\Triangle.cs" />
+    <Compile Include="Geometry\Face.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
