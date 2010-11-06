@@ -182,7 +182,7 @@ namespace AvengersUtd.Odyssey.Geometry
             }
         }
 
-        public int Count { get { return 4; } }
+        public int VerticesCount { get { return 4; } }
 
         public Vector2D Centroid
         {

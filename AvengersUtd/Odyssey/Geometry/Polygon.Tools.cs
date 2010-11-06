@@ -31,21 +31,21 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
 
-        public static Polygon SutherlandHodgman(Segment segment, Polygon bounds, Polygon vertices)
+        public static Polygon SutherlandHodgman(Segment segment, Polygon bounds, Polygon polygon)
         {
-            if (vertices.Count== 0)
+            if (polygon.VerticesCount== 0)
             {
                 return new Polygon();
             }
 
-            List<Vector2D> polygon = new List<Vector2D>();
+            VerticesCollection vc = new VerticesCollection();
 
             Vector2D centroid = bounds.Centroid;
 
-            Vector2D s = vertices[vertices.Count - 1];
-            for (int i = 0; i < vertices.Count; ++i)
+            Vector2D s = polygon[polygon.VerticesCount - 1];
+            for (int i = 0; i < polygon.VerticesCount; ++i)
             {
-                Vector2D p = vertices[i];
+                Vector2D p = polygon[i];
                 Line line = (Line) segment;
 
                 int sign = Line.DetermineSide(line, centroid);
@@ -57,14 +57,14 @@ namespace AvengersUtd.Odyssey.Geometry
                 if (sIn && pIn)
                 {
                     // case 1: inside -> inside
-                    polygon.Add(p);
+                    vc.Add(p);
                 }
                 else if (sIn && !pIn)
                 {
                     // case 2: inside -> outside
                     //polygon.Add(Intersection.SegmentSegmentIntersection(segment, new Segment(s, p)));
 
-                    polygon.Add(Intersection.LineLineIntersection(line,Line.FromTwoPoints(s, p)));
+                    vc.Add(Intersection.LineLineIntersection(line,Line.FromTwoPoints(s, p)));
                     
                 }
                 else if (!sIn && !pIn)
@@ -77,41 +77,41 @@ namespace AvengersUtd.Odyssey.Geometry
                     // case 4: outside -> inside
                     //polygon.Add(Intersection.SegmentSegmentIntersection(segment, new Segment(s, p)));
                     //polygon.Add(Intersection.LineLineIntersection(line, Line.FromTwoPoints(s, p)));
-                    polygon.Add(p);
+                    vc.Add(p);
                 }
 
                 s = p;
             }
 
-            return new Polygon(polygon);
+            return new Polygon(vc);
         }
 
-        private static Polygon SutherlandHodgmanOneAxis(OrthoRectangle bounds, Borders edge, Polygon v)
+        private static Polygon SutherlandHodgmanOneAxis(OrthoRectangle bounds, Borders edge, Polygon polygon)
         {
-            if (v.Count == 0)
+            if (polygon.VerticesCount == 0)
             {
                 return new Polygon();
             }
 
-            List<Vector2D> polygon = new List<Vector2D>();
+            VerticesCollection vc = new VerticesCollection();
 
-            Vector2D s = v[v.Count - 1];
+            Vector2D s = polygon[polygon.VerticesCount - 1];
 
-            for (int i = 0; i < v.Count; ++i)
+            for (int i = 0; i < polygon.VerticesCount; ++i)
             {
-                Vector2D p = v[i];
+                Vector2D p = polygon[i];
                 bool pIn = OrthoRectangle.IsPointInside(bounds, edge, p);
                 bool sIn = OrthoRectangle.IsPointInside(bounds, edge, s);
 
                 if (sIn && pIn)
                 {
                     // case 1: inside -> inside
-                    polygon.Add(p);
+                    vc.Add(p);
                 }
                 else if (sIn && !pIn)
                 {
                     // case 2: inside -> outside
-                    polygon.Add(OrthoRectangle.LineIntercept(bounds, edge, s, p));
+                    vc.Add(OrthoRectangle.LineIntercept(bounds, edge, s, p));
                 }
                 else if (!sIn && !pIn)
                 {
@@ -121,14 +121,14 @@ namespace AvengersUtd.Odyssey.Geometry
                 else if (!sIn && pIn)
                 {
                     // case 4: outside -> inside
-                    polygon.Add(OrthoRectangle.LineIntercept(bounds, edge, s, p));
-                    polygon.Add(p);
+                    vc.Add(OrthoRectangle.LineIntercept(bounds, edge, s, p));
+                    vc.Add(p);
                 }
 
                 s = p;
             }
 
-            return new Polygon(polygon);
+            return new Polygon(vc);
         }
     }
 }

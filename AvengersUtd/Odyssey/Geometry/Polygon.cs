@@ -1,33 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public partial class Polygon : IPolygon, IList<Vector2D>
+    public partial class Polygon : IPolygon
     {
-        private readonly List<Vector2D> vertices;
+        private readonly Vector2D[] vertices;
 
         #region Properties
-        protected List<Vector2D> Vertices
+
+        public Vector2D this[int index]
         {
-            get { return vertices; }
+            get { return vertices[index]; }
         }
 
         public Vector2D Centroid
         {
             get { return ComputeCentroid(this); }
-        } 
+        }
 
-        public double Area
-        { get { return ComputeArea(this); } }
+        public double Area { get { return ComputeArea(this); } }
+
+        public int VerticesCount
+        {
+            get { return vertices.Length; }
+        }
 
         public bool IsCounterClockWise
         {
             get
             {
                 //We just return true for lines
-                if(Count < 3)
+                if (VerticesCount < 3)
                     return true;
 
                 return (Polygon.ComputeSignedArea(this) > 0.0);
@@ -39,20 +45,19 @@ namespace AvengersUtd.Odyssey.Geometry
         public Polygon(IEnumerable<Vector2D> points)
             : this()
         {
-            vertices.AddRange(points);
+            vertices = points.ToArray();
         }
 
         private Polygon()
         {
-            vertices = new List<Vector2D>();
+            vertices = new Vector2D[0];
         }
-
         #endregion
 
         public Vector4[] ComputeVector4Array(float zIndex)
         {
-            Vector4[] pointsArray = new Vector4[vertices.Count];
-            for (int i = 0; i < vertices.Count; i++)
+            Vector4[] pointsArray = new Vector4[VerticesCount];
+            for (int i = 0; i < VerticesCount; i++)
             {
                 Vector2D point = vertices[i];
                 pointsArray[i] = new Vector4((float)point.X, (float)point.Y, zIndex, 1.0f);
@@ -67,10 +72,10 @@ namespace AvengersUtd.Odyssey.Geometry
 
             bool inside = false;
             Vector2D t = point;
-            Vector2D e0 = vertices[Count - 1];
+            Vector2D e0 = vertices[VerticesCount - 1];
             bool y0 = e0.Y >= t.Y;
 
-            for (int i=0; i < Count-1; i++)
+            for (int i = 0; i < VerticesCount - 1; i++)
             {
                 Vector2D e1 = vertices[i];
                 bool y1 = e1.Y >= t.Y;
@@ -83,7 +88,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return inside;
         }
 
-        public void Reverse()
+        public void ReverseVerticesOrder()
         {
             vertices.Reverse();
         }
@@ -102,7 +107,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
             // For all vertices except last
             int i;
-            for (i = 0; i < polygon.Count - 1; ++i)
+            for (i = 0; i < polygon.VerticesCount - 1; ++i)
             {
                 x0 = vertices[i].X;
                 y0 = vertices[i].Y;
@@ -140,7 +145,7 @@ namespace AvengersUtd.Odyssey.Geometry
         public static double ComputeSignedArea(Polygon polygon)
         {
             // Add the first point to the end.
-            int numPoints = polygon.Count;
+            int numPoints = polygon.VerticesCount;
 
             // Get the areas.
             double area = 0;
@@ -153,7 +158,28 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return area;
         }
-      
+
+        public static bool ConvexityTest(Polygon polygon)
+        {
+            
+                if (polygon.VerticesCount < 3) return false;
+
+                int xCh = 0, yCh = 0;
+
+                Vector2D a = polygon[0] - polygon[polygon.VerticesCount-1];
+                for (int i = 0; i < polygon.VerticesCount - 1; ++i)
+                {
+                    Vector2D b = polygon[i] - polygon[i + 1];
+
+                    if (Math.Sign(a.X) != Math.Sign(b.X)) ++xCh;
+                    if (Math.Sign(a.Y) != Math.Sign(b.Y)) ++yCh;
+
+                    a = b;
+                }
+
+                return (xCh <= 2 && yCh <= 2);
+            }
+
         #endregion
 
         static Vector2D CreateEllipseVertex(double x, double y, double radiusX, double radiusY, double theta)
@@ -197,8 +223,8 @@ namespace AvengersUtd.Odyssey.Geometry
         public static explicit operator PathFigure(Polygon v)
         {
             List<Segment> segments = new List<Segment>();
-            Vector2D s = v[v.Count - 1];
-            for (int i = 0; i < v.Count; i++)
+            Vector2D s = v[v.VerticesCount - 1];
+            for (int i = 0; i < v.VerticesCount; i++)
             {
                 Vector2D p = v[i];
                 segments.Add(new Segment(s,p));
@@ -209,102 +235,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return new PathFigure(segments);
         }
 
-        #region ICollection<Vector2D> Members
 
-        public void Add(Vector2D item)
-        {
-            vertices.Add(item);
-        }
-
-        void ICollection<Vector2D>.Clear()
-        {
-            vertices.Clear();
-        }
-
-        bool ICollection<Vector2D>.Contains(Vector2D item)
-        {
-            return vertices.Contains(item);
-        }
-
-        void ICollection<Vector2D>.CopyTo(Vector2D[] array, int arrayIndex)
-        {
-            vertices.CopyTo(array, arrayIndex);
-        }
-
-        bool ICollection<Vector2D>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        public int Count
-        {
-            get { return vertices.Count; }
-        }
-
-        public bool Remove(Vector2D item)
-        {
-            if (!vertices.Contains(item))
-                return false;
-            
-            vertices.Remove(item);
-            return true;
-        }
-
-        #endregion
-
-        #region IEnumerable<Vector2D> Members
-
-        IEnumerator<Vector2D> IEnumerable<Vector2D>.GetEnumerator()
-        {
-            return vertices.GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return vertices.GetEnumerator();
-        }
-
-        #endregion
-
-        #region IList<Vector2D> Members
-
-        int IList<Vector2D>.IndexOf(Vector2D item)
-        {
-            return vertices.IndexOf(item);
-        }
-
-        public void Insert(int index, Vector2D item)
-        {
-            vertices.Insert(index, item);
-        }
-
-        public void RemoveAt(int index)
-        {
-            vertices.RemoveAt(index);
-        }
-
-        public Vector2D this[int index]
-        {
-            get
-            {
-                if (index < 0 || index > Count)
-                    throw Error.IndexNotPresentInArray("this", index);
-                return vertices[index];
-            }
-            set
-            {
-                if (index < 0 || index > Count)
-                    throw Error.IndexNotPresentInArray("this", index);
-                vertices[index] = value;
-            }
-        }
-
-
-        #endregion
         
     }
 }
