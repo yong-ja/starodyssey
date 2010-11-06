@@ -100,7 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                             (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
                         Vector2D c = rectangle.Centroid;
                         d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-                        Polygon poly = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100, 16);
+                        Polygon poly = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,32);
                         double segmentLength = Polygon.ComputeEllipseSegmentLength
                             (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
 
@@ -120,26 +120,30 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         d.DrawClosedPath();
                         IGradientShader s = d.Shader;
                         poly = Polygon.SutherlandHodgmanClip(rh, poly);
-                        d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
+                       
                         PathFigure pf = (PathFigure) poly;
                         pf.Optimize(segmentLength/2);
                         //pf.Detail(segmentLength);
-                        Polygon clippedPoly = ((Polygon) pf);
-                        clippedPoly.Insert(0,clippedPoly.Centroid);
-                        clippedPoly.Insert(0, clippedPoly.Centroid + new Vector2D(20,20)) ;
+                        VerticesCollection vc = ((VerticesCollection)pf);
+                        vc.Insert(0,rh.Centroid);
+                        //+ new Vector2D(-50,0));
+                        //clippedPoly.Insert(1, clippedPoly.Centroid + new Vector2D(50,0));
+                        vc.Insert(0, rh.Centroid + new Vector2D(20,20)) ;
                         //clippedPoly.Add(clippedPoly.Centroid);
                         //List<Triangle> triangles = Delauney.Triangulate(clippedPoly);
-                        ushort[] indices = Delauney.TriangulateBrute(clippedPoly);
+                        ushort[] indices = Delauney.TriangulateBrute(vc);
 
                         //ushort[] indices = triangles.SelectMany(t => t.ArrayCCW).ToArray();
                         //indices.Length.ToString();
 
-                        d.Points = clippedPoly.ComputeVector4Array(99); //poly.ComputeVector4Array(99);
+                        d.Points = ((Polygon)vc).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
                         //d.Points = new Polygon(ComputeSuperTriangle(clippedPoly.Vertices)).ComputeVector4Array(99);
-                        //d.DrawClosedPath();
-                        //d.DrawPoints();
+                        d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
                         d.DrawPolygon(indices);
                         d.Shader = s;
+                        //d.DrawClosedPath();
+                        //d.DrawPoints();
+                       
                         break;
                 }
 

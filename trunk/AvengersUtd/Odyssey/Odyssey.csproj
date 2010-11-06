@@ -71,6 +71,9 @@
     <Compile Include="Geometry\Segment.cs" />
     <Compile Include="Geometry\Face.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
+    <Compile Include="Geometry\VerticesCollection.cs" />
+    <Compile Include="Geometry\WAList.cs" />
+    <Compile Include="Geometry\WAPoint.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
