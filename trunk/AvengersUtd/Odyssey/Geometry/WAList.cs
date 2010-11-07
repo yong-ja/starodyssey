@@ -20,6 +20,7 @@
 
 #region Using directives
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -53,35 +54,35 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public int CounterEntryPoint { get; set; }
 
-        public void AddSp(WAPoint Vector2D)
+        public void AddSp(WAPoint point)
         {
             if (countSp == 0)
             {
-                HeadSp = TailSp = Vector2D;
-                HeadSp.NextVertex = HeadSp.PrevVertex = Vector2D;
-                TailSp.NextVertex = TailSp.PrevVertex = Vector2D;
+                HeadSp = TailSp = point;
+                HeadSp.NextVertex = HeadSp.PrevVertex = point;
+                TailSp.NextVertex = TailSp.PrevVertex = point;
                 current = HeadSp;
                 countSp++;
             }
             else if (countSp == 1)
             {
-                if (!HeadSp.Equals(Vector2D))
+                if (!HeadSp.Equals(point))
                 {
-                    HeadSp.NextVertex = HeadSp.PrevVertex = Vector2D;
-                    Vector2D.NextVertex = Vector2D.PrevVertex = HeadSp;
-                    TailSp = Vector2D;
+                    HeadSp.NextVertex = HeadSp.PrevVertex = point;
+                    point.NextVertex = point.PrevVertex = HeadSp;
+                    TailSp = point;
                     countSp++;
                 }
                 else
                 {
-                    if (Vector2D.IsIntersection)
+                    if (point.IsIntersection)
                     {
-                        Vector2D.PrevVertex = TailSp;
-                        Vector2D.NextVertex = TailSp;
+                        point.PrevVertex = TailSp;
+                        point.NextVertex = TailSp;
 
-                        TailSp.NextVertex = Vector2D;
-                        TailSp.PrevVertex = Vector2D;
-                        HeadSp = Vector2D;
+                        TailSp.NextVertex = point;
+                        TailSp.PrevVertex = point;
+                        HeadSp = point;
                         current = HeadSp;
                     }
                 }
@@ -96,14 +97,14 @@ namespace AvengersUtd.Odyssey.Geometry
                     WAPoint start = currItem;
                     WAPoint end = currItem.NextVertex;
 
-                    if (Vector2D.Between(start, end))
+                    if (point.Between(start, end))
                     {
-                        if (!start.Equals(Vector2D) && !end.Equals(Vector2D))
+                        if (!start.Equals(point) && !end.Equals(point))
                         {
-                            Vector2D.NextVertex = end;
-                            Vector2D.PrevVertex = start;
-                            start.NextVertex = Vector2D;
-                            end.PrevVertex = Vector2D;
+                            point.NextVertex = end;
+                            point.PrevVertex = start;
+                            start.NextVertex = point;
+                            end.PrevVertex = point;
                             countSp++;
                             //Okay, inserted and exit from while.
                             break;
@@ -111,40 +112,40 @@ namespace AvengersUtd.Odyssey.Geometry
                         else
                         {
                             //Clone
-                            if (Vector2D.IsIntersection)
+                            if (point.IsIntersection)
                             {
-                                if (start.Equals(Vector2D))
+                                if (start.Equals(point))
                                 {
-                                    Vector2D.PrevVertex = start.PrevVertex;
-                                    Vector2D.NextVertex = start.NextVertex;
+                                    point.PrevVertex = start.PrevVertex;
+                                    point.NextVertex = start.NextVertex;
 
-                                    start.PrevVertex.NextVertex = Vector2D;
-                                    start.NextVertex.PrevVertex = Vector2D;
+                                    start.PrevVertex.NextVertex = point;
+                                    start.NextVertex.PrevVertex = point;
 
-                                    if (HeadSp.Equals(Vector2D))
+                                    if (HeadSp.Equals(point))
                                     {
-                                        HeadSp = Vector2D;
+                                        HeadSp = point;
                                         current = HeadSp;
                                     }
-                                    if (TailSp.Equals(Vector2D))
-                                        TailSp = Vector2D;
+                                    if (TailSp.Equals(point))
+                                        TailSp = point;
 
-                                    start = Vector2D;
+                                    start = point;
                                 }
                                 else
                                 {
-                                    Vector2D.PrevVertex = end.PrevVertex;
-                                    Vector2D.NextVertex = end.NextVertex;
+                                    point.PrevVertex = end.PrevVertex;
+                                    point.NextVertex = end.NextVertex;
 
-                                    end.PrevVertex.NextVertex = Vector2D;
-                                    end.NextVertex.PrevVertex = Vector2D;
+                                    end.PrevVertex.NextVertex = point;
+                                    end.NextVertex.PrevVertex = point;
 
-                                    if (HeadSp.Equals(Vector2D))
-                                        HeadSp = Vector2D;
-                                    if (TailSp.Equals(Vector2D))
-                                        TailSp = Vector2D;
+                                    if (HeadSp.Equals(point))
+                                        HeadSp = point;
+                                    if (TailSp.Equals(point))
+                                        TailSp = point;
 
-                                    end = Vector2D;
+                                    end = point;
                                 }
                             }
                             return;
@@ -155,44 +156,44 @@ namespace AvengersUtd.Odyssey.Geometry
 
                 if (countSp == oldCounter)
                 {
-                    Vector2D.NextVertex = HeadSp;
-                    Vector2D.PrevVertex = TailSp;
-                    TailSp.NextVertex = Vector2D;
-                    HeadSp.PrevVertex = Vector2D;
-                    TailSp = Vector2D;
+                    point.NextVertex = HeadSp;
+                    point.PrevVertex = TailSp;
+                    TailSp.NextVertex = point;
+                    HeadSp.PrevVertex = point;
+                    TailSp = point;
                     countSp++;
                 }
             }
         }
 
-        public void AddCP(WAPoint Vector2D)
+        public void AddCp(WAPoint point)
         {
             if (countCp == 0)
             {
-                HeadCp = TailCp = Vector2D;
-                HeadCp.NextVertex = HeadCp.PrevVertex = Vector2D;
-                TailCp.NextVertex = TailCp.PrevVertex = Vector2D;
+                HeadCp = TailCp = point;
+                HeadCp.NextVertex = HeadCp.PrevVertex = point;
+                TailCp.NextVertex = TailCp.PrevVertex = point;
                 countCp++;
             }
             else if (countCp == 1)
             {
-                if (!HeadCp.Equals(Vector2D))
+                if (!HeadCp.Equals(point))
                 {
-                    HeadCp.NextVertex = HeadCp.PrevVertex = Vector2D;
-                    Vector2D.NextVertex = Vector2D.PrevVertex = HeadCp;
-                    TailCp = Vector2D;
+                    HeadCp.NextVertex = HeadCp.PrevVertex = point;
+                    point.NextVertex = point.PrevVertex = HeadCp;
+                    TailCp = point;
                     countCp++;
                 }
                 else
                 {
-                    if (Vector2D.IsIntersection)
+                    if (point.IsIntersection)
                     {
-                        Vector2D.PrevVertex = TailCp;
-                        Vector2D.NextVertex = TailCp;
+                        point.PrevVertex = TailCp;
+                        point.NextVertex = TailCp;
 
-                        TailCp.NextVertex = Vector2D;
-                        TailCp.PrevVertex = Vector2D;
-                        HeadCp = Vector2D;
+                        TailCp.NextVertex = point;
+                        TailCp.PrevVertex = point;
+                        HeadCp = point;
                         current = HeadCp;
                     }
                 }
@@ -207,14 +208,14 @@ namespace AvengersUtd.Odyssey.Geometry
                     WAPoint start = currItem;
                     WAPoint end = currItem.NextVertex;
 
-                    if (Vector2D.Between(start, end))
+                    if (point.Between(start, end))
                     {
-                        if (!start.Equals(Vector2D) && !end.Equals(Vector2D))
+                        if (!start.Equals(point) && !end.Equals(point))
                         {
-                            Vector2D.NextVertex = end;
-                            Vector2D.PrevVertex = start;
-                            start.NextVertex = Vector2D;
-                            end.PrevVertex = Vector2D;
+                            point.NextVertex = end;
+                            point.PrevVertex = start;
+                            start.NextVertex = point;
+                            end.PrevVertex = point;
                             countCp++;
                             //Okay, inserted and exit from while.
                             break;
@@ -222,40 +223,40 @@ namespace AvengersUtd.Odyssey.Geometry
                         else
                         {
                             //Clone
-                            if (Vector2D.IsIntersection)
+                            if (point.IsIntersection)
                             {
-                                if (start.Equals(Vector2D))
+                                if (start.Equals(point))
                                 {
-                                    Vector2D.PrevVertex = start.PrevVertex;
-                                    Vector2D.NextVertex = start.NextVertex;
+                                    point.PrevVertex = start.PrevVertex;
+                                    point.NextVertex = start.NextVertex;
 
-                                    start.PrevVertex.NextVertex = Vector2D;
-                                    start.NextVertex.PrevVertex = Vector2D;
+                                    start.PrevVertex.NextVertex = point;
+                                    start.NextVertex.PrevVertex = point;
 
-                                    if (HeadCp.Equals(Vector2D))
+                                    if (HeadCp.Equals(point))
                                     {
-                                        HeadCp = Vector2D;
+                                        HeadCp = point;
                                         current = HeadCp;
                                     }
-                                    if (TailCp.Equals(Vector2D))
-                                        TailCp = Vector2D;
+                                    if (TailCp.Equals(point))
+                                        TailCp = point;
 
-                                    start = Vector2D;
+                                    start = point;
                                 }
                                 else
                                 {
-                                    Vector2D.PrevVertex = end.PrevVertex;
-                                    Vector2D.NextVertex = end.NextVertex;
+                                    point.PrevVertex = end.PrevVertex;
+                                    point.NextVertex = end.NextVertex;
 
-                                    end.PrevVertex.NextVertex = Vector2D;
-                                    end.NextVertex.PrevVertex = Vector2D;
+                                    end.PrevVertex.NextVertex = point;
+                                    end.NextVertex.PrevVertex = point;
 
-                                    if (HeadCp.Equals(Vector2D))
-                                        HeadCp = Vector2D;
-                                    if (TailCp.Equals(Vector2D))
-                                        TailCp = Vector2D;
+                                    if (HeadCp.Equals(point))
+                                        HeadCp = point;
+                                    if (TailCp.Equals(point))
+                                        TailCp = point;
 
-                                    end = Vector2D;
+                                    end = point;
                                 }
                             }
                             return;
@@ -266,11 +267,11 @@ namespace AvengersUtd.Odyssey.Geometry
 
                 if (countCp == oldCounter)
                 {
-                    Vector2D.NextVertex = HeadCp;
-                    Vector2D.PrevVertex = TailCp;
-                    TailCp.NextVertex = Vector2D;
-                    HeadCp.PrevVertex = Vector2D;
-                    TailCp = Vector2D;
+                    point.NextVertex = HeadCp;
+                    point.PrevVertex = TailCp;
+                    TailCp.NextVertex = point;
+                    HeadCp.PrevVertex = point;
+                    TailCp = point;
                     countCp++;
                 }
             }
@@ -288,7 +289,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return toReturn;
         }
 
-        public void SetEntryPoints(PointCollection subjectPoly, PointCollection clippingPoly)
+        public void SetEntryPoints(Polygon subjectPoly, Polygon clippingPoly)
         {
             WAPoint curr = HeadCp;
             for (int i = 0; i < countCp; i++)
@@ -298,19 +299,25 @@ namespace AvengersUtd.Odyssey.Geometry
                     if (curr.NextVertex.IsIntersection)
                     {
                         //Check if a subject polygon edge lies on clip poly edge
-                        Vector2D A = curr.JumpLink.PrevVertex.Vertex;
-                        Vector2D B = curr.NextVertex.Vertex;
-                        Vector2D C = curr.Vertex;
+                        Vector2D a = curr.JumpLink.PrevVertex.Vertex;
+                        Vector2D b = curr.NextVertex.Vertex;
+                        Vector2D c = curr.Vertex;
 
-                        bool test1 = A.X == B.X && B.X == C.X;
-                        bool test2 = A.Y == B.Y && B.Y == C.Y;
+                        bool test1 = Math.Abs(a.X - b.X) < MathHelper.EpsilonD &&
+                                     Math.Abs(b.X - c.X) < MathHelper.EpsilonD;
+
+                        bool test2 = Math.Abs(a.Y - b.Y) < MathHelper.EpsilonD &&
+                                     Math.Abs(b.Y - c.Y) < MathHelper.EpsilonD;
 
                         bool result1 = test1 || test2;
 
-                        A = curr.JumpLink.NextVertex.Vertex;
+                        a = curr.JumpLink.NextVertex.Vertex;
 
-                        test1 = A.X == B.X && B.X == C.X;
-                        test2 = A.Y == B.Y && B.Y == C.Y;
+                        test1 = Math.Abs(a.X - b.X) < MathHelper.EpsilonD &&
+                                     Math.Abs(b.X - c.X) < MathHelper.EpsilonD;
+
+                        test2 = Math.Abs(a.Y - b.Y) < MathHelper.EpsilonD &&
+                                     Math.Abs(b.Y - c.Y) < MathHelper.EpsilonD;
 
                         bool result2 = test1 || test2;
 
@@ -319,9 +326,8 @@ namespace AvengersUtd.Odyssey.Geometry
                         if (result)
                         {
                             //Check if ext or internal edge
-                            if (
-                                !(Geometry.PolygonHitTest(subjectPoly, curr.PrevVertex.Vertex) &&
-                                  Geometry.PolygonHitTest(subjectPoly, curr.NextVertex.NextVertex.Vertex)))
+                            if (!subjectPoly.IsPointInside(curr.PrevVertex.Vertex) &&
+                                subjectPoly.IsPointInside(curr.NextVertex.NextVertex.Vertex))
                             {
                                 //coincident egde a clip polygon edge
                                 curr.IsIntersection = false;
@@ -329,7 +335,7 @@ namespace AvengersUtd.Odyssey.Geometry
                             }
                             else
                             {
-                                //Set New Entry Vector2D
+                                //Set New Entry point
                                 curr.IsEntryPoint = true;
                                 curr.JumpLink.IsEntryPoint = true;
                                 CounterEntryPoint++;
@@ -337,7 +343,7 @@ namespace AvengersUtd.Odyssey.Geometry
                         }
                         else
                         {
-                            //Entry Vector2D
+                            //Entry point
                             curr.IsEntryPoint = true;
                             curr.JumpLink.IsEntryPoint = true;
                             CounterEntryPoint++;
@@ -345,10 +351,10 @@ namespace AvengersUtd.Odyssey.Geometry
                     }
                     else
                     {
-                        bool inside = Geometry.PolygonHitTest(subjectPoly, curr.NextVertex.Vertex);
-                        if (inside)
+                        
+                        if (subjectPoly.IsPointInside(curr.NextVertex.Vertex))
                         {
-                            //Entry Vector2D
+                            //Entry point
                             curr.IsEntryPoint = true;
                             curr.JumpLink.IsEntryPoint = true;
                             CounterEntryPoint++;
@@ -357,10 +363,9 @@ namespace AvengersUtd.Odyssey.Geometry
                         {
                             if (!curr.PrevVertex.IsIntersection)
                             {
-                                bool discr = Geometry.PolygonHitTest(subjectPoly, curr.PrevVertex.Vertex);
-                                if (!discr)
+                                if (!subjectPoly.IsPointInside(curr.PrevVertex.Vertex))
                                 {
-                                    //coincident wia a clip polygon edge
+                                    //coincident via a clip polygon edge
                                     curr.IsIntersection = false;
                                     curr.JumpLink.IsIntersection = false;
                                 }
@@ -402,57 +407,93 @@ namespace AvengersUtd.Odyssey.Geometry
             }
         }
 
-        public static int ComputeIntersectArea(Polygon subjectPoly, Polygon clippingPoly)
+        public static bool LineHitLine(Vector2D p1A, Vector2D p1B, Vector2D p2A, Vector2D p2B, out Vector2D intersect)
+        {
+            double denom = ((p2B.Y - p2A.Y) * (p1B.X - p1A.X)) - ((p2B.X - p2A.X) * (p1B.Y - p1A.Y));
+
+            double nume_a = ((p2B.X - p2A.X) * (p1A.Y - p2A.Y)) - ((p2B.Y - p2A.Y) * (p1A.X - p2A.X));
+
+            double nume_b = ((p1B.X - p1A.X) * (p1A.Y - p2A.Y)) - ((p1B.Y - p1A.Y) * (p1A.X - p2A.X));
+
+            intersect = new Vector2D(0, 0);
+
+            if (denom == 0.0)
+            {
+                return false;
+            }
+            else
+            {
+                double ua = nume_a / denom;
+                double ub = nume_b / denom;
+
+                if (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0)
+                {
+                    // Get the intersection point.
+                    intersect.X = p1A.X + ua * (p1B.X - p1A.X);
+                    intersect.Y = p1A.Y + ua * (p1B.Y - p1A.Y);
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static Polygon ComputeIntersectArea(Polygon subjectPoly, Polygon clippingPoly)
         {
             WAList list = new WAList();
-            VerticesCollection intersectedPoly = new VerticesCollection();
-
-            for (int i = 0; i < subjectPoly.Count; i++)
+            VerticesCollection intersectedPoints = new VerticesCollection();
+            for (int i = 0; i < subjectPoly.VerticesCount; i++)
             {
-                Vector2D startSP = subjectPoly[i];
-                Vector2D endSP = subjectPoly[(i + 1)%subjectPoly.Count];
+                Vector2D startSp = subjectPoly[i];
+                Vector2D endSp = subjectPoly[(i + 1)%subjectPoly.VerticesCount];
 
                 WAPoint spPoint = new WAPoint
-                                  {Vertex = startSP, IsIntersection = false, IsActive = false, IsEntryPoint = false};
+                                  {Vertex = startSp, IsIntersection = false, IsActive = false, IsEntryPoint = false};
 
                 list.AddSp(spPoint);
 
-                for (int j = 0; j < clippingPoly.Count; j++)
+                for (int j = 0; j < clippingPoly.VerticesCount; j++)
                 {
-                    Vector2D startCP = clippingPoly[j];
-                    Vector2D endCP = clippingPoly[(j + 1)%clippingPoly.Count];
+                    Vector2D startCp = clippingPoly[j];
+                    Vector2D endCp = clippingPoly[(j + 1)%clippingPoly.VerticesCount];
 
                     WAPoint cpPoint = new WAPoint
-                                      {Vertex = startCP, IsIntersection = false, IsActive = false, IsEntryPoint = false};
+                                      {Vertex = startCp, IsIntersection = false, IsActive = false, IsEntryPoint = false};
                     if (i == 0)
-                        list.AddCP(cpPoint);
+                        list.AddCp(cpPoint);
 
-                    Vector2D intersectSPCP;
-                    if (Geometry.LineHitLine(startSP, endSP, startCP, endCP, out intersectSPCP))
-                    {
-                        Vector2D p = new Vector2D(intersectSPCP.X, intersectSPCP.Y);
+                    Vector2D intersectSpcp;
+                    Segment startSpToendSp = new Segment(startSp, endSp);
+                    Segment startCpToendCp = new Segment(startCp, endCp);
 
-                        WAPoint spIntersectionPoint = new WAPoint
-                                                      {
-                                                          Vertex = p,
-                                                          IsIntersection = true,
-                                                          IsActive = true,
-                                                          IsEntryPoint = false
-                                                      };
-                        WAPoint cpIntersectionPoint = new WAPoint
-                                                      {
-                                                          Vertex = p,
-                                                          IsIntersection = true,
-                                                          IsActive = true,
-                                                          IsEntryPoint = false
-                                                      };
+                    //if (!Intersection.LineLineTest(startSpToendSp, startCpToendCp, out intersectSpcp)) continue;
+                    if (!Intersection.SegmentSegmentIntersection(startSpToendSp, startCpToendCp, out intersectSpcp)) continue;
 
-                        spIntersectionPoint.JumpLink = cpIntersectionPoint;
-                        cpIntersectionPoint.JumpLink = spIntersectionPoint;
+                    Vector2D p = new Vector2D(intersectSpcp.X, intersectSpcp.Y);
 
-                        list.AddSp(spIntersectionPoint);
-                        list.AddCP(cpIntersectionPoint);
-                    }
+                    WAPoint spIntersectionPoint = new WAPoint
+                                                  {
+                                                      Vertex = p,
+                                                      IsIntersection = true,
+                                                      IsActive = true,
+                                                      IsEntryPoint = false
+                                                  };
+                    WAPoint cpIntersectionPoint = new WAPoint
+                                                  {
+                                                      Vertex = p,
+                                                      IsIntersection = true,
+                                                      IsActive = true,
+                                                      IsEntryPoint = false
+                                                  };
+
+                    spIntersectionPoint.JumpLink = cpIntersectionPoint;
+                    cpIntersectionPoint.JumpLink = spIntersectionPoint;
+
+                    list.AddSp(spIntersectionPoint);
+                    list.AddCp(cpIntersectionPoint);
                 }
             }
 
@@ -460,63 +501,58 @@ namespace AvengersUtd.Odyssey.Geometry
 
             if (list.CounterEntryPoint == 0)
             {
-                bool ace = false;
-                int c = 0;
-                foreach (Vector2D p in subjectPoly)
-                {
-                    if (Geometry.PolygonHitTest(clippingPoly, p))
-                    {
-                        ace = true;
-                        c++;
-                    }
-                }
-                if (ace)
-                    return 0;
-                else
-                    return -1;
+                return null;
+                //bool ace = false;
+                //int c = 0;
+                //foreach (Vector2D p in subjectPoly)
+                //{
+                //    if (!clippingPoly.IsPointInside(p)) continue;
+
+                //    ace = true;
+                //    c++;
+                //}
+                //if (ace)
+                //    return 0;
+                //else
+                //    return -1;
             }
-            else
+            int count = 0;
+            WAPoint curr = list.MoveNext();
+            while (count < list.CounterEntryPoint)
             {
-                int count = 0;
-                double area = 0.0;
-                WAPoint curr = list.MoveNext();
-                while (count < list.CounterEntryPoint)
+                VerticesCollection points = new VerticesCollection();
+                //Find first valid intersection
+                while (!(curr.IsIntersection && curr.IsActive && curr.IsEntryPoint))
                 {
-                    PointCollection points = new PointCollection();
-                    //Find firs valid intersection
-                    while (!(curr.IsIntersection && curr.IsActive && curr.IsEntryPoint))
-                    {
-                        curr = list.MoveNext();
-                    }
-                    WAPoint ep = curr;
-                    ep.IsActive = false;
-                    ep.JumpLink.IsActive = false;
-                    count++;
-                    WAPoint cp = ep;
-
-                    do
-                    {
-                        points.Add(cp.Vertex);
-                        if (cp.IsIntersection && cp.IsActive)
-                        {
-                            if (cp.IsEntryPoint)
-                                count++;
-                            //Found exit Vector2D
-                            list.Jump();
-                            cp.IsActive = false;
-                            cp.JumpLink.IsActive = false;
-                        }
-                        cp = list.MoveNext();
-                    } while (!ep.Equals(cp));
-
-                    list.ResetJump();
-                    area += Geometry.PolygonArea(points);
-
-                    intersectedPoly.Add(points);
+                    curr = list.MoveNext();
                 }
+                WAPoint ep = curr;
+                ep.IsActive = false;
+                ep.JumpLink.IsActive = false;
+                count++;
+                WAPoint cp = ep;
 
-                return (int) area;
+                do
+                {
+                    points.Add(cp.Vertex);
+                    if (cp.IsIntersection && cp.IsActive)
+                    {
+                        if (cp.IsEntryPoint)
+                            count++;
+                        //Found exit point
+                        list.Jump();
+                        cp.IsActive = false;
+                        cp.JumpLink.IsActive = false;
+                    }
+                    cp = list.MoveNext();
+                } while (!ep.Equals(cp));
+
+                list.ResetJump();
+
+                intersectedPoints.AddRange(points);
             }
+
+            return new Polygon(intersectedPoints);
         }
 
         public override string ToString()

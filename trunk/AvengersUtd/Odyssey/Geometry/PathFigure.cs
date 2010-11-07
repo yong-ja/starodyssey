@@ -9,38 +9,33 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public class PathFigure
     {
-        private List<Segment> segments;
-
-        protected internal List<Segment> Segments
-        {
-            get { return segments; }
-        }
+        protected internal List<Segment> SegmentList { get; private set; }
 
         public PathFigure()
         {
-            segments = new List<Segment>();
+            SegmentList = new List<Segment>();
         }
 
         #region Public Properties
         public PathFigure(IEnumerable<Segment> segments)
             : this()
         {
-            this.segments.AddRange(segments);
+            this.SegmentList.AddRange(segments);
         }
 
         public Segment this[int index]
         {
-            get { return segments[index]; }
+            get { return SegmentList[index]; }
         }
 
         public Segment StartSegment
         {
-            get { return segments[0]; }
+            get { return SegmentList[0]; }
         }
 
-        public IEnumerable<Segment> SegmentCollection
+        public IEnumerable<Segment> Segments
         {
-            get { return segments; }
+            get { return SegmentList; }
         }
         #endregion
 
@@ -52,7 +47,7 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             List<Segment> optimizedSegments = new List<Segment>();
             Vector2D s = this[0].StartPoint;
-            foreach (Segment segment in segments)
+            foreach (Segment segment in SegmentList)
             {
                 double length = segment.Length;
                 if (length < toleranceValue)
@@ -63,7 +58,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 s = p;
             }
 
-            segments = optimizedSegments;
+            SegmentList = optimizedSegments;
         }
 
         /// <summary>
@@ -76,7 +71,7 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             List<Segment> detailedSegments = new List<Segment>();
 
-            foreach (Segment segment in segments)
+            foreach (Segment segment in SegmentList)
             {
                 double length = segment.Length;
                 if (length < 2 * subSegmentLength)
@@ -87,17 +82,17 @@ namespace AvengersUtd.Odyssey.Geometry
                 detailedSegments.AddRange(Segment.Subdivide(segment, (int)Math.Round(length/subSegmentLength)));
             }
 
-            segments = detailedSegments;
+            SegmentList = detailedSegments;
         }
 
         public static explicit operator Polygon(PathFigure figure)
         {
-            return new Polygon(figure.SegmentCollection.Select(s => s.StartPoint));
+            return new Polygon(figure.SegmentList.Select(s => s.StartPoint));
         }
 
         public static explicit operator VerticesCollection(PathFigure figure)
         {
-            return new VerticesCollection(figure.SegmentCollection.Select(s => s.StartPoint));
+            return new VerticesCollection(figure.SegmentList.Select(s => s.StartPoint));
         }
 
     }
