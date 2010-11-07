@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SlimDX;
@@ -7,14 +8,9 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public partial class Polygon : IPolygon
     {
-        private readonly Vector2D[] vertices;
-
         #region Properties
 
-        public Vector2D this[int index]
-        {
-            get { return vertices[index]; }
-        }
+        public VerticesCollection Vertices { get; private set; }
 
         public Vector2D Centroid
         {
@@ -23,17 +19,12 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public double Area { get { return ComputeArea(this); } }
 
-        public int VerticesCount
-        {
-            get { return vertices.Length; }
-        }
-
         public bool IsCounterClockWise
         {
             get
             {
                 //We just return true for lines
-                if (VerticesCount < 3)
+                if (Vertices.Count < 3)
                     return true;
 
                 return (Polygon.ComputeSignedArea(this) > 0.0);
@@ -45,52 +36,36 @@ namespace AvengersUtd.Odyssey.Geometry
         public Polygon(IEnumerable<Vector2D> points)
             : this()
         {
-            vertices = points.ToArray();
+            Vertices.AddRange(points);
         }
 
-        private Polygon()
+        public Polygon()
         {
-            vertices = new Vector2D[0];
+            Vertices = new VerticesCollection();
         }
         #endregion
 
         public Vector4[] ComputeVector4Array(float zIndex)
         {
-            Vector4[] pointsArray = new Vector4[VerticesCount];
-            for (int i = 0; i < VerticesCount; i++)
+            Vector4[] pointsArray = new Vector4[Vertices.Count];
+            for (int i = 0; i < Vertices.Count; i++)
             {
-                Vector2D point = vertices[i];
+                Vector2D point = Vertices[i];
                 pointsArray[i] = new Vector4((float)point.X, (float)point.Y, zIndex, 1.0f);
             }
             return pointsArray;
         }
 
-        public bool IsPointInside(Vector2D point)
-        {
-            // Crossing Test
-            // Source: Real Time Rendering 3rd Edition, p. 754
-
-            bool inside = false;
-            Vector2D t = point;
-            Vector2D e0 = vertices[VerticesCount - 1];
-            bool y0 = e0.Y >= t.Y;
-
-            for (int i = 0; i < VerticesCount - 1; i++)
-            {
-                Vector2D e1 = vertices[i];
-                bool y1 = e1.Y >= t.Y;
-                if (y0 != y1)
-                    if (((e1.Y - t.Y) * (e0.X - e1.X) >= (e1.X - t.X) * (e0.Y - e1.Y)) == y1)
-                        inside = !inside;
-                y0 = y1;
-                e0 = e1;
-            }
-            return inside;
-        }
-
         public void ReverseVerticesOrder()
         {
-            vertices.Reverse();
+            Vertices = new VerticesCollection(Vertices.Reverse());
+        }
+
+
+        public bool IsPointInside(Vector2D point)
+        {
+            //return Intersection.PolygonHitTest(this, point);
+            return Intersection.PolygonPointTest(this, point);
         }
 
         #region Static methods
@@ -103,11 +78,11 @@ namespace AvengersUtd.Odyssey.Geometry
             double x1; // Next vertex X
             double y1; // Next vertex Y
             double a;  // Partial signed area
-            Vector2D[] vertices = polygon.vertices.ToArray();
+            Vector2D[] vertices = polygon.Vertices.ToArray();
 
             // For all vertices except last
             int i;
-            for (i = 0; i < polygon.VerticesCount - 1; ++i)
+            for (i = 0; i < polygon.Vertices.Count - 1; ++i)
             {
                 x0 = vertices[i].X;
                 y0 = vertices[i].Y;
@@ -145,15 +120,15 @@ namespace AvengersUtd.Odyssey.Geometry
         public static double ComputeSignedArea(Polygon polygon)
         {
             // Add the first point to the end.
-            int numPoints = polygon.VerticesCount;
+            int numPoints = polygon.Vertices.Count;
 
             // Get the areas.
             double area = 0;
             for (int i = 0; i < numPoints; i++)
             {
                 area +=
-                    (polygon[(i + 1) % numPoints].X - polygon[i].X) *
-                    (polygon[(i + 1) % numPoints].Y + polygon[i].Y) / 2;
+                    (polygon.Vertices[(i + 1) % numPoints].X - polygon.Vertices[i].X) *
+                    (polygon.Vertices[(i + 1) % numPoints].Y + polygon.Vertices[i].Y) / 2;
             }
 
             return area;
@@ -161,24 +136,23 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public static bool ConvexityTest(Polygon polygon)
         {
-            
-                if (polygon.VerticesCount < 3) return false;
+            if (polygon.Vertices.Count < 3) return false;
 
-                int xCh = 0, yCh = 0;
+            int xCh = 0, yCh = 0;
 
-                Vector2D a = polygon[0] - polygon[polygon.VerticesCount-1];
-                for (int i = 0; i < polygon.VerticesCount - 1; ++i)
-                {
-                    Vector2D b = polygon[i] - polygon[i + 1];
+            Vector2D a = polygon.Vertices[0] - polygon.Vertices[polygon.Vertices.Count - 1];
+            for (int i = 0; i < polygon.Vertices.Count - 1; ++i)
+            {
+                Vector2D b = polygon.Vertices[i] - polygon.Vertices[i + 1];
 
-                    if (Math.Sign(a.X) != Math.Sign(b.X)) ++xCh;
-                    if (Math.Sign(a.Y) != Math.Sign(b.Y)) ++yCh;
+                if (Math.Sign(a.X) != Math.Sign(b.X)) ++xCh;
+                if (Math.Sign(a.Y) != Math.Sign(b.Y)) ++yCh;
 
-                    a = b;
-                }
-
-                return (xCh <= 2 && yCh <= 2);
+                a = b;
             }
+
+            return (xCh <= 2 && yCh <= 2);
+        }
 
         #endregion
 
@@ -220,13 +194,13 @@ namespace AvengersUtd.Odyssey.Geometry
             return segment.Length;
         }
 
-        public static explicit operator PathFigure(Polygon v)
+        public static explicit operator PathFigure(Polygon polygon)
         {
             List<Segment> segments = new List<Segment>();
-            Vector2D s = v[v.VerticesCount - 1];
-            for (int i = 0; i < v.VerticesCount; i++)
+            Vector2D s = polygon.Vertices[polygon.Vertices.Count - 1];
+            for (int i = 0; i < polygon.Vertices.Count; i++)
             {
-                Vector2D p = v[i];
+                Vector2D p = polygon.Vertices[i];
                 segments.Add(new Segment(s,p));
 
                 s = p;
@@ -234,8 +208,6 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return new PathFigure(segments);
         }
-
-
-        
+      
     }
 }

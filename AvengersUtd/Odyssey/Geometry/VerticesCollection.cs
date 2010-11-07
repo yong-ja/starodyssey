@@ -27,12 +27,17 @@ namespace AvengersUtd.Odyssey.Geometry
             vertices.Add(item);
         }
 
-        void ICollection<Vector2D>.Clear()
+        public void AddRange(IEnumerable<Vector2D> points)
+        {
+            vertices.AddRange(points);
+        }
+
+        public void Clear()
         {
             vertices.Clear();
         }
 
-        bool ICollection<Vector2D>.Contains(Vector2D item)
+        public bool Contains(Vector2D item)
         {
             return vertices.Contains(item);
         }
@@ -65,7 +70,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #region IEnumerable<Vector2D> Members
 
-        IEnumerator<Vector2D> IEnumerable<Vector2D>.GetEnumerator()
+        public IEnumerator<Vector2D> GetEnumerator()
         {
             return vertices.GetEnumerator();
         }
