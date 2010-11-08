@@ -55,7 +55,7 @@
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\Circle.cs" />
-    <Compile Include="Geometry\Clipping.cs" />
+    <Compile Include="Geometry\WAClipping.cs" />
     <Compile Include="Geometry\Delauney.cs" />
     <Compile Include="Geometry\Edge.cs" />
     <Compile Include="Geometry\Ellipse.cs" />
