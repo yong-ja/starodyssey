@@ -22,7 +22,9 @@ namespace AvengersUtd.Odyssey.Geometry
                 (vertex => new WAPoint
                            {
                                Vertex = vertex,
-                               IsActive = true,
+                               Visited = false,
+                               IsIntersection = false,
+                               IsEntryPoint = false,
                            }).ToList();
             WAList2 list = new WAList2 {Head = pointList[0], Tail = pointList[pointList.Count - 1]};
 
@@ -50,56 +52,60 @@ namespace AvengersUtd.Odyssey.Geometry
             clipper.FindIntersections();
         }
 
-        void FindIntersections()
+        void FindIntersections(Polygon subject, Polygon clip)
         {
-
-            //PathFigure subjectEdges = (PathFigure) subject;
-            //PathFigure clipEdges = (PathFigure) clip;
-            WAPoint currentPoint = subjectPointList.Head.NextVertex;
-            Vector2D s = subjectPointList.Head.Vertex;
-            while (currentPoint!= subjectPointList.Head)
+            Vector2D s = subject.Vertices[0];
+            WAList2 spList = new WAList2();
+            WAList2 cpList = new WAList2();
+            for (int i = 1; i < subject.Vertices.Count; i++)
             {
-
-                Vector2D p = currentPoint.Vertex;
+                Vector2D p = subject.Vertices[i];
                 Segment subjectEdge = new Segment(s, p);
 
                 Vector2D t = clip.Vertices[0];
 
-                for (int j = 1; j < clip.Vertices.Count; j++)
+                for (int j = 1; j < clip.Vertices.Count - 1; j++ )
                 {
                     Vector2D q = clip.Vertices[j];
                     Segment clipEdge = new Segment(t, q);
-                    t = q;
 
                     Vector2D intersectionPoint;
                     bool inboundIntersection;
-                    if (!Intersection.SegmentSegmentTest(subjectEdge, clipEdge, out intersectionPoint, out inboundIntersection))
-                        continue;
-                    
-                        WAPoint point = new WAPoint
-                                        {
-                                            Vertex = intersectionPoint,
-                                            IsActive = true,
-                                            IsEntryPoint = inboundIntersection
-                                            
-                                        }
-                    
+                    i++;
+                    if (Intersection.SegmentSegmentTest(subjectEdge, clipEdge, out intersectionPoint, out inboundIntersection))
+                    {
+                        WAPoint subjectPoint = new WAPoint
+                        {
+                            Vertex = intersectionPoint,
+                            Visited = false,
+                            IsEntryPoint = inboundIntersection,
+                            IsIntersection = true,
+                        };
+
+                        WAPoint clipPoint = subjectPoint.Clone();
+
+                        subjectPoint.JumpLink = clipPoint;
+                        clipPoint.JumpLink = subjectPoint;
+
+                        // Insert point in both list
+                        WAPoint tempPoint = currentSubjectPoint.NextVertex;
+                        currentSubjectPoint.NextVertex = subjectPoint;
+                        subjectPoint.PrevVertex = currentSubjectPoint;
+                        subjectPoint.NextVertex = tempPoint;
+
+                        tempPoint = currentClipPoint.NextVertex;
+                        currentClipPoint.NextVertex = subjectPoint;
+                        clipPoint.PrevVertex = currentClipPoint;
+                        clipPoint.NextVertex = tempPoint;
+                    }
+
+                    t = q;
+                    currentClipPoint = currentClipPoint.NextVertex;
                 }
 
                 s = p;
+                currentSubjectPoint = currentSubjectPoint.NextVertex;
             }
-
-            //foreach (Segment subjectEdge in subjectEdges.Segments)
-            //{
-            //    foreach (Segment clipEdge in clipEdges.Segments)
-            //    {
-                    // Check intersection between two segments.
-                    // Determine the intersection point and whether it is
-                    // an inbound intersection.
-                    // 
-
-
-
 
         }
     }

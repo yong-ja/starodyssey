@@ -123,7 +123,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //poly = Polygon.SutherlandHodgmanClip(rh, poly);
                         //ellipse.ReverseVerticesOrder();
                         rh.ReverseVerticesOrder();
-                        ellipse = WAList.ComputeIntersectArea(ellipse,rh);
+                        //ellipse = WAList.ComputeIntersectArea(ellipse,rh);
+                        WAClipping.PerformClipping(ellipse, rh);
                         d.Points = ellipse.ComputeVector4Array(99);
                         d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
                         d.DrawPoints();
