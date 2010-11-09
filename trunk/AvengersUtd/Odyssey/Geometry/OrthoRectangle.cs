@@ -160,29 +160,10 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #region IPolygon Members
 
-        public Vector2D this[int index]
+        public VerticesCollection Vertices
         {
-            get
-            {
-                switch (index)
-                {
-                    case 0:
-                        return TopLeft;
-                    case 1:
-                        return TopRight;
-                    case 2:
-                        return BottomRight;
-                    case 3:
-                        return BottomLeft;
-                    default:
-                        throw Error.IndexNotPresentInArray("this",
-                                                           index,
-                                                           "Indices for OrthoRectangle run from 0 to 1, inclusive.");
-                }
-            }
-        }
+            get; set;}
 
-        public int VerticesCount { get { return 4; } }
 
         public Vector2D Centroid
         {
