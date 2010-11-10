@@ -124,8 +124,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //ellipse.ReverseVerticesOrder();
                         rh.ReverseVerticesOrder();
                         //ellipse = WAList.ComputeIntersectArea(ellipse,rh);
-                        WAClipping.PerformClipping(ellipse, rh);
-                        d.Points = ellipse.ComputeVector4Array(99);
+                        Polygon clipped = WAClipping.PerformClipping(ellipse, rh);
+                        d.Points = clipped.ComputeVector4Array(99);
                         d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
                         d.DrawPoints();
                         break;

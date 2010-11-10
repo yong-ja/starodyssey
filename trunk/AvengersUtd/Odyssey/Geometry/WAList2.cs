@@ -32,13 +32,16 @@ namespace AvengersUtd.Odyssey.Geometry
             }
             else
             {
-                WAPoint temp = Current.NextVertex;
+                //WAPoint temp = Current.NextVertex;
                 Current.NextVertex = point;
                 point.PrevVertex = Current;
-                point.NextVertex = temp;
-                temp.PrevVertex = point;
+                point.NextVertex = Head;
+                Tail = point;
+                Current = point;
                 Length++;
             }
+
+
         }
 
     }

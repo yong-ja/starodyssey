@@ -8,7 +8,7 @@ namespace AvengersUtd.Odyssey.Geometry
         public WAPoint NextVertex { get; set; }
         public WAPoint PrevVertex { get; set; }
         public WAPoint JumpLink { get; set; }
-
+        public int Index { get; set; }
         public bool Visited { get; set; }
         public bool IsEntryPoint { get; set; }
         public bool IsIntersection { get; set; }
@@ -97,6 +97,7 @@ namespace AvengersUtd.Odyssey.Geometry
                        Visited = Visited,
                        IsEntryPoint = IsEntryPoint,
                        IsIntersection = IsIntersection,
+                       Index = Index
                    };
         }
 
