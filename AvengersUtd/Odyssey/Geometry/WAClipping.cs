@@ -7,13 +7,17 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public class WAClipping
     {
+        private Polygon subject;
+        private Polygon clip;
         WAList2 subjectPointList;
         WAList2 clipPointList;
 
-        private WAClipping(IPolygon subject, IPolygon clip)
+        private WAClipping(Polygon subject, Polygon clip)
         {
-            subjectPointList = FillPointList(subject);
-            clipPointList = FillPointList(clip);
+            this.subject = subject;
+            this.clip = clip;
+            //subjectPointList = FillPointList(subject);
+            //clipPointList = FillPointList(clip);
         }
 
         static WAList2 FillPointList(IPolygon polygon)
@@ -52,26 +56,44 @@ namespace AvengersUtd.Odyssey.Geometry
             clipper.FindIntersections();
         }
 
-        void FindIntersections(Polygon subject, Polygon clip)
+        void FindIntersections()
         {
-            Vector2D s = subject.Vertices[0];
+            int k = 0;
+            Vector2D s = subject.Vertices[subject.Vertices.Count -1];
             WAList2 spList = new WAList2();
             WAList2 cpList = new WAList2();
-            for (int i = 1; i < subject.Vertices.Count; i++)
+            for (int i = 0; i < subject.Vertices.Count; i++)
             {
                 Vector2D p = subject.Vertices[i];
                 Segment subjectEdge = new Segment(s, p);
 
-                Vector2D t = clip.Vertices[0];
+                WAPoint sPoint = new WAPoint
+                {
+                    Vertex = p,
+                    Visited = false,
+                    IsEntryPoint = false,
+                    IsIntersection = false,
+                };
+                spList.Add(sPoint);
 
-                for (int j = 1; j < clip.Vertices.Count - 1; j++ )
+                Vector2D t = clip.Vertices[clip.Vertices.Count-1];
+
+                for (int j = 0; j < clip.Vertices.Count; j++ )
                 {
                     Vector2D q = clip.Vertices[j];
                     Segment clipEdge = new Segment(t, q);
 
                     Vector2D intersectionPoint;
                     bool inboundIntersection;
-                    i++;
+                    k++;
+
+                    if (i == 0)
+                    {
+                        WAPoint cPoint = new WAPoint
+                                         {Vertex = p, Visited = false, IsEntryPoint = false, IsIntersection = false,};
+                        cpList.Add(cPoint);
+                    }
+
                     if (Intersection.SegmentSegmentTest(subjectEdge, clipEdge, out intersectionPoint, out inboundIntersection))
                     {
                         WAPoint subjectPoint = new WAPoint
@@ -84,27 +106,18 @@ namespace AvengersUtd.Odyssey.Geometry
 
                         WAPoint clipPoint = subjectPoint.Clone();
 
+                        // Insert point in both list
                         subjectPoint.JumpLink = clipPoint;
                         clipPoint.JumpLink = subjectPoint;
-
-                        // Insert point in both list
-                        WAPoint tempPoint = currentSubjectPoint.NextVertex;
-                        currentSubjectPoint.NextVertex = subjectPoint;
-                        subjectPoint.PrevVertex = currentSubjectPoint;
-                        subjectPoint.NextVertex = tempPoint;
-
-                        tempPoint = currentClipPoint.NextVertex;
-                        currentClipPoint.NextVertex = subjectPoint;
-                        clipPoint.PrevVertex = currentClipPoint;
-                        clipPoint.NextVertex = tempPoint;
+                        spList.Add(subjectPoint);
+                        cpList.Add(clipPoint);
+                        
                     }
 
                     t = q;
-                    currentClipPoint = currentClipPoint.NextVertex;
                 }
 
                 s = p;
-                currentSubjectPoint = currentSubjectPoint.NextVertex;
             }
 
         }
