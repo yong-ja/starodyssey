@@ -9,8 +9,9 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         private Polygon subject;
         private Polygon clip;
-        WAList2 subjectPointList;
-        WAList2 clipPointList;
+        WAList2 spList;
+        WAList2 cpList;
+        public Polygon Result { get; private set; }
 
         private WAClipping(Polygon subject, Polygon clip)
         {
@@ -50,31 +51,36 @@ namespace AvengersUtd.Odyssey.Geometry
             return list;
         }
 
-        public static void PerformClipping(Polygon subject, Polygon clip)
+        public static Polygon PerformClipping(Polygon subject, Polygon clip)
         {
             WAClipping clipper = new WAClipping(subject, clip);
             clipper.FindIntersections();
+            clipper.ComputeIntersectedPolygon();
+
+            return clipper.Result;
         }
 
         void FindIntersections()
         {
-            int k = 0;
+            int counter = 0;
             Vector2D s = subject.Vertices[subject.Vertices.Count -1];
-            WAList2 spList = new WAList2();
-            WAList2 cpList = new WAList2();
+            spList = new WAList2();
+            cpList = new WAList2();
             for (int i = 0; i < subject.Vertices.Count; i++)
             {
                 Vector2D p = subject.Vertices[i];
                 Segment subjectEdge = new Segment(s, p);
 
                 WAPoint sPoint = new WAPoint
-                {
-                    Vertex = p,
-                    Visited = false,
-                    IsEntryPoint = false,
-                    IsIntersection = false,
-                };
+                                 {
+                                     Vertex = s,
+                                     Visited = false,
+                                     IsEntryPoint = false,
+                                     IsIntersection = false,
+                                     Index = counter
+                                 };
                 spList.Add(sPoint);
+                counter++;
 
                 Vector2D t = clip.Vertices[clip.Vertices.Count-1];
 
@@ -85,26 +91,35 @@ namespace AvengersUtd.Odyssey.Geometry
 
                     Vector2D intersectionPoint;
                     bool inboundIntersection;
-                    k++;
 
                     if (i == 0)
                     {
                         WAPoint cPoint = new WAPoint
-                                         {Vertex = p, Visited = false, IsEntryPoint = false, IsIntersection = false,};
+                                         {
+                                             Vertex = t,
+                                             Visited = false,
+                                             IsEntryPoint = false,
+                                             IsIntersection = false,
+                                             Index = counter
+                                         };
+                        counter++;
                         cpList.Add(cPoint);
                     }
 
                     if (Intersection.SegmentSegmentTest(subjectEdge, clipEdge, out intersectionPoint, out inboundIntersection))
                     {
                         WAPoint subjectPoint = new WAPoint
-                        {
-                            Vertex = intersectionPoint,
-                            Visited = false,
-                            IsEntryPoint = inboundIntersection,
-                            IsIntersection = true,
-                        };
+                                               {
+                                                   Vertex = intersectionPoint,
+                                                   Visited = false,
+                                                   IsEntryPoint = inboundIntersection,
+                                                   IsIntersection = true,
+                                                   Index = counter
+                                               };
 
                         WAPoint clipPoint = subjectPoint.Clone();
+
+                        counter++;
 
                         // Insert point in both list
                         subjectPoint.JumpLink = clipPoint;
@@ -119,7 +134,38 @@ namespace AvengersUtd.Odyssey.Geometry
 
                 s = p;
             }
+        }
 
+        void ComputeIntersectedPolygon()
+        {
+            WAPoint currentPoint = spList.Head;
+            Polygon clippedPolygon = new Polygon();
+            do
+            {
+                if (currentPoint.IsEntryPoint && !currentPoint.Visited)
+                {
+                    WAPoint clipPoint = currentPoint;
+
+                    do
+                    {
+                        clipPoint.Visited = true;
+                        clippedPolygon.Vertices.Add(clipPoint.Vertex);
+
+                        if (clipPoint.IsEntryPoint)
+                            clipPoint = clipPoint.JumpLink;
+
+                        clipPoint = clipPoint.NextVertex;
+
+
+                    } while (clipPoint.NextVertex.Index != currentPoint.Index);
+                }
+
+                currentPoint.Visited = true;
+                currentPoint = currentPoint.NextVertex;
+
+            } while (currentPoint.NextVertex.Index != spList.Head.Index);
+
+            Result = clippedPolygon;
         }
     }
 }
