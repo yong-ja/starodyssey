@@ -27,6 +27,16 @@ namespace AvengersUtd.Odyssey.Geometry
                 Head.NextVertex = Head.PrevVertex = point;
                 Tail = point;
                 point.PrevVertex = point.NextVertex = Head;
+                Current = point;
+                Length++;
+            }
+            else
+            {
+                WAPoint temp = Current.NextVertex;
+                Current.NextVertex = point;
+                point.PrevVertex = Current;
+                point.NextVertex = temp;
+                temp.PrevVertex = point;
                 Length++;
             }
         }
