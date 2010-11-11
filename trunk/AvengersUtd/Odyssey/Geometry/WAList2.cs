@@ -49,13 +49,13 @@ namespace AvengersUtd.Odyssey.Geometry
             WAPoint intersectionPoint = Current;
             while (intersectionPoint.NextVertex != Current)
             {
-                if(Current.IsIntersection)
-                    return Current;
+                if (intersectionPoint.IsIntersection && intersectionPoint.IsEntryPoint && !intersectionPoint.Visited)
+                    return intersectionPoint;
 
                 intersectionPoint = intersectionPoint.NextVertex;
             }
 
-            return null;
+            return Current;
         }
 
     }

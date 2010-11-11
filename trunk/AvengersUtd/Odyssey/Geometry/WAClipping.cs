@@ -144,7 +144,7 @@ namespace AvengersUtd.Odyssey.Geometry
             {
                 currentPoint = spList.FindNextIntersectionPoint();
 
-                if (currentPoint.IsEntryPoint && currentPoint.IsEntryPoint && !currentPoint.Visited)
+                if (currentPoint.IsEntryPoint && currentPoint.IsIntersection && !currentPoint.Visited)
                 {
                     WAPoint clipPoint = currentPoint;
                     do
