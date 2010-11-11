@@ -14,8 +14,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
             SaveState();
             Width = Height  = 4;
-            foreach (Vector4 point in Points)
+            IGradientShader tempShader = Shader;
+            for (int i = 0; i < Points.Length; i++)
             {
+                Vector4 point = Points[i];
+                if (i==0)
+                {
+                    Shader = LinearShader.CreateUniform(new Color4(0, 1, 0));
+                }
+                else
+                {
+                    Shader = tempShader;
+                }
+
                 Position = new Vector3(point.X, point.Y, point.Z);
                 FillRectangle();
             }

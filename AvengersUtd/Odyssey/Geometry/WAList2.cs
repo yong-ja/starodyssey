@@ -44,5 +44,19 @@ namespace AvengersUtd.Odyssey.Geometry
 
         }
 
+        public WAPoint FindNextIntersectionPoint()
+        {
+            WAPoint intersectionPoint = Current;
+            while (intersectionPoint.NextVertex != Current)
+            {
+                if(Current.IsIntersection)
+                    return Current;
+
+                intersectionPoint = intersectionPoint.NextVertex;
+            }
+
+            return null;
+        }
+
     }
 }
