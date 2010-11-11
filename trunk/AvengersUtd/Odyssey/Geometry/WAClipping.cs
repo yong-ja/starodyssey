@@ -142,28 +142,32 @@ namespace AvengersUtd.Odyssey.Geometry
             Polygon clippedPolygon = new Polygon();
             do
             {
-                if (currentPoint.IsEntryPoint && !currentPoint.Visited)
+                currentPoint = spList.FindNextIntersectionPoint();
+
+                if (currentPoint.IsEntryPoint && currentPoint.IsEntryPoint && !currentPoint.Visited)
                 {
                     WAPoint clipPoint = currentPoint;
-
                     do
                     {
-                        clipPoint.Visited = true;
-                        clippedPolygon.Vertices.Add(clipPoint.Vertex);
+                        
+                        do
+                        {
+                            clipPoint.Visited = true;
+                            clippedPolygon.Vertices.Add(clipPoint.Vertex);
+                            clipPoint = clipPoint.NextVertex;
+                        } while (!clipPoint.IsIntersection) ;
 
-                        if (clipPoint.IsEntryPoint)
-                            clipPoint = clipPoint.JumpLink;
+                        clipPoint.Visited = clipPoint.JumpLink.Visited = true;
+                        clipPoint = clipPoint.JumpLink;
+                        
 
-                        clipPoint = clipPoint.NextVertex;
-
-
-                    } while (clipPoint.NextVertex.Index != currentPoint.Index);
+                    } while (clipPoint.Index != currentPoint.Index);
                 }
 
                 currentPoint.Visited = true;
                 currentPoint = currentPoint.NextVertex;
 
-            } while (currentPoint.NextVertex.Index != spList.Head.Index);
+            } while (currentPoint.Index != spList.Head.Index);
 
             Result = clippedPolygon;
         }
