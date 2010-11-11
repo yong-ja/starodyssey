@@ -22,6 +22,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 {
                     Shader = LinearShader.CreateUniform(new Color4(0, 1, 0));
                 }
+                else if (i==1)
+                {
+                    Shader = LinearShader.CreateUniform(new Color4(1, 1, 0));
+                }
                 else
                 {
                     Shader = tempShader;

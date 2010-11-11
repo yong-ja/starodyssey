@@ -122,7 +122,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         IGradientShader s = d.Shader;
                         //poly = Polygon.SutherlandHodgmanClip(rh, poly);
                         //ellipse.ReverseVerticesOrder();
-                        rh.ReverseVerticesOrder();
+                        //rh.ReverseVerticesOrder();
                         //ellipse = WAList.ComputeIntersectArea(ellipse,rh);
                         Polygon clipped = WAClipping.PerformClipping(ellipse, rh);
                         d.Points = clipped.ComputeVector4Array(99);
