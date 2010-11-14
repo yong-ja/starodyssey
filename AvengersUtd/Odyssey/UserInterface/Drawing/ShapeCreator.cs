@@ -100,7 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                             (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
                         Vector2D c = rectangle.Centroid;
                         d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-                        Polygon ellipse = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,8);
+                        Polygon ellipse = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,4);
                         double segmentLength = Polygon.ComputeEllipseSegmentLength
                             (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
 
@@ -112,8 +112,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         Polygon rh = new Polygon
                             (new[]
                              {
-                                 c + new Vector2D(0, 150), c + new Vector2D(150, 0), c + new Vector2D(0, -150),
-                                 c + new Vector2D(-150, 0),
+                                 c + new Vector2D(0, 100), c + new Vector2D(100, -200), c + new Vector2D(0, -100),
+                                 c + new Vector2D(-100, -200),
                              });
 
                         d.Points = rh.ComputeVector4Array(99);

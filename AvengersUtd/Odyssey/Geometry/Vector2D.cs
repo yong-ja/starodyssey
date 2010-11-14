@@ -187,6 +187,16 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         /// <summary>
+        /// Rounds the X and Y component to the specified number of digits after the integer part.
+        /// </summary>
+        /// <param name="digits">The number of digits.</param>
+        public void Round(int digits = 4)
+        {
+            X = Math.Round(X, digits);
+            Y = Math.Round(Y, digits);
+        }
+
+        /// <summary>
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A two-element array containing the components of the vector.</returns>

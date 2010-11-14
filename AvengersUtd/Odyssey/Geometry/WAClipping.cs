@@ -31,10 +31,10 @@ namespace AvengersUtd.Odyssey.Geometry
                                IsIntersection = false,
                                IsEntryPoint = false,
                            }).ToList();
-            WAList2 list = new WAList2 {Head = pointList[0], Tail = pointList[pointList.Count - 1]};
+            WAList2 list = new WAList2 {First = pointList[0], Last = pointList[pointList.Count - 1]};
 
-            list.Head.PrevVertex = list.Tail;
-            list.Tail.NextVertex = list.Head;
+            list.First.PrevVertex = list.Last;
+            list.Last.NextVertex = list.First;
 
             for (int i = 1; i < pointList.Count - 1; i++)
             {
@@ -55,6 +55,7 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             WAClipping clipper = new WAClipping(subject, clip);
             clipper.FindIntersections();
+            clipper.HandleSpecialCases();
             clipper.ComputeIntersectedPolygon();
 
             return clipper.Result;
@@ -125,7 +126,8 @@ namespace AvengersUtd.Odyssey.Geometry
                         subjectPoint.JumpLink = clipPoint;
                         clipPoint.JumpLink = subjectPoint;
                         spList.Add(subjectPoint);
-                        cpList.Add(clipPoint);
+                        int cIndex1 = cpList.IndexOf(t);
+                        cpList.AddAfter(cIndex1, clipPoint);
                         
                     }
 
@@ -136,38 +138,84 @@ namespace AvengersUtd.Odyssey.Geometry
             }
         }
 
-        void ComputeIntersectedPolygon()
+        void HandleSpecialCases()
         {
-            WAPoint currentPoint = spList.Head;
-            Polygon clippedPolygon = new Polygon();
+            WAPoint currentPoint = spList.First;
+
             do
             {
-                currentPoint = spList.FindNextIntersectionPoint();
+                // Points are coincident
+                Vector2D sA = currentPoint.Vertex;
+                Vector2D sB = currentPoint.NextVertex.Vertex;
 
-                if (currentPoint.IsEntryPoint && currentPoint.IsIntersection && !currentPoint.Visited)
+                sA.Round();
+                sB.Round();
+
+                if (sA == sB)
                 {
-                    WAPoint clipPoint = currentPoint;
-                    do
+                    Vector2D sC = currentPoint.Forward(2).Vertex;
+                    sC.Round();
+                    if (sB == sC)
                     {
-                        
-                        do
+                        // v1 == v2 == v3
+                        Vector2D sD = currentPoint.Forward(3).Vertex;
+
+                        Vector2D sA0 = currentPoint.PrevVertex.Vertex;
+                        Segment sA0sD = new Segment(sA0, sD);
+
+                        WAPoint cIntersection = currentPoint.NextVertex.JumpLink;
+
+                        Vector2D cA = cIntersection.PrevVertex.Vertex;
+                        Vector2D cB = sB;
+                        Vector2D cC = cIntersection.NextVertex.Vertex;
+
+                        Segment cAcC = new Segment(cA,cC);
+                        bool intersection = Intersection.SegmentSegmentTest(sA0sD, cAcC);
+
+                        if (!intersection)
                         {
-                            clipPoint.Visited = true;
-                            clippedPolygon.Vertices.Add(clipPoint.Vertex);
+                            spList.Remove(currentPoint.NextVertex.Index);
+                            cpList.Remove(currentPoint.NextVertex.Index);
+                        }
+                    }
+                }
+               currentPoint = currentPoint.NextVertex;
+            } while (currentPoint.Index != spList.First.Index);
+        }
+
+        void ComputeIntersectedPolygon()
+        {
+            int counter = 0;
+            WAPoint currentPoint = spList.FindNextIntersectionPoint(spList.First);
+            Polygon clippedPolygon = new Polygon();
+            
+            while (currentPoint.Index != spList.First.Index)
+            {
+                if (!currentPoint.Visited)
+                {
+                    clippedPolygon.Vertices.Add(currentPoint.Vertex);
+                    counter++;
+                    currentPoint.Visited = true;
+
+                    WAPoint clipPoint = currentPoint.NextVertex;
+                    while (clipPoint.Index != currentPoint.Index)
+                    {
+                        clippedPolygon.Vertices.Add(clipPoint.Vertex);
+                        clipPoint.Visited = true;
+                        counter++;
+
+                        if (clipPoint.IsIntersection)
+                        {
+                            clipPoint.JumpLink.Visited = true;
+                            clipPoint = clipPoint.JumpLink.NextVertex;
+                        }
+                        else
                             clipPoint = clipPoint.NextVertex;
-                        } while (!clipPoint.IsIntersection) ;
-
-                        clipPoint.Visited = clipPoint.JumpLink.Visited = true;
-                        clipPoint = clipPoint.JumpLink;
-                        
-
-                    } while (clipPoint.Index != currentPoint.Index);
+                    }
                 }
 
-                currentPoint.Visited = true;
-                currentPoint = currentPoint.NextVertex;
-
-            } while (currentPoint.Index != spList.Head.Index);
+                currentPoint = spList.FindNextIntersectionPoint(currentPoint.NextVertex);
+            }
 
             Result = clippedPolygon;
         }
