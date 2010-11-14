@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -12,6 +13,7 @@ namespace AvengersUtd.Odyssey.Geometry
         public bool Visited { get; set; }
         public bool IsEntryPoint { get; set; }
         public bool IsIntersection { get; set; }
+
 
         #region Equality
 
@@ -57,7 +59,25 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #endregion
 
-        
+        public WAPoint Forward(int steps)
+        {
+            WAPoint currentPoint = this;
+            for (int i = 0; i < steps; i++)
+            {
+                currentPoint = currentPoint.NextVertex;
+            }
+            return currentPoint;
+        }
+
+        public WAPoint Backward(int steps)
+        {
+            WAPoint currentPoint = this;
+            for (int i = 0; i < steps; i++)
+            {
+                currentPoint = currentPoint.PrevVertex;
+            }
+            return currentPoint;
+        }
         
 
         //public bool Between(WAPoint p1, WAPoint p2)

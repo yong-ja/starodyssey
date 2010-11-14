@@ -8,55 +8,142 @@ namespace AvengersUtd.Odyssey.Geometry
     public class WAList2
     {
         public int Length { get; set; }
-        public WAPoint Head { get; set; }
-        public WAPoint Tail { get; set; }
-        public WAPoint Current { get; set; }
+        public WAPoint First { get; set; }
+        public WAPoint Last { get; set; }
+        WAPoint current;
 
         public void Add(WAPoint point)
         {
             if (Length==0)
             {
-                Head = Tail = point;
-                Head.NextVertex = Head.PrevVertex = Tail;
-                Tail.NextVertex = Tail.PrevVertex = Head;
-                Current = Head;
+                First = Last = point;
+                First.NextVertex = First.PrevVertex = Last;
+                Last.NextVertex = Last.PrevVertex = First;
+                current = First;
                 Length++;
             }
             else if (Length == 1)
             {
-                Head.NextVertex = Head.PrevVertex = point;
-                Tail = point;
-                point.PrevVertex = point.NextVertex = Head;
-                Current = point;
+                First.NextVertex = First.PrevVertex = point;
+                Last = point;
+                point.PrevVertex = point.NextVertex = First;
+                current = point;
                 Length++;
-            }
+             }
             else
             {
                 //WAPoint temp = Current.NextVertex;
-                Current.NextVertex = point;
-                point.PrevVertex = Current;
-                point.NextVertex = Head;
-                Tail = point;
-                Current = point;
+                current.NextVertex = point;
+                point.PrevVertex = current;
+                point.NextVertex = First;
+                Last = point;
+                First.PrevVertex = Last;
+                current = point;
                 Length++;
             }
-
-
         }
 
-        public WAPoint FindNextIntersectionPoint()
+        public void AddAfter(int index, WAPoint point)
         {
-            WAPoint intersectionPoint = Current;
-            while (intersectionPoint.NextVertex != Current)
-            {
-                if (intersectionPoint.IsIntersection && intersectionPoint.IsEntryPoint && !intersectionPoint.Visited)
-                    return intersectionPoint;
+            WAPoint currentPoint = Find(index);
 
-                intersectionPoint = intersectionPoint.NextVertex;
+            WAPoint tempVertex = currentPoint.NextVertex;
+            currentPoint.NextVertex = point;
+            point.PrevVertex = currentPoint;
+            point.NextVertex = tempVertex;
+            Length++;
+        }
+
+        public WAPoint Find(int index)
+        {
+            WAPoint currentPoint = First;
+            int counter = 0;
+            while (currentPoint.Index != index && counter < Length)
+            {
+                currentPoint = currentPoint.NextVertex;
+                counter++;
             }
 
-            return Current;
+            if (counter > Length)
+                throw new InvalidOperationException("Exceeded the bounds of the list: index was not found.");
+
+            return currentPoint;
         }
 
+        public void Remove(int index)
+        {
+            WAPoint currentPoint = Find(index);
+
+            if (Length == 1) 
+                First = Last = current = null;
+            else if (Length == 2)
+            {
+                First = Last = currentPoint.NextVertex;
+                First.NextVertex = First.PrevVertex = First;
+            }
+            else
+            {
+                currentPoint.PrevVertex.NextVertex = currentPoint.NextVertex;
+                currentPoint.NextVertex.PrevVertex = currentPoint.PrevVertex;
+            }
+
+            Length--;
+        }
+
+        public int IndexOf(Vector2D v)
+        {
+            WAPoint currentPoint = First;
+            do
+            {
+                if (currentPoint.Vertex == v)
+                    return currentPoint.Index;
+                currentPoint = currentPoint.NextVertex;
+
+            } while (currentPoint.Index != First.Index);
+
+            return -1;
+        }
+
+        public WAPoint FindNextIntersectionPoint(WAPoint startPoint)
+        {
+            WAPoint currentPoint = startPoint;
+            do
+            {
+                if (currentPoint.IsIntersection && currentPoint.IsEntryPoint)
+                    return currentPoint;
+
+                currentPoint = currentPoint.NextVertex;
+            } while (currentPoint.Index != First.Index);
+
+            return First;
+        }
+
+        public Vector2D[] ToArray()
+        {
+            Vector2D[] array = new Vector2D[Length];
+
+            WAPoint currentPoint = First;
+            for (int i = 0; i < Length; i++)
+            {
+                array[i] = currentPoint.Vertex;
+                currentPoint = currentPoint.NextVertex;
+            }
+
+            return array;
+        }
+
+        public WAPoint[] ToWAPointArray()
+        {
+            WAPoint[] array = new WAPoint[Length];
+
+            WAPoint currentPoint = First;
+            for (int i = 0; i < Length; i++)
+            {
+                array[i] = currentPoint;
+                currentPoint = currentPoint.NextVertex;
+            }
+
+            return array;
+        }
     }
 }
