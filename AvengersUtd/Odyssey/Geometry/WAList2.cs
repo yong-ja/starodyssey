@@ -51,6 +51,19 @@ namespace AvengersUtd.Odyssey.Geometry
             currentPoint.NextVertex = point;
             point.PrevVertex = currentPoint;
             point.NextVertex = tempVertex;
+            tempVertex.PrevVertex = point;
+            Length++;
+        }
+
+        public void AddBefore(int index, WAPoint point)
+        {
+            WAPoint currentPoint = Find(index);
+
+            WAPoint tempVertex = currentPoint.PrevVertex;
+            currentPoint.PrevVertex = point;
+            point.PrevVertex = tempVertex;
+            point.NextVertex = currentPoint;
+            tempVertex.NextVertex = point;
             Length++;
         }
 
@@ -72,21 +85,26 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public void Remove(int index)
         {
-            WAPoint currentPoint = Find(index);
 
-            if (Length == 1) 
-                First = Last = current = null;
-            else if (Length == 2)
+
+            if (index == First.Index)
             {
-                First = Last = currentPoint.NextVertex;
-                First.NextVertex = First.PrevVertex = First;
+                First = First.NextVertex;
+                First.PrevVertex = Last;
+                Last.NextVertex = First;
             }
-            else
+            else if (index == Last.Index)
             {
+                Last = Last.PrevVertex;
+                Last.NextVertex = First;
+                First.PrevVertex = Last;
+            }
+            else 
+            {
+                WAPoint currentPoint = Find(index);
                 currentPoint.PrevVertex.NextVertex = currentPoint.NextVertex;
                 currentPoint.NextVertex.PrevVertex = currentPoint.PrevVertex;
             }
-
             Length--;
         }
 
