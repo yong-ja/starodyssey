@@ -127,7 +127,16 @@ namespace AvengersUtd.Odyssey.Geometry
                         clipPoint.JumpLink = subjectPoint;
                         spList.Add(subjectPoint);
                         int cIndex1 = cpList.IndexOf(t);
-                        cpList.AddAfter(cIndex1, clipPoint);
+                        double dist1 = Vector2D.DistanceSquared(intersectionPoint, t);
+                        double dist2 = Vector2D.DistanceSquared(intersectionPoint, q);
+
+                        if (dist1 < dist2)
+                            cpList.AddAfter(cIndex1, clipPoint);
+                        else
+                        {
+                            int cIndex2 = cpList.IndexOf(q);
+                            cpList.AddBefore(cIndex2, clipPoint);
+                        }
                         
                     }
 
@@ -169,10 +178,13 @@ namespace AvengersUtd.Odyssey.Geometry
                         Vector2D cB = sB;
                         Vector2D cC = cIntersection.NextVertex.Vertex;
 
-                        Segment cAcC = new Segment(cA,cC);
-                        bool intersection = Intersection.SegmentSegmentTest(sA0sD, cAcC);
+                        Segment cBcA = new Segment(cB,cA);
+                        Segment cBcC = new Segment(cB,cC);
 
-                        if (!intersection)
+                        bool intersection1 = Intersection.SegmentSegmentTest(sA0sD, cBcA);
+                        bool intersection2 = Intersection.SegmentSegmentTest(sA0sD, cBcC);
+
+                        if ((intersection1 && intersection2) || (!intersection1 && !intersection2))
                         {
                             spList.Remove(currentPoint.NextVertex.Index);
                             cpList.Remove(currentPoint.NextVertex.Index);

@@ -790,6 +790,11 @@ namespace AvengersUtd.Odyssey.Geometry
             return result;
         }
 
+        public static Vector2D Round(Vector2D vector, int digits=4)
+        {
+            return new Vector2D(Math.Round(vector.X,digits), Math.Round(vector.Y,digits));
+        }
+
         /// <summary>
         /// Orthogonalizes a list of vectors.
         /// </summary>
