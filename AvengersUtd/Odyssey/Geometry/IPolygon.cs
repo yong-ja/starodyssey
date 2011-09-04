@@ -26,7 +26,7 @@ namespace AvengersUtd.Odyssey.Geometry
     public interface IPolygon
     {
 
-        VerticesCollection Vertices { get; }
+        Vertices Vertices { get; }
         Vector2D Centroid { get; }
         double Area { get; }
         Vector4[] ComputeVector4Array(float zIndex);

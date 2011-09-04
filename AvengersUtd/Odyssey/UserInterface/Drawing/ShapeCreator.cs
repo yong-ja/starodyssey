@@ -100,7 +100,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                             (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
                         Vector2D c = rectangle.Centroid;
                         d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-                        Polygon ellipse = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,4);
+                        Polygon ellipse = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,8);
                         double segmentLength = Polygon.ComputeEllipseSegmentLength
                             (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
 
@@ -112,7 +112,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         Polygon rh = new Polygon
                             (new[]
                              {
-                                 c + new Vector2D(0, 100), c + new Vector2D(100, -200), c + new Vector2D(0, -100),
+                                 c + new Vector2D(0, 100), c + new Vector2D(100, -200), c + new Vector2D(0, -150),
+                                 //new Vector2D(-758,-112),
                                  c + new Vector2D(-100, -200),
                              });
 
@@ -124,19 +125,25 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         //ellipse.ReverseVerticesOrder();
                         //rh.ReverseVerticesOrder();
                         //ellipse = WAList.ComputeIntersectArea(ellipse,rh);
-                        Polygon clipped = WAClipping.PerformClipping(ellipse, rh);
+                        PolyClipError error;
+                        List<Polygon> vertices = YuPengClipper.Intersect(ellipse, rh, out error);
+                        Console.WriteLine(vertices.Count);
+
+                        Polygon clipped = vertices[0];
+
+                        //Polygon clipped = WAClipping.PerformClipping(ellipse, rh);
                         d.Points = clipped.ComputeVector4Array(99);
                         d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
                         d.DrawPoints();
-                        break;
                        
-                        PathFigure pf = (PathFigure) ellipse;
+                        PathFigure pf = (PathFigure) vertices[0];
                         pf.Optimize(segmentLength/2);
                         //pf.Detail(segmentLength);
-                        VerticesCollection vc = ((VerticesCollection)pf);
+                        Vertices vc = ((Vertices)pf);
                         vc.Insert(0,rh.Centroid);
                         //vc.Insert(0, rh.Centroid + new Vector2D(20,20)) ;
                         ushort[] indices = Delauney.TriangulateBrute(vc);
+                        //Delauney.Triangulate(vc);
 
                         d.Points = ((Polygon)vc).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
                         d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));

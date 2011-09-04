@@ -90,9 +90,9 @@ namespace AvengersUtd.Odyssey.Geometry
             return new Polygon(figure.SegmentList.Select(s => s.StartPoint));
         }
 
-        public static explicit operator VerticesCollection(PathFigure figure)
+        public static explicit operator Vertices(PathFigure figure)
         {
-            return new VerticesCollection(figure.SegmentList.Select(s => s.StartPoint));
+            return new Vertices(figure.SegmentList.Select(s => s.StartPoint));
         }
 
     }

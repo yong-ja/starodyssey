@@ -57,8 +57,10 @@
   <ItemGroup>
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
+    <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Circle.cs" />
-    <Compile Include="Geometry\WAClipping.cs" />
+    <Compile Include="Geometry\Polygon.Tools.cs" />
+    <Compile Include="Geometry\SimplifyTools.cs" />
     <Compile Include="Geometry\Delauney.cs" />
     <Compile Include="Geometry\Edge.cs" />
     <Compile Include="Geometry\Ellipse.cs" />
@@ -68,17 +70,14 @@
     <Compile Include="Geometry\Line.cs" />
     <Compile Include="Geometry\PathFigure.cs" />
     <Compile Include="Geometry\Polygon.cs" />
-    <Compile Include="Geometry\Polygon.Tools.cs" />
     <Compile Include="Geometry\OrthoRectangle.cs" />
     <Compile Include="Geometry\IVertex.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
     <Compile Include="Geometry\Face.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
-    <Compile Include="Geometry\VerticesCollection.cs" />
-    <None Include="Geometry\WAList.cs" />
-    <Compile Include="Geometry\WAList2.cs" />
-    <Compile Include="Geometry\WAPoint.cs" />
+    <Compile Include="Geometry\Vertices.cs" />
+    <Compile Include="Geometry\YuPengClipper.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />

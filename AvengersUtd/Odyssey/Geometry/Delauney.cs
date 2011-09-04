@@ -32,7 +32,7 @@ namespace AvengersUtd.Odyssey.Geometry
                 {
                     for (int k = j + 1; k < n; k++)
                     {
-                        Circle circle = Circle.CircumCircle3(vertex[i], vertex[j], vertex[k]);
+                        Circle circle = Circle.CircumCircle(vertex[i], vertex[j], vertex[k]);
 
                         pointValid = true;
                         for (int l = 0; l < n; l++)
@@ -160,7 +160,7 @@ namespace AvengersUtd.Odyssey.Geometry
 				    Vector2D p1 = vertex[triangles[j].Index1];
                     Vector2D p2 = vertex[triangles[j].Index2];
                     Vector2D p3 = vertex[triangles[j].Index3];
-				    Circle circle = Circle.CircumCircle3(p1, p2, p3);
+				    Circle circle = Circle.CircumCircle(p1, p2, p3);
 					//if (InCircle(vertex[i], vertex[triangles[j].Index1], vertex[triangles[j].Index2], vertex[triangles[j].Index3]))
                     if (circle.IsInside(vertex[i]))
 					{

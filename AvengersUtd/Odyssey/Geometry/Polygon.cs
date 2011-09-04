@@ -10,14 +10,14 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         #region Properties
 
-        public VerticesCollection Vertices { get; private set; }
+        public Vertices Vertices { get; private set; }
 
         public Vector2D Centroid
         {
             get { return ComputeCentroid(this); }
         }
 
-        public double Area { get { return ComputeArea(this); } }
+        public double Area { get { return Math.Abs(Polygon.ComputeSignedArea(this)); } }
 
         public bool IsCounterClockWise
         {
@@ -27,9 +27,10 @@ namespace AvengersUtd.Odyssey.Geometry
                 if (Vertices.Count < 3)
                     return true;
 
-                return (Polygon.ComputeSignedArea(this) > 0.0);
+                return (ComputeSignedArea(this) > 0.0);
             }
         }
+
         #endregion
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public Polygon()
         {
-            Vertices = new VerticesCollection();
+            Vertices = new Vertices();
         }
         #endregion
 
@@ -56,16 +57,73 @@ namespace AvengersUtd.Odyssey.Geometry
             return pointsArray;
         }
 
-        public void ReverseVerticesOrder()
+        /// <summary>
+        /// Forces counter clock wise order.
+        /// </summary>
+        public void ForceCounterClockWise()
         {
-            Vertices = new VerticesCollection(Vertices.Reverse());
+            if (!IsCounterClockWise)
+            {
+                Vertices.Reverse();
+            }
         }
 
+        /// <summary>
+        /// Returns an AABB for vertex.
+        /// </summary>
+        /// <returns></returns>
+        public AABB GetCollisionBox()
+        {
+            AABB aabb;
+            Vector2D lowerBound = new Vector2D(float.MaxValue, float.MaxValue);
+            Vector2D upperBound = new Vector2D(float.MinValue, float.MinValue);
+
+            for (int i = 0; i < Vertices.Count; ++i)
+            {
+                if (Vertices[i].X < lowerBound.X)
+                {
+                    lowerBound.X = Vertices[i].X;
+                }
+                if (Vertices[i].X > upperBound.X)
+                {
+                    upperBound.X = Vertices[i].X;
+                }
+
+                if (Vertices[i].Y < lowerBound.Y)
+                {
+                    lowerBound.Y = Vertices[i].Y;
+                }
+                if (Vertices[i].Y > upperBound.Y)
+                {
+                    upperBound.Y = Vertices[i].Y;
+                }
+            }
+
+            aabb.LowerBound = lowerBound;
+            aabb.UpperBound = upperBound;
+
+            return aabb;
+        }
+
+        public void Translate(Vector2D vector)
+        {
+            Translate(ref vector);
+        }
+
+        /// <summary>
+        /// Translates the vertices with the specified vector.
+        /// </summary>
+        /// <param name="vector">The vector.</param>
+        public void Translate(ref Vector2D vector)
+        {
+            for (int i = 0; i < Vertices.Count; i++)
+                Vertices[i] = Vector2D.Add(Vertices[i], vector);
+        }
 
         public bool IsPointInside(Vector2D point)
         {
             //return Intersection.PolygonHitTest(this, point);
-            return Intersection.PolygonPointTest(this, point);
+            return Intersection.PolygonPointTest(Vertices, point);
         }
 
         #region Static methods
@@ -109,29 +167,6 @@ namespace AvengersUtd.Odyssey.Geometry
             centroid.Y /= (6 * signedArea);
 
             return centroid;
-        }
-
-        public static double ComputeArea(Polygon polygon)
-        {
-            // Return the result.
-            return Math.Abs(ComputeSignedArea(polygon));
-        }
-
-        public static double ComputeSignedArea(Polygon polygon)
-        {
-            // Add the first point to the end.
-            int numPoints = polygon.Vertices.Count;
-
-            // Get the areas.
-            double area = 0;
-            for (int i = 0; i < numPoints; i++)
-            {
-                area +=
-                    (polygon.Vertices[(i + 1) % numPoints].X - polygon.Vertices[i].X) *
-                    (polygon.Vertices[(i + 1) % numPoints].Y + polygon.Vertices[i].Y) / 2;
-            }
-
-            return area;
         }
 
         public static bool ConvexityTest(Polygon polygon)

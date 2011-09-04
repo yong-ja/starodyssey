@@ -197,6 +197,18 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         /// <summary>
+        /// This function is used to ensure that the vector coordinates are
+        /// not NaN or infinity.
+        /// </summary>
+        /// <returns>
+        /// 	<c>true</c> if the specified vector is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsValid()
+        {
+            return MathHelper.IsValid(X) && MathHelper.IsValid(Y);
+        }
+
+        /// <summary>
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A two-element array containing the components of the vector.</returns>
@@ -1122,27 +1134,8 @@ namespace AvengersUtd.Odyssey.Geometry
             return new Vector2D(value.X, value.Y);
         }
 
-#if WPFInterop
-        /// <summary>
-        /// Performs an implicit conversion from <see cref="SlimDx.Vector2"/> to <see cref="System.Windows.Point"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator System.Windows.Point(Vector2 value)
-        {
-            return new System.Windows.Point(value.X, value.Y);
-        }
 
-        /// <summary>
-        /// Performs an explicit conversion from <see cref="System.Windows.Point"/> to <see cref="SlimDx.Vector2"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static explicit operator Vector2(System.Windows.Point value)
-        {
-            return new Vector2((double)value.X, (double)value.Y);
-        }
-#endif
+
 
     }
 }

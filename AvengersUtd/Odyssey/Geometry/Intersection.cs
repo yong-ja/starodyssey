@@ -60,6 +60,14 @@ namespace AvengersUtd.Odyssey.Geometry
             return true;
         }
 
+        /// <summary>
+        /// Performs segment-segment intersection.
+        /// </summary>
+        /// <param name="segment1">First segment.</param>
+        /// <param name="segment2">Second segment.</param>
+        /// <param name="intersectionPoint">Returns the computed intersection point.</param>
+        /// <param name="inboundIntersection">if set to <c>true</c> the intersection is inbound.</param>
+        /// <returns>Returns true if the segments intersect.</returns>
           public static bool SegmentSegmentTest(Segment segment1, Segment segment2, out Vector2D intersectionPoint, out bool inboundIntersection)
         {
             //Source: Real-Time Rendering, Third Edition
@@ -141,6 +149,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
                 angle += Angle2D(p1.X, p1.Y, p2.X, p2.Y);
             }
+
             if (Math.Abs(angle) < Math.PI)
                 return false;
             else
@@ -161,19 +170,19 @@ namespace AvengersUtd.Odyssey.Geometry
             return (dtheta);
         }
 
-        public static bool PolygonPointTest(Polygon polygon, Vector2D point)
+        public static bool PolygonPointTest(Vertices vertices, Vector2D point)
         {
             // Crossing Test
             // Source: Real Time Rendering 3rd Edition, p. 754
 
             bool inside = false;
             Vector2D t = point;
-            Vector2D e0 = polygon.Vertices[polygon.Vertices.Count - 1];
+            Vector2D e0 = vertices[vertices.Count - 1];
             bool y0 = e0.Y >= t.Y;
 
-            for (int i = 0; i < polygon.Vertices.Count - 1; i++)
+            for (int i = 0; i < vertices.Count - 1; i++)
             {
-                Vector2D e1 = polygon.Vertices[i];
+                Vector2D e1 = vertices[i];
                 bool y1 = e1.Y >= t.Y;
                 if (y0 != y1)
                     if (((e1.Y - t.Y) * (e0.X - e1.X) >= (e1.X - t.X) * (e0.Y - e1.Y)) == y1)
