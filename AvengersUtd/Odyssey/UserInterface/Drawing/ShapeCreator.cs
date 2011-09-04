@@ -145,6 +145,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         ushort[] indices = Delauney.TriangulateBrute(vc);
                         //Delauney.Triangulate(vc);
 
+                        P2T.Triangulate(new Polygon(vc));
+
                         d.Points = ((Polygon)vc).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
                         d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
                         d.DrawPolygon(indices);

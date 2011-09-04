@@ -425,10 +425,10 @@ namespace AvengersUtd.Odyssey.Geometry
         /// the simplex and True otherwise.</returns>
         private static bool PointInSimplex(Vector2D point, Edge edge)
         {
-            Vertices polygon = new Vertices {Vector2D.Zero, edge.EdgeStart, edge.EdgeEnd};
+            Polygon polygon = new Polygon(new Vertices {Vector2D.Zero, edge.EdgeStart, edge.EdgeEnd});
 
             //return Intersection.PolygonPointTest(polygon, point);
-            return (polygon.PointInPolygon(ref point) == 1);
+            return (Polygon.PointInPolygon(polygon, ref point) == 1);
         }
 
         /// <summary>
