@@ -160,7 +160,7 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #region IPolygon Members
 
-        public VerticesCollection Vertices
+        public Vertices Vertices
         {
             get; set;}
 

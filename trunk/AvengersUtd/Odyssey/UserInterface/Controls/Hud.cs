@@ -42,10 +42,8 @@ using SlimDX.Direct3D11;
 
 #endregion
 
-
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
-    
     /// <summary>
     /// The Hud (short for Head-Up Display) is the control that contains the whole user
     /// interface. If rendered as the last element, it will provide your game or application
@@ -60,11 +58,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
     /// controls so that they overlap.</remarks>
     public sealed class Hud : ContainerControl
     {
-        const string ControlTag = "Hud";
+        private const string ControlTag = "Hud";
 
-        readonly SortedList<Keys, CameraBinding> keyBindings;
-        readonly List<RenderStep> renderInfoList;
-        readonly Queue<UpdateElement> updateQueue;
+        private readonly SortedList<Keys, CameraBinding> keyBindings;
+        private readonly List<RenderStep> renderInfoList;
+        private readonly Queue<UpdateElement> updateQueue;
         private readonly List<ISpriteObject> spriteControls;
         private readonly List<ShapeDescription> hudShapes;
         private UserInterfaceRenderCommand uiRCommand;
@@ -76,7 +74,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         static Hud()
         {
             EventLoad = new object();
-            
         }
 
         public static Hud FromDescription(Device device, HudDescription description)
@@ -88,8 +85,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                               HudDescription = description,
                               Depth = new Depth
                                           {
-                                              WindowLayer = (int)description.ZFar,
-                                              ComponentLayer = (int)description.ZFar,
+                                              WindowLayer = (int) description.ZFar,
+                                              ComponentLayer = (int) description.ZFar,
                                               ZOrder = description.ZFar
                                           },
                           };
@@ -113,9 +110,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="Hud"/> class.
         /// </summary>
-        Hud() : base(ControlTag, "Empty")
+        private Hud() : base(ControlTag, "Empty")
         {
-            
             renderInfoList = new List<RenderStep>();
             updateQueue = new Queue<UpdateElement>();
             spriteControls = new List<ISpriteObject>();
@@ -132,12 +128,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         }
 
         #region Properties
+
         internal BaseControl FocusedControl { get; set; }
         internal BaseControl EnteredControl { get; set; }
         internal BaseControl ClickedControl { get; set; }
         internal HudDescription HudDescription { get; set; }
         internal InterfaceMesh InterfaceMesh { get; set; }
-        internal bool ShouldUpdateShapes { get { return updateQueue.Count > 0; } }
+
+        internal bool ShouldUpdateShapes
+        {
+            get { return updateQueue.Count > 0; }
+        }
+
         internal bool ShouldUpdateSprites { get; private set; }
         internal RenderStep[] RenderSteps { get; private set; }
         internal ISpriteObject[] SpriteControls { get; private set; }
@@ -155,17 +157,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
         }
 
-        public static Device Device { get; set; } 
+        public static Device Device { get; set; }
+
         #endregion
 
-        void ComputeShapes(IContainer containerControl)
+        private void ComputeShapes(IContainer containerControl)
         {
             foreach (BaseControl ctl in TreeTraversal.PreOrderVisibleControlsVisit(containerControl))
             {
                 ISpriteObject sCtl = ctl as ISpriteObject;
                 if (sCtl != null && ctl.IsVisible)
                     spriteControls.Add(sCtl);
-                
+
                 if (ctl.IsVisible && ctl.Description.Shape != Shape.None)
                     hudShapes.AddRange(ctl.Shapes.Array);
             }
@@ -188,7 +191,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             Shapes[0] = hudInterface;
             ColoredVertex[] vertices = new ColoredVertex[Shapes[0].Vertices.Length + hiddenVertices];
-            ushort[] indices = new ushort[Shapes[0].Indices.Length+hiddenIndices];
+            ushort[] indices = new ushort[Shapes[0].Indices.Length + hiddenIndices];
             Array.Copy(Shapes[0].Vertices, vertices, Shapes[0].Vertices.Length);
             Array.Copy(Shapes[0].Indices, indices, Shapes[0].Indices.Length);
 
@@ -198,7 +201,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 InterfaceMesh = new InterfaceMesh(vertices, indices) {OwnerHud = this};
 
             OnLoad(EventArgs.Empty);
-        
         }
 
 
@@ -219,7 +221,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             uiRCommand = new UserInterfaceRenderCommand
                 (renderer, mUINode, mUINode.RenderableCollection,
-                mTextNode, this);
+                 mTextNode, this);
 
             uiUCommand = new UserInterfaceUpdateCommand(this, uiRCommand);
 
@@ -230,7 +232,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             scene.CommandManager.AddBaseCommands(uiMaterial.PostRenderStates);
         }
 
-        void GenerateRenderSteps(IEnumerable<ShapeDescription> hudDescriptions)
+        private void GenerateRenderSteps(IEnumerable<ShapeDescription> hudDescriptions)
         {
             float currentWindowLayer = 0;
             float currentComponentLayer = 0;
@@ -240,7 +242,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             int baseLabelIndex = 0, labelCount = 0;
 
             Comparison<ISpriteObject> spriteComparison =
-                (i1, i2) => (((BaseControl) i1).Depth.CompareTo(((BaseControl)i2).Depth));
+                (i1, i2) => (((BaseControl) i1).Depth.CompareTo(((BaseControl) i2).Depth));
 
             renderInfoList.Clear();
             spriteControls.Sort(spriteComparison);
@@ -256,16 +258,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 {
                     currentWindowLayer = shapeDescriptor.Depth.WindowLayer;
                     float tempLayer = currentWindowLayer;
-                    Predicate<ISpriteObject> windowCheck = iSpriteControl => ((BaseControl)iSpriteControl).Depth.WindowLayer ==
-                                                                     tempLayer;
+                    Predicate<ISpriteObject> windowCheck = iSpriteControl => ((BaseControl) iSpriteControl).Depth.WindowLayer ==
+                                                                             tempLayer;
                     labelCount = spriteControls.FindIndex(baseLabelIndex, windowCheck);
                     //windowLayers++;
                     if (vertexCount != 0)
                         renderInfoList.Add(new RenderStep
                                                {
-                                                   BaseIndex = baseIndex, 
-                                                   BaseVertex = baseVertex, 
-                                                   VertexCount = vertexCount, 
+                                                   BaseIndex = baseIndex,
+                                                   BaseVertex = baseVertex,
+                                                   VertexCount = vertexCount,
                                                    PrimitiveCount = primitiveCount,
                                                    BaseLabelIndex = baseLabelIndex,
                                                    LabelCount = labelCount
@@ -280,22 +282,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 {
                     currentComponentLayer = shapeDescriptor.Depth.ComponentLayer;
                     float tempLayer = currentComponentLayer;
-                    Predicate<ISpriteObject> layerCheck = iSpriteControl => ((BaseControl)iSpriteControl).Depth.ComponentLayer ==
-                                                                    tempLayer;
-                    
+                    Predicate<ISpriteObject> layerCheck = iSpriteControl => ((BaseControl) iSpriteControl).Depth.ComponentLayer ==
+                                                                            tempLayer;
+
 
                     labelCount = spriteControls.FindIndex(baseLabelIndex, layerCheck);
 
                     if (vertexCount != 0)
-                    renderInfoList.Add(new RenderStep
-                                           {
-                                               BaseIndex = baseIndex,
-                                               BaseVertex = baseVertex,
-                                               VertexCount = vertexCount,
-                                               PrimitiveCount = primitiveCount,
-                                               BaseLabelIndex = baseLabelIndex,
-                                               LabelCount = labelCount
-                                           });
+                        renderInfoList.Add(new RenderStep
+                                               {
+                                                   BaseIndex = baseIndex,
+                                                   BaseVertex = baseVertex,
+                                                   VertexCount = vertexCount,
+                                                   PrimitiveCount = primitiveCount,
+                                                   BaseLabelIndex = baseLabelIndex,
+                                                   LabelCount = labelCount
+                                               });
                     baseIndex += indexCount;
                     baseVertex += vertexCount;
                     vertexCount = indexCount = primitiveCount = 0;
@@ -308,14 +310,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
 
             renderInfoList.Add(new RenderStep
-                    {
-                        BaseIndex = baseIndex,
-                        BaseVertex = baseVertex,
-                        VertexCount = vertexCount,
-                        PrimitiveCount = primitiveCount,
-                        BaseLabelIndex = baseLabelIndex,
-                        LabelCount = spriteControls.Count
-                    });
+                                   {
+                                       BaseIndex = baseIndex,
+                                       BaseVertex = baseVertex,
+                                       VertexCount = vertexCount,
+                                       PrimitiveCount = primitiveCount,
+                                       BaseLabelIndex = baseLabelIndex,
+                                       LabelCount = spriteControls.Count
+                                   });
 
             RenderSteps = renderInfoList.ToArray();
         }
@@ -364,7 +366,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
         }
 
-        void AddControl(BaseControl control)
+        private void AddControl(BaseControl control)
         {
             hudShapes.AddRange(control.Shapes.Array);
             IContainer containerControl = control as IContainer;
@@ -387,7 +389,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 UpdateSprites();
         }
 
-        void RemoveControl(BaseControl control)
+        private void RemoveControl(BaseControl control)
         {
             foreach (ShapeDescription sDesc in control.Shapes)
                 hudShapes.Remove(sDesc);
@@ -402,7 +404,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                     RemoveControl(childControl);
         }
 
-        
 
         public void Init()
         {
@@ -417,7 +418,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             //}
 
             updateQueue.Clear();
- 
+
             CreateShapes();
             AssembleInterface();
             BuildInterfaceMesh();
@@ -429,7 +430,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         internal void UpdateBuffers()
         {
             Shapes[0] = hudInterface;
-            InterfaceMesh.UpdateBuffers(Shapes[0].Vertices, Shapes[0].Indices); 
+            InterfaceMesh.UpdateBuffers(Shapes[0].Vertices, Shapes[0].Indices);
             //Console.WriteLine(string.Format("Buffer Update"));
         }
 
@@ -447,24 +448,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             spriteControls.Clear();
             ComputeAbsolutePosition();
 
-            foreach (BaseControl ctl in
-                TreeTraversal.PreOrderControlVisit(this).Where(ctl => ctl.Description.Shape != Shape.None))
+            foreach (BaseControl ctl in TreeTraversal.PreOrderControlVisit(this).Where(ctl => ctl.Description.Shape != Shape.None))
                 ctl.CreateShape();
 
             ComputeShapes(this);
         }
 
-        void UpdateShapes(BaseControl control)
+        private void UpdateShapes(BaseControl control)
         {
             control.UpdateShape();
 
-            for (int j = 0; j < control.Shapes.Length; j++)
+            foreach (ShapeDescription sDesc in control.Shapes)
             {
-                ShapeDescription sDesc = control.Shapes[j];
                 if (!sDesc.IsDirty) continue;
 
                 Array.Copy(sDesc.Vertices, 0, hudInterface.Vertices, sDesc.ArrayOffset,
-                    sDesc.Vertices.Length);
+                           sDesc.Vertices.Length);
                 sDesc.IsDirty = false;
             }
         }
@@ -480,7 +479,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             SpriteControls = spriteControls.ToArray();
         }
-      
+
         /// <summary>
         /// Enqueues a control for update.
         /// </summary>
@@ -549,6 +548,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         }
 
         #region Overriden events
+
         protected override void OnDisposing(EventArgs e)
         {
             base.OnDisposing(e);
@@ -573,7 +573,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (binding != null)
                 binding.Apply(true);
-
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -584,13 +583,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (binding != null)
                 binding.Apply(false);
-        } 
+        }
+
         #endregion
 
         #region Exposed Events
 
-        static readonly object EventLoad;
-        
+        private static readonly object EventLoad;
+
 
         /// <summary>
         /// Occurs when the interface is built.
@@ -605,7 +605,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// Raises the <see cref="Load"/> event.
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void OnLoad(EventArgs e)
+        private void OnLoad(EventArgs e)
         {
             EventHandler handler = (EventHandler) Events[EventLoad];
             if (handler != null)
@@ -616,13 +616,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             base.OnSizeChanged(e);
             HudDescription = new HudDescription(
-                                     cameraEnabled: HudDescription.CameraEnabled,
-                                     width : Size.Width,
-                                     height : Size.Height,
-                                     zFar : HudDescription.ZFar,
-                                     zNear : HudDescription.ZNear,
-                                     multithreaded: true
-                                 );
+                cameraEnabled: HudDescription.CameraEnabled,
+                width: Size.Width,
+                height: Size.Height,
+                zFar: HudDescription.ZFar,
+                zNear: HudDescription.ZNear,
+                multithreaded: true
+                );
         }
 
         #endregion

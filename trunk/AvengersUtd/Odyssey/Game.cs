@@ -45,8 +45,8 @@ namespace AvengersUtd.Odyssey
                                           {
                                               AdapterOrdinal = 0,
                                               CreationFlags = DeviceCreationFlags.Debug,
-                                              ScreenWidth = 1024,
-                                              ScreenHeight = 768,
+                                              ScreenWidth = 1920,
+                                              ScreenHeight = 1080,
                                               SampleDescription = new SampleDescription(4,4)
                                           };
             RenderForm form = new RenderForm

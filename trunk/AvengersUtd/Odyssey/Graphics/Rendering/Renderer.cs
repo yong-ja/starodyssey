@@ -66,7 +66,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Present()
         {
-            deviceContext.SwapChain.Present(0, PresentFlags.None);
+            deviceContext.SwapChain.Present(1, PresentFlags.None);
         }
 
         protected virtual void OnDeviceResize(object sender,ResizeEventArgs e)

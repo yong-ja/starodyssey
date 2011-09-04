@@ -76,13 +76,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
                     multithreaded: true
                     ));
             hud.BeginDesign();
- 
-            hud.Add(new Button
-            {
-                Position = new Vector2(200f, 50f),
-                Size = new Size(200, 200),
-                Content ="Adal & Nadia :)",
-            });
+
+            //hud.Add(new Button
+            //{
+            //    Position = new Vector2(200f, 50f),
+            //    Size = new Size(200, 200),
+            //    Content = "Adal & Nadia :)",
+            //});
 
 
             hud.Add(new Panel
@@ -101,18 +101,18 @@ namespace AvengersUtd.StarOdyssey.Scenes
                 Position = new Vector2(300f, 650f),
                 Size = new Size(200, 200)
             });
-            DropDownList d = new DropDownList
-                                 {
-                                     Position = new Vector2(500f, 100f),
-                                     Items = new[]{"Prova1", "Prova2", "Prova3"}
-                                 };
-            hud.Add(d);
+            //DropDownList d = new DropDownList
+            //                     {
+            //                         Position = new Vector2(500f, 100f),
+            //                         Items = new[]{"Prova1", "Prova2", "Prova3"}
+            //                     };
+            //hud.Add(d);
             Game.Logger.Activate();
             hud.Init();
             hud.EndDesign();
 
             Scene.BuildRenderScene();
-            hud.AddToScene(this,Scene);
+            hud.AddToScene(this, Scene);
         }
         
         public override void Render()

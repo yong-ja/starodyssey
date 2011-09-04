@@ -41,9 +41,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             {
                 RasterizerStateDescription rStateDesc = new RasterizerStateDescription()
                                                             {
-                                                                CullMode = CullMode.Back,
+                                                                CullMode = CullMode.None,
                                                                 IsDepthClipEnabled = true,
-                                                                FillMode = FillMode.Wireframe,
+                                                                FillMode = FillMode.Solid,
                                                                 IsAntialiasedLineEnabled = true,
                                                                 IsFrontCounterclockwise = true,
                                                                 IsMultisampleEnabled = true

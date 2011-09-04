@@ -68,6 +68,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
                                Name = Empty,
                                Padding = Thickness.Empty,
                                Size = Size.Empty,
+                               Shape =Shape.None,
                                TextStyleClass = "Default"
                            };
             }

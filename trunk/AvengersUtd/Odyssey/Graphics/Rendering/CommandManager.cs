@@ -78,6 +78,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 throw Error.ArgumentInvalid("mNode", GetType(), "AddRenderCommand", Properties.Resources.ERR_AddRenderCommand);
 
             RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {mNode, rNodeCollection});
+            rCommand.Init();
             commandList.AddLast(rCommand);
         }
 

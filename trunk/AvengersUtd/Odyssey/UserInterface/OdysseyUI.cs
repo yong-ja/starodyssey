@@ -190,7 +190,7 @@ namespace AvengersUtd.Odyssey.UserInterface
 
         internal static void OnDispose(object sender, EventArgs e)
         {
-            CurrentHud.Dispose();
+//            CurrentHud.Dispose();
         }
 
         public static void Dispose()
