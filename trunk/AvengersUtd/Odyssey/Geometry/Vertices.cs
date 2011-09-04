@@ -168,54 +168,6 @@ namespace AvengersUtd.Odyssey.Geometry
             vertices.Reverse();
         }
 
-        // <summary>
-        /// Winding number test for a point in a polygon.
-        /// </summary>
-        /// See more info about the algorithm here: http://softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm
-        /// <param name="point">The point to be tested.</param>
-        /// <returns>-1 if the winding number is zero and the point is outside
-        /// the polygon, 1 if the point is inside the polygon, and 0 if the point
-        /// is on the polygons edge.</returns>
-        public int PointInPolygon(ref Vector2D point)
-        {
-            // Winding number
-            int wn = 0;
-
-            // Iterate through polygon's edges
-            for (int i = 0; i < Count; i++)
-            {
-                // Get points
-                Vector2D p1 = this[i];
-                Vector2D p2 = this[NextIndex(i)];
-
-                // Test if a point is directly on the edge
-                Vector2D edge = p2 - p1;
-                double area = MathHelper.Area(ref p1, ref p2, ref point);
-                if (area == 0f && Vector2D.Dot(point - p1, edge) >= 0f && Vector2D.Dot(point - p2, edge) <= 0f)
-                {
-                    return 0;
-                }
-                // Test edge for intersection with ray from point
-                if (p1.Y <= point.Y)
-                {
-                    if (p2.Y > point.Y && area > 0f)
-                    {
-                        ++wn;
-                    }
-                }
-                else
-                {
-                    if (p2.Y <= point.Y && area < 0f)
-                    {
-                        --wn;
-                    }
-                }
-            }
-            return (wn == 0 ? -1 : 1);
-        }
-
-       
-
         public static explicit operator Polygon(Vertices vertices)
         {
             return new Polygon(vertices);
