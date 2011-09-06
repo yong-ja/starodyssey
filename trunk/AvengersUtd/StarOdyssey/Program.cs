@@ -19,7 +19,7 @@ namespace AvengersUtd.StarOdyssey
             
             Game.Init();
 
-            Game.ChangeRenderer(new TestRenderer(Game.Context));
+            Game.ChangeRenderer(new ImageRenderer(Game.Context));
             MessagePump.Run(Global.FormOwner,Game.Loop);
             
             Game.Context.Dispose();

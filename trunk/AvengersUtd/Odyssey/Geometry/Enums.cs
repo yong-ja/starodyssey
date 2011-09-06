@@ -17,10 +17,10 @@ namespace AvengersUtd.Odyssey.Geometry
         Normal = 16,
         Tangent = 32,
         BiNormal = 64,
-        PositionTextureUV = Position & TextureUV,
-        PositionColor4 = Position & Color4,
-        PositionNormal = Position & Normal,
-        TexturedMesh = Position & TextureUV & Normal & Tangent & BiNormal,
-        PositionTextureUVW = Position & TextureUVW
+        PositionTextureUV = Position | TextureUV,
+        PositionColor4 = Position | Color4,
+        PositionNormal = Position | Normal,
+        TexturedMesh = Position | TextureUV | Normal | Tangent | BiNormal,
+        PositionTextureUVW = Position | TextureUVW
     }
 }

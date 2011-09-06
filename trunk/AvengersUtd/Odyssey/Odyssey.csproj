@@ -106,10 +106,12 @@
     <Compile Include="Geometry\YuPengClipper.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
+    <Compile Include="Graphics\Materials\ImageMaterial.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
     <Compile Include="Graphics\Materials\UIMaterial.cs" />
     <Compile Include="Graphics\Meshes\ColoredVertex.cs" />
+    <Compile Include="Graphics\Meshes\Copy of TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.Factory.cs" />
     <Compile Include="Graphics\Meshes\Primitive.Factory.cs" />
@@ -119,7 +121,7 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
-    <Compile Include="Graphics\Meshes\TexturedVertex.cs" />
+    <None Include="Graphics\Meshes\TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\VertexDescription.cs" />
     <Compile Include="Graphics\Rendering\GenericUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\RenderableNodeCollectionDescription.cs" />
