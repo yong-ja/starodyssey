@@ -8,11 +8,12 @@ namespace AvengersUtd.Odyssey
     /// </summary>
     public static class Global
     {
-        public const string MeshPath = "Meshes/";
-        public const string FXPath = "Effects/";
-        public const string XmlPath = "Data/";
-        public const string TexturePath = "Textures/";
-        public const string GUIPath = "GUI/";
+        public const string Resources = "Resources/";
+        public const string MeshPath = Resources + "Meshes/";
+        public const string FXPath = Resources + "Effects/";
+        public const string XmlPath = Resources + "Data/";
+        public const string TexturePath = Resources + "Textures/";
+        public const string GUIPath = Resources + "GUI/";
 
         private static RenderForm owner;
 

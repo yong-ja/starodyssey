@@ -56,7 +56,7 @@ namespace AvengersUtd.Odyssey
                                   };
 
             Context = new DeviceContext11(form.Handle, settings);
-            OdysseyUI.SetupHooks(form);
+            //OdysseyUI.SetupHooks(form);
             Global.FormOwner = form;
             HookEvents();
             

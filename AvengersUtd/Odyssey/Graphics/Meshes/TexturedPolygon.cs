@@ -72,11 +72,5 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             if (!ShaderResourceList[0].Disposed)
                 ShaderResourceList[0].Dispose();
         }
-
-        
-
-
-
-
     }
 }
