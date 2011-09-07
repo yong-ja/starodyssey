@@ -101,48 +101,51 @@ namespace AvengersUtd.StarOdyssey.Scenes
         Texture2D Make3D(Texture2D tex)
         {
             NvStereoImageHeader header = new NvStereoImageHeader(0x4433564e, 3840, 1080, 4, 0x00000002);
-            DataBox box = DeviceContext.Immediate.MapSubresource(tex, 0,
-                tex.Description.Width * tex.Description.Height * 4, MapMode.Read, MapFlags.None);
-            Console.WriteLine(box.RowPitch);
-            int size = tex.Description.Width * tex.Description.Height * 8;
-            byte[] buffer = new byte[size/2];
-            int val = box.Data.ReadRange<byte>(buffer, 0, size/2);
-            DeviceContext.Immediate.UnmapSubresource(tex, 0);
-           Texture2DDescription desc = new Texture2DDescription()
-                                            {
-                                                ArraySize =1,
-                                                Width=3840,
-                                                Height=1081,
-                                                BindFlags = BindFlags.ShaderResource,
-                                                CpuAccessFlags = CpuAccessFlags.Write,
-                                                Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
-                                                OptionFlags = ResourceOptionFlags.None,
-                                                Usage = ResourceUsage.Dynamic,
-                                                MipLevels = 1,
-                                                SampleDescription = new SampleDescription(1,0)
-                                            };
-
-            Texture2D outp = new Texture2D(Game.Context.Device, desc);
-            box = DeviceContext.Immediate.MapSubresource(outp, 0,
-                outp.Description.Width * outp.Description.Height * 4, MapMode.WriteDiscard, MapFlags.None);
-
-            box.Data.WriteRange(buffer);
-            byte[] headerTag = StructureToByteArray(header);
-            box.Data.Write(data, 0, 20);
-            DeviceContext.Immediate.UnmapSubresource(outp, 0);
+           // DataBox box = DeviceContext.Immediate.MapSubresource(tex, 0,
+           //     tex.Description.Width * tex.Description.Height * 4, MapMode.Read, MapFlags.None);
+           // Console.WriteLine(box.RowPitch);
+           // int size = tex.Description.Width * tex.Description.Height * 8;
+           // byte[] buffer = new byte[size/2];
+           // int val = box.Data.ReadRange<byte>(buffer, 0, size/2);
+           // DeviceContext.Immediate.UnmapSubresource(tex, 0);
+            Texture2DDescription desc = new Texture2DDescription()
+                                             {
+                                                 ArraySize = 1,
+                                                 Width = 3840,
+                                                 Height = 1081,
+                                                 BindFlags = BindFlags.ShaderResource,
+                                                 CpuAccessFlags = CpuAccessFlags.Write,
+                                                 Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
+                                                 OptionFlags = ResourceOptionFlags.None,
+                                                 Usage = ResourceUsage.Default,
+                                                 MipLevels = 1,
+                                                 SampleDescription = new SampleDescription(1, 0)
+                                             };
 
             ResourceRegion stereoSrcBox = new ResourceRegion();
 
-                           stereoSrcBox.Front = 0;
-                stereoSrcBox.Back = 1;
-                stereoSrcBox.Top = 0;
-                stereoSrcBox.Bottom = 1080;
-                stereoSrcBox.Left = 0;
-                stereoSrcBox.Right = 3840;
+            stereoSrcBox.Front = 0;
+            stereoSrcBox.Back = 1;
+            stereoSrcBox.Top = 0;
+            stereoSrcBox.Bottom = 1080;
+            stereoSrcBox.Left = 0;
+            stereoSrcBox.Right = 3840;
  
-            //box.Data.Write(buffer, 0, buffer.Length);
-           
+            Texture2D outp = new Texture2D(Game.Context.Device, desc);
+
             DeviceContext.Immediate.CopySubresourceRegion(tex, 0, stereoSrcBox, outp, 0, 0, 0, 0);
+            //DeviceContext.Immediate.CopyResource(tex, outp);
+            DataBox box = DeviceContext.Immediate.MapSubresource(outp, 0,
+                outp.Description.Width * outp.Description.Height * 4, MapMode.WriteNoOverwrite, MapFlags.None);
+            //var val = box.Data.ReadByte();
+            box.Data.Seek(tex.Description.Width * tex.Description.Height * 4, SeekOrigin.Begin);
+
+            box.Data.Write(data, 0, data.Length);
+            DeviceContext.Immediate.UnmapSubresource(outp, 0);
+
+          //box.Data.Write(buffer, 0, buffer.Length);
+           
+            //DeviceContext.Immediate.CopySubresourceRegion(tex, 0, stereoSrcBox, outp, 0, 0, 0, 0);
             ////return Texture2D.FromMemory(Game.Context.Device, buffer);
             //Texture2D.ToFile(Game.Context.Immediate, outp, ImageFileFormat.Bmp, "prova.bmp");
             return outp;
