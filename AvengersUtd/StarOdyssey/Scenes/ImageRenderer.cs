@@ -95,7 +95,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
         byte[] data = new byte[] {0x4e, 0x56, 0x33, 0x44,   //NVSTEREO_IMAGE_SIGNATURE         = 0x4433564e;
 0x00, 0x0F, 0x00, 0x00,   //Screen width * 2 = 1920*2 = 3840 = 0x00000F00;
 0x38, 0x04, 0x00, 0x00,   //Screen height = 1080             = 0x00000438;
-0x04, 0x00, 0x00, 0x00,   //dwBPP = 32                       = 0x00000020;
+0x20, 0x00, 0x00, 0x00,   //dwBPP = 32                       = 0x00000020;
 0x02, 0x00, 0x00, 0x00};  //dwFlags = SIH_SCALE_TO_FIT       = 0x00000002
 
         Texture2D Make3D(Texture2D tex)
@@ -113,42 +113,63 @@ namespace AvengersUtd.StarOdyssey.Scenes
                                                  ArraySize = 1,
                                                  Width = 3840,
                                                  Height = 1081,
-                                                 BindFlags = BindFlags.ShaderResource,
+                                                 BindFlags = BindFlags.None,
                                                  CpuAccessFlags = CpuAccessFlags.Write,
                                                  Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
                                                  OptionFlags = ResourceOptionFlags.None,
-                                                 Usage = ResourceUsage.Default,
+                                                 Usage = ResourceUsage.Staging,
                                                  MipLevels = 1,
                                                  SampleDescription = new SampleDescription(1, 0)
                                              };
 
-            ResourceRegion stereoSrcBox = new ResourceRegion();
+            ResourceRegion stereoSrcBox = new ResourceRegion
+                                              {Front = 0, Back = 1, Top = 0, Bottom = 1080, Left = 0, Right = 3840};
 
-            stereoSrcBox.Front = 0;
-            stereoSrcBox.Back = 1;
-            stereoSrcBox.Top = 0;
-            stereoSrcBox.Bottom = 1080;
-            stereoSrcBox.Left = 0;
-            stereoSrcBox.Right = 3840;
- 
+
             Texture2D outp = new Texture2D(Game.Context.Device, desc);
 
             DeviceContext.Immediate.CopySubresourceRegion(tex, 0, stereoSrcBox, outp, 0, 0, 0, 0);
             //DeviceContext.Immediate.CopyResource(tex, outp);
             DataBox box = DeviceContext.Immediate.MapSubresource(outp, 0,
-                outp.Description.Width * outp.Description.Height * 4, MapMode.WriteNoOverwrite, MapFlags.None);
+                outp.Description.Width * outp.Description.Height * 4, MapMode.Write, MapFlags.None);
             //var val = box.Data.ReadByte();
             box.Data.Seek(tex.Description.Width * tex.Description.Height * 4, SeekOrigin.Begin);
 
-            box.Data.Write(data, 0, data.Length);
+            //box.Data.Write(data, 0, data.Length);
+            //byte[] color = BitConverter.GetBytes(Color.White.ToArgb());
+            //box.Data.Write(color,0, color.Length);
+            //box.Data.Write(data, 0, data.Length);
+            byte[] headerData = StructureToByteArray(header);
+            box.Data.Write(headerData, 0, headerData.Length);
+            //box.Data.Write(color, 0, color.Length);
             DeviceContext.Immediate.UnmapSubresource(outp, 0);
-
           //box.Data.Write(buffer, 0, buffer.Length);
            
             //DeviceContext.Immediate.CopySubresourceRegion(tex, 0, stereoSrcBox, outp, 0, 0, 0, 0);
             ////return Texture2D.FromMemory(Game.Context.Device, buffer);
             //Texture2D.ToFile(Game.Context.Immediate, outp, ImageFileFormat.Bmp, "prova.bmp");
-            return outp;
+
+            Texture2DDescription finalDesc = new Texture2DDescription()
+            {
+                ArraySize = 1,
+                Width = 3840,
+                Height = 1081,
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
+                OptionFlags = ResourceOptionFlags.None,
+                Usage = ResourceUsage.Dynamic,
+                MipLevels = 1,
+                SampleDescription = new SampleDescription(1, 0)
+            };
+
+            Texture2D finalT = new Texture2D(DeviceContext.Device, finalDesc);
+            DeviceContext.Immediate.CopyResource(outp, finalT);
+
+            //Texture2D.ToFile(DeviceContext.Immediate, finalT, ImageFileFormat.Bmp, "prova.bmp");
+
+
+            return finalT;
         }
 
         static byte[] StructureToByteArray(object obj)
