@@ -21,6 +21,7 @@ namespace AvengersUtd.Odyssey.Geometry
         PositionColor4 = Position | Color4,
         PositionNormal = Position | Normal,
         TexturedMesh = Position | TextureUV | Normal | Tangent | BiNormal,
-        PositionTextureUVW = Position | TextureUVW
+        PositionTextureUVW = Position | TextureUVW,
+        Mesh = Position | Normal | TextureUV
     }
 }

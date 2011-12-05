@@ -1,5 +1,5 @@
 #include <Include/Common.h>
-#include <Include/Structs.h>
+#include <Include/Structs.hlsl>
 
 Texture2D tDiffuse;
 

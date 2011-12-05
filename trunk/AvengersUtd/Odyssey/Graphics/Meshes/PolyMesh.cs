@@ -21,7 +21,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
        public void UpdateVertices(ColoredVertex[] vertices)
         {
             DataBox db = Game.Context.Device.ImmediateContext.MapSubresource(VertexBuffer, 0,
-                                                                                 VertexBuffer.Description.SizeInBytes,
+                                                                                 //VertexBuffer.Description.SizeInBytes,
                                                                                  MapMode.WriteDiscard, MapFlags.None);
             foreach (ColoredVertex vertex in vertices)
             {

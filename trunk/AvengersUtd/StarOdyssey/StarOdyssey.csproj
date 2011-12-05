@@ -22,7 +22,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -81,6 +81,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\Effects\Include\Geometry.hlsl" />
+    <Content Include="Resources\Odyssey ControlDescriptions.ocd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Odyssey TextDescriptions.otd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Effects\Include\Common.h">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -93,9 +100,9 @@
     <Content Include="Resources\Effects\Include\Shadows.h">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Effects\Include\Structs.h">
+    <None Include="Resources\Effects\Include\Structs.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Resources\Effects\Phong.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -108,6 +115,7 @@
     <Content Include="Resources\Effects\UIMaterial.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Effects\SolidWireframe.fx" />
     <None Include="Resources\Odyssey ControlDescriptions.ocd">
       <SubType>Designer</SubType>
     </None>
@@ -117,10 +125,6 @@
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">
       <Project>{B343E52E-51F3-4667-ACE1-15ABE72EBDFA}</Project>
       <Name>Odyssey</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Odyssey\Utils\Utils.csproj">
-      <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
-      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

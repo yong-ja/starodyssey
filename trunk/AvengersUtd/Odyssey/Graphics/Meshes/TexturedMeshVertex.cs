@@ -42,7 +42,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     /// Represents a vertex with a position and a texture coordinate.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct TexturedMeshVertex : IVertex, IEquatable<TexturedMeshVertex>
+    public struct TexturedMeshVertex : IPositionVertex, IEquatable<TexturedMeshVertex>
     {
         /// <summary>
         /// Gets or sets the position of the vertex.
@@ -62,9 +62,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         private static readonly InputElement[] inputElements;
         private static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
-
-       
-
 
         static TexturedMeshVertex()
         {
@@ -95,12 +92,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Tangent = tangent;
             Binormal = binormal;
         }
-
-
-
-
-        
-
 
         public static InputElement[] InputElements
         {

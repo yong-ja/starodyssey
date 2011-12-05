@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using AvengersUtd.Odyssey.Utils.Properties;
+using ErrorCode = AvengersUtd.Odyssey.Properties.Resources;
 
 namespace AvengersUtd.Odyssey.Utils.Collections
 {
@@ -189,15 +189,15 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnAppendChild(INode newChild)
         {
             if (isLeaf)
-                throw new ArgumentException(Resources.ERR_NodeIsLeaf);
+                throw new ArgumentException(ErrorCode.ERR_NodeIsLeaf);
             
             if (newChild == null)
-                throw new ArgumentNullException("newChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("newChild", ErrorCode.ERR_NodeIsNull);
 
             if (!HasChildNodes)
             {
                 if (IsNodeAncestorOf(newChild, this))
-                    throw new InvalidOperationException(Resources.ERR_NodeIsAncestor);
+                    throw new InvalidOperationException(ErrorCode.ERR_NodeIsAncestor);
 
                 firstChild = lastChild = newChild;
                 newChild.Parent = this;
@@ -212,10 +212,10 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnRemoveChild(INode oldChild)
         {
             if (oldChild == null)
-                throw new ArgumentNullException("oldChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("oldChild", ErrorCode.ERR_NodeIsNull);
 
             if (!IsNodeChildOf(oldChild, this))
-                throw new ArgumentException(Resources.ERR_NodeNotChild, "oldChild");
+                throw new ArgumentException(ErrorCode.ERR_NodeNotChild, "oldChild");
 
             if (firstChild == oldChild)
             {
@@ -259,16 +259,16 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnReplaceChild(INode newChild, INode oldChild)
         {
             if (oldChild == null)
-                throw new ArgumentNullException("oldChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("oldChild", ErrorCode.ERR_NodeIsNull);
 
             if (newChild == null)
-                throw new ArgumentNullException("newChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("newChild", ErrorCode.ERR_NodeIsNull);
 
             if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(Resources.ERR_NodeIsAncestor);
+                throw new InvalidOperationException(ErrorCode.ERR_NodeIsAncestor);
 
             if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(Resources.ERR_NodeAlreadyChild, "oldChild");
+                throw new ArgumentException(ErrorCode.ERR_NodeAlreadyChild, "oldChild");
 
             if (firstChild == oldChild)
             {
@@ -325,19 +325,19 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnInsertBefore(INode newChild, INode refNode)
         {
             if (isLeaf)
-                throw new ArgumentException(Resources.ERR_NodeIsLeaf);
+                throw new ArgumentException(ErrorCode.ERR_NodeIsLeaf);
 
             if (refNode == null)
-                throw new ArgumentNullException("refNode", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("refNode", ErrorCode.ERR_NodeIsNull);
 
             if (newChild == null)
-                throw new ArgumentNullException("newChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("newChild", ErrorCode.ERR_NodeIsNull);
 
             if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(Resources.ERR_NodeIsAncestor);
+                throw new InvalidOperationException(ErrorCode.ERR_NodeIsAncestor);
 
             if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(Resources.ERR_NodeAlreadyChild, "refNode");
+                throw new ArgumentException(ErrorCode.ERR_NodeAlreadyChild, "refNode");
 
             if (refNode == firstChild)
             {
@@ -368,19 +368,19 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnInsertAfter(INode newChild, INode refNode)
         {
             if (isLeaf)
-                throw new ArgumentException(Resources.ERR_NodeIsLeaf);
+                throw new ArgumentException(ErrorCode.ERR_NodeIsLeaf);
 
             if (refNode == null)
-                throw new ArgumentNullException("refNode", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("refNode", ErrorCode.ERR_NodeIsNull);
 
             if (newChild == null)
-                throw new ArgumentNullException("newChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("newChild", ErrorCode.ERR_NodeIsNull);
 
             if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(Resources.ERR_NodeIsAncestor);
+                throw new InvalidOperationException(ErrorCode.ERR_NodeIsAncestor);
 
             if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(Resources.ERR_NodeNotChild, "refNode");
+                throw new ArgumentException(ErrorCode.ERR_NodeNotChild, "refNode");
 
             if (refNode == lastChild)
             {
@@ -407,10 +407,10 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         protected virtual void OnPrependChild(INode newChild)
         {
             if (isLeaf)
-                throw new ArgumentException(Resources.ERR_NodeIsLeaf);
+                throw new ArgumentException(ErrorCode.ERR_NodeIsLeaf);
 
             if (newChild == null)
-                throw new ArgumentNullException("newChild", Resources.ERR_NodeIsNull);
+                throw new ArgumentNullException("newChild", ErrorCode.ERR_NodeIsNull);
 
             if (!HasChildNodes)
             {

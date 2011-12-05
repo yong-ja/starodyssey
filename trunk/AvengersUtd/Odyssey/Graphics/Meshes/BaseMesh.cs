@@ -42,7 +42,7 @@ using Buffer = SlimDX.Direct3D11.Buffer;
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public abstract class BaseMesh<TVertex> : IRenderable
-        where TVertex : struct, IVertex
+        where TVertex : struct, IPositionVertex
     {
         private readonly EventHandlerList eventHandlerList;
         private readonly List<ShaderResourceView> shaderResources;

@@ -101,7 +101,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                     (Vector3.Zero, Size.Width, Size.Height, out indices);
 
                 DataBox db = Game.Context.Immediate.MapSubresource(quad.VertexBuffer, 0,
-                    quad.VertexBuffer.Description.SizeInBytes,
+                    //quad.VertexBuffer.Description.SizeInBytes,
                     MapMode.WriteDiscard, MapFlags.None);
                 db.Data.WriteRange(vertices);
 

@@ -1,4 +1,10 @@
-// ColoredVertices
+// Position
+struct VSIn
+{
+	float4 Position : POSITION;
+};
+
+// Position Colored
 struct ColoredVerticesVSIn
 {
 	float4 Position : POSITION;

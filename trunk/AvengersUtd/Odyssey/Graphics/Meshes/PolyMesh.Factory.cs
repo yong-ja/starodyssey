@@ -194,54 +194,80 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             return vertices;
         }
 
-        public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
-            out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        public static Vector4[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments,
+            out ushort[] indices,float[] widthOffsets=null, float[] heightOffsets=null)
         {
-            ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
-            if (widthOffsets != null && widthOffsets.Length != widthSegments+1)
-                throw Error.ArgumentInvalid("widthOffsets", typeof (float[]), "CreateRectangleMesh");
-            if (heightOffsets != null && heightOffsets.Length != heightSegments+1)
+            if (widthOffsets != null && widthOffsets.Length != widthSegments + 1)
+                throw Error.ArgumentInvalid("widthOffsets", typeof(float[]), "CreateRectangleMesh");
+            if (heightOffsets != null && heightOffsets.Length != heightSegments + 1)
                 throw Error.ArgumentInvalid("heightSegments", typeof(float[]), "CreateRectangleMesh");
 
+            Vector4[] vertices = new Vector4[(1 + widthSegments)*(1 + heightSegments)];
             float x = topLeftVertex.X;
             float y = topLeftVertex.Y;
             float z = topLeftVertex.Z;
 
-            int vertexCount=0, indexCount = 0;
-            indices = new ushort[widthSegments*heightSegments*6];
+            int vertexCount = 0, indexCount = 0;
+            indices = new ushort[widthSegments * heightSegments * 6];
             // Compute vertices, one row at a time
-            for (int i=0; i < heightSegments+1;i++)
+            for (int i = 0; i < heightSegments + 1; i++)
             {
                 for (int j = 0; j < widthSegments + 1; j++)
                 {
-                    float hOffset = widthOffsets == null ? j * (width/widthSegments) : widthOffsets[j]*width;
-                    float vOffset = heightOffsets == null ? i* (height/heightSegments) : heightOffsets[i]*height;
+                    float hOffset = widthOffsets == null ? j * (width / widthSegments) : widthOffsets[j] * width;
+                    float vOffset = heightOffsets == null ? i * (height / heightSegments) : heightOffsets[i] * height;
 
-                    vertices[vertexCount] = new ColoredVertex
-                                                {
-                                                    Position = new Vector4(x + hOffset, y -vOffset, z, 1.0f),
-                                                    Color = colors[vertexCount]
-                                                };
+                    vertices[vertexCount] = new Vector4(x + hOffset, y - vOffset, z, 1.0f);
 
                     if (i < heightSegments && j < widthSegments)
                     {
 
-                        indices[indexCount] = (ushort) (vertexCount + 1);
-                        indices[indexCount + 1] = (ushort) (vertexCount);
-                        indices[indexCount + 2] = (ushort) (vertexCount + widthSegments + 1);
+                        indices[indexCount] = (ushort)(vertexCount + 1);
+                        indices[indexCount + 1] = (ushort)(vertexCount);
+                        indices[indexCount + 2] = (ushort)(vertexCount + widthSegments + 1);
 
-                        indices[indexCount + 3] = (ushort) (indices[indexCount + 2] + 1);
+                        indices[indexCount + 3] = (ushort)(indices[indexCount + 2] + 1);
                         indices[indexCount + 4] = indices[indexCount];
                         indices[indexCount + 5] = indices[indexCount + 2];
                         indexCount += 6;
                     }
 
                     vertexCount++;
-
                 }
             }
 
             return vertices;
+
+
+        }
+
+        public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
+            out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        {
+            //ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
+
+            Vector4[] vertices = CreateRectangleMesh(topLeftVertex, width, height, widthSegments, heightSegments, out indices,
+                                                     widthOffsets, heightOffsets);
+            return (from v in vertices
+                    from c in colors
+                    select new ColoredVertex(v, c)).ToArray();
+        }
+
+        public static MeshVertex[] CreateVertexCollection(Vector4[] vertices, Vector3[] normals=null, Vector2[] textureUV=null)
+        {
+            if (vertices == null)
+                throw Error.ArgumentNull("vertices", typeof(Vector4[]), "CreateVertexCollection");
+
+            if (normals == null)
+                normals = new Vector3[vertices.Length];
+
+            if (textureUV == null)
+                textureUV = new Vector2[vertices.Length];
+
+            return (from v in vertices
+                    from n in normals
+                    from t in textureUV
+                    select new MeshVertex(v, n, t)).ToArray();
         }
 
         //public static PolyMesh CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
