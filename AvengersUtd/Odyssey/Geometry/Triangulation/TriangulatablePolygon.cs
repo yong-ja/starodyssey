@@ -55,7 +55,7 @@ namespace AvengersUtd.Odyssey.Geometry.Triangulation
 
          public Triangulatable(IPolygon polygon)
          {
-             List<Vector2D> vPoints = new List<Vector2D>(polygon.Vertices);
+             List<Vector2D> vPoints = new List<Vector2D>(polygon.VerticesArray);
              List<TriangulationPoint> tPoints = vPoints.ConvertAll(p => (TriangulationPoint) (p));
 
              if (tPoints.Count < 3) throw new ArgumentException("List has fewer than 3 points", "points");

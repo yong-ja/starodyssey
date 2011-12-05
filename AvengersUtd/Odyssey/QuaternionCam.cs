@@ -5,7 +5,6 @@ using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
-using SlimDX.Direct3D11;
 
 
 namespace AvengersUtd.Odyssey
@@ -15,8 +14,6 @@ namespace AvengersUtd.Odyssey
         private readonly EventHandlerList eventHandlerList;
         private static readonly object EventCameraMoved;
         bool[] actions;
-        
-        Device device;
 
         //BoundingFrustum frustum;
         Vector3 vPosition;
@@ -156,18 +153,19 @@ namespace AvengersUtd.Odyssey
             nearClip = 0.1f;
             farClip = 100.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
+            
             mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
+            //mOrthoProjection = Matrix.OrthoLH(1920, 1080, nearClip, farClip);
             //frustum = new BoundingFrustum();
             Reset();
         }
 
         public void Reset()
         {
-            device = Game.Context.Device;
             vPosition = new Vector3();
             qOrientation = Quaternion.Identity;
-            mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, Game.Context.Settings.AspectRatio, nearClip, farClip);
-            mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
+            //mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, Game.Context.Settings.AspectRatio, nearClip, farClip);
+           // mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
             mWorld = mView = Matrix.Identity;
         }
 

@@ -69,6 +69,8 @@ namespace AvengersUtd.Odyssey.Geometry
             return new Circle(center, radius);
         }
 
+       
+
         #region Equality
         public bool Equals(Circle other)
         {

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odysseus", "Odysseus\Odysse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTri10", "..\..\SlimDx Samples\SlimDX Samples (March 2011)\Direct3D10\MiniTri10\MiniTri10.csproj", "{C4B8FFDB-8A4F-42D3-9A05-A47DCF2E5647}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleEnumeration", "..\..\SlimDx Samples\SlimDX Samples (March 2011)\Direct3D10\SimpleEnumeration\SimpleEnumeration.csproj", "{6D838B47-ED76-42AA-B01F-8002FCB41478}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -167,6 +169,41 @@ Global
 		{C4B8FFDB-8A4F-42D3-9A05-A47DCF2E5647}.Release-4.0|x64.Build.0 = Release-4.0|x64
 		{C4B8FFDB-8A4F-42D3-9A05-A47DCF2E5647}.Release-4.0|x86.ActiveCfg = Release-4.0|x86
 		{C4B8FFDB-8A4F-42D3-9A05-A47DCF2E5647}.Release-4.0|x86.Build.0 = Release-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|x64.ActiveCfg = Debug|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|x64.Build.0 = Debug|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|x86.ActiveCfg = Debug|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug|x86.Build.0 = Debug|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|Any CPU.ActiveCfg = Debug-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|Mixed Platforms.ActiveCfg = Debug-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|Mixed Platforms.Build.0 = Debug-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|x64.ActiveCfg = Debug-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|x64.Build.0 = Debug-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|x86.ActiveCfg = Debug-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Debug-4.0|x86.Build.0 = Debug-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|Any CPU.ActiveCfg = Public-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|Mixed Platforms.ActiveCfg = Public-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|Mixed Platforms.Build.0 = Public-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|x64.ActiveCfg = Public-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|x64.Build.0 = Public-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|x86.ActiveCfg = Public-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Public-4.0|x86.Build.0 = Public-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|Any CPU.ActiveCfg = Release|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|x64.ActiveCfg = Release|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|x64.Build.0 = Release|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|x86.ActiveCfg = Release|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release|x86.Build.0 = Release|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|Any CPU.ActiveCfg = Release-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|Mixed Platforms.ActiveCfg = Release-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|Mixed Platforms.Build.0 = Release-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|x64.ActiveCfg = Release-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|x64.Build.0 = Release-4.0|x64
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|x86.ActiveCfg = Release-4.0|x86
+		{6D838B47-ED76-42AA-B01F-8002FCB41478}.Release-4.0|x86.Build.0 = Release-4.0|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

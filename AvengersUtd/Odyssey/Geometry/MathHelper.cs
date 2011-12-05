@@ -32,23 +32,31 @@ namespace AvengersUtd.Odyssey.Geometry
         /// The value for which all absolute numbers smaller than are considered equal to zero.
         /// </summary>
         public const float Epsilon = 1e-6f;
+
         public const double EpsilonD = 1e-6d;
 
         public static float Scale(float value, float min, float max)
         {
-            return (value/(max - min));
+            return min + (max - min)*value;
         }
 
         public static double Scale(double value, double min, double max)
         {
-            return (value / (max - min));
+            return min + (max - min) * value;
+        }
+
+        public static double ConvertRange(
+                double originalStart, double originalEnd, // original range
+                double newStart, double newEnd, // desired range
+                double value) // value to convert
+        {
+            double scale = (newEnd - newStart)/(originalEnd - originalStart);
+            return (newStart + ((value - originalStart)*scale));
         }
 
         public static float Clamp(float value, float min, float max)
         {
-            return (value > max) ? max
-                           : (value < min) ? min
-                                     : value;
+            return (value > max) ? max : (value < min) ? min : value;
         }
 
         public static float DegreesToRadians(float degrees)
@@ -104,7 +112,7 @@ namespace AvengersUtd.Odyssey.Geometry
         /// and 0 if points are collinear.</returns>
         public static double Area(ref Vector2D a, ref Vector2D b, ref Vector2D c)
         {
-            return a.X * (b.Y - c.Y) + b.X * (c.Y - a.Y) + c.X * (a.Y - b.Y);
+            return a.X*(b.Y - c.Y) + b.X*(c.Y - a.Y) + c.X*(a.Y - b.Y);
         }
 
         public static bool IsValid(double x)
@@ -117,6 +125,5 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return !double.IsInfinity(x);
         }
-
     }
 }

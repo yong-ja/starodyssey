@@ -22,18 +22,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                 {
                     Shader = LinearShader.CreateUniform(new Color4(0, 1, 0));
                 }
-                else if (i==2)
+                else if (i == 1)
                 {
                     Shader = LinearShader.CreateUniform(new Color4(1, 1, 0));
                 }
-                else if (i == 6)
+                else if (i == 5)
                 {
                     Shader = LinearShader.CreateUniform(new Color4(1, 0, 1));
                 }
-                else if (i == 7)
-                {
-                    Shader = LinearShader.CreateUniform(new Color4(0, 0, 1));
-                }
+                //else if (i == 7)
+                //{
+                //    Shader = LinearShader.CreateUniform(new Color4(0, 0, 1));
+                //}
                 else
                 {
                     Shader = tempShader;

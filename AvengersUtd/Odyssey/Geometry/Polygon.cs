@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
@@ -10,14 +11,27 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         #region Properties
 
-        public Vertices Vertices { get; private set; }
+        internal Vertices Vertices { get; private set; }
+
+        public Vector2D[] VerticesArray
+        {
+            get { return Vertices.ToArray(); }
+        }
 
         public Vector2D Centroid
         {
             get { return ComputeCentroid(this); }
         }
 
-        public double Area { get { return Math.Abs(Polygon.ComputeSignedArea(this)); } }
+        public double Area
+        {
+            get { return Math.Abs(Polygon.ComputeSignedArea(this)); }
+        }
+
+        public int Count
+        {
+            get { return Vertices.Count; }
+        }
 
         public bool IsCounterClockWise
         {
@@ -34,6 +48,7 @@ namespace AvengersUtd.Odyssey.Geometry
         #endregion
 
         #region Constructors
+
         public Polygon(IEnumerable<Vector2D> points)
             : this()
         {
@@ -44,15 +59,16 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             Vertices = new Vertices();
         }
+
         #endregion
 
-        public Vector4[] ComputeVector4Array(float zIndex)
+        public static Vector4[] ComputeVector4Array(Vertices vertices, float zIndex)
         {
-            Vector4[] pointsArray = new Vector4[Vertices.Count];
-            for (int i = 0; i < Vertices.Count; i++)
+            Vector4[] pointsArray = new Vector4[vertices.Count];
+            for (int i = 0; i < vertices.Count; i++)
             {
-                Vector2D point = Vertices[i];
-                pointsArray[i] = new Vector4((float)point.X, (float)point.Y, zIndex, 1.0f);
+                Vector2D point = vertices[i];
+                pointsArray[i] = new Vector4((float) point.X, (float) point.Y, zIndex, 1.0f);
             }
             return pointsArray;
         }
@@ -63,9 +79,7 @@ namespace AvengersUtd.Odyssey.Geometry
         public void ForceCounterClockWise()
         {
             if (!IsCounterClockWise)
-            {
                 Vertices.Reverse();
-            }
         }
 
         /// <summary>
@@ -81,22 +95,13 @@ namespace AvengersUtd.Odyssey.Geometry
             for (int i = 0; i < Vertices.Count; ++i)
             {
                 if (Vertices[i].X < lowerBound.X)
-                {
                     lowerBound.X = Vertices[i].X;
-                }
                 if (Vertices[i].X > upperBound.X)
-                {
                     upperBound.X = Vertices[i].X;
-                }
-
                 if (Vertices[i].Y < lowerBound.Y)
-                {
                     lowerBound.Y = Vertices[i].Y;
-                }
                 if (Vertices[i].Y > upperBound.Y)
-                {
                     upperBound.Y = Vertices[i].Y;
-                }
             }
 
             aabb.LowerBound = lowerBound;
@@ -104,6 +109,15 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return aabb;
         }
+
+        public void Detail(double segmentLength)
+        {
+            PathFigure figure = (PathFigure) Copy();
+            figure.Detail(segmentLength);
+            Vertices = (Vertices) figure;
+        }
+
+
 
         public void Translate(Vector2D vector)
         {
@@ -122,11 +136,22 @@ namespace AvengersUtd.Odyssey.Geometry
 
         public bool IsPointInside(Vector2D point)
         {
-            //return Intersection.PolygonHitTest(this, point);
             return Intersection.PolygonPointTest(Vertices, point);
         }
 
+        public ColoredVertex[] CreateColoredVertexArray(Color4[] colors, float zDepth)
+        {
+            ColoredVertex[] coloredVertices = new ColoredVertex[Count];
+            for (int i = 0; i < Vertices.Count; i++)
+            {
+                Vector2D vector = Vertices[i];
+                coloredVertices[i] = new ColoredVertex(new Vector4(vector, zDepth, 1.0f), colors[i]);
+            }
+            return coloredVertices;
+        }
+
         #region Static methods
+
         public static Vector2D ComputeCentroid(Polygon polygon)
         {
             Vector2D centroid = new Vector2D(0, 0);
@@ -135,7 +160,7 @@ namespace AvengersUtd.Odyssey.Geometry
             double y0; // Current vertex Y
             double x1; // Next vertex X
             double y1; // Next vertex Y
-            double a;  // Partial signed area
+            double a; // Partial signed area
             Vector2D[] vertices = polygon.Vertices.ToArray();
 
             // For all vertices except last
@@ -146,10 +171,10 @@ namespace AvengersUtd.Odyssey.Geometry
                 y0 = vertices[i].Y;
                 x1 = vertices[i + 1].X;
                 y1 = vertices[i + 1].Y;
-                a = x0 * y1 - x1 * y0;
+                a = x0*y1 - x1*y0;
                 signedArea += a;
-                centroid.X += (x0 + x1) * a;
-                centroid.Y += (y0 + y1) * a;
+                centroid.X += (x0 + x1)*a;
+                centroid.Y += (y0 + y1)*a;
             }
 
             // Do last vertex
@@ -157,14 +182,14 @@ namespace AvengersUtd.Odyssey.Geometry
             y0 = vertices[i].Y;
             x1 = vertices[0].X;
             y1 = vertices[0].Y;
-            a = x0 * y1 - x1 * y0;
+            a = x0*y1 - x1*y0;
             signedArea += a;
-            centroid.X += (x0 + x1) * a;
-            centroid.Y += (y0 + y1) * a;
+            centroid.X += (x0 + x1)*a;
+            centroid.Y += (y0 + y1)*a;
 
             signedArea *= 0.5f;
-            centroid.X /= (6 * signedArea);
-            centroid.Y /= (6 * signedArea);
+            centroid.X /= (6*signedArea);
+            centroid.Y /= (6*signedArea);
 
             return centroid;
         }
@@ -191,44 +216,6 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #endregion
 
-        static Vector2D CreateEllipseVertex(double x, double y, double radiusX, double radiusY, double theta)
-        {
-            return new Vector2D
-                    (x + Math.Cos(theta)*radiusX,
-                    y - Math.Sin(theta)*radiusY);
-        }
-
-        public static Polygon CreateEllipse(Vector2D center, double radiusX, double radiusY, int slices)
-        {
-            double x = center.X;
-            double y = center.Y;
-            double delta = MathHelper.TwoPi / slices;
-            Vector2D[] points = new Vector2D[slices];
-            for (int i = 0; i < slices; i++)
-            {
-                double theta = i * delta;
-                points[i] = CreateEllipseVertex(x, y, radiusX, radiusY, theta);
-            }
-            
-            return new Polygon(points);
-        }
-
-        public static double ComputeEllipseSegmentLength(Vector2D center, double radiusX, double radiusY, int slices)
-        {
-            double x = center.X;
-            double y = center.Y;
-            double delta = MathHelper.TwoPi / slices;
-            Vector2D[] points = new Vector2D[2];
-            for (int i = 0; i < 2; i++)
-            {
-                double theta = i * delta;
-                points[i] = CreateEllipseVertex(x, y, radiusX, radiusY, theta);
-            }
-
-            Segment segment = new Segment(points[0], points[1]);
-            return segment.Length;
-        }
-
         public static explicit operator PathFigure(Polygon polygon)
         {
             List<Segment> segments = new List<Segment>();
@@ -236,13 +223,17 @@ namespace AvengersUtd.Odyssey.Geometry
             for (int i = 0; i < polygon.Vertices.Count; i++)
             {
                 Vector2D p = polygon.Vertices[i];
-                segments.Add(new Segment(s,p));
+                segments.Add(new Segment(s, p));
 
                 s = p;
             }
 
             return new PathFigure(segments);
         }
-      
+
+        public Polygon Copy()
+        {
+            return new Polygon(Vertices);
+        }
     }
 }

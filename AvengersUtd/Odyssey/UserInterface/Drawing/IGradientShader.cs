@@ -18,7 +18,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
     public interface IRadialShader : IGradientShader
     {
         Vector2 Center { get; set; }
-        Vector2 GradientOrigin { get; set; }
         float RadiusX { get; set; }
         float RadiusY { get; set; }
     }

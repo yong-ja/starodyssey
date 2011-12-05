@@ -55,6 +55,20 @@ namespace AvengersUtd.Odyssey.Geometry.Triangulation.Delaunay {
 
 		public int IndexCWFrom (TriangulationPoint p) { return (IndexOf(p)+2)%3; }
 		public int IndexCCWFrom(TriangulationPoint p) { return (IndexOf(p)+1)%3; }
+        //TODO: Port note - different implementation
+        //public int IndexCCWFrom(TriangulationPoint p)
+        //{
+        //    int index = IndexOf(p);
+        //    switch (index)
+        //    {
+        //        case 0:
+        //            return 1;
+        //        case 1:
+        //            return 2;
+        //        default:
+        //            return 0;
+        //    }
+        //}
 
 		public bool Contains(TriangulationPoint p) { return Points.Contains(p); }
 

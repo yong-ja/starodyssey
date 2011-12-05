@@ -34,7 +34,7 @@ namespace AvengersUtd.Odyssey.Geometry
         /// <returns>-1 if the winding number is zero and the point is outside
         /// the polygon, 1 if the point is inside the polygon, and 0 if the point
         /// is on the polygons edge.</returns>
-        public static int PointInPolygon(Polygon polygon, ref Vector2D point)
+        public static int PointInPolygon(Polygon polygon, Vector2D point)
         {
             // Winding number
             int wn = 0;
@@ -70,7 +70,7 @@ namespace AvengersUtd.Odyssey.Geometry
                     }
                 }
             }
-            return (wn == 0 ? -1 : 1);
+            return wn;
         }
      
     }

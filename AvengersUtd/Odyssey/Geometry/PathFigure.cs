@@ -39,6 +39,24 @@ namespace AvengersUtd.Odyssey.Geometry
         }
         #endregion
 
+        public bool IntersectsWith(Segment t)
+        {
+            return Segments.Select(s => Intersection.SegmentSegmentTest(s, t)).Any(test => test);
+        }
+
+        public bool IntersectsWith(Segment t, out Vector2D point)
+        {
+            foreach (Segment s in Segments)
+            {
+                bool test = Intersection.SegmentSegmentTest(s, t, out point);
+                if (test)
+                    return true;
+            }
+            
+            point = new Vector2D(double.NaN);
+            return false;
+        }
+
         /// <summary>
         /// Removes vertices that are too close together and less than the supplied value.
         /// </summary>
@@ -71,15 +89,24 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             List<Segment> detailedSegments = new List<Segment>();
 
-            foreach (Segment segment in SegmentList)
+            Vector2D currentPoint = SegmentList[0].StartPoint;
+            for (int i = 0; i < SegmentList.Count; i++)
             {
+                Segment segment = new Segment(currentPoint, SegmentList[i].EndPoint);
                 double length = segment.Length;
-                if (length < 2 * subSegmentLength)
+                if (length < subSegmentLength / 2) {
+                    currentPoint = segment.EndPoint;
+                    continue;
+                    }
+                if (length < 2*subSegmentLength)
                 {
                     detailedSegments.Add(segment);
+                    currentPoint = segment.EndPoint;
                     continue;
                 }
-                detailedSegments.AddRange(Segment.Subdivide(segment, (int)Math.Round(length/subSegmentLength)));
+
+                detailedSegments.AddRange(Segment.Subdivide(segment, (int) Math.Round(length/subSegmentLength)));
+                currentPoint = detailedSegments[detailedSegments.Count - 1].EndPoint;
             }
 
             SegmentList = detailedSegments;

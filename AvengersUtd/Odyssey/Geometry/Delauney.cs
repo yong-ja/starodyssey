@@ -108,7 +108,7 @@ namespace AvengersUtd.Odyssey.Geometry
 		/// </remarks>
 		/// <param name="vertex">List of vertices to triangulate.</param>
 		/// <returns>Triangles referencing vertex indices arranged in clockwise order</returns>
-		public static List<Face> Triangulate(IList<Vector2D> vertex)
+		public static ushort[] Triangulate(IList<Vector2D> vertex)
 		{
 			ushort nv = (ushort)vertex.Count;
 			if (nv < 3)
@@ -146,12 +146,12 @@ namespace AvengersUtd.Odyssey.Geometry
 			vertex.Add(new Vector2D((xmid - 2 * dmax), (ymid - dmax)));
             vertex.Add(new Vector2D(xmid, (ymid + 2 * dmax)));
             vertex.Add(new Vector2D((xmid + 2 * dmax), (ymid - dmax)));
-			List<Face> triangles = new List<Geometry.Face> {new Geometry.Face(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
+			List<Face> triangles = new List<Face> {new Face(nv, (ushort)(nv + 1), (ushort)(nv + 2))};
 
 		    // Include each point one at a time into the existing mesh
 			for (int i = 0; i < nv; i++)
 			{
-				List<Geometry.Edge> edges = new List<Geometry.Edge>(); //[trimax * 3];
+				List<Edge> edges = new List<Edge>(); //[trimax * 3];
 				// Set up the edge buffer.
 				// If the point (Vertex(i).x,Vertex(i).y) lies inside the circumcircle then the
 				// three edges of that triangle are added to the edge buffer and the triangle is removed from list.
@@ -161,15 +161,12 @@ namespace AvengersUtd.Odyssey.Geometry
                     Vector2D p2 = vertex[triangles[j].Index2];
                     Vector2D p3 = vertex[triangles[j].Index3];
 				    Circle circle = Circle.CircumCircle(p1, p2, p3);
-					//if (InCircle(vertex[i], vertex[triangles[j].Index1], vertex[triangles[j].Index2], vertex[triangles[j].Index3]))
-                    if (circle.IsInside(vertex[i]))
-					{
-						edges.Add(new Edge(triangles[j].Index1, triangles[j].Index2));
-						edges.Add(new Edge(triangles[j].Index2, triangles[j].Index3));
-						edges.Add(new Edge(triangles[j].Index3, triangles[j].Index1));
-						triangles.RemoveAt(j);
-						j--;
-					}
+				    if (! circle.IsInside(vertex[i])) continue;
+				    edges.Add(new Edge(triangles[j].Index1, triangles[j].Index2));
+				    edges.Add(new Edge(triangles[j].Index2, triangles[j].Index3));
+				    edges.Add(new Edge(triangles[j].Index3, triangles[j].Index1));
+				    triangles.RemoveAt(j);
+				    j--;
 				}
 				if (i >= nv) continue; //In case we the last duplicate point we removed was the last in the array
 
@@ -196,7 +193,7 @@ namespace AvengersUtd.Odyssey.Geometry
 				{
                     if (triangles.Count >= trimax)
                         throw new ApplicationException("Exceeded maximum edges");
-					triangles.Add(new Geometry.Face(edges[j].Start, edges[j].End, (ushort)i));
+					triangles.Add(new Face(edges[j].Start, edges[j].End, (ushort)i));
                     //triangles.Add(new Face((ushort)i, edges[j].End, edges[j].Start));
 				}
 				edges.Clear();
@@ -214,7 +211,12 @@ namespace AvengersUtd.Odyssey.Geometry
 			vertex.RemoveAt(vertex.Count - 1);
 			vertex.RemoveAt(vertex.Count - 1);
 			triangles.TrimExcess();
-			return triangles;
+
+	        List<ushort> indices = new List<ushort>();
+            foreach (Face face in triangles)
+                indices.AddRange(face.ArrayCCW);
+
+			return indices.ToArray();
 		}
 
 		/// <summary>

@@ -198,31 +198,34 @@
   <data name="ERR_ArgumentNull" xml:space="preserve">
     <value>Argument {0} for method {1}.{2} cannot be null.</value>
   </data>
-	<data name="ERR_NoDetails">
-		<value xml:space="preserve">No details available.</value>
-	</data>
-	<data name="ERR_NoControlDescription">
-		<value xml:space="preserve">No ControlDescription file loaded. Be sure to call LoadControlDescription first.</value>
-	</data>
-	<data name="ERR_NoTextDescription">
-		<value xml:space="preserve">No TextDescription file loaded. Be sure to call LoadTextDescription first.</value>
-	</data>
-	<data name="ERR_TargetControlNull">
-		<value xml:space="preserve">The target control must not be null.</value>
-	</data>
-	<data name="ERR_IdNotFound">
-		<value xml:space="preserve">The control with the specified id was not found.</value>
-	</data>
-	<data name="ERR_AddNullControl">
-		<value xml:space="preserve">You cannot add null controls.</value>
-	</data>
-	<data name="ERR_ControlInCollection">
-		<value><![CDATA[The collection already contains control: {0} ]]></value>
-	</data>
-	<data name="ERR_IdInCollection">
-		<value xml:space="preserve">The collection already contains a control by the same Id: {0}</value>
-	</data>
-	<data name="ERR_InvalidNumVertices">
-		<value xml:space="preserve">Invalid number of vertices specified for the specified Shape value.</value>
-	</data>
+  <data name="ERR_NoDetails" xml:space="preserve">
+    <value>No details available.</value>
+  </data>
+  <data name="ERR_NoControlDescription" xml:space="preserve">
+    <value>No ControlDescription file loaded. Be sure to call LoadControlDescription first.</value>
+  </data>
+  <data name="ERR_NoTextDescription" xml:space="preserve">
+    <value>No TextDescription file loaded. Be sure to call LoadTextDescription first.</value>
+  </data>
+  <data name="ERR_TargetControlNull" xml:space="preserve">
+    <value>The target control must not be null.</value>
+  </data>
+  <data name="ERR_IdNotFound" xml:space="preserve">
+    <value>The control with the specified id was not found.</value>
+  </data>
+  <data name="ERR_AddNullControl" xml:space="preserve">
+    <value>You cannot add null controls.</value>
+  </data>
+  <data name="ERR_ControlInCollection" xml:space="preserve">
+    <value>The collection already contains control: {0} </value>
+  </data>
+  <data name="ERR_IdInCollection" xml:space="preserve">
+    <value>The collection already contains a control by the same Id: {0}</value>
+  </data>
+  <data name="ERR_InvalidNumVertices" xml:space="preserve">
+    <value>Invalid number of vertices specified for the specified Shape value.</value>
+  </data>
+  <data name="ERR_UI_PolygonClippingResult" xml:space="preserve">
+    <value>Polygon clip operation resulted in more than one polygon</value>
+  </data>
 </root>

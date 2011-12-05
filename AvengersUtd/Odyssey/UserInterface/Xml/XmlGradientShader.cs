@@ -174,7 +174,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             : base(radialShader)
         {
             Center = XmlCommon.EncodeVector2(radialShader.Center);
-            GradientOrigin = XmlCommon.EncodeVector2(radialShader.GradientOrigin);
             GradientType = radialShader.GradientType;
             RadiusX = radialShader.RadiusX;
             RadiusY = radialShader.RadiusY;
@@ -183,8 +182,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         [XmlAttribute]
         public string Center { get; set; }
-        [XmlAttribute]
-        public string GradientOrigin { get; set; }
         [XmlAttribute]
         public float RadiusX { get; set; }
         [XmlAttribute]
@@ -197,8 +194,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
             LinearShader linearShader = base.ToColorShader();
             RadialShader radialShader = new RadialShader
             {
-                Center = string.IsNullOrEmpty(Center) ? defaultCenter  : XmlCommon.DecodeVector2(Center),
-                GradientOrigin = string.IsNullOrEmpty(GradientOrigin) ? defaultCenter : XmlCommon.DecodeVector2(GradientOrigin),
+                Center = string.IsNullOrEmpty(Center) ? defaultCenter  : XmlCommon.DecodeFloatVector2(Center),
                 RadiusX = RadiusX == 0 ? defaultValue : RadiusX,
                 RadiusY = RadiusY == 0 ? defaultValue : RadiusY,
                 Gradient = linearShader.Gradient,

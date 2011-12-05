@@ -46,11 +46,6 @@ namespace AvengersUtd.Odyssey.Geometry {
         //    }
         //}
 
-        public static void Triangulate(Polygon p)
-        {
-            Triangulate(DefaultAlgorithm, new Triangulatable(p));
-        }
-
 
 		public static void Triangulate(Triangulatable p) {
 			Triangulate(DefaultAlgorithm, p);
