@@ -11,7 +11,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     /// Represents a vertex with a position and a color vector.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct ColoredVertex :IVertex, IEquatable<ColoredVertex>
+    public struct ColoredVertex :IPositionVertex, IEquatable<ColoredVertex>
     {
         private static readonly InputElement[] inputElements;
         static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
@@ -25,7 +25,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             inputElements = new[]
                                 {
                                     new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
-                                    new InputElement("Color", 0, Format.R32G32B32A32_Float, 16, 0)
+                                    new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0)
                                 };
         }
         /// <summary>

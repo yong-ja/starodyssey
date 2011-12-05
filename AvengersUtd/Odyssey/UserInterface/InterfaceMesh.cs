@@ -22,14 +22,14 @@ namespace AvengersUtd.Odyssey.UserInterface
         public void UpdateBuffers(ColoredVertex[] vertices, ushort[] indices)
         {
             DataBox dbVertices = Game.Context.Device.ImmediateContext.MapSubresource(VertexBuffer, 0,
-                                                                                 VertexBuffer.Description.SizeInBytes,
+                                                                                 //VertexBuffer.Description.SizeInBytes,
                                                                                  MapMode.WriteDiscard, MapFlags.None);
             dbVertices.Data.WriteRange(vertices);
             dbVertices.Data.Position = 0;
             Game.Context.Device.ImmediateContext.UnmapSubresource(VertexBuffer, 0);
 
             DataBox dbIndices = Game.Context.Device.ImmediateContext.MapSubresource(IndexBuffer, 0,
-                                                                                 IndexBuffer.Description.SizeInBytes,
+                                                                                 //IndexBuffer.Description.SizeInBytes,
                                                                                  MapMode.WriteDiscard, MapFlags.None);
             dbIndices.Data.WriteRange(indices);
             dbIndices.Data.Position = 0;

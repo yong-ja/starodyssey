@@ -47,7 +47,7 @@ namespace AvengersUtd.Odyssey
                                               CreationFlags = DeviceCreationFlags.Debug,
                                               ScreenWidth = 1920,
                                               ScreenHeight = 1080,
-                                              SampleDescription = new SampleDescription(4,4)
+                                              SampleDescription = new SampleDescription(1,0)
                                           };
             RenderForm form = new RenderForm
                                   {
@@ -55,9 +55,9 @@ namespace AvengersUtd.Odyssey
                                       Text = "Odyssey11 Demo" 
                                   };
 
+            //Context = new DeviceContext11(form.Handle, settings);
             Context = new DeviceContext11(form.Handle, settings);
-            
-            //OdysseyUI.SetupHooks(form);
+            OdysseyUI.SetupHooks(form);
             Global.FormOwner = form;
             HookEvents();
             

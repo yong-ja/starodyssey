@@ -1,7 +1,7 @@
 #include <Include/Common.h>
 #include <Include/Materials.h>
 #include <Include/Lighting.h>
-#include <Include/Structs.h>
+#include <Include/Structs.hlsl>
 
 uniform int iTextureType;
 

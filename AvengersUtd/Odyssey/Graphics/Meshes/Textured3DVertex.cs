@@ -41,7 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     /// Represents a vertex with a position and a texture coordinate.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size=28)]
-    public struct Textured3DVertex : IVertex
+    public struct Textured3DVertex : IPositionVertex
     {
         [FieldOffset(0)]
         private Vector4 position;

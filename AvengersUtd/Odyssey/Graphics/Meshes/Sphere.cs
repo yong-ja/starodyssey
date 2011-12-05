@@ -18,9 +18,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public float Radius { get; private set; }
 
         public Color4 DiffuseColor { get; set; }
-
         public Color4 SpecularColor4 { get; set;}
-
         public Color4 AmbientColor4 { get; set;}
 
         /// <summary>
@@ -39,13 +37,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             // check calculations
             Debug.Assert(VertexCount == nextVertex);
             Debug.Assert(IndexCount == nextIndex * 2);
-
-            
         }
-
-        
-
-        
+       
         /// <summary>
         /// Based on number of strips, calculate number space
         /// needed to store Vertexes and allocate it.  

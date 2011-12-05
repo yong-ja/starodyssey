@@ -225,7 +225,19 @@
   <data name="ERR_InvalidNumVertices" xml:space="preserve">
     <value>Invalid number of vertices specified for the specified Shape value.</value>
   </data>
-  <data name="ERR_UI_PolygonClippingResult" xml:space="preserve">
-    <value>Polygon clip operation resulted in more than one polygon</value>
+  <data name="ERR_NodeAlreadyChild" xml:space="preserve">
+    <value>The new node is already a child of this node.</value>
+  </data>
+  <data name="ERR_NodeIsAncestor" xml:space="preserve">
+    <value>The newChild is an ancestor of this node.</value>
+  </data>
+  <data name="ERR_NodeIsLeaf" xml:space="preserve">
+    <value>Can't add children to leaf nodes.</value>
+  </data>
+  <data name="ERR_NodeIsNull" xml:space="preserve">
+    <value>Node is null.</value>
+  </data>
+  <data name="ERR_NodeNotChild" xml:space="preserve">
+    <value>The node is not a child of this node.</value>
   </data>
 </root>

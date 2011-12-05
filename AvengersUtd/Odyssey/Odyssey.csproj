@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\..\..\Settings\Rules.ruleset</CodeAnalysisRuleSet>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -59,12 +60,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Circle.cs" />
-    <Compile Include="Geometry\Clipping\EllipseClipper.cs" />
-    <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
-    <Compile Include="Geometry\GeometryEvents.cs" />
-    <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
-    <Compile Include="Geometry\Simplification.cs" />
     <Compile Include="Geometry\SimplifyTools.cs" />
     <Compile Include="Geometry\Delauney.cs" />
     <Compile Include="Geometry\Edge.cs" />
@@ -94,7 +90,6 @@
     <Compile Include="Geometry\Triangulation\Delaunay\Sweep\DTSweepPointComparator.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\Sweep\PointOnEdgeException.cs" />
     <Compile Include="Geometry\Triangulation\ITriangulatable.cs" />
-    <Compile Include="Geometry\Triangulation\MeshMapper.cs" />
     <Compile Include="Geometry\Triangulation\Orientation.cs" />
     <Compile Include="Geometry\P2T.cs" />
     <Compile Include="Geometry\Triangulation\Sets\ConstrainedPointSet.cs" />
@@ -109,14 +104,18 @@
     <Compile Include="Geometry\Triangulation\TriangulationUtil.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
     <Compile Include="Geometry\Vertices.cs" />
+    <Compile Include="Geometry\YuPengClipper.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\ImageMaterial.cs" />
     <Compile Include="Graphics\Materials\SkyBoxMaterial.cs" />
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
     <Compile Include="Graphics\Materials\UIMaterial.cs" />
+    <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
     <Compile Include="Graphics\Meshes\ColoredVertex.cs" />
     <Compile Include="Graphics\Meshes\Copy of TexturedVertex.cs" />
+    <Compile Include="Graphics\Meshes\Grid.cs" />
+    <Compile Include="Graphics\Meshes\MeshVertex.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.Factory.cs" />
     <Compile Include="Graphics\Meshes\Primitive.Factory.cs" />
@@ -126,7 +125,14 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
-    <None Include="App.config" />
+    <Compile Include="Utils\Collections\Cache.cs" />
+    <Compile Include="Utils\Collections\GenericNode.cs" />
+    <Compile Include="Utils\Collections\INode.cs" />
+    <Compile Include="Utils\Collections\Node.cs" />
+    <Compile Include="Utils\Collections\NodeCollection.cs" />
+    <Compile Include="Utils\SafeNativeMethods.cs" />
+    <Compile Include="Utils\Timer.cs" />
+    <Compile Include="Utils\Xml\Data.cs" />
     <None Include="Graphics\Meshes\TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\VertexDescription.cs" />
     <Compile Include="Graphics\Rendering\GenericUpdateCommand.cs" />
@@ -140,10 +146,6 @@
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />
-    <Compile Include="Log\ErrorEvent.cs" />
-    <Compile Include="Log\AbstractLogEvent.cs" />
-    <Compile Include="Log\LogEvent.cs" />
-    <Compile Include="Log\TraceExtensions.cs" />
     <Compile Include="UserInterface\Controls\Button.cs" />
     <Compile Include="UserInterface\Controls\ControlSelector.cs" />
     <Compile Include="UserInterface\Controls\DropDownList.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="UserInterface\Input\CameraBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
     <Compile Include="UserInterface\InterfaceMesh.cs" />
+    <Compile Include="UserInterface\Intersection.cs" />
     <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
     <Compile Include="UserInterface\Style\Layout.cs" />
@@ -282,12 +285,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Odyssey\Utils\Utils.csproj">
-      <Project>{3D15AFC5-4F60-434A-8830-298D95753038}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
+    <Content Include="Utils\Utils.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
