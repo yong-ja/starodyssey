@@ -311,18 +311,32 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             float z = center.Z;
             return new Vector4
                         (x+(float)Math.Cos(theta) * (ringOffset * radiusX) ,
-                         y-(float)Math.Sin(theta) * (ringOffset * radiusY) ,
+                         y-(float)Math.Sin(theta) * (ringOffset * -radiusY) ,
                          z,
                          1.0f);
+        }
+
+        public static ColoredVertex[] CreateEllipseOutline(Vector4 center, float radiusX, float radiusY, int slices, Color4[] colors)
+        {
+            const float radTo = MathHelper.TwoPi;
+            float delta = radTo / slices;
+
+            ColoredVertex[] vertices = new ColoredVertex[slices];
+            for (int i = 0; i < slices; i++)
+            {
+                float theta = i * delta;
+                Vector4 vertexPos = CreateEllipseVertex(center, theta, radiusX, radiusY);
+                vertices[i] = new ColoredVertex(vertexPos, colors[i + 1]);
+            }
+
+            return vertices;
         }
 
         public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
             out ushort[] indices, float[] ringOffsets=null)
         {
-            float x = center.X;
-            float y = center.Y;
             const float radFrom = 0;
-            const float radTo = MathHelper.TwoPi;
+            float radTo = MathHelper.TwoPi;
             float delta = radTo/slices;
             if (ringOffsets == null)
                 ringOffsets = new[] {0.0f, 1.0f};
@@ -342,16 +356,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
                 vertices[i+1] = new ColoredVertex(vertexPos, colors[i+1]);
             }
+
             indices = new ushort[3*slices*((2*(rings-2))+1)];
-            
-            // First ring indices
-            for (int i = 0; i < slices; i++)
-            {
-                indices[3 * i] = 0;
-                indices[(3 * i) + 1] = (ushort)(i + 2);
-                indices[(3 * i) + 2] = (ushort)(i + 1);
-            }
-            indices[(slices*3) - 2] = 1;
+
+            PolyEllipse.TriangulateEllipseFirstRing(slices, ref indices);
 
             int indexCount = 0;
             int baseIndex = 3*slices;
@@ -377,22 +385,24 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                     
                     // first face
                     indices[baseIndex + indexCount] = (ushort) (j + i+2);
-                    indices[baseIndex + indexCount + 1] = (ushort)(j + i + 1);
-                    indices[baseIndex + indexCount + 2] = (ushort)(k + i + 1);
+                    indices[baseIndex + indexCount + 1] = (ushort)(k + i + 1);
+                    indices[baseIndex + indexCount + 2] = (ushort)(j + i + 1);
                     // second face
-                    indices[baseIndex + indexCount + 3] = (ushort)(k + i + 2);
+                    indices[baseIndex + indexCount + 5] = (ushort)(k + i + 2);
                     indices[baseIndex + indexCount + 4] = (ushort)(j + i + 2);
-                    indices[baseIndex + indexCount + 5] = (ushort)(k + i + 1);
+                    indices[baseIndex + indexCount + 3] = (ushort)(k + i + 1);
                     indexCount += 6;
                 }
                 // Wrap faces
-                indices[baseIndex + indexCount - 2] = (ushort) (r*slices+1);
-                indices[baseIndex+indexCount - 3] = (ushort)((r - 1) * slices + 1);
-
-                indices[baseIndex +indexCount - 6] = (ushort)(r * slices + 1);
+                indices[baseIndex + indexCount - 2] = (ushort)((r+1)*slices);
+                indices[baseIndex + indexCount - 4] = (ushort)(r*slices+1);
+                indices[baseIndex + indexCount - 6] = (ushort)(1+(r-1)*slices);
             }
             return vertices;
         }
+
+
+
         #endregion
     }
 }

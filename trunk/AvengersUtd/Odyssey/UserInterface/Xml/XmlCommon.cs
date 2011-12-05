@@ -155,6 +155,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
             return new Vector2(x, y);
         }
+        
+        internal static Vector2 DecodeFloatVector2(string s)
+        {
+            Regex regex = new Regex(@"(?<x>[0-9]+.[0-9]+),(?<y>[0-9]+.[0-9]+)");
+            Match m = regex.Match(s);
+            float x = float.Parse(m.Groups["x"].Value, CultureInfo.InvariantCulture);
+            float y = float.Parse(m.Groups["y"].Value, CultureInfo.InvariantCulture);
+
+            return new Vector2(x, y);
+        }
+
 
         internal static Size DecodeSize(string s)
         {

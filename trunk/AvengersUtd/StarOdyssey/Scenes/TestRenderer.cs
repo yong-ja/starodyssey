@@ -99,7 +99,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             hud.Add(new Button
             {
                 Position = new Vector2(300f, 650f),
-                Size = new Size(200, 200)
+                Size = new Size(400, 100)
             });
             //DropDownList d = new DropDownList
             //                     {

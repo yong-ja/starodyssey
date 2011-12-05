@@ -107,11 +107,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 default:
                 case Shape.Rectangle:
-                    return Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
+                    return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
 
                 //case Shape.Circle:
                 //    return
-                //        Intersection.CircleTest(AbsolutePosition, (this as ICircularControl).OutlineRadius,
+                //        Intersection.CirclePointTest(AbsolutePosition, (this as ICircularControl).OutlineRadius,
                 //                                cursorLocation);
             }
         }

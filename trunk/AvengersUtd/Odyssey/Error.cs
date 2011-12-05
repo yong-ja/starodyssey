@@ -60,7 +60,10 @@ namespace AvengersUtd.Odyssey
             return new KeyNotFoundException(string.Format(message, collection, key));
         }
 
-        
+        internal static NotSupportedException NotSupported(string message)
+        {
+            return new NotSupportedException(message);
+        }
 
         internal static InvalidOperationException InvalidOperation(string message)
         {

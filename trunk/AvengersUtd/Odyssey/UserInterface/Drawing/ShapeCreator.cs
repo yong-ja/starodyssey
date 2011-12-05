@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Geometry.Triangulation;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
@@ -82,77 +83,23 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
                         break;
 
                     case GradientType.Radial:
-                        //d.Shader = LinearShader.CreateUniform
-                        //    (colorShader.Gradient[colorShader.Gradient.Length - 1].Color);
+                        RadialShader rs = (RadialShader)colorShader;
+
+                        //// First draw background color from the radial shader's outermost color
+                        //d.Shader = LinearShader.CreateUniform(rs.Gradient[rs.Gradient.Length - 1].Color);
                         //d.FillRectangle();
-                        //RadialShader rs = (RadialShader)colorShader;
 
-                        //d.SaveState();
-                        //d.Position += new Vector3(rs.Center.X * d.Width, -rs.Center.Y* d.Height, 0);
-                        //d.Shader = rs;
-                        //d.Width = rs.RadiusX * d.Width;
-                        //d.Height = rs.RadiusY * d.Height;
-                        //d.DrawEllipse();
-                        //d.RestoreState();
-                        float actualWidth = d.Width;
-                        d.Width = 2;
-                        Polygon rectangle =
-                            (Polygon) new OrthoRectangle(d.Position.X, d.Position.Y, actualWidth, d.Height);
-                        Vector2D c = rectangle.Centroid;
-                        d.Shader = LinearShader.CreateUniform(new Color4(0.3f, 0.3f, 0.3f));
-                        Polygon ellipse = Polygon.CreateEllipse(new Vector2D(c.X, c.Y), 200, 100,8);
-                        double segmentLength = Polygon.ComputeEllipseSegmentLength
-                            (new Vector2D(d.Position.X, d.Position.Y), 125, 55, 16);
+                        d.Shader = rs;
+                        OrthoRectangle rectangle = new OrthoRectangle(d.Position.X, d.Position.Y, d.Width, d.Height);
 
-                        d.Points = ellipse.ComputeVector4Array(99);
-                        d.DrawClosedPath();
-                        
-                        //c = de;
-
-                        Polygon rh = new Polygon
-                            (new[]
-                             {
-                                 c + new Vector2D(0, 100), c + new Vector2D(100, -200), c + new Vector2D(0, -150),
-                                 //new Vector2D(-758,-112),
-                                 c + new Vector2D(-100, -200),
-                             });
-
-                        d.Points = rh.ComputeVector4Array(99);
-                        
-                        d.DrawClosedPath();
-                        IGradientShader s = d.Shader;
-                        //poly = Polygon.SutherlandHodgmanClip(rh, poly);
-                        //ellipse.ReverseVerticesOrder();
-                        //rh.ReverseVerticesOrder();
-                        //ellipse = WAList.ComputeIntersectArea(ellipse,rh);
-                        PolyClipError error;
-                        List<Polygon> vertices = YuPengClipper.Intersect(ellipse, rh, out error);
-                        Console.WriteLine(vertices.Count);
-
-                        Polygon clipped = vertices[0];
-
-                        //Polygon clipped = WAClipping.PerformClipping(ellipse, rh);
-                        d.Points = clipped.ComputeVector4Array(99);
-                        d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
-                        d.DrawPoints();
-                       
-                        PathFigure pf = (PathFigure) vertices[0];
-                        pf.Optimize(segmentLength/2);
-                        //pf.Detail(segmentLength);
-                        Vertices vc = ((Vertices)pf);
-                        vc.Insert(0,rh.Centroid);
-                        //vc.Insert(0, rh.Centroid + new Vector2D(20,20)) ;
-                        ushort[] indices = Delauney.TriangulateBrute(vc);
-                        //Delauney.Triangulate(vc);
-
-                        P2T.Triangulate(new Polygon(vc));
-
-                        d.Points = ((Polygon)vc).ComputeVector4Array(99); //poly.ComputeVector4Array(99);
-                        d.Shader = LinearShader.CreateUniform(new Color4(1, 0, 0));
-                        d.DrawPolygon(indices);
-                        d.Shader = s;
-                       
+                        bool test = Intersection.EllipseRectangleTest(rs.CreateEllipse(rectangle), rectangle);
+                        if (!test)
+                            d.DrawEllipse();
+                        else 
+                            d.DrawClippedEllipse();
                         break;
+
+                        
                 }
 
             }

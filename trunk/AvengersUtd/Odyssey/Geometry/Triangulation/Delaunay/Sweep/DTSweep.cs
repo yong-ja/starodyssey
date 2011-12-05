@@ -231,11 +231,9 @@ namespace AvengersUtd.Odyssey.Geometry.Triangulation.Delaunay.Sweep {
 			triangle = new DelaunayTriangle(point, node.Point, node.Next.Point);
 			triangle.MarkNeighbor(node.Triangle);
 			tcx.Triangles.Add(triangle);
-
-			newNode = new AdvancingFrontNode(point);
-			newNode.Next = node.Next;
-			newNode.Prev = node;
-			node.Next.Prev = newNode;
+ 
+		    newNode = new AdvancingFrontNode(point) {Next = node.Next, Prev = node};
+		    node.Next.Prev = newNode;
 			node.Next = newNode;
 
 			tcx.AddNode(newNode); // XXX: BST

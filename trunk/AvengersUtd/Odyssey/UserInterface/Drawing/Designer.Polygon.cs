@@ -15,13 +15,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Color4[] colors = Shader.Method(Shader, Points.Length, Shape.Rectangle);
             ColoredVertex[] vertices = new ColoredVertex[Points.Length];
 
+            //colors[colors.Length - 1] = new Color4(0, 1, 0);
+
             for (int i = 0; i < Points.Length; i++)
             {
                 Vector4 vertex = Points[i];
                 vertices[i] = new ColoredVertex(vertex, colors[i]);
             }
-            vertices[1].Color = new Color4(0, 1, 0);
-            vertices[Points.Length-1].Color = new Color4(0, 0, 1);
 
             ShapeDescription polygonShape = new ShapeDescription
             {

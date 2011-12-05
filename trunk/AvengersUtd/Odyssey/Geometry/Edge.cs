@@ -29,35 +29,19 @@ namespace AvengersUtd.Odyssey.Geometry
 		}
 		
 
-		#region IEquatable<dEdge> Members
+        #region IEquatable<Edge> Members
 
-		/// <summary>
-		/// Checks whether two edges are equal disregarding the direction of the edges
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-	    public bool Equals(Edge other)
-	    {
-	        if (ReferenceEquals(null, other)) return false;
-	        if (ReferenceEquals(this, other)) return true;
-	        return other.Start == Start && other.End == End;
-	    }
-
-	    public override bool Equals(object obj)
-	    {
-	        if (ReferenceEquals(null, obj)) return false;
-	        if (ReferenceEquals(this, obj)) return true;
-	        if (obj.GetType() != typeof (Edge)) return false;
-	        return Equals((Edge) obj);
-	    }
-
-	    public override int GetHashCode()
-	    {
-	        unchecked
-	        {
-	            return (Start*397) ^ End;
-	        }
-	    }
+        /// <summary>
+        /// Checks whether two edges are equal disregarding the direction of the edges
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Edge other)
+        {
+            return
+                ((this.Start == other.End) && (this.End == other.Start)) ||
+                ((this.Start == other.Start) && (this.End == other.End));
+        }
 
 	    public static bool operator ==(Edge left, Edge right)
 	    {

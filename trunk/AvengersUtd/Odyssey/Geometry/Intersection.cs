@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using SlimDX;
@@ -9,6 +10,7 @@ namespace AvengersUtd.Odyssey.Geometry
     public static class Intersection
     {
         #region Line - X intersection methods
+
         public static Vector2D LineLineIntersection(Line line1, Line line2)
         {
             // Source: Real-Time Rendering, Third Edition
@@ -27,26 +29,27 @@ namespace AvengersUtd.Odyssey.Geometry
             Vector2D o1 = line1.Origin;
             Vector2D o2 = line2.Origin;
 
-            double s = Vector2D.Dot((o2 - o1), d2P) / d1d2P;
-            return o1 + s * d1;
-
-        } 
+            double s = Vector2D.Dot((o2 - o1), d2P)/d1d2P;
+            return o1 + s*d1;
+        }
 
         public static bool LineLineTest(Line line1, Line line2, out Vector2D intersection)
         {
             intersection = LineLineIntersection(line1, line2);
-            return !double.IsNaN(intersection.X);
+            return !Double.IsNaN(intersection.X);
         }
+
         #endregion
 
         #region Segment - X intersection methods
+
         public static bool SegmentSegmentTest(Segment a, Segment b)
         {
             Vector2D u = a.Direction;
             Vector2D v = b.Direction;
-            
+
             double d = u.X*v.Y - u.Y*v.X;
-            
+
             if (Math.Abs(d) < MathHelper.Epsilon) return false; //parallel test
 
             Vector2D w = a.StartPoint - b.StartPoint;
@@ -68,7 +71,8 @@ namespace AvengersUtd.Odyssey.Geometry
         /// <param name="intersectionPoint">Returns the computed intersection point.</param>
         /// <param name="inboundIntersection">if set to <c>true</c> the intersection is inbound.</param>
         /// <returns>Returns true if the segments intersect.</returns>
-          public static bool SegmentSegmentTest(Segment segment1, Segment segment2, out Vector2D intersectionPoint, out bool inboundIntersection)
+        public static bool SegmentSegmentTest(Segment segment1, Segment segment2, out Vector2D intersectionPoint,
+                                              out bool inboundIntersection)
         {
             //Source: Real-Time Rendering, Third Edition
             //Reference: Page 781
@@ -108,17 +112,9 @@ namespace AvengersUtd.Odyssey.Geometry
             else if (e > 0 || e < f)
                 return false;
 
-            intersectionPoint = segment1.StartPoint + (d / f) * b;
+            intersectionPoint = segment1.StartPoint + (d/f)*b;
             return true;
         }
-        public static Vector2D SegmentSegmentIntersection(Segment segment1, Segment segment2)
-        {
-            Vector2D intersectionPoint;
-            return SegmentSegmentTest(segment1, segment2, out intersectionPoint)
-                       ? intersectionPoint
-                       : new Vector2D(double.NaN);
-        }
-
 
         public static bool SegmentSegmentTest(Segment segment1, Segment segment2, out Vector2D intersectionPoint)
         {
@@ -128,12 +124,92 @@ namespace AvengersUtd.Odyssey.Geometry
 
         #endregion
 
+        #region Circle - X intersection methods
+
+        public static bool CirclePointTest(Vector2 center, float radius, Vector2 cursorLocation)
+        {
+            return Vector2.DistanceSquared(center, cursorLocation) < (radius*radius);
+        }
+
         public static bool CirclePointTest(Circle circle, Vector2D point)
         {
-            return Vector2D.DistanceSquared(circle.Center, point) < circle.Radius * circle.Radius;
+            return Vector2D.DistanceSquared(circle.Center, point) < circle.Radius*circle.Radius;
         }
 
 
+        /// <summary>
+        /// Determines whether a circle and a rectangle intersect.
+        /// </summary>
+        /// <param name="circle">The circle.</param>
+        /// <param name="rectangle">The rectangle.</param>
+        /// <returns>True if the circle and rectangle intersect or collide.</returns>
+        public static bool CircleRectangleTest(Circle circle, OrthoRectangle rectangle)
+        {
+            Vector2D circleDistance = new Vector2D(Math.Abs(circle.Center.X - rectangle.X - rectangle.Width / 2),
+                                                   Math.Abs(circle.Center.Y - rectangle.Y - rectangle.Height / 2));
+
+            if (circleDistance.X > (rectangle.Width / 2 + circle.Radius))
+                return false;
+            if (circleDistance.Y > (rectangle.Height / 2 + circle.Radius))
+                return false;
+
+            if (circleDistance.X <= (rectangle.Width / 2))
+                return true;
+            if (circleDistance.Y <= (rectangle.Height / 2))
+                return true;
+
+            double cornerDistanceSquared = Math.Pow(circleDistance.X - rectangle.Width / 2, 2) +
+                                           Math.Pow(circleDistance.Y - rectangle.Height / 2, 2);
+
+            return (cornerDistanceSquared <= (Math.Pow(circle.Radius, 2)));
+
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Determines if an ellipse and a rectangle intersect.
+        /// </summary>
+        /// <param name="ellipse">The ellipse.</param>
+        /// <param name="rectangle">The rectangle.</param>
+        /// <returns></returns>
+        public static bool EllipseRectangleTest(Ellipse ellipse, OrthoRectangle rectangle)
+        {
+            bool testXpos = (ellipse.Center.X + ellipse.RadiusX) > rectangle.Right;
+            bool testXneg = (ellipse.Center.X - ellipse.RadiusX) < rectangle.Left;
+            bool testYpos = (ellipse.Center.Y + ellipse.RadiusY) > rectangle.Top;
+            bool testYneg = (ellipse.Center.Y - ellipse.RadiusY) < rectangle.Bottom;
+
+            return testXpos || testXneg || testYpos || testYneg;
+        }
+
+        public static bool EllipsePointTest(Ellipse ellipse, Vector2D point)
+        {
+            double x = point.X;
+            double y = point.Y;
+            double a = ellipse.RadiusX;
+            double b = ellipse.RadiusY;
+
+            return (x*x)/(a*a) + (y*y)/(b*b) <= 1;
+        }
+
+        public static bool EllipseContainsRectangle(Ellipse ellipse, OrthoRectangle rectangle)
+        {
+            Vector2D[] vertices = rectangle.VerticesArray;
+            return vertices.All(v => EllipsePointTest(ellipse, v));
+        }
+
+        public static bool RectangleContainsEllipse(OrthoRectangle rectangle, Ellipse ellipse)
+        {
+            bool testXpos = (ellipse.Center.X + ellipse.RadiusX) < rectangle.Right;
+            bool testXneg = (ellipse.Center.X - ellipse.RadiusX) > rectangle.Left;
+            bool testYpos = (ellipse.Center.Y + ellipse.RadiusY) < rectangle.Top;
+            bool testYneg = (ellipse.Center.Y - ellipse.RadiusY) > rectangle.Bottom;
+
+            return testXpos && testXneg && testYpos && testYneg;
+        }
+
+  
         public static bool PolygonHitTest(Polygon polygon, Vector2D p)
         {
             double angle = 0;
@@ -144,8 +220,8 @@ namespace AvengersUtd.Odyssey.Geometry
             {
                 p1.X = polygon.Vertices[i].X - p.X;
                 p1.Y = polygon.Vertices[i].Y - p.Y;
-                p2.X = polygon.Vertices[(i + 1) % polygon.Vertices.Count].X - p.X;
-                p2.Y = polygon.Vertices[(i + 1) % polygon.Vertices.Count].Y - p.Y;
+                p2.X = polygon.Vertices[(i + 1)%polygon.Vertices.Count].X - p.X;
+                p2.Y = polygon.Vertices[(i + 1)%polygon.Vertices.Count].Y - p.Y;
 
                 angle += Angle2D(p1.X, p1.Y, p2.X, p2.Y);
             }
@@ -156,9 +232,9 @@ namespace AvengersUtd.Odyssey.Geometry
                 return true;
         }
 
-        static double Angle2D(double x1, double y1, double x2, double y2)
+        private static double Angle2D(double x1, double y1, double x2, double y2)
         {
-            const double TWOPI = 2 * Math.PI;
+            const double TWOPI = 2*Math.PI;
             double theta1 = Math.Atan2(y1, x1);
             double theta2 = Math.Atan2(y2, x2);
             double dtheta = theta2 - theta1;
@@ -185,12 +261,52 @@ namespace AvengersUtd.Odyssey.Geometry
                 Vector2D e1 = vertices[i];
                 bool y1 = e1.Y >= t.Y;
                 if (y0 != y1)
-                    if (((e1.Y - t.Y) * (e0.X - e1.X) >= (e1.X - t.X) * (e0.Y - e1.Y)) == y1)
+                {
+                    if (((e1.Y - t.Y)*(e0.X - e1.X) >= (e1.X - t.X)*(e0.Y - e1.Y)) == y1)
                         inside = !inside;
+                }
                 y0 = y1;
                 e0 = e1;
             }
             return inside;
+        }
+
+        public static bool RectangleTest(Vector2 position, Size size, Point cursorLocation)
+        {
+            float xEvent = cursorLocation.X;
+            float yEvent = cursorLocation.Y;
+            float xPos = position.X;
+            float yPos = position.Y;
+
+            return (xEvent >= xPos && xEvent <= xPos + size.Width) &&
+                   (yEvent >= yPos && yEvent <= yPos + size.Height);
+        }
+
+
+        public static bool RayPlaneTest(Ray ray, Plane plane, out Vector3 intersectionPoint)
+        {
+            bool result;
+            intersectionPoint = new Vector3();
+            Vector3 rD = ray.Direction;
+            Vector3 r0 = ray.Position;
+
+            ray.Direction.Normalize();
+
+            float vD = Vector3.Dot(plane.Normal, rD);
+            if (vD == 0)
+                return false;
+            float v0 = -(Vector3.Dot(plane.Normal, r0) + plane.D);
+            float t = v0/vD;
+
+            if (t > 0)
+            {
+                result = true;
+                intersectionPoint = r0 + t*rD;
+            }
+            else
+                result = false;
+
+            return result;
         }
     }
 }

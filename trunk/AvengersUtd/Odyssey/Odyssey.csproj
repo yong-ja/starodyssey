@@ -59,7 +59,12 @@
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Circle.cs" />
+    <Compile Include="Geometry\Clipping\EllipseClipper.cs" />
+    <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
+    <Compile Include="Geometry\GeometryEvents.cs" />
+    <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
+    <Compile Include="Geometry\Simplification.cs" />
     <Compile Include="Geometry\SimplifyTools.cs" />
     <Compile Include="Geometry\Delauney.cs" />
     <Compile Include="Geometry\Edge.cs" />
@@ -89,6 +94,7 @@
     <Compile Include="Geometry\Triangulation\Delaunay\Sweep\DTSweepPointComparator.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\Sweep\PointOnEdgeException.cs" />
     <Compile Include="Geometry\Triangulation\ITriangulatable.cs" />
+    <Compile Include="Geometry\Triangulation\MeshMapper.cs" />
     <Compile Include="Geometry\Triangulation\Orientation.cs" />
     <Compile Include="Geometry\P2T.cs" />
     <Compile Include="Geometry\Triangulation\Sets\ConstrainedPointSet.cs" />
@@ -103,7 +109,6 @@
     <Compile Include="Geometry\Triangulation\TriangulationUtil.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
     <Compile Include="Geometry\Vertices.cs" />
-    <Compile Include="Geometry\YuPengClipper.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\ImageMaterial.cs" />
@@ -121,6 +126,7 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
+    <None Include="App.config" />
     <None Include="Graphics\Meshes\TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\VertexDescription.cs" />
     <Compile Include="Graphics\Rendering\GenericUpdateCommand.cs" />
@@ -134,6 +140,10 @@
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />
+    <Compile Include="Log\ErrorEvent.cs" />
+    <Compile Include="Log\AbstractLogEvent.cs" />
+    <Compile Include="Log\LogEvent.cs" />
+    <Compile Include="Log\TraceExtensions.cs" />
     <Compile Include="UserInterface\Controls\Button.cs" />
     <Compile Include="UserInterface\Controls\ControlSelector.cs" />
     <Compile Include="UserInterface\Controls\DropDownList.cs" />
@@ -165,7 +175,6 @@
     <Compile Include="UserInterface\Input\CameraBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
     <Compile Include="UserInterface\InterfaceMesh.cs" />
-    <Compile Include="UserInterface\Intersection.cs" />
     <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
     <Compile Include="UserInterface\Style\Layout.cs" />

@@ -87,7 +87,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public override bool IntersectTest(Point cursorLocation)
         {
-            return Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
+            return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }
 
         protected override void UpdatePositionDependantParameters()

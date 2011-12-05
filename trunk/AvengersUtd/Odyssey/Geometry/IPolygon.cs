@@ -25,11 +25,9 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public interface IPolygon
     {
-
-        Vertices Vertices { get; }
+        Vector2D[] VerticesArray { get; }
         Vector2D Centroid { get; }
         double Area { get; }
-        Vector4[] ComputeVector4Array(float zIndex);
         bool IsPointInside(Vector2D point);
     }
 }

@@ -23,21 +23,33 @@ namespace AvengersUtd.Odyssey.Geometry
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets the top Y-coordinate.
+        /// </summary>
         public double Top
         {
             get { return Y; }
         }
 
+        /// <summary>
+        /// Gets the bottom Y-coordinate.
+        /// </summary>
         public double Bottom
         {
             get { return Y - Height; }
         }
 
+        /// <summary>
+        /// Gets the leftmost X-coordinate.
+        /// </summary>
         public double Left
         {
             get { return X; }
         }
 
+        /// <summary>
+        /// Gets the rightmost X-coordinate.
+        /// </summary>
         public double Right
         { get { return X + Width; } }
 
@@ -112,52 +124,7 @@ namespace AvengersUtd.Odyssey.Geometry
                     throw Error.WrongCase("edge", "IsPointInside", edge);
             }
         }
-
-        public static Vector2D LineIntercept(OrthoRectangle bounds, Borders edge, Vector2D a, Vector2D b)
-        {
-            if (a == b)
-            {
-                return a;
-            }
-
-            switch (edge)
-            {
-                case Borders.Bottom:
-                    if (b.Y == a.Y)
-                    {
-                        throw new ArgumentException("no intercept found");
-                    }
-
-                    return new Vector2D(a.X + (((b.X - a.X) * (bounds.Bottom - a.Y)) / (b.Y - a.Y)), bounds.Bottom);
-
-                case Borders.Left:
-                    if (b.X == a.X)
-                    {
-                        throw new ArgumentException("no intercept found");
-                    }
-
-                    return new Vector2D(bounds.Left, a.Y + (((b.Y - a.Y) * (bounds.Left - a.X)) / (b.X - a.X)));
-
-                case Borders.Right:
-                    if (b.X == a.X)
-                    {
-                        throw new ArgumentException("no intercept found");
-                    }
-
-                    return new Vector2D(bounds.Right, a.Y + (((b.Y - a.Y) * (bounds.Right - a.X)) / (b.X - a.X)));
-
-                case Borders.Top:
-                    if (b.Y == a.Y)
-                    {
-                        throw new ArgumentException("no intercept found");
-                    }
-
-                    return new Vector2D(a.X + (((b.X - a.X) * (bounds.Top - a.Y)) / (b.Y - a.Y)), bounds.Top);
-            }
-
-            throw new ArgumentException("no intercept found");
-        }
-
+      
         #region IPolygon Members
 
         public Vertices Vertices
@@ -175,10 +142,6 @@ namespace AvengersUtd.Odyssey.Geometry
             get { return Width*Height; }
         }
 
-        public Vector4[] ComputeVector4Array(float zIndex)
-        {
-            return ((Polygon) this).ComputeVector4Array(zIndex);
-        }
 
         public bool IsPointInside(Vector2D point)
         {
@@ -187,5 +150,10 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
         #endregion
+
+        public Vector2D[] VerticesArray
+        {
+            get { return new[] {TopLeft, BottomLeft, BottomRight, TopRight}; }
+        }
     }
 }

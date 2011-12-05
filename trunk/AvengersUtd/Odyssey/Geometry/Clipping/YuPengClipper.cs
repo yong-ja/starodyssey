@@ -1,14 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace AvengersUtd.Odyssey.Geometry
+namespace AvengersUtd.Odyssey.Geometry.Clipping
 {
-    internal enum PolyClipType
-    {
-        Intersect,
-        Union,
-        Difference
-    }
 
     public enum PolyClipError
     {
@@ -18,8 +12,16 @@ namespace AvengersUtd.Odyssey.Geometry
         BrokenResult
     }
 
+    internal enum PolyClipType
+    {
+        Intersect,
+        Union,
+        Difference
+    }
+
     public static class YuPengClipper
     {
+
         private const double ClipperEpsilonSquared = 1.192092896e-07;
 
         public static List<Polygon> Union(Polygon polygon1, Polygon polygon2, out PolyClipError error)
@@ -121,11 +123,11 @@ namespace AvengersUtd.Odyssey.Geometry
         /// <param name="polygon2">The second polygon.</param>
         /// <param name="slicedPoly1">Returns the first polygon with added intersection points.</param>
         /// <param name="slicedPoly2">Returns the second polygon with added intersection points.</param>
-        private static void CalculateIntersections(IPolygon polygon1, IPolygon polygon2,
+        private static void CalculateIntersections(Polygon polygon1, Polygon polygon2,
                                                    out Polygon slicedPoly1, out Polygon slicedPoly2)
         {
-            slicedPoly1 = new Polygon(polygon1.Vertices);
-            slicedPoly2 = new Polygon(polygon2.Vertices);
+            slicedPoly1 = new Polygon(polygon1.VerticesArray);
+            slicedPoly2 = new Polygon(polygon2.VerticesArray);
 
             Vertices poly1Vs = polygon1.Vertices;
             Vertices poly2Vs = polygon2.Vertices;
@@ -205,7 +207,7 @@ namespace AvengersUtd.Odyssey.Geometry
         /// Calculates the simplical chain corresponding to the input polygon.
         /// </summary>
         /// <remarks>Used by method <c>Execute()</c>.</remarks>
-        private static void CalculateSimplicalChain(IPolygon poly, out List<double> coeff,
+        private static void CalculateSimplicalChain(Polygon poly, out List<double> coeff,
                                                     out List<Edge> simplicies)
         {
             simplicies = new List<Edge>();
@@ -428,7 +430,7 @@ namespace AvengersUtd.Odyssey.Geometry
             Polygon polygon = new Polygon(new Vertices {Vector2D.Zero, edge.EdgeStart, edge.EdgeEnd});
 
             //return Intersection.PolygonPointTest(polygon, point);
-            return (Polygon.PointInPolygon(polygon, ref point) == 1);
+            return (Polygon.PointInPolygon(polygon, point) == 1);
         }
 
         /// <summary>

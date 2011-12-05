@@ -9,7 +9,6 @@ namespace AvengersUtd.Odyssey.Geometry
     {
         private readonly List<Vector2D> vertices;
 
-
         public Vertices()
         {
             vertices = new List<Vector2D>();
