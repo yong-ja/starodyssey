@@ -7,5 +7,9 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class WireframeMaterial
     {
+        public WireframeMaterial()
+            : base("Phong.fx")
+        {
+        }
     }
 }

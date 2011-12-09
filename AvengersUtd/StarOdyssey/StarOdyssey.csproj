@@ -41,9 +41,9 @@
     <StartupObject>AvengersUtd.StarOdyssey.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDX, Version=4.0.11.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+    <Reference Include="SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Dev\SlimDX SDK (March 2011)\Bin\net40\x86\SlimDX.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Dev\SlimDX SDK (September 2011)\Bin\net40\x64\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -118,8 +118,11 @@
     <None Include="Resources\Effects\SolidWireframe.fx" />
     <None Include="Resources\Odyssey ControlDescriptions.ocd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Odyssey TextDescriptions.otd" />
+    <None Include="Resources\Odyssey TextDescriptions.otd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">

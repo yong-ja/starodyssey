@@ -367,7 +367,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified style file was not found..
+        ///   Looks up a localized string similar to The specified style file was not found: {0}.
         /// </summary>
         internal static string ERR_StyleNotFound {
             get {

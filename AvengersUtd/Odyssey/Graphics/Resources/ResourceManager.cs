@@ -209,7 +209,7 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 }
                 catch (InvalidDataException)
                 {
-                    Error.MessageMissingFile(filename);
+                    Error.MessageMissingFile(filename, Properties.Resources.ERR_MissingFile);
                     return null;
                 }
             }
@@ -231,7 +231,7 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 }
                 catch (InvalidDataException)
                 {
-                    Error.MessageMissingFile(filename);
+                    Error.MessageMissingFile(filename, Properties.Resources.ERR_MissingFile);
                     return null;
                 }
             }
