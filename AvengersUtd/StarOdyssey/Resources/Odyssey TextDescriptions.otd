@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTextDescription xmlns:Style="http://www.avengersutd.com">
+  <TextDescription Name="Default" IsBold="false" IsItalic="false" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="30" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFFFFFF" />
+  </TextDescription>
+    <TextDescription Name="Button" IsBold="false" IsItalic="false" IsOutlined="true" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="20" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFFFFFF" />
+  </TextDescription>
+  <TextDescription Name="DropDownList" IsBold="false" IsItalic="false" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="20" FontName="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
+	<HighlightedColor Type="Highlighted" Name="Aquamarine" HexValue="FF7FFFD4"/>
+  </TextDescription>
+  <TextDescription Name="Error" IsBold="false" IsItalic="false" ApplyShadowing="false" ApplyHighlight="false" IgnoreBounds="false" Size="20" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
+  </TextDescription>
+</ArrayOfTextDescription>
