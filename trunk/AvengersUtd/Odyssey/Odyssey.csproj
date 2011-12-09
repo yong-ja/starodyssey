@@ -197,7 +197,6 @@
     <Compile Include="UserInterface\Input\CameraBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
     <Compile Include="UserInterface\InterfaceMesh.cs" />
-    <Compile Include="UserInterface\Intersection.cs" />
     <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
     <Compile Include="UserInterface\Style\Layout.cs" />
