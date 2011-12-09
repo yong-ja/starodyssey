@@ -70,10 +70,9 @@ namespace AvengersUtd.Odyssey
             return new InvalidOperationException(message);
         }
 
-        internal static void MessageMissingFile(string filename, string message=null)
+        internal static void MessageMissingFile(string filename, string message)
         {
-            if (message == null)
-                message = string.Format(Properties.Resources.ERR_MissingFile, filename);
+            message = string.Format(message, filename);
             MessageBox.Show(message, Properties.Resources.ERR_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 

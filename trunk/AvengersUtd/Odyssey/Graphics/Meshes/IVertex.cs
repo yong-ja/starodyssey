@@ -1,7 +1,6 @@
-using System;
 using SlimDX;
 
-namespace AvengersUtd.Odyssey.Geometry
+namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public interface IPositionVertex
     {

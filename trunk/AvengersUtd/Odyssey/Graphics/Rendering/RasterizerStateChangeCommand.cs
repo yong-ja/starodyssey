@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RasterizerStateChangeCommand : BaseCommand
     {
-        private RasterizerState rasterizerState;
+        private readonly RasterizerState rasterizerState;
         public RasterizerStateDescription Description { get; private set; }
 
         public RasterizerStateChangeCommand(RasterizerStateDescription rStateDesc)
@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                                                             {
                                                                 CullMode = CullMode.Back,
                                                                 IsDepthClipEnabled = true,
-                                                                FillMode = FillMode.Wireframe,
+                                                                FillMode = FillMode.Solid,
                                                                 IsAntialiasedLineEnabled = true,
                                                                 IsFrontCounterclockwise = true,
                                                                 IsMultisampleEnabled = true

@@ -58,8 +58,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private static readonly InputElement[] inputElements;
         private static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
 
-        
-
 
         static TexturedVertex()
         {

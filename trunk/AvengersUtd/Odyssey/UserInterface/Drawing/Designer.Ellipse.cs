@@ -88,7 +88,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             //if (innerSegments < ellipses.Length)
             //{
             PolyEllipse outerEllipse = PolyEllipse.CreateEllipse(ellipse, rs.Slices, offsets);
-            EllipseClipper.ClipAgainstPolygon(outerEllipse, rectanglePolygon);
+            //EllipseClipper.ClipAgainstPolygon(outerEllipse, rectanglePolygon);
 
             for (int i = 0; i < outerEllipse.Slices; i++)
             {

@@ -40,9 +40,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDX, Version=4.0.11.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+    <Reference Include="SlimDX, Version=4.0.12.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Dev\SlimDX SDK (March 2011)\Bin\net40\x86\SlimDX.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Dev\SlimDX SDK (September 2011)\Bin\net40\x64\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,13 +60,9 @@
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Circle.cs" />
-    <Compile Include="Geometry\Clipping\EllipseClipper.cs" />
     <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
     <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
-    <Compile Include="Geometry\PolyMesh.cs" />
-    <Compile Include="Geometry\PolyMesh.Factory.cs" />
-    <Compile Include="Geometry\Primitive.Factory.cs" />
     <Compile Include="Geometry\RectangleF.cs" />
     <Compile Include="Geometry\Simplification.cs" />
     <Compile Include="Geometry\SimplifyTools.cs" />
@@ -80,17 +76,9 @@
     <Compile Include="Geometry\PathFigure.cs" />
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\OrthoRectangle.cs" />
-    <Compile Include="Geometry\IVertex.cs" />
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
     <Compile Include="Geometry\Face.cs" />
-    <Compile Include="Geometry\SkyBox.cs" />
-    <Compile Include="Geometry\Sphere.cs" />
-    <Compile Include="Geometry\Textured3DVertex.cs" />
-    <Compile Include="Geometry\TexturedMeshVertex.cs" />
-    <Compile Include="Geometry\TexturedPolygon.cs" />
-    <Compile Include="Geometry\TexturedPolygon.Factory.cs" />
-    <Compile Include="Geometry\TexturedVertex.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\DelaunayTriangle.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\FixedArray3.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\FixedBitArray3.cs" />
@@ -130,6 +118,7 @@
     <Compile Include="Graphics\Meshes\ColoredVertex.cs" />
     <Compile Include="Graphics\Meshes\Copy of TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\Grid.cs" />
+    <Compile Include="Graphics\Meshes\IVertex.cs" />
     <Compile Include="Graphics\Meshes\MeshVertex.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.Factory.cs" />
