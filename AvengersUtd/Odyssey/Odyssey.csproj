@@ -146,6 +146,7 @@
     <Compile Include="Graphics\Rendering\UserInterfaceRenderCommand.cs" />
     <Compile Include="Graphics\Rendering\UserInterfaceUpdateCommand.cs" />
     <Compile Include="Graphics\Rendering\Structs.cs" />
+    <Compile Include="Log\WarningEvent.cs" />
     <Compile Include="UserInterface\Controls\Button.cs" />
     <Compile Include="UserInterface\Controls\ControlSelector.cs" />
     <Compile Include="UserInterface\Controls\DropDownList.cs" />
