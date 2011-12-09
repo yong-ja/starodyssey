@@ -123,9 +123,9 @@ namespace AvengersUtd.Odysseus
 
         public override void Init()
         {
-            StyleManager.LoadControlDescription("Odyssey ControlDescriptions.ocd");
-            StyleManager.LoadTextDescription("Odyssey TextDescriptions.otd");
-            StyleManager.LoadControlDescription("Odysseus ControlDescriptions.ocd");
+            StyleManager.LoadControlDescription(Global.Resources +"Odyssey ControlDescriptions.ocd");
+            StyleManager.LoadTextDescription(Global.Resources + "Odyssey TextDescriptions.otd");
+            StyleManager.LoadControlDescription(Global.Resources + "Odysseus ControlDescriptions.ocd");
 
             Hud = Hud.FromDescription(Game.Context.Device,
                 new HudDescription(
