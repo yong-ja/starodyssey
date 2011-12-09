@@ -60,7 +60,15 @@
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Circle.cs" />
+    <Compile Include="Geometry\Clipping\EllipseClipper.cs" />
+    <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
+    <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
+    <Compile Include="Geometry\PolyMesh.cs" />
+    <Compile Include="Geometry\PolyMesh.Factory.cs" />
+    <Compile Include="Geometry\Primitive.Factory.cs" />
+    <Compile Include="Geometry\RectangleF.cs" />
+    <Compile Include="Geometry\Simplification.cs" />
     <Compile Include="Geometry\SimplifyTools.cs" />
     <Compile Include="Geometry\Delauney.cs" />
     <Compile Include="Geometry\Edge.cs" />
@@ -76,6 +84,13 @@
     <Compile Include="Geometry\MathHelper.cs" />
     <Compile Include="Geometry\Segment.cs" />
     <Compile Include="Geometry\Face.cs" />
+    <Compile Include="Geometry\SkyBox.cs" />
+    <Compile Include="Geometry\Sphere.cs" />
+    <Compile Include="Geometry\Textured3DVertex.cs" />
+    <Compile Include="Geometry\TexturedMeshVertex.cs" />
+    <Compile Include="Geometry\TexturedPolygon.cs" />
+    <Compile Include="Geometry\TexturedPolygon.Factory.cs" />
+    <Compile Include="Geometry\TexturedVertex.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\DelaunayTriangle.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\FixedArray3.cs" />
     <Compile Include="Geometry\Triangulation\Delaunay\FixedBitArray3.cs" />
@@ -103,8 +118,8 @@
     <Compile Include="Geometry\Triangulation\TriangulationPoint.cs" />
     <Compile Include="Geometry\Triangulation\TriangulationUtil.cs" />
     <Compile Include="Geometry\Vector2D.cs" />
+    <Compile Include="Geometry\VertexDescription.cs" />
     <Compile Include="Geometry\Vertices.cs" />
-    <Compile Include="Geometry\YuPengClipper.cs" />
     <Compile Include="Graphics\Effects\IncludeHandler.cs" />
     <Compile Include="Graphics\ImageProcessing\ImageHelper.cs" />
     <Compile Include="Graphics\Materials\ImageMaterial.cs" />
@@ -125,6 +140,10 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
+    <Compile Include="Log\AbstractLogEvent.cs" />
+    <Compile Include="Log\ErrorEvent.cs" />
+    <Compile Include="Log\LogEvent.cs" />
+    <Compile Include="Log\TraceExtensions.cs" />
     <Compile Include="Utils\Collections\Cache.cs" />
     <Compile Include="Utils\Collections\GenericNode.cs" />
     <Compile Include="Utils\Collections\INode.cs" />
@@ -289,6 +308,7 @@
   <ItemGroup>
     <Content Include="Utils\Utils.csproj" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
