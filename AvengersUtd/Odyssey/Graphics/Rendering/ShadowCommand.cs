@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.Utils.Collections;
-using AvengersUtd.Odyssey.Resources;
+using AvengersUtd.Odyssey.Assets;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {

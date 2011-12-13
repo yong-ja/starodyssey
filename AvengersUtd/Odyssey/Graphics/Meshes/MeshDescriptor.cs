@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace AvengersUtd.Odyssey.Resources
+namespace AvengersUtd.Odyssey.Assets
 {
     public struct MeshDescriptor
     {

@@ -3,7 +3,7 @@ using System;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
-using AvengersUtd.Odyssey.Resources;
+using AvengersUtd.Odyssey.Assets;
 using SlimDX;
 using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
