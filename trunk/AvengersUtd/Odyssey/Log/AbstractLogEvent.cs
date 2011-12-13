@@ -9,7 +9,9 @@ namespace AvengersUtd.Odyssey.Log
     public enum EventCode : int
     {
         LogMessage = 10001,
-        ArgumentException = 90001
+        ArgumentException = 90001,
+        ArgumentNull,
+        UnhandledException = 90000
     }
 
     public abstract class AbstractLogEvent
@@ -21,6 +23,16 @@ namespace AvengersUtd.Odyssey.Log
         private readonly int id;
         private readonly string format;
         private readonly TraceEventType eventType;
+
+        public int Id
+        {
+            get { return id; }
+        }
+
+        public TraceEventType EventType
+        {
+            get { return eventType; }
+        }
 
         protected string Source
         {
@@ -37,6 +49,11 @@ namespace AvengersUtd.Odyssey.Log
             get { return code; }
         }
 
+        protected TraceSource TraceSource
+        {
+            get { return ts; }
+        }
+
         protected AbstractLogEvent(string source, EventCode code, TraceEventType eventType, string format)
         {
             this.source = source;
@@ -48,14 +65,7 @@ namespace AvengersUtd.Odyssey.Log
         }
 
 
-        public void Log(string otherFormat, params object[] data)
-        {
-            ts.TraceEvent(eventType, id, string.Format(otherFormat, data));
-        }
 
-        public void Log(params object[] data)
-        {
-            ts.TraceEvent(eventType, id, string.Format(format, data));
-        }
+
     }
 }

@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Log;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+using Debug = System.Diagnostics.Debug;
 using Device = SlimDX.Direct3D11.Device;
 using Resource = SlimDX.Direct3D11.Resource;
+using Resources = AvengersUtd.Odyssey.Properties.Resources;
 
 namespace AvengersUtd.Odyssey
 {
@@ -131,20 +135,24 @@ namespace AvengersUtd.Odyssey
         public DeviceContext11(IntPtr handle, DeviceSettings settings)
         {
             if (handle == IntPtr.Zero)
-            {
-                throw Error.ArgumentInvalid("handle", GetType(),"DeviceContext11_ctor()","Value must be a valid window handle.");
-            }
-            if (settings == null)
-            {
-                throw Error.ArgumentNull("settings", GetType(), "DeviceContext11_ctor()");
-            }
-            eventHandlerList = new EventHandlerList();
-            Settings = settings;
+                ErrorEvent.ArgumentInvalid.RaiseException(
+                    new TraceData(GetType(), MethodBase.GetCurrentMethod(), handle, settings),
+                    "handle");
 
+            if (settings == null)
+                ErrorEvent.ArgumentNull.RaiseException(new TraceData(GetType(), MethodBase.GetCurrentMethod(), handle, settings),
+                                                       "settings");
+            else
+            {
+                Settings = settings;
+                LogEvent.EngineEvent.Log(settings.ToString());
+            }
+            
+            eventHandlerList = new EventHandlerList();
             SwapChainDescription swapChainDesc = new SwapChainDescription
                                                      {
                 BufferCount = 1,
-                ModeDescription = new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight, new Rational(120, 1), Format.R8G8B8A8_UNorm),
+                ModeDescription = new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight, new Rational(120, 1), Settings.Format),
                 IsWindowed = true,
                 OutputHandle = handle,
                 SampleDescription = Settings.SampleDescription,
@@ -152,6 +160,7 @@ namespace AvengersUtd.Odyssey
                 Usage = Usage.RenderTargetOutput,
             };
 
+            LogEvent.EngineEvent.Log(Resources.INFO_OE_DeviceCreating);
             Device.CreateWithSwapChain(DriverType.Hardware, Settings.CreationFlags, swapChainDesc, out device, out swapChain);
 
             factory = swapChain.GetParent<Factory>();
@@ -160,6 +169,7 @@ namespace AvengersUtd.Odyssey
             immediate = device.ImmediateContext;
 
             CreateTargets();
+            LogEvent.EngineEvent.Log(Resources.INFO_OE_DeviceCreated);
         }
 
         private void CreateTargets()

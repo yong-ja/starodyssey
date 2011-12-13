@@ -1,8 +1,8 @@
 using System.Xml.Serialization;
-using AvengersUtd.Odyssey.Resources;
+using AvengersUtd.Odyssey.Assets;
 using AvengersUtd.Odyssey.Graphics.Materials;
 
-namespace AvengersUtd.Odyssey.Resources
+namespace AvengersUtd.Odyssey.Assets
 {
     public struct EntityDescriptor
     {

@@ -97,7 +97,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument {0} is not valid for method {1}.{2}. See the InnerException for details..
+        ///   Looks up a localized string similar to Argument {0}={1} is not valid..
         /// </summary>
         internal static string ERR_Argument {
             get {
@@ -106,7 +106,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Argument {0} for method {1}.{2} cannot be null..
+        ///   Looks up a localized string similar to Argument cannot be null: {0}.
         /// </summary>
         internal static string ERR_ArgumentNull {
             get {
@@ -288,45 +288,45 @@ namespace AvengersUtd.Odyssey.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The new node is already a child of this node..
         /// </summary>
-        internal static string ERR_NodeAlreadyChild {
+        internal static string ERR_Node_AlreadyChild {
             get {
-                return ResourceManager.GetString("ERR_NodeAlreadyChild", resourceCulture);
+                return ResourceManager.GetString("ERR_Node_AlreadyChild", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The newChild is an ancestor of this node..
         /// </summary>
-        internal static string ERR_NodeIsAncestor {
+        internal static string ERR_Node_IsAncestor {
             get {
-                return ResourceManager.GetString("ERR_NodeIsAncestor", resourceCulture);
+                return ResourceManager.GetString("ERR_Node_IsAncestor", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t add children to leaf nodes..
         /// </summary>
-        internal static string ERR_NodeIsLeaf {
+        internal static string ERR_Node_IsLeaf {
             get {
-                return ResourceManager.GetString("ERR_NodeIsLeaf", resourceCulture);
+                return ResourceManager.GetString("ERR_Node_IsLeaf", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Node is null..
         /// </summary>
-        internal static string ERR_NodeIsNull {
+        internal static string ERR_Node_IsNull {
             get {
-                return ResourceManager.GetString("ERR_NodeIsNull", resourceCulture);
+                return ResourceManager.GetString("ERR_Node_IsNull", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The node is not a child of this node..
         /// </summary>
-        internal static string ERR_NodeNotChild {
+        internal static string ERR_Node_NotChild {
             get {
-                return ResourceManager.GetString("ERR_NodeNotChild", resourceCulture);
+                return ResourceManager.GetString("ERR_Node_NotChild", resourceCulture);
             }
         }
         
@@ -336,6 +336,15 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string ERR_NoDetails {
             get {
                 return ResourceManager.GetString("ERR_NoDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No additional information..
+        /// </summary>
+        internal static string ERR_NoInformation {
+            get {
+                return ResourceManager.GetString("ERR_NoInformation", resourceCulture);
             }
         }
         
@@ -403,6 +412,15 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred : {0}.
+        /// </summary>
+        internal static string ERR_UnhandledException {
+            get {
+                return ResourceManager.GetString("ERR_UnhandledException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unrecognized parameter..
         /// </summary>
         internal static string ERR_UnrecognizedParameter {
@@ -417,6 +435,42 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string ERR_WrongCase {
             get {
                 return ResourceManager.GetString("ERR_WrongCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DX11 device created.
+        /// </summary>
+        internal static string INFO_OE_DeviceCreated {
+            get {
+                return ResourceManager.GetString("INFO_OE_DeviceCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating device.
+        /// </summary>
+        internal static string INFO_OE_DeviceCreating {
+            get {
+                return ResourceManager.GetString("INFO_OE_DeviceCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odyssey engine started..
+        /// </summary>
+        internal static string INFO_OE_Started {
+            get {
+                return ResourceManager.GetString("INFO_OE_Started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odyssey engine starting..
+        /// </summary>
+        internal static string INFO_OE_Starting {
+            get {
+                return ResourceManager.GetString("INFO_OE_Starting", resourceCulture);
             }
         }
         

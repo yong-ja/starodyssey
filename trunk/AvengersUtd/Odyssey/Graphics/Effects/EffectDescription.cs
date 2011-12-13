@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Resources;
-using AvengersUtd.Odyssey.Resources;
+using AvengersUtd.Odyssey.Assets;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 
