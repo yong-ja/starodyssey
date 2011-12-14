@@ -17,9 +17,8 @@
 //
 //
 //----------------------------------------------------------------------------------
-
-#include <cktools.fx>
-
+#include <Include/Common.hlsl>
+#include <Include/Geometry.hlsl>
 DepthStencilState DSSDepthWriteLess
 {
   DepthEnable = true;
@@ -102,13 +101,30 @@ float4 FillColor = float4(0.1, 0.2, 0.4, 1);
 float4 WireColor = float4(1, 1, 1, 1);
 float4 PatternColor = float4(1, 1, 0.5, 1);
 
+uint infoA[]     = { 0, 0, 0, 0, 1, 1, 2 };
+uint infoB[]     = { 1, 1, 2, 0, 2, 1, 2 };
+uint infoAd[]    = { 2, 2, 1, 1, 0, 0, 0 };
+uint infoBd[]    = { 2, 2, 1, 2, 0, 2, 1 }; 
+uint infoEdge0[] = { 0, 2, 0, 0, 0, 0, 2 }; 
+
+float4 ColorCases[] = {
+    { 1, 1, 1, 1 }, 
+    { 1, 1, 0, 1 },
+    { 1, 0, 1, 1 },
+    { 1, 0, 0, 1 },
+    { 0, 1, 1, 1 },
+    { 0, 1, 0, 1 },
+    { 0, 0, 1, 1 }
+}; 
+
+
 //--------------------------------------------------------------------------------------
 
 struct VSInput
 {
-    float4 Position  : POSITION;
+    float3 Position  : POSITION;
     float3 Normal	 : NORMAL;
-	float2 TextureUV : TEXCOORD0;
+	float3 TextureUV : TEXCOORD0;
 };
 
 struct GSInput
@@ -127,7 +143,9 @@ struct PSInputWire
 {
     float4 Position : SV_POSITION;
     float4 Color : TEXCOORD0;
-    noperspective float3 Heights : TEXCOORD1;
+    noperspective float4 EdgeA: TEXCOORD1;
+    noperspective float4 EdgeB: TEXCOORD2;
+    uint Case : TEXCOORD3;
 };
 
 //--------------------------------------------------------------------------------------
@@ -149,11 +167,11 @@ float4 shadeFace(in float4 verA, in float4 verB, in float4 verC)
 //--------------------------------------------------------------------------------------
 // Vertex Shader
 //--------------------------------------------------------------------------------------
-GSInput VS( VS_INPUT input )
+GSInput VS( VSInput input )
 {
     GSInput output;
-    output.Position = ModelToProj( float4(input.Position, 1));
-    output.PositionV = ModelToView( float4(input.Position, 1));
+    output.Position = ModelToProj( float4(input.Position,1));
+    output.PositionV = ModelToView( float4(input.Position,1));
     return output;
 }
 
@@ -163,9 +181,9 @@ GSInput VS( VS_INPUT input )
 
 [maxvertexcount(3)] 
 void GS( triangle GSInput input[3],
-         inout TriangleStream<PS_INPUT> outStream )
+         inout TriangleStream<PSInput> outStream )
 {
-    PS_INPUT output;
+    PSInput output;
 
     // Shade and colour face.
     output.Color = shadeFace(input[0].PositionV, input[1].PositionV, input[2].PositionV);
@@ -188,36 +206,124 @@ void GSSolidWire( triangle GSInput input[3],
 {
     PSInputWire output;
 
-    // Shade and colour face.
+    // Compute the case from the positions of point in space.
+    output.Case = (input[0].Position.z < 0)*4 + (input[1].Position.z < 0)*2 + (input[2].Position.z < 0); 
+
+    // If case is all vertices behind viewpoint (case = 7) then cull.
+    if (output.Case == 7) return;
+
+    // Shade and colour face just for the "all in one" technique.
     output.Color = shadeFace(input[0].PositionV, input[1].PositionV, input[2].PositionV);
 
-    // Emit the 3 vertices
-    // The Height attribute is based on the constant
-    output.Position = input[0].Position;
-    output.Heights = float3( 1, 0, 0 );
-    outStream.Append( output );
+   // Transform position to window space
+    float2 points[3];
+    points[0] = projToWindow(input[0].Position);
+    points[1] = projToWindow(input[1].Position);
+    points[2] = projToWindow(input[2].Position);
 
-    output.Position = input[1].Position;
-    output.Heights = float3( 0, 1, 0 );
-    outStream.Append( output );
+    // If Case is 0, all projected points are defined, do the
+    // general case computation
+    if (output.Case == 0) 
+    {
+        output.EdgeA = float4(0,0,0,0);
+        output.EdgeB = float4(0,0,0,0);
 
-    output.Position = input[2].Position;
-    output.Heights = float3( 0, 0, 1 );
-	outStream.Append( output );
+        // Compute the edges vectors of the transformed triangle
+        float2 edges[3];
+        edges[0] = points[1] - points[0];
+        edges[1] = points[2] - points[1];
+        edges[2] = points[0] - points[2];
 
-    outStream.RestartStrip();
+        // Store the length of the edges
+        float lengths[3];
+        lengths[0] = length(edges[0]);
+        lengths[1] = length(edges[1]);
+        lengths[2] = length(edges[2]);
+
+        // Compute the cos angle of each vertices
+        float cosAngles[3];
+        cosAngles[0] = dot( -edges[2], edges[0]) / ( lengths[2] * lengths[0] );
+        cosAngles[1] = dot( -edges[0], edges[1]) / ( lengths[0] * lengths[1] );
+        cosAngles[2] = dot( -edges[1], edges[2]) / ( lengths[1] * lengths[2] );
+
+        // The height for each vertices of the triangle
+        float heights[3];
+        heights[1] = lengths[0]*sqrt(1 - cosAngles[0]*cosAngles[0]);
+        heights[2] = lengths[1]*sqrt(1 - cosAngles[1]*cosAngles[1]);
+        heights[0] = lengths[2]*sqrt(1 - cosAngles[2]*cosAngles[2]);
+
+        float edgeSigns[3];
+        edgeSigns[0] = (edges[0].x > 0 ? 1 : -1);
+        edgeSigns[1] = (edges[1].x > 0 ? 1 : -1);
+        edgeSigns[2] = (edges[2].x > 0 ? 1 : -1);
+
+        float edgeOffsets[3];
+        edgeOffsets[0] = lengths[0]*(0.5 - 0.5*edgeSigns[0]);
+        edgeOffsets[1] = lengths[1]*(0.5 - 0.5*edgeSigns[1]);
+        edgeOffsets[2] = lengths[2]*(0.5 - 0.5*edgeSigns[2]);
+
+        output.Position =( input[0].Position );
+        output.EdgeA[0] = 0;
+        output.EdgeA[1] = heights[0];
+        output.EdgeA[2] = 0;
+        output.EdgeB[0] = edgeOffsets[0];
+        output.EdgeB[1] = edgeOffsets[1] + edgeSigns[1] * cosAngles[1]*lengths[0];
+        output.EdgeB[2] = edgeOffsets[2] + edgeSigns[2] * lengths[2];
+        outStream.Append( output );
+
+        output.Position = ( input[1].Position );
+        output.EdgeA[0] = 0;
+        output.EdgeA[1] = 0;
+        output.EdgeA[2] = heights[1];
+        output.EdgeB[0] = edgeOffsets[0] + edgeSigns[0] * lengths[0];
+        output.EdgeB[1] = edgeOffsets[1];
+        output.EdgeB[2] = edgeOffsets[2] + edgeSigns[2] * cosAngles[2]*lengths[1];
+        outStream.Append( output );
+
+        output.Position = ( input[2].Position );
+        output.EdgeA[0] = heights[2];
+        output.EdgeA[1] = 0;
+        output.EdgeA[2] = 0;
+        output.EdgeB[0] = edgeOffsets[0] + edgeSigns[0] * cosAngles[0]*lengths[2];
+        output.EdgeB[1] = edgeOffsets[1] + edgeSigns[1] * lengths[1];
+        output.EdgeB[2] = edgeOffsets[2];
+        outStream.Append( output );
+
+        outStream.RestartStrip();
+    }
+    // Else need some tricky computations
+    else
+    {
+        // Then compute and pass the edge definitions from the case
+        output.EdgeA.xy = points[ infoA[output.Case] ];
+        output.EdgeB.xy = points[ infoB[output.Case] ];
+
+		output.EdgeA.zw = normalize( output.EdgeA.xy - points[ infoAd[output.Case] ] ); 
+        output.EdgeB.zw = normalize( output.EdgeB.xy - points[ infoBd[output.Case] ] );
+		
+		// Generate vertices
+        output.Position =( input[0].Position );
+        outStream.Append( output );
+     
+        output.Position = ( input[1].Position );
+        outStream.Append( output );
+
+        output.Position = ( input[2].Position );
+        outStream.Append( output );
+
+        outStream.RestartStrip();
+    }
 }
-
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 
-float4 PSColor( PS_INPUT input) : SV_Target
+float4 PSColor( PSInput input) : SV_Target
 {
-    return input.Col;
+    return input.Color;
 }
 
-float4 PSDXWire( PS_INPUT input) : SV_Target
+float4 PSDXWire( PSInput input) : SV_Target
 {
     return WireColor;
 }
@@ -226,14 +332,38 @@ float evalMinDistanceToEdges(in PSInputWire input)
 {
     float dist;
 
-	float3 ddxHeights = ddx( input.Heights );
-	float3 ddyHeights = ddy( input.Heights );
-	float3 ddHeights2 =  ddxHeights*ddxHeights + ddyHeights*ddyHeights;
-	
-    float3 pixHeights2 = input.Heights *  input.Heights / ddHeights2 ;
-    
-    dist = sqrt( min ( min (pixHeights2.x, pixHeights2.y), pixHeights2.z) );
-    
+    // The easy case, the 3 distances of the fragment to the 3 edges is already
+    // computed, get the min.
+    if (input.Case == 0)
+    {
+        dist = min ( min (input.EdgeA.x, input.EdgeA.y), input.EdgeA.z);
+    }
+    // The tricky case, compute the distances and get the min from the 2D lines
+    // given from the geometry shader.
+    else
+    {
+        // Compute and compare the sqDist, do one sqrt in the end.
+        	
+        float2 AF = input.Position.xy - input.EdgeA.xy;
+        float sqAF = dot(AF,AF);
+        float AFcosA = dot(AF, input.EdgeA.zw);
+        dist = abs(sqAF - AFcosA*AFcosA);
+
+        float2 BF = input.Position.xy - input.EdgeB.xy;
+        float sqBF = dot(BF,BF);
+        float BFcosB = dot(BF, input.EdgeB.zw);
+        dist = min( dist, abs(sqBF - BFcosB*BFcosB) );
+       
+        // Only need to care about the 3rd edge for some cases.
+        if (input.Case == 1 || input.Case == 2 || input.Case == 4)
+        {
+            float AFcosA0 = dot(AF, normalize(input.EdgeB.xy - input.EdgeA.xy));
+			dist = min( dist, abs(sqAF - AFcosA0*AFcosA0) );
+	    }
+
+        dist = sqrt(dist);
+    }
+
     return dist;
 }
 
@@ -256,7 +386,7 @@ float4 PSSolidWire( PSInputWire input) : SV_Target
     float4 color = WireColor;
     color.a *= alpha;
 	
-    return color;
+    return float4(1,1,1,1);
 }
 
 float4 PSSolidWireFade( PSInputWire input) : SV_Target
@@ -287,95 +417,111 @@ float det( float2 a, float2 b )
 {
 	return (a.x*b.y - a.y*b.x);
 }
+float evalMinDistanceToEdgesExt(  in PSInputWire input, 
+                                  out float3 edgeSqDists, 
+                                  out float3 edgeCoords, 
+                                  out uint3 edgeOrder)
+{
+    // The easy case, the 3 distances of the fragment to the 3 edges is already
+    // computed, get the min.
+    if (input.Case == 0)
+    {
+        edgeSqDists = input.EdgeA.xyz * input.EdgeA.xyz;
+        edgeCoords = input.EdgeB.xyz;
+        edgeOrder = uint3(0, 1, 2);
+
+        if (edgeSqDists[1] < edgeSqDists[0])
+        {
+            edgeOrder.xy = edgeOrder.yx;
+        }
+        if (edgeSqDists[2] < edgeSqDists[edgeOrder.y])
+        {
+            edgeOrder.yz = edgeOrder.zy;
+        }
+        if (edgeSqDists[2] < edgeSqDists[edgeOrder.x])
+        {
+            edgeOrder.xy = edgeOrder.yx;
+        }
+    }
+    // The tricky case, compute the distances and get the min from the 2D lines
+    // given from the geometry shader.
+    else
+    {
+        float2 AF = input.Position.xy - input.EdgeA.xy;
+        float sqAF = dot(AF,AF);
+        float AFcosA = dot(AF, input.EdgeA.zw);
+        edgeSqDists[0] = abs(sqAF - AFcosA*AFcosA);
+        edgeOrder = uint3(0, 1, 2);
+        edgeCoords[0] = abs(AFcosA);
+
+        float2 BF = input.Position.xy - input.EdgeB.xy;
+        float sqBF = dot(BF,BF);
+        float BFcosB = dot(BF, input.EdgeB.zw);
+        edgeSqDists[1] = abs(sqBF - BFcosB*BFcosB);
+        edgeCoords[1] = abs(BFcosB);
+
+        if (edgeSqDists[1] < edgeSqDists[0])
+        {
+            edgeOrder.xy = edgeOrder.yx;
+        }
+
+        if (input.Case == 1 || input.Case == 2 || input.Case == 4)
+        {
+            float AFcosA0 = dot(AF, normalize(input.EdgeB.xy - input.EdgeA.xy));         
+            edgeSqDists[2] = abs(sqAF - AFcosA0*AFcosA0);
+            edgeCoords[2] = abs(AFcosA0);
+
+            if (edgeSqDists[2] < edgeSqDists[edgeOrder.y])
+            {
+                edgeOrder.yz = edgeOrder.zy;
+            }
+            
+            if (edgeSqDists[2] < edgeSqDists[edgeOrder.x])
+            {
+                edgeOrder.xy = edgeOrder.yx;
+            }
+        }
+        else
+        {
+			edgeSqDists[2] = 0;
+			edgeCoords[2] = 0;
+		}
+    }
+
+    return sqrt(edgeSqDists[edgeOrder.x]);
+}
 
 float4 PSSolidWirePattern( PSInputWire input) : SV_Target
 {
     // Compute the shortest square distance between the fragment and the edges.
-    float3 eDists;
-    float3 vDists;
-    uint3 order = uint3(0, 1, 2);
+    float3 edgeSqDists;
+    float3 edgeCoords;
+    uint3 edgeOrder;
+    float dist = evalMinDistanceToEdgesExt(input, edgeSqDists, edgeCoords, edgeOrder);
 
-    float dist;
-
-	float3 ddxHeights = ddx( input.Heights );
-	float3 ddyHeights = ddy( input.Heights );
-	float3 invddHeights = 1.0 / sqrt( ddxHeights*ddxHeights + ddyHeights*ddyHeights );
-
-    eDists = input.Heights * invddHeights ;
-    vDists = (1.0 - input.Heights) * invddHeights ;
-    
-	if (eDists[1] < eDists[0])
-	{
-		order.xy = order.yx;
-	}
-	if (eDists[2] < eDists[order.y])
-	{
-		order.yz = order.zy;
-	}
-	if (eDists[2] < eDists[order.x])
-	{
-		order.xy = order.yx;
-	}
-	
-	// Now compute the coordinate of the fragment along each edges
-   
-	float2 hDirs[3] ;
-	hDirs[0] = float2( ddxHeights[0], ddyHeights[0] ) * invddHeights[0] ;
- 	hDirs[1] = float2( ddxHeights[1], ddyHeights[1] ) * invddHeights[1] ;
-	hDirs[2] = float2( ddxHeights[2], ddyHeights[2] ) * invddHeights[2] ;
-   
-	float2 hTans[3] ;
-	hTans[0] = float2( - hDirs[0].y, hDirs[0].x ) ;
- 	hTans[1] = float2( - hDirs[1].y, hDirs[1].x ) ;
-	hTans[2] = float2( - hDirs[2].y, hDirs[2].x ) ;
-   
-	float2 ePoints[3] ;
-	ePoints[0] = input.Position.xy - hDirs[0]*eDists[0];
-	ePoints[1] = input.Position.xy - hDirs[1]*eDists[1];
-	ePoints[2] = input.Position.xy - hDirs[2]*eDists[2];
-
-	float2 eCoords[3] ;
-	eCoords[0].x = det( hTans[1], ePoints[0] - ePoints[1] ) / det( hTans[0], hTans[1] );
-	eCoords[0].y = det( hTans[2], ePoints[0] - ePoints[2] ) / det( hTans[0], hTans[2] );
-	
-	eCoords[1].x = det( hTans[2], ePoints[1] - ePoints[2] ) / det( hTans[1], hTans[2] );
-	eCoords[1].y = det( hTans[0], ePoints[1] - ePoints[0] ) / det( hTans[1], hTans[0] );
-
-	eCoords[2].x = det( hTans[0], ePoints[2] - ePoints[0] ) / det( hTans[2], hTans[0] );
-	eCoords[2].y = det( hTans[1], ePoints[2] - ePoints[1] ) / det( hTans[2], hTans[1] );
-	
-
-    float2 edgeCoord;
-	
-	// Current coordinate along closest edge in pixels
-	edgeCoord.x = abs(eCoords[order.x].x);
-	// Length of the closest edge in pixels
-	edgeCoord.y = abs(eCoords[order.x].y - eCoords[order.x].x );
-  
-    dist = eDists[order.x];
-    
     // Standard wire color
     float4 color = WireColor;
     float realLineWidth = 0.5*LineWidth;
 
-    // if on the diagonal edge apply pattern
-    if ( 2 == order.x )
+    // Except if on the diagonal edge
+    if ( infoEdge0[input.Case] == edgeOrder.x )
     {
         if (dist > LineWidth+1) discard;
 
-        float patternPos = (abs(edgeCoord.x - 0.5 * edgeCoord.y)) % (PatternPeriod * 2 * LineWidth) - PatternPeriod * LineWidth;
-        dist = sqrt(patternPos*patternPos + dist*dist);
+        float patternPos = (abs(edgeCoords[edgeOrder.x]) % (PatternPeriod*2*LineWidth)) - LineWidth;
+        dist = (patternPos*patternPos + dist*dist);
 
         color = PatternColor;
         realLineWidth = LineWidth;
 
         // Filling the corners near the vertices with the WireColor
-        if ( eDists[order.y] < (0.5*LineWidth+1) )
+        if ( edgeSqDists[edgeOrder.y] < pow(0.5*LineWidth+1, 2) )
         {
-            dist = eDists[order.y];
+            dist = edgeSqDists[edgeOrder.y];
             color = WireColor;
             realLineWidth = 0.5*LineWidth;
         }
+        dist = sqrt(dist);
     }
     // Cull fragments too far from the edge.
     else if (dist > 0.5*LineWidth+1) discard;

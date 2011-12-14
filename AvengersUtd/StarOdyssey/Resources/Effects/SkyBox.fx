@@ -1,4 +1,4 @@
-#include <Include/Common.h>
+#include <Include/Common.hlsl>
 #include <Include/Structs.hlsl>
 
 TextureCube tDiffuse;

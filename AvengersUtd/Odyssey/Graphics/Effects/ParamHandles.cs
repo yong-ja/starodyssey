@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
             public const string WorldInverse = "mWorldInverse";
             public const string WorldView = "mWorldView";
             public const string WorldViewInverse = "mWorldViewInverse";
-            public const string WorldViewProjection = "mWorldViewProj";
+            public const string WorldViewProjection = "mWorldViewProjection";
         }
 
         public struct Vectors
@@ -98,7 +98,8 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         CameraProjection,
         CameraViewTranspose,
         CameraProjectionTranspose,
-        CameraRotation
+        CameraRotation,
+        CameraWorldView
     }
 
     public enum InstanceVariable
