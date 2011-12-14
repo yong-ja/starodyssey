@@ -7,13 +7,14 @@
 float4 vEyePosition;
 
 // Matrices
-cbuffer cbUpdateEveryFrame {
-	matrix mWorld;
-	matrix mView;
-	float4 cMaterialDiffuse;
-};
-
+matrix mWorld;
+matrix mView;
 matrix mProjection;
+matrix mWorldView;
+matrix mWorldViewProjection;
+
+float4 cMaterialDiffuse;
+
 matrix mWorldInv;
 
 

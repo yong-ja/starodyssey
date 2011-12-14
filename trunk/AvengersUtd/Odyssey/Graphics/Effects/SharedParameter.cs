@@ -163,6 +163,14 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, Matrix.Invert(renderer.Camera.World)));
                     break;
 
+                    case SceneVariable.CameraWorldView:
+                    varName = ParamHandles.Matrices.WorldView;
+                    eV = effect.GetVariableByName(varName).AsMatrix();
+
+                    update = (fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, 
+                        Matrix.Multiply(renderer.Camera.World,renderer.Camera.View));
+                    break;
+
                 case SceneVariable.CameraWorldViewInverse:
                     varName = ParamHandles.Matrices.WorldViewInverse;
                     eV = effect.GetVariableByName(varName).AsMatrix();
@@ -175,10 +183,9 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     eV = effect.GetVariableByName(varName).AsMatrix();
 
                     update =
-                        ((fxParam, renderer) =>
+                        (fxParam, renderer) =>
                          MatrixUpdate(fxParam.EffectVariable,
-                                      Matrix.Invert(renderer.Camera.World * renderer.Camera.View *
-                                                    renderer.Camera.Projection)));
+                                      renderer.Camera.World * renderer.Camera.View * renderer.Camera.Projection);
                     break;
 
                 case SceneVariable.CameraOrthographicProjection:

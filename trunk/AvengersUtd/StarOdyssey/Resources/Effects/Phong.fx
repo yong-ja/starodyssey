@@ -1,4 +1,4 @@
-#include <Include/Common.h>
+#include <Include/Common.hlsl>
 #include <Include/Materials.h>
 #include <Include/Lighting.h>
 #include <Include/Structs.hlsl>

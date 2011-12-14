@@ -1,19 +1,27 @@
-﻿//--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 // Standard Transform Functions
 //--------------------------------------------------------------------------------------
 float4 ModelToProj(in float4 pos)
 {
-    return mul(pos, WorldViewProjection);
+    return mul(pos, mWorldViewProjection);
 }
 
 float4 ModelToView(in float4 pos)
 {
-    return mul(pos, WorldView);
+    return mul(pos, mWorldView);
 }
 
 float4 ViewToProj(in float4 pos)
 {
-    return mul(pos, Projection);
+    return mul(pos, mProjection);
+}
+
+float4 Viewport = float4(1920,1080,0,0);
+// From window pixel pos to projection frame at the specified z (view frame). 
+float2 projToWindow(in float4 pos)
+{
+    return float2(  Viewport.x*0.5*((pos.x/pos.w) + 1) + Viewport.z,
+                    Viewport.y*0.5*(1-(pos.y/pos.w)) + Viewport.w );
 }
 
 /*
@@ -25,12 +33,7 @@ float4 ViewToProj2(in float4 pos)
 					pos.z );
 }
 
-// From window pixel pos to projection frame at the specified z (view frame). 
-float2 projToWindow(in float4 pos)
-{
-    return float2(  Viewport.x*0.5*((pos.x/pos.w) + 1) + Viewport.z,
-                    Viewport.y*0.5*(1-(pos.y/pos.w)) + Viewport.w );
-}
+
 
 // From window pixel pos to projection frame at the specified z (view frame). 
 float4 windowToProj(in float2 pos, float depth)
