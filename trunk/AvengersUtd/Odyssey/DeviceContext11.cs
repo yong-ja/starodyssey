@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
@@ -27,8 +28,6 @@ namespace AvengersUtd.Odyssey
         private readonly DeviceContext immediate;  
         private readonly SwapChain swapChain;
         private readonly Factory factory;
-        private RenderTargetView renderTargetView;
-        private DepthStencilView depthStencilView;
 
         #region Events
         private static readonly object EventDeviceResize;
@@ -91,15 +90,9 @@ namespace AvengersUtd.Odyssey
 
         #region Properties
 
-        public DepthStencilView DepthStencilView
-        {
-            get { return depthStencilView; }
-        }
+        public DepthStencilView DepthStencilView { get; private set; }
 
-        public RenderTargetView RenderTargetView
-        {
-            get { return renderTargetView; }
-        }
+        public RenderTargetView RenderTargetView { get; private set; }
 
         public DeviceSettings Settings { get; private set; }
 
@@ -134,33 +127,28 @@ namespace AvengersUtd.Odyssey
 
         public DeviceContext11(IntPtr handle, DeviceSettings settings)
         {
-            if (handle == IntPtr.Zero)
-                ErrorEvent.ArgumentInvalid.RaiseException(
-                    new TraceData(GetType(), MethodBase.GetCurrentMethod(), handle, settings),
-                    "handle");
+            Contract.Requires(handle != IntPtr.Zero);
+            Contract.Requires(settings != null);
 
-            if (settings == null)
-                ErrorEvent.ArgumentNull.RaiseException(new TraceData(GetType(), MethodBase.GetCurrentMethod(), handle, settings),
-                                                       "settings");
-            else
-            {
-                Settings = settings;
-                LogEvent.EngineEvent.Log(settings.ToString());
-            }
-            
+            Settings = settings;
+            LogEvent.Engine.Log(settings.ToString());
+
+
             eventHandlerList = new EventHandlerList();
             SwapChainDescription swapChainDesc = new SwapChainDescription
                                                      {
-                BufferCount = 1,
-                ModeDescription = new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight, new Rational(120, 1), Settings.Format),
-                IsWindowed = true,
-                OutputHandle = handle,
-                SampleDescription = Settings.SampleDescription,
-                SwapEffect = SwapEffect.Discard,
-                Usage = Usage.RenderTargetOutput,
-            };
+                                                         BufferCount = 1,
+                                                         ModeDescription =
+                                                             new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight,
+                                                                                 new Rational(120, 1), Settings.Format),
+                                                         IsWindowed = true,
+                                                         OutputHandle = handle,
+                                                         SampleDescription = Settings.SampleDescription,
+                                                         SwapEffect = SwapEffect.Discard,
+                                                         Usage = Usage.RenderTargetOutput,
+                                                     };
 
-            LogEvent.EngineEvent.Log(Resources.INFO_OE_DeviceCreating);
+            LogEvent.Engine.Log(Resources.INFO_OE_DeviceCreating);
             Device.CreateWithSwapChain(DriverType.Hardware, Settings.CreationFlags, swapChainDesc, out device, out swapChain);
 
             factory = swapChain.GetParent<Factory>();
@@ -169,14 +157,14 @@ namespace AvengersUtd.Odyssey
             immediate = device.ImmediateContext;
 
             CreateTargets();
-            LogEvent.EngineEvent.Log(Resources.INFO_OE_DeviceCreated);
+            LogEvent.Engine.Log(Resources.INFO_OE_DeviceCreated);
         }
 
         private void CreateTargets()
         {
             using (Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(swapChain, 0))
             {
-                renderTargetView = new RenderTargetView(device, backBuffer);
+                RenderTargetView = new RenderTargetView(device, backBuffer);
             }
 
             Texture2DDescription depthBufferDesc = new Texture2DDescription
@@ -195,7 +183,7 @@ namespace AvengersUtd.Odyssey
 
             using (Texture2D depthBuffer = new Texture2D(device, depthBufferDesc))
             {
-                depthStencilView = new DepthStencilView(device, depthBuffer);
+                DepthStencilView = new DepthStencilView(device, depthBuffer);
             }
         }
 
@@ -206,8 +194,8 @@ namespace AvengersUtd.Odyssey
             Size previousSize = new Size(Settings.ScreenWidth, Settings.ScreenHeight);
             Settings.ScreenWidth = newSize.Width;
             Settings.ScreenHeight = newSize.Height;
-            renderTargetView.Dispose();
-            depthStencilView.Dispose();
+            RenderTargetView.Dispose();
+            DepthStencilView.Dispose();
             SwapChainDescription swapChainDesc = swapChain.Description;
             Result result = swapChain.ResizeBuffers(swapChainDesc.BufferCount, newSize.Width, newSize.Height,
                 swapChainDesc.ModeDescription.Format, swapChainDesc.Flags);
@@ -238,8 +226,8 @@ namespace AvengersUtd.Odyssey
                 {
                     OnDeviceDisposing(EventArgs.Empty);
 
-                    renderTargetView.Dispose();
-                    depthStencilView.Dispose();
+                    RenderTargetView.Dispose();
+                    DepthStencilView.Dispose();
                     swapChain.Dispose();
                     factory.Dispose();
                     

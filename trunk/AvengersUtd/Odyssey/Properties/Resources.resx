@@ -171,12 +171,6 @@
   <data name="ERR_AddBaseCommand" xml:space="preserve">
     <value>Invalid command type specified. Use AddRenderCommand() instead.</value>
   </data>
-  <data name="ERR_AddRenderCommand" xml:space="preserve">
-    <value>Invalid command type specified. Use AddBaseCommand() instead.</value>
-  </data>
-  <data name="ERR_AddUpdateCommand" xml:space="preserve">
-    <value>Invalid update command specified. Use AddBaseCommand() or AddRenderCommand() instead</value>
-  </data>
   <data name="ERR_KeyNotFound" xml:space="preserve">
     <value>Key not found in {0}: {1}</value>
   </data>
@@ -207,7 +201,7 @@
   <data name="ERR_NoTextDescription" xml:space="preserve">
     <value>No TextDescription file loaded. Be sure to call LoadTextDescription first.</value>
   </data>
-  <data name="ERR_TargetControlNull" xml:space="preserve">
+  <data name="ERR_UI_TargetControlNull" xml:space="preserve">
     <value>The target control must not be null.</value>
   </data>
   <data name="ERR_IdNotFound" xml:space="preserve">
@@ -226,19 +220,19 @@
     <value>Invalid number of vertices specified for the specified Shape value.</value>
   </data>
   <data name="ERR_Node_AlreadyChild" xml:space="preserve">
-    <value>The new node is already a child of this node.</value>
+    <value>The node that was being added is already a child of this node</value>
   </data>
   <data name="ERR_Node_IsAncestor" xml:space="preserve">
-    <value>The newChild is an ancestor of this node.</value>
+    <value>The node that was being added is an ancestore of this node</value>
   </data>
   <data name="ERR_Node_IsLeaf" xml:space="preserve">
-    <value>Can't add children to leaf nodes.</value>
+    <value>Cannot add children to leaf nodes</value>
   </data>
   <data name="ERR_Node_IsNull" xml:space="preserve">
-    <value>Node is null.</value>
+    <value>Node is null</value>
   </data>
   <data name="ERR_Node_NotChild" xml:space="preserve">
-    <value>The node is not a child of this node.</value>
+    <value>The node is not a child of this node</value>
   </data>
   <data name="ERR_NoInformation" xml:space="preserve">
     <value>No additional information.</value>
@@ -257,5 +251,17 @@
   </data>
   <data name="INFO_OE_DeviceCreating" xml:space="preserve">
     <value>Creating device</value>
+  </data>
+  <data name="ERR_IndexNotInRange" xml:space="preserve">
+    <value>Index {0}[{1}] with value {2} out of range</value>
+  </data>
+  <data name="INFO_OE_Disposed" xml:space="preserve">
+    <value>{1} disposed</value>
+  </data>
+  <data name="INFO_OE_Disposing" xml:space="preserve">
+    <value>{0} disposing</value>
+  </data>
+  <data name="ERR_Thread_Aborted" xml:space="preserve">
+    <value>Thread {0} aborted.</value>
   </data>
 </root>

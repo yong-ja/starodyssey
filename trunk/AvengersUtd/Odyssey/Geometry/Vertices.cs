@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using AvengersUtd.Odyssey.Properties;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
@@ -112,14 +114,12 @@ namespace AvengersUtd.Odyssey.Geometry
         {
             get
             {
-                if (index < 0 || index > Count)
-                    throw Error.IndexNotPresentInArray("this", index);
+                Contract.Requires<IndexOutOfRangeException>(index < 0 || index > Count);
                 return vertices[index];
             }
             set
             {
-                if (index < 0 || index > Count)
-                    throw Error.IndexNotPresentInArray("this", index);
+                Contract.Requires<IndexOutOfRangeException>(index < 0 || index > Count);
                 vertices[index] = value;
             }
         }

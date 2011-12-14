@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
 using SlimDX;
@@ -194,13 +195,24 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             return vertices;
         }
 
-        public static Vector4[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments,
-            out ushort[] indices,float[] widthOffsets=null, float[] heightOffsets=null)
+        public static Vector4[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, 
+            int widthSegments, int heightSegments,
+            out ushort[] indices)
         {
-            if (widthOffsets != null && widthOffsets.Length != widthSegments + 1)
-                throw Error.ArgumentInvalid("widthOffsets", typeof(float[]), "CreateRectangleMesh");
-            if (heightOffsets != null && heightOffsets.Length != heightSegments + 1)
-                throw Error.ArgumentInvalid("heightSegments", typeof(float[]), "CreateRectangleMesh");
+
+            return CreateRectangleMesh(topLeftVertex, width, height,out indices, CreateOffsetsArray(widthSegments),
+                                       CreateOffsetsArray(heightSegments));
+
+        }
+
+        public static Vector4[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height,
+            out ushort[] indices,float[] widthOffsets, float[] heightOffsets)
+        {
+            Contract.Requires<ArgumentException>(widthOffsets != null);
+            Contract.Requires<ArgumentException>(heightOffsets != null);
+
+            int widthSegments = widthOffsets.Length-1;
+            int heightSegments = heightOffsets.Length-1;
 
             Vector4[] vertices = new Vector4[(1 + widthSegments)*(1 + heightSegments)];
             float x = topLeftVertex.X;
@@ -214,8 +226,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             {
                 for (int j = 0; j < widthSegments + 1; j++)
                 {
-                    float hOffset = widthOffsets == null ? j * (width / widthSegments) : widthOffsets[j] * width;
-                    float vOffset = heightOffsets == null ? i * (height / heightSegments) : heightOffsets[i] * height;
+                    float hOffset = widthOffsets[j] * width;
+                    float vOffset = heightOffsets[i] * height;
 
                     vertices[vertexCount] = new Vector4(x + hOffset, y - vOffset, z, 1.0f);
 
@@ -241,22 +253,45 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         }
 
-        public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments, Color4[] colors,
-            out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
+        [Obsolete]
+        public static ColoredVertex[] CreateRectangleMesh(Vector4 topLeftVertex, float width, float height, int widthSegments, int heightSegments,
+            Color4[] colors,
+            out ushort[] indices,
+            float[] widthOffsets=null, float[] heightOffsets=null)
         {
-            //ColoredVertex[] vertices = new ColoredVertex[(1+widthSegments)*(1+heightSegments)];
+            if (widthOffsets == null)
+                widthOffsets = CreateOffsetsArray(widthSegments);
+            if (heightOffsets == null)
+                heightOffsets = CreateOffsetsArray(heightSegments);
 
-            Vector4[] vertices = CreateRectangleMesh(topLeftVertex, width, height, widthSegments, heightSegments, out indices,
+            Vector4[] vertices = CreateRectangleMesh(topLeftVertex, width, height, out indices,
                                                      widthOffsets, heightOffsets);
             return (from v in vertices
                     from c in colors
                     select new ColoredVertex(v, c)).ToArray();
         }
 
+        static float[] CreateOffsetsArray(int offsets)
+        {
+            Contract.Requires<ArgumentException>(offsets > 0);
+
+            float[] offsetArray = new float[offsets+1];
+            
+            offsetArray[0] = 0;
+            offsetArray[offsets] = 1;
+
+            for (int i=1; i<offsets; i++)
+            {
+                offsetArray[i] = (1f / offsets) * i;
+            }
+
+            return offsetArray;
+
+        }
+
         public static MeshVertex[] CreateVertexCollection(Vector4[] vertices, Vector3[] normals=null, Vector2[] textureUV=null)
         {
-            if (vertices == null)
-                throw Error.ArgumentNull("vertices", typeof(Vector4[]), "CreateVertexCollection");
+            Contract.Requires<ArgumentNullException>(vertices != null);
 
             if (normals == null)
                 normals = new Vector3[vertices.Length];
@@ -361,8 +396,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public static ColoredVertex[] CreateEllipseMesh(Vector4 center, float radiusX, float radiusY, int slices, int segments, Color4[] colors,
             out ushort[] indices, float[] ringOffsets=null)
         {
-            const float radFrom = 0;
-            float radTo = MathHelper.TwoPi;
+            const float radTo = MathHelper.TwoPi;
             float delta = radTo/slices;
             if (ringOffsets == null)
                 ringOffsets = new[] {0.0f, 1.0f};

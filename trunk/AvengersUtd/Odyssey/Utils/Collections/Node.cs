@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using ErrorCode = AvengersUtd.Odyssey.Properties.Resources;
 
@@ -30,6 +31,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         public NodeEventArgs(INode node)
         {
+            Contract.Requires(node != null);
             index = node.Index;
             level = node.Level;
             this.node = node;
@@ -188,16 +190,13 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         #region Protected INode Methods
         protected virtual void OnAppendChild(INode newChild)
         {
-            if (isLeaf)
-                throw new ArgumentException(ErrorCode.ERR_Node_IsLeaf);
-            
-            if (newChild == null)
-                throw new ArgumentNullException("newChild", ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(IsLeaf != true, ErrorCode.ERR_Node_IsLeaf);
+            Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(!IsNodeAncestorOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
+            Contract.Requires<InvalidOperationException>(!IsNodeChildOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
 
             if (!HasChildNodes)
             {
-                if (IsNodeAncestorOf(newChild, this))
-                    throw new InvalidOperationException(ErrorCode.ERR_Node_IsAncestor);
 
                 firstChild = lastChild = newChild;
                 newChild.Parent = this;
@@ -211,11 +210,8 @@ namespace AvengersUtd.Odyssey.Utils.Collections
        
         protected virtual void OnRemoveChild(INode oldChild)
         {
-            if (oldChild == null)
-                throw new ArgumentNullException("oldChild", ErrorCode.ERR_Node_IsNull);
-
-            if (!IsNodeChildOf(oldChild, this))
-                throw new ArgumentException(ErrorCode.ERR_Node_NotChild, "oldChild");
+            Contract.Requires<ArgumentNullException>(oldChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<ArgumentException>(!IsNodeChildOf(oldChild, this), ErrorCode.ERR_Node_NotChild);
 
             if (firstChild == oldChild)
             {
@@ -258,17 +254,10 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnReplaceChild(INode newChild, INode oldChild)
         {
-            if (oldChild == null)
-                throw new ArgumentNullException("oldChild", ErrorCode.ERR_Node_IsNull);
-
-            if (newChild == null)
-                throw new ArgumentNullException("newChild", ErrorCode.ERR_Node_IsNull);
-
-            if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(ErrorCode.ERR_Node_IsAncestor);
-
-            if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(ErrorCode.ERR_Node_AlreadyChild, "oldChild");
+            Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<ArgumentNullException>(oldChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(!IsNodeAncestorOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
+            Contract.Requires<InvalidOperationException>(!IsNodeChildOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
 
             if (firstChild == oldChild)
             {
@@ -324,20 +313,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnInsertBefore(INode newChild, INode refNode)
         {
-            if (isLeaf)
-                throw new ArgumentException(ErrorCode.ERR_Node_IsLeaf);
-
-            if (refNode == null)
-                throw new ArgumentNullException("refNode", ErrorCode.ERR_Node_IsNull);
-
-            if (newChild == null)
-                throw new ArgumentNullException("newChild", ErrorCode.ERR_Node_IsNull);
-
-            if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(ErrorCode.ERR_Node_IsAncestor);
-
-            if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(ErrorCode.ERR_Node_AlreadyChild, "refNode");
+            Contract.Requires<InvalidOperationException>(IsLeaf != true, ErrorCode.ERR_Node_IsLeaf);
+            Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<ArgumentNullException>(refNode != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(!IsNodeAncestorOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
+            Contract.Requires<InvalidOperationException>(!IsNodeChildOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
 
             if (refNode == firstChild)
             {
@@ -367,20 +347,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnInsertAfter(INode newChild, INode refNode)
         {
-            if (isLeaf)
-                throw new ArgumentException(ErrorCode.ERR_Node_IsLeaf);
-
-            if (refNode == null)
-                throw new ArgumentNullException("refNode", ErrorCode.ERR_Node_IsNull);
-
-            if (newChild == null)
-                throw new ArgumentNullException("newChild", ErrorCode.ERR_Node_IsNull);
-
-            if (IsNodeAncestorOf(newChild, this))
-                throw new InvalidOperationException(ErrorCode.ERR_Node_IsAncestor);
-
-            if (IsNodeChildOf(newChild, this))
-                throw new ArgumentException(ErrorCode.ERR_Node_NotChild, "refNode");
+            Contract.Requires<InvalidOperationException>(IsLeaf != true, ErrorCode.ERR_Node_IsLeaf);
+            Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<ArgumentNullException>(refNode != null, ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(!IsNodeAncestorOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
+            Contract.Requires<InvalidOperationException>(!IsNodeChildOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
 
             if (refNode == lastChild)
             {
@@ -406,11 +377,8 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnPrependChild(INode newChild)
         {
-            if (isLeaf)
-                throw new ArgumentException(ErrorCode.ERR_Node_IsLeaf);
-
-            if (newChild == null)
-                throw new ArgumentNullException("newChild", ErrorCode.ERR_Node_IsNull);
+            Contract.Requires<InvalidOperationException>(IsLeaf != true, ErrorCode.ERR_Node_IsLeaf);
+            Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
 
             if (!HasChildNodes)
             {
@@ -451,16 +419,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         /// <param name="childNode">The child node.</param>
         /// <param name="parentNode">The parent node.</param>
         /// <returns><c>True</c> if childNode is a child of parentNode. <c>False</c> otherwise.</returns>
-        internal static bool IsNodeChildOf(INode childNode, INode parentNode)
+        public static bool IsNodeChildOf(INode childNode, INode parentNode)
         {
-            foreach (INode node in parentNode.ChildrenIterator)
-            {
-                if (node == childNode)
-                {
-                    return true;
-                }
-            }
-            return false;
+            Contract.Requires<NullReferenceException>(parentNode != null);
+
+            return parentNode.ChildrenIterator.Any(node => node == childNode);
         }
 
         /// <summary>
@@ -470,8 +433,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         /// <param name="node">The child node.</param>
         /// <param name="refNode">The parent node.</param>
         /// <returns><c>True</c> if node is a parent of refNode. <c>False</c> otherwise.</returns>
-        internal static bool IsNodeAncestorOf(INode node, INode refNode)
+        public static bool IsNodeAncestorOf(INode node, INode refNode)
         {
+            Contract.Requires<NullReferenceException>(node != null);
+            Contract.Requires<NullReferenceException>(refNode != null);
+
             if (node == refNode)
                 return true;
 
@@ -487,6 +453,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         internal static void UpdateIndicesForward(INode headNode, int startIndex)
         {
+            Contract.Requires<NullReferenceException>(headNode != null);
             INode node = headNode;
             int i = startIndex;
             while (node != null)
@@ -499,6 +466,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         internal static void UpdateIndicesBackward(INode headNode, int startIndex)
         {
+            Contract.Requires<NullReferenceException>(headNode != null);
             INode node = headNode;
             int i = startIndex;
             while (node != null)

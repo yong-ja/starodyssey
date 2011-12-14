@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
+using AvengersUtd.Odyssey.Log;
 using AvengersUtd.Odyssey.UserInterface;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -37,18 +39,25 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Activate()
         {
-            while (Game.IsRunning)
+            try
             {
-                if (updateTasks.Count > 0)
-                    EventHandle.Reset();
-                else continue;
-
-                while (updateTasks.Count > 0)
+                while (Game.IsRunning)
                 {
-                    UpdateTask task = updateTasks.Dequeue();
-                    task.Invoke();
+                    if (updateTasks.Count > 0)
+                        EventHandle.Reset();
+                    else continue;
+
+                    while (updateTasks.Count > 0)
+                    {
+                        UpdateTask task = updateTasks.Dequeue();
+                        task.Invoke();
+                    }
+                    EventHandle.Set();
                 }
-                EventHandle.Set();
+            }
+            catch(Exception ex)
+            {
+                CriticalEvent.UnhandledEvent.LogError(new TraceData(this.GetType(), MethodBase.GetCurrentMethod()), ex);
             }
         }
 
@@ -80,6 +89,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected override void OnDispose()
         {
             genericUpdateThread.Abort();
+            WarningEvent.ThreadAborted.Log(GetType().Name);
             EventHandle.Dispose();
         } 
         #endregion

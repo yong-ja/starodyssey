@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
@@ -50,8 +51,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddBaseCommand(ICommand command)
         {
-            if (command.CommandType == CommandType.Render)
-                throw Error.ArgumentInvalid("command", GetType(), "AddBaseCommand", Properties.Resources.ERR_AddBaseCommand);
+            Contract.Requires<ArgumentException>(command.CommandType != CommandType.Render);
             commandList.AddLast(command);
         }
 
@@ -63,8 +63,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddUpdateCommand(IUpdateCommand command)
         {
-            if (command.CommandType != CommandType.Update)
-                throw Error.ArgumentInvalid("command", GetType(), "AddUpdateCommand", Properties.Resources.ERR_AddUpdateCommand);
+            Contract.Requires<ArgumentException>(command.CommandType != CommandType.Render);
+
             if (command.IsThreaded)
                 command.StartThread();
             updateList.Add(command);
@@ -72,11 +72,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddRenderCommand(MaterialNode mNode, RenderableCollection rNodeCollection)
         {
+           
             Type renderCommandType = mNode.RenderableCollection.Description.PreferredRenderCommandType;
-
-            if (renderCommandType != typeof(RenderCommand) && !renderCommandType.IsSubclassOf(typeof(RenderCommand)))
-                throw Error.ArgumentInvalid("mNode", GetType(), "AddRenderCommand", Properties.Resources.ERR_AddRenderCommand);
-
             RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {mNode, rNodeCollection});
             rCommand.Init();
             commandList.AddLast(rCommand);
@@ -85,8 +82,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public void AddRenderCommand(IRenderCommand rCommand)
         {
             Type renderCommandType = rCommand.GetType();
-            if (renderCommandType != typeof(RenderCommand) && !renderCommandType.IsSubclassOf(typeof(RenderCommand)))
-                throw Error.ArgumentInvalid("mNode", GetType(), "AddRenderCommand", Properties.Resources.ERR_AddRenderCommand);
+
 
             rCommand.Init();
             commandList.AddLast(rCommand);

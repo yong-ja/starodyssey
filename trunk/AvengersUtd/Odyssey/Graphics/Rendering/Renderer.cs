@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using AvengersUtd.Odyssey.Log;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
@@ -107,8 +108,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             {
                 if (disposing)
                 {
-                    // dispose managed components
                     OnDisposing(this, EventArgs.Empty);
+                    LogEvent.ObjectDisposed.Log(GetType().Name);
                 }
             }
             disposed = true;

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.Properties;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Input;
 
@@ -169,9 +171,9 @@ namespace AvengersUtd.Odyssey.UserInterface
         /// <param name="target">The container control that hosts the DirectX viewport.</param>
         public static void SetupHooks(Control target)
         {
-            if (target == null)
-                throw Error.ArgumentNull("target", typeof(OdysseyUI), "SetupHooks", Properties.Resources.ERR_TargetControlNull);
 
+            Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
+            
 
             target.KeyDown += Keyboard.KeyDown;
             target.KeyUp += Keyboard.KeyUp;
