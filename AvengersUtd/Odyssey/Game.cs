@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Reflection;
 using System.Threading;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Log;
@@ -41,7 +42,7 @@ namespace AvengersUtd.Odyssey
 
         public static void Init()
         {
-            LogEvent.EngineEvent.Log(Resources.INFO_OE_Starting);
+            LogEvent.Engine.Log(Resources.INFO_OE_Starting);
 
             DeviceSettings deviceSettings = new DeviceSettings
                                           {
@@ -58,13 +59,13 @@ namespace AvengersUtd.Odyssey
                                       ClientSize = new Size(deviceSettings.ScreenWidth, deviceSettings.ScreenHeight),
                                       Text = "Odyssey11 Demo" 
                                   };
-
+            
             Context = new DeviceContext11(form.Handle, deviceSettings);
             OdysseyUI.SetupHooks(form);
             Global.FormOwner = form;
             HookEvents();
 
-            LogEvent.EngineEvent.Log(Resources.INFO_OE_Started);
+            LogEvent.Engine.Log(Resources.INFO_OE_Started);
 
         }
 
@@ -99,7 +100,9 @@ namespace AvengersUtd.Odyssey
             }
             catch (Exception ex)
             {
-                
+                CriticalEvent.UnhandledEvent.LogError(new TraceData(ex.TargetSite.DeclaringType,  ex.TargetSite), ex);
+                CurrentRenderer.Dispose();
+                Environment.Exit((int) EventCode.CriticalFault);
             }
         }
 

@@ -17,8 +17,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
 
         public bool this[Keys key]
         {
-
-            get { return keystate[(int)key]; }
+            get
+            {
+                return keystate[(int)key];
+            }
         }
 
         public void KeyDown(object sender, KeyEventArgs e)

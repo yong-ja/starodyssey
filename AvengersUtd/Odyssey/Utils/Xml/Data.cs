@@ -1,6 +1,7 @@
 #region Using directives
 
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -56,7 +57,7 @@ namespace AvengersUtd.Odyssey.Utils.Xml
                 xmlWriter.WriteComment(
                     string.Format(
                         "This is an Odyssey Mesh Declaration file, generated on {0}.\nPlease do not modify it if you don't know what you are doing. Visit the Odyssey website at http://www.avengersutd.com/wiki/ for more information.\n!",
-                        DateTime.Now.ToString("f"), Assembly.GetExecutingAssembly().GetName().Version.ToString(3)));
+                        DateTime.Now.ToString("f")));
                 xmlSerializer.Serialize(xmlWriter, obj, ns);
                 xmlWriter.WriteEndDocument();
                 xmlWriter.Flush();

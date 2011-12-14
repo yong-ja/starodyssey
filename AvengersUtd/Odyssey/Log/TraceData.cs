@@ -11,14 +11,12 @@ namespace AvengersUtd.Odyssey.Log
         public Type Type { get; private set; }
         public MethodBase Method { get; private set; }
         public ParameterInfo[] Parameters { get; private set; }
-        public object[] Values { get; private set; }
-
+       
         public TraceData(Type type, MethodBase method, params object[] values) : this()
         {
             Type = type;
             Method = method;
             Parameters = method.GetParameters();
-            Values = values;
         }
 
         public string MethodSignature 
@@ -28,7 +26,7 @@ namespace AvengersUtd.Odyssey.Log
                 string arguments = string.Empty;
                 for (int i = 0; i < Parameters.Length; i++)
                 {
-                    arguments += string.Format("{0} {1}={2}", Parameters[i].ParameterType.Name, Parameters[i].Name, Values[i] ?? "null");
+                    arguments += string.Format("{0} {1}", Parameters[i].ParameterType.Name, Parameters[i].Name);
                     if (i < Parameters.Length-1)
                         arguments += ", ";
                 }

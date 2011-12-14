@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using AvengersUtd.Odyssey.Properties;
 
 namespace AvengersUtd.Odyssey.Log
@@ -9,27 +10,18 @@ namespace AvengersUtd.Odyssey.Log
     public class LogEvent : AbstractLogEvent
     {
 
-        public static LogEvent EngineEvent = new LogEvent(Game.EngineTag, EventCode.LogMessage);
+        public static LogEvent Engine = new LogEvent(Game.EngineTag);
+        //public static LogEvent ObjectDisposing = new LogEvent(Game.EngineTag, Resources.INFO_OE_Disposing);
+        public static LogEvent ObjectDisposed = new LogEvent(Game.EngineTag, Resources.INFO_OE_Disposed);
 
-        public LogEvent(string source, EventCode code) : this(source, code, Resources.ERR_NoInformation)
+        public LogEvent(string source) : this(source, Resources.ERR_NoInformation)
         {}
 
-        public LogEvent(string source, EventCode code, string format) : base(source, code, TraceEventType.Information, format)
+        public LogEvent(string source, string format) : base(source, EventCode.LogMessage, TraceEventType.Information, format)
         {}
 
-        public void Log()
-        {
-            Log(Format);
-        }
 
-        public void Log(string message)
-        {
-            TraceSource.TraceEvent(EventType, Id, message);
-        }
 
-        public void Log(params object[] args)
-        {
-            TraceSource.TraceEvent(EventType, Id, string.Format(Format, args));
-        }
+
     }
 }

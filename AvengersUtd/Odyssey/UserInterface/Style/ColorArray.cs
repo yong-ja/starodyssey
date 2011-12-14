@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using SlimDX;
 
@@ -134,8 +135,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
 
         public ColorArray(Color4[] colors)
         {
-            if (colors.Length != ColorCount)
-                throw Error.IndexNotPresentInArray("ColorArray", colors.Length);
 
             colorArray = colors;
         }

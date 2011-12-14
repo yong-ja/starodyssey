@@ -1,67 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 
 namespace AvengersUtd.Odyssey.Log
 {
+
     public enum EventCode : int
     {
         LogMessage = 10001,
-        ArgumentException = 90001,
+        ArgumentException = 80001,
         ArgumentNull,
-        UnhandledException = 90000
+        UnhandledException = 90000,
+        CriticalFault,
+        ThreadAbort
     }
 
     public abstract class AbstractLogEvent
     {
         private readonly TraceSource ts;
 
-        private readonly string source;
-        private readonly EventCode code;
         private readonly int id;
-        private readonly string format;
-        private readonly TraceEventType eventType;
 
         public int Id
         {
             get { return id; }
         }
 
-        public TraceEventType EventType
-        {
-            get { return eventType; }
-        }
+        public EventCode EventCode { get; private set; }
 
-        protected string Source
-        {
-            get { return source; }
-        }
+        public TraceEventType EventType { get; private set; }
 
-        protected string Format
-        {
-            get { return format; }
-        }
+        protected string Source { get; private set; }
 
-        protected EventCode Code
-        {
-            get { return code; }
-        }
+        protected string Format { get; private set; }
 
         protected TraceSource TraceSource
         {
             get { return ts; }
         }
 
-        protected AbstractLogEvent(string source, EventCode code, TraceEventType eventType, string format)
+        protected AbstractLogEvent(string source, EventCode eventCode, TraceEventType eventType, string format)
         {
-            this.source = source;
-            this.code = code;
-            this.format = format;
-            this.eventType = eventType;
-            id = (int)code;
-            ts = new TraceSource(this.source);
+            Contract.Requires(!string.IsNullOrEmpty(source));
+
+            Source = source;
+            Format = format;
+            EventCode = eventCode;
+            EventType = eventType;
+            id = (int)eventCode;
+
+            ts = new TraceSource(this.Source);
+        }
+
+        public void Log()
+        {
+            Log(Format);
+        }
+
+        public void Log(string message)
+        {
+            TraceSource.TraceEvent(EventType, Id, message);
+        }
+
+        public void Log(params object[] args)
+        {
+            TraceSource.TraceEvent(EventType, Id, string.Format(Format, args));
         }
 
 

@@ -79,24 +79,6 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid command type specified. Use AddBaseCommand() instead..
-        /// </summary>
-        internal static string ERR_AddRenderCommand {
-            get {
-                return ResourceManager.GetString("ERR_AddRenderCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid update command specified. Use AddBaseCommand() or AddRenderCommand() instead.
-        /// </summary>
-        internal static string ERR_AddUpdateCommand {
-            get {
-                return ResourceManager.GetString("ERR_AddUpdateCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Argument {0}={1} is not valid..
         /// </summary>
         internal static string ERR_Argument {
@@ -241,6 +223,15 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Index {0}[{1}] with value {2} out of range.
+        /// </summary>
+        internal static string ERR_IndexNotInRange {
+            get {
+                return ResourceManager.GetString("ERR_IndexNotInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid number of vertices specified for the specified Shape value..
         /// </summary>
         internal static string ERR_InvalidNumVertices {
@@ -286,7 +277,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The new node is already a child of this node..
+        ///   Looks up a localized string similar to The node that was being added is already a child of this node.
         /// </summary>
         internal static string ERR_Node_AlreadyChild {
             get {
@@ -295,7 +286,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The newChild is an ancestor of this node..
+        ///   Looks up a localized string similar to The node that was being added is an ancestore of this node.
         /// </summary>
         internal static string ERR_Node_IsAncestor {
             get {
@@ -304,7 +295,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t add children to leaf nodes..
+        ///   Looks up a localized string similar to Cannot add children to leaf nodes.
         /// </summary>
         internal static string ERR_Node_IsLeaf {
             get {
@@ -313,7 +304,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Node is null..
+        ///   Looks up a localized string similar to Node is null.
         /// </summary>
         internal static string ERR_Node_IsNull {
             get {
@@ -322,7 +313,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The node is not a child of this node..
+        ///   Looks up a localized string similar to The node is not a child of this node.
         /// </summary>
         internal static string ERR_Node_NotChild {
             get {
@@ -385,15 +376,6 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target control must not be null..
-        /// </summary>
-        internal static string ERR_TargetControlNull {
-            get {
-                return ResourceManager.GetString("ERR_TargetControlNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The technique {1} was not found in {0} collection..
         /// </summary>
         internal static string ERR_TechniqueNotFound {
@@ -403,11 +385,29 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thread {0} aborted..
+        /// </summary>
+        internal static string ERR_Thread_Aborted {
+            get {
+                return ResourceManager.GetString("ERR_Thread_Aborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This node can only be added to a TransformNode..
         /// </summary>
         internal static string ERR_TNodeRequired {
             get {
                 return ResourceManager.GetString("ERR_TNodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target control must not be null..
+        /// </summary>
+        internal static string ERR_UI_TargetControlNull {
+            get {
+                return ResourceManager.GetString("ERR_UI_TargetControlNull", resourceCulture);
             }
         }
         
@@ -453,6 +453,24 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string INFO_OE_DeviceCreating {
             get {
                 return ResourceManager.GetString("INFO_OE_DeviceCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1} disposed.
+        /// </summary>
+        internal static string INFO_OE_Disposed {
+            get {
+                return ResourceManager.GetString("INFO_OE_Disposed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} disposing.
+        /// </summary>
+        internal static string INFO_OE_Disposing {
+            get {
+                return ResourceManager.GetString("INFO_OE_Disposing", resourceCulture);
             }
         }
         

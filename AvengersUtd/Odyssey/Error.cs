@@ -5,11 +5,23 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AvengersUtd.Odyssey.Properties;
 
 namespace AvengersUtd.Odyssey
 {
     internal static class Error
     {
+
+        internal static string IndexNotInRange(string varName,string arrayName, int value)
+        {
+            return string.Format(Resources.ERR_IndexNotInRange, varName, arrayName, value);
+        }
+
+        internal static string ArgumentInvalid(string argumentName, object value)
+        {
+            return string.Format(Resources.ERR_Argument, argumentName, value);
+        }
+
         #region Arguments
         internal static ArgumentException ArgumentInvalid(string argument, Type type, string method, string message = null, string objValue = null)
         {
@@ -37,14 +49,6 @@ namespace AvengersUtd.Odyssey
                         Properties.Resources.ERR_CreatingFromObject,
                         instance.Name, argument.Name));
         }
-
-        internal static ArgumentOutOfRangeException IndexNotPresentInArray(string arrayName, int element, string message = null)
-        {
-            return new ArgumentOutOfRangeException(arrayName, element,
-                string.IsNullOrEmpty(message) ? string.Format(Properties.Resources.ERR_ArrayElements, arrayName, element):message);
-        }
-
-
 
         internal static InvalidEnumArgumentException WrongCase(string param, string method, object value)
         {
