@@ -35,9 +35,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
             StyleManager.LoadTextDescription(Global.Resources + "Odyssey TextDescriptions.otd");
 
             PhongMaterial phong = new PhongMaterial();
+            WireframeMaterial wireframe = new WireframeMaterial();
 
-            MaterialNode mNode1 = new MaterialNode(phong);
-            MaterialNode mNode2 = new MaterialNode(phong);
+            MaterialNode mNode1 = new MaterialNode(wireframe);
+            MaterialNode mNode2 = new MaterialNode(wireframe);
             MaterialNode mNode3 = new MaterialNode(new SkyBoxMaterial());
             SkyBox skybox = new SkyBox();
             Sphere lightSphere = Primitive.CreateSphere(0.5f,4);
@@ -52,10 +53,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
             FixedNode fNode = new FixedNode {Position = sphere.PositionV3};
             FixedNode fNode2 = new FixedNode {Position = lightSphere.PositionV3};
             CameraAnchorNode coNode = new CameraAnchorNode();
-            Scene.Tree.RootNode.AppendChild(fNode);
+            //Scene.Tree.RootNode.AppendChild(fNode);
 
             Scene.Tree.RootNode.AppendChild(fNode2);
-            Scene.Tree.RootNode.AppendChild(coNode);
+            //Scene.Tree.RootNode.AppendChild(coNode);
             fNode.AppendChild(mNode1);
             fNode2.AppendChild(mNode2);
             coNode.AppendChild(mNode3);

@@ -176,7 +176,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public static void LoadTextDescription(string filename)
         {
             if (!File.Exists(filename))
-                Error.MessageMissingFile(filename, Properties.Resources.ERR_StyleNotFound);
+                Error.MessageMissingFile(Properties.Resources.ERR_StyleNotFound, filename);
 
             XmlTextDescription[] xmlcStyle;
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlTextDescription[]));
@@ -197,7 +197,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public static void LoadControlDescription(string filename)
         {
             if (!File.Exists(filename))
-                Error.MessageMissingFile(filename, Properties.Resources.ERR_StyleNotFound);
+                Error.MessageMissingFile(Properties.Resources.ERR_StyleNotFound, filename);
 
             XmlControlDescription[] xmlcStyle;
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlControlDescription[]));
