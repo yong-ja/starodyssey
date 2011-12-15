@@ -1,4 +1,7 @@
-﻿using System;
+﻿#region Using directives
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,13 +9,23 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ErrorCode = AvengersUtd.Odyssey.Properties.Resources;
 
+#endregion
+
 namespace AvengersUtd.Odyssey.Utils.Collections
 {
     public class NodeEventArgs : EventArgs
     {
-        int index;
-        int level;
-        INode node;
+        private readonly int index;
+        private readonly int level;
+        private readonly INode node;
+
+        public NodeEventArgs(INode node)
+        {
+            Contract.Requires(node != null);
+            index = node.Index;
+            level = node.Level;
+            this.node = node;
+        }
 
         public int Index
         {
@@ -28,40 +41,36 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             get { return node; }
         }
-
-        public NodeEventArgs(INode node)
-        {
-            Contract.Requires(node != null);
-            index = node.Index;
-            level = node.Level;
-            this.node = node;
-        }
     }
 
     [DebuggerDisplay("{GetType().Name} = {ToString()}")]
     public abstract class Node : INode, IEnumerable<INode>
     {
+        #region Delegates
+
         public delegate void NodeEventHandler(object sender, NodeEventArgs e);
+
+        #endregion
 
         #region Private fields
 
-        bool isLeaf;
-        int index;
-        int level;
-        INode parent;
-        INode nextSibling;
-        INode previousSibling;
-        INode firstChild;
-        INode lastChild;
+        private INode firstChild;
+        private int index;
+        private INode lastChild;
+        private int level;
+        private INode nextSibling;
+        private INode parent;
+        private INode previousSibling;
 
         protected EventHandlerList EventHandlerList { get; private set; }
+
         #endregion
 
         #region Events
 
-        static readonly object EventParentChanged;
-        static readonly object EventChildAdded;
-        static readonly object EventChildRemoved;
+        private static readonly object EventParentChanged;
+        private static readonly object EventChildAdded;
+        private static readonly object EventChildRemoved;
 
         public event NodeEventHandler ParentChanged
         {
@@ -83,24 +92,25 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnParentChanged(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventParentChanged];
+            NodeEventHandler handler = (NodeEventHandler) EventHandlerList[EventParentChanged];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnChildAdded(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventChildAdded];
+            NodeEventHandler handler = (NodeEventHandler) EventHandlerList[EventChildAdded];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnChildRemoved(object sender, NodeEventArgs e)
         {
-            NodeEventHandler handler = (NodeEventHandler)EventHandlerList[EventChildRemoved];
+            NodeEventHandler handler = (NodeEventHandler) EventHandlerList[EventChildRemoved];
             if (handler != null)
                 handler(this, e);
         }
+
         #endregion
 
         #region Constructor
@@ -116,32 +126,10 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             EventHandlerList = new EventHandlerList();
         }
+
         #endregion
 
         #region Properties
-        public bool HasChildNodes
-        {
-            get { return lastChild != null; }
-        }
-
-        public bool IsLeaf
-        {
-            get { return isLeaf; }
-            protected set { isLeaf = value; }
-        }
-
-        public bool HasNextSibling
-        {
-            get { return nextSibling != null; }
-        }
-
-        public int ChildrenCount
-        {
-            get
-            {
-                return ChildrenIterator.Count();
-            }
-        }
 
         public IEnumerable<INode> ChildrenIterator
         {
@@ -156,10 +144,26 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             }
         }
 
+        public bool HasChildNodes
+        {
+            get { return lastChild != null; }
+        }
+
+        public bool IsLeaf { get; protected set; }
+
+        public bool HasNextSibling
+        {
+            get { return nextSibling != null; }
+        }
+
+        public int ChildrenCount
+        {
+            get { return ChildrenIterator.Count(); }
+        }
+
         #endregion
-      
+
         #region Protected INode Properties
-        
 
         protected INode ParentNode
         {
@@ -185,9 +189,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             get { return previousSibling; }
         }
+
         #endregion
 
         #region Protected INode Methods
+
         protected virtual void OnAppendChild(INode newChild)
         {
             Contract.Requires<InvalidOperationException>(IsLeaf != true, ErrorCode.ERR_Node_IsLeaf);
@@ -197,7 +203,6 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
             if (!HasChildNodes)
             {
-
                 firstChild = lastChild = newChild;
                 newChild.Parent = this;
                 OnChildAdded(this, new NodeEventArgs(newChild));
@@ -207,7 +212,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                 OnInsertAfter(newChild, lastChild);
             }
         }
-       
+
         protected virtual void OnRemoveChild(INode oldChild)
         {
             Contract.Requires<ArgumentNullException>(oldChild != null, ErrorCode.ERR_Node_IsNull);
@@ -232,21 +237,12 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             }
             else
             {
-                INode previousNode = null;
-                INode nextNode = null;
-                foreach (Node children in ChildrenIterator)
-                {
-                    if (children == oldChild)
-                    {
-                        previousNode = oldChild.PreviousSibling;
-                        nextNode = oldChild.NextSibling;
-                        break;
-                    }
-                }
+                INode previousNode = oldChild.PreviousSibling;
+                INode nextNode = oldChild.NextSibling;
 
                 previousNode.NextSibling = nextNode;
                 nextNode.PreviousSibling = previousNode;
-                UpdateIndicesForward(nextNode, previousNode.Index +1);
+                UpdateIndicesForward(nextNode, previousNode.Index + 1);
             }
 
             OnChildRemoved(this, new NodeEventArgs(oldChild));
@@ -254,6 +250,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         protected virtual void OnReplaceChild(INode newChild, INode oldChild)
         {
+            Contract.Requires(HasChildNodes);
             Contract.Requires<ArgumentNullException>(newChild != null, ErrorCode.ERR_Node_IsNull);
             Contract.Requires<ArgumentNullException>(oldChild != null, ErrorCode.ERR_Node_IsNull);
             Contract.Requires<InvalidOperationException>(!IsNodeAncestorOf(newChild, this), ErrorCode.ERR_Node_IsAncestor);
@@ -273,7 +270,6 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                     firstChild = newChild;
                     firstChild.Index = 0;
                 }
-
             }
             else if (lastChild == oldChild)
             {
@@ -286,18 +282,9 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             }
             else
             {
-                INode previousNode = null;
-                INode nextNode = null;
-                foreach (Node children in ChildrenIterator)
-                {
-                    if (children == oldChild)
-                    {
-                        previousNode = oldChild.PreviousSibling;
-                        nextNode = oldChild.NextSibling;
-                        break;
-                    }
-                }
-
+                INode previousNode = oldChild.PreviousSibling;
+                INode nextNode = oldChild.NextSibling;
+              
                 previousNode.NextSibling = newChild;
                 nextNode.PreviousSibling = newChild;
                 newChild.PreviousSibling = previousNode;
@@ -337,9 +324,9 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             if (refNode == firstChild)
                 firstChild = newChild;
 
-           
+
             UpdateIndicesForward(newChild, refNode.Index);
-            
+
             newChild.Parent = this;
 
             OnChildAdded(this, new NodeEventArgs(newChild));
@@ -367,12 +354,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
             refNode.NextSibling = newChild;
             newChild.PreviousSibling = refNode;
-            
+
             UpdateIndicesForward(newChild, refNode.Index + 1);
-            
+
             newChild.Parent = this;
             OnChildAdded(this, new NodeEventArgs(newChild));
-
         }
 
         protected virtual void OnPrependChild(INode newChild)
@@ -393,8 +379,9 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Removes all children from this node.
+        ///   Removes all children from this node.
         /// </summary>
         public void RemoveAll()
         {
@@ -410,14 +397,17 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         {
             return string.Format("Level {0} - Index {1}", level, index);
         }
+
         #endregion
 
+        
         #region Static Methods
+
         /// <summary>
-        /// Checks whether the node is a child of the specified parent node.
+        ///   Checks whether the node is a child of the specified parent node.
         /// </summary>
-        /// <param name="childNode">The child node.</param>
-        /// <param name="parentNode">The parent node.</param>
+        /// <param name = "childNode">The child node.</param>
+        /// <param name = "parentNode">The parent node.</param>
         /// <returns><c>True</c> if childNode is a child of parentNode. <c>False</c> otherwise.</returns>
         public static bool IsNodeChildOf(INode childNode, INode parentNode)
         {
@@ -427,11 +417,11 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         }
 
         /// <summary>
-        /// Checks whether the node is a parent of the specified node or whether the two nodes are
-        /// the same.
+        ///   Checks whether the node is a parent of the specified node or whether the two nodes are
+        ///   the same.
         /// </summary>
-        /// <param name="node">The child node.</param>
-        /// <param name="refNode">The parent node.</param>
+        /// <param name = "node">The child node.</param>
+        /// <param name = "refNode">The parent node.</param>
         /// <returns><c>True</c> if node is a parent of refNode. <c>False</c> otherwise.</returns>
         public static bool IsNodeAncestorOf(INode node, INode refNode)
         {
@@ -476,6 +466,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                 i--;
             }
         }
+
         #endregion
 
         #region Visit algorithms
@@ -491,7 +482,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                 foreach (INode node in PreOrderVisit(headNode.NextSibling))
                     yield return node;
         }
-       
+
         public static IEnumerable<INode> PostOrderVisit(INode headNode)
         {
             if (headNode.HasChildNodes)
@@ -509,30 +500,35 @@ namespace AvengersUtd.Odyssey.Utils.Collections
                 }
             }
             yield return headNode;
-        } 
-        
+        }
+
+        #endregion
+
+        #region IEnumerable<INode> Members
+
+        IEnumerator<INode> IEnumerable<INode>.GetEnumerator()
+        {
+            return ((INode) this).ChildrenIterator.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<INode>) this).GetEnumerator();
+        }
+
         #endregion
 
         #region INode Members
 
         int INode.Index
         {
-            get
-            {
-                return index;
-            }
-            set
-            {
-                index = value;
-            }
+            get { return index; }
+            set { index = value; }
         }
 
         INode INode.Parent
         {
-            get
-            {
-                return parent;
-            }
+            get { return parent; }
             set
             {
                 if (parent != value)
@@ -548,30 +544,18 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         int INode.Level
         {
             get { return level; }
-            set
-            {
-                level = value;
-            }
+            set { level = value; }
         }
 
         INode INode.PreviousSibling
         {
-            get
-            {
-                return previousSibling;
-            }
-            set
-            {
-                previousSibling = value;
-            }
+            get { return previousSibling; }
+            set { previousSibling = value; }
         }
 
         INode INode.NextSibling
         {
-            get
-            {
-                return nextSibling;
-            }
+            get { return nextSibling; }
             set { nextSibling = value; }
         }
 
@@ -587,62 +571,37 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         IEnumerable<INode> INode.ChildrenIterator
         {
-            get
-            {
-                return ChildrenIterator;
-            }
+            get { return ChildrenIterator; }
         }
 
         void INode.AppendChild(INode newNode)
         {
-            OnAppendChild(newNode );
+            OnAppendChild(newNode);
         }
 
         void INode.InsertBefore(INode newChild, INode refNode)
         {
-            OnInsertBefore(newChild , refNode );
+            OnInsertBefore(newChild, refNode);
         }
 
         void INode.InsertAfter(INode newChild, INode refNode)
         {
-            OnInsertAfter(newChild , refNode );
+            OnInsertAfter(newChild, refNode);
         }
 
         void INode.RemoveChild(INode oldChild)
         {
-            OnRemoveChild(oldChild );
+            OnRemoveChild(oldChild);
         }
 
         void INode.ReplaceChild(INode newChild, INode oldChild)
         {
-            OnReplaceChild(newChild , oldChild );
+            OnReplaceChild(newChild, oldChild);
         }
 
         void INode.PrependChild(INode newChild)
         {
-            OnPrependChild(newChild );
-        }
-
-        #endregion
-
-
-
-
-        #region IEnumerable<INode> Members
-
-        IEnumerator<INode> IEnumerable<INode>.GetEnumerator()
-        {
-            foreach (INode node in ((INode) this).ChildrenIterator)
-                yield return node;
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-           return ((IEnumerable<INode>) this).GetEnumerator();
+            OnPrependChild(newChild);
         }
 
         #endregion
