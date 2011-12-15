@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using AvengersUtd.Odyssey.Log;
+using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.UserInterface;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering

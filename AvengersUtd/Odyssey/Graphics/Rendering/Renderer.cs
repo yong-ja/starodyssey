@@ -1,6 +1,6 @@
 using System;
 using System.Drawing;
-using AvengersUtd.Odyssey.Log;
+using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
