@@ -1,20 +1,21 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿#region Using directives
+
+using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Drawing;
-using System.Reflection;
-using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Meshes;
-using AvengersUtd.Odyssey.Log;
+using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
-using SlimDX.Direct3D11;
 using SlimDX.DXGI;
-using Debug = System.Diagnostics.Debug;
+using SlimDX.Direct3D11;
 using Device = SlimDX.Direct3D11.Device;
 using Resource = SlimDX.Direct3D11.Resource;
 using Resources = AvengersUtd.Odyssey.Properties.Resources;
+
+#endregion
 
 namespace AvengersUtd.Odyssey
 {
@@ -22,14 +23,15 @@ namespace AvengersUtd.Odyssey
     {
         public const Format DefaultIndexFormat = Format.R16_UInt;
 
-        private readonly EventHandlerList eventHandlerList;
-        private bool disposed;
         private readonly Device device;
-        private readonly DeviceContext immediate;  
-        private readonly SwapChain swapChain;
+        private readonly EventHandlerList eventHandlerList;
         private readonly Factory factory;
+        private readonly DeviceContext immediate;
+        private readonly SwapChain swapChain;
+        private bool disposed;
 
         #region Events
+
         private static readonly object EventDeviceResize;
         private static readonly object EventDeviceDisposing;
         private static readonly object EventDeviceSuspend;
@@ -37,8 +39,8 @@ namespace AvengersUtd.Odyssey
 
         public event EventHandler<ResizeEventArgs> DeviceResize
         {
-            add { eventHandlerList.AddHandler(EventDeviceResize, value);}
-            remove { eventHandlerList.RemoveHandler(EventDeviceResize, value);}
+            add { eventHandlerList.AddHandler(EventDeviceResize, value); }
+            remove { eventHandlerList.RemoveHandler(EventDeviceResize, value); }
         }
 
         public event EventHandler<EventArgs> DeviceDisposing
@@ -61,31 +63,32 @@ namespace AvengersUtd.Odyssey
 
         protected virtual void OnDeviceResize(ResizeEventArgs e)
         {
-            EventHandler<ResizeEventArgs> handler = (EventHandler<ResizeEventArgs>)eventHandlerList[EventDeviceResize];
+            EventHandler<ResizeEventArgs> handler = (EventHandler<ResizeEventArgs>) eventHandlerList[EventDeviceResize];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnDeviceDisposing(EventArgs e)
         {
-            EventHandler<EventArgs> handler = (EventHandler<EventArgs>)eventHandlerList[EventDeviceDisposing];
+            EventHandler<EventArgs> handler = (EventHandler<EventArgs>) eventHandlerList[EventDeviceDisposing];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnDeviceSuspend(EventArgs e)
         {
-            EventHandler<EventArgs> handler = (EventHandler<EventArgs>)eventHandlerList[EventDeviceSuspend];
+            EventHandler<EventArgs> handler = (EventHandler<EventArgs>) eventHandlerList[EventDeviceSuspend];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnDeviceResume(EventArgs e)
         {
-            EventHandler<EventArgs> handler = (EventHandler<EventArgs>)eventHandlerList[EventDeviceResume];
+            EventHandler<EventArgs> handler = (EventHandler<EventArgs>) eventHandlerList[EventDeviceResume];
             if (handler != null)
                 handler(this, e);
-        } 
+        }
+
         #endregion
 
         #region Properties
@@ -115,6 +118,7 @@ namespace AvengersUtd.Odyssey
         {
             get { return immediate; }
         }
+
         #endregion
 
         static DeviceContext11()
@@ -160,6 +164,22 @@ namespace AvengersUtd.Odyssey
             LogEvent.Engine.Log(Resources.INFO_OE_DeviceCreated);
         }
 
+        #region IDisposable Members
+
+        /// <summary>
+        ///   Disposes all managed and unmanaged resources of this object.
+        /// </summary>
+        /// <remarks>
+        ///   Be sure to call this method when you don't need this control anymore.
+        /// </remarks>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
         private void CreateTargets()
         {
             using (Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(swapChain, 0))
@@ -198,7 +218,7 @@ namespace AvengersUtd.Odyssey
             DepthStencilView.Dispose();
             SwapChainDescription swapChainDesc = swapChain.Description;
             Result result = swapChain.ResizeBuffers(swapChainDesc.BufferCount, newSize.Width, newSize.Height,
-                swapChainDesc.ModeDescription.Format, swapChainDesc.Flags);
+                                                    swapChainDesc.ModeDescription.Format, swapChainDesc.Flags);
             //result = swapChain.ResizeTarget(swapChain.Description.ModeDescription);
             CreateTargets();
             OnDeviceResize(new ResizeEventArgs(previousSize, newSize, fullScreen));
@@ -206,19 +226,7 @@ namespace AvengersUtd.Odyssey
             OnDeviceResume(EventArgs.Empty);
         }
 
-        #region IDisposable Members
-
-        /// <summary>
-        /// Disposes all managed and unmanaged resources of this object.
-        /// </summary>
-        /// <remarks>Be sure to call this method when you don't need this control anymore.</remarks>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose (bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!disposed)
             {
@@ -230,14 +238,13 @@ namespace AvengersUtd.Odyssey
                     DepthStencilView.Dispose();
                     swapChain.Dispose();
                     factory.Dispose();
-                    
+
                     device.ImmediateContext.ClearState();
                     device.ImmediateContext.Flush();
 
                     device.Dispose();
                     BaseMesh<TexturedMeshVertex>.DebugBuffers();
-               }
-
+                }
             }
             disposed = true;
         }
@@ -246,9 +253,5 @@ namespace AvengersUtd.Odyssey
         {
             Dispose(false);
         }
-
-        #endregion
-
-        
     }
 }

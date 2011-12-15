@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Threading;
 using AvengersUtd.Odyssey.Graphics.Rendering;
-using AvengersUtd.Odyssey.Log;
+using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.Settings;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Text;
