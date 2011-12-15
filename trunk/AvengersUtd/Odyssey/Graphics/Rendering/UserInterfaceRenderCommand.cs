@@ -46,9 +46,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly InputLayout textLayout;
         private readonly TextMaterial textMaterial;
         private readonly MaterialNode textMaterialNode;
+        private readonly UserInterfaceNode uiNode;
         private readonly EffectPass textPass;
         private readonly EffectTechnique textTechnique;
 
+        public UserInterfaceRenderCommand(Renderer renderer, UserInterfaceNode uiNode, Hud hud) : base(renderer,uiNode)
+        {
+            this.uiNode = uiNode;
+            this.hud = hud;
+            UpdateSprites(hud.SpriteControls);
+        }
+       
         public UserInterfaceRenderCommand(Renderer renderer, MaterialNode uiMaterialNode,
             RenderableCollection uiRCollection, 
             MaterialNode textMaterialNode, Hud hud) : base(renderer, uiMaterialNode, uiRCollection)
@@ -113,10 +121,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         void UpdateSprites(IEnumerable<ISpriteObject> spriteControls)
         {
-            textMaterialNode.RemoveAll();
+            //textMaterialNode.RemoveAll();
+            uiNode.te
             foreach (ISpriteObject spriteControl in spriteControls)
                 textMaterialNode.AppendChild(new RenderableNode(spriteControl.RenderableObject));
-            TextItems = textMaterialNode.RenderableCollection;
+            //TextItems = textMaterialNode.RenderableCollection;
+            TextItems = uiNode.GetTextNodes();
         }
 
         protected override void OnDispose()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 using SlimDX.Direct3D9;
 using AvengersUtd.Odyssey.Graphics.Materials;
@@ -11,7 +12,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class RenderableNode : SceneNode
     {
-        const string NodeTag="RN_";
         static int count;
 
         TransformNode tParent;
@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             get { return tParent == null ? Matrix.Identity : tParent.AbsoluteWorldMatrix; }
         }
 
-        public AbstractMaterial CurrentMaterial
+        public IMaterial CurrentMaterial
         {
             get { return mParent.Material; }
         }
@@ -39,8 +39,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         public RenderableNode(ISpriteObject entityObject) : this(entityObject.RenderableObject)
         {}
 
-        public RenderableNode(IRenderable renderableObject) :
-            base(string.Format("{0}{1}",NodeTag, ++count), SceneNodeType.Renderable)
+        public RenderableNode(IRenderable renderableObject)
+            : base(Text.GetCapitalLetters(typeof(RenderableNode).GetType().Name) + '_' + ++count,  SceneNodeType.Renderable)
         {
             IsLeaf = true;
             this.RenderableObject = renderableObject;

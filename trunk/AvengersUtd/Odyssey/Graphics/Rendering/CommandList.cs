@@ -6,7 +6,7 @@ using System.Text;
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class CommandList<TCommand> : Collection<TCommand>
-        where TCommand : BaseCommand
+        where TCommand : ICommand
     {
         protected override void ClearItems()
         {

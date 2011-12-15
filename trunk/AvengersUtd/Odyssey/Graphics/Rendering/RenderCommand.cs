@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
@@ -14,14 +15,28 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected Renderer Renderer { get; private set; }
         protected MaterialNode MaterialNode {get; private set; }
         protected InputLayout InputLayout { get; private set; }
-        protected AbstractMaterial Material { get; private set; }
+        protected IMaterial Material { get; private set; }
         protected EffectTechnique Technique { get; private set; }
         protected EffectPass Pass { get; private set; }
 
         public RenderableCollection Items { get; internal set; }
 
+        public RenderCommand(Renderer renderer, MaterialNode mNode) : base(CommandType.Render)
+        {
+            Contract.Requires<NullReferenceException>(renderer != null);
+            Contract.Requires<NullReferenceException>(mNode != null);
+            Renderer = renderer;
+            MaterialNode = mNode;
+            Material = MaterialNode.Material;
+            Technique = Material.EffectDescription.Technique;
+            Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
+            Items = new RenderableCollection(Material.RenderableCollectionDescription, MaterialNode.SelectDescendants<RenderableNode>());
+            InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
+            
+        }
+
         public RenderCommand(Renderer renderer,MaterialNode mNode, RenderableCollection sceneNodeCollection)
-            : base(Graphics.CommandType.Render)
+            : base(CommandType.Render)
         {
             Renderer = renderer;
             Items = sceneNodeCollection;

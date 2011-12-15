@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 {
     public class IncludeHandler : Include
     {
-        private string effectFile;
+        private readonly string effectFile;
         public IncludeHandler(string effectFile)
         {
             this.effectFile = effectFile;

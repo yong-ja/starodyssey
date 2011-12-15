@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class ConstantRotationNode : TransformNode
     {
-        const string nodeTag = "CrN_";
         static int count;
         float rotationDelta;
         double currentRotation;
@@ -41,8 +41,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         }
         #endregion
 
-        public ConstantRotationNode(Vector3 axis, float rotationDelta) :
-            base(nodeTag + (++count), true)
+        public ConstantRotationNode(Vector3 axis, float rotationDelta)
+            : base(Text.GetCapitalLetters(typeof(ConstantRotationNode).GetType().Name) + '_' + ++count, true)
         {
             this.rotationDelta = rotationDelta;
             this.axis = axis;

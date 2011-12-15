@@ -1,12 +1,12 @@
 ﻿using System;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
+using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class CameraAnchorNode : TransformNode
     {
-        private const string NodeTag = "CA_";
         private static int count;
         private readonly QuaternionCam camera;
 
@@ -16,7 +16,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         }
 
         public CameraAnchorNode(QuaternionCam camera)
-            : base(NodeTag + ++count, true)
+            : base(Text.GetCapitalLetters(typeof(CameraAnchorNode).GetType().Name) + '_' + ++count, true)
         {
             this.camera = camera;
             camera.CameraMoved += CameraMoved;

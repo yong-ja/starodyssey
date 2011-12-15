@@ -42,8 +42,8 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected AbstractMaterial(string filename)
         {
             EffectDescription = new EffectDescription(filename);
-            PreRenderStateList = new List<BaseCommand>();
-            PostRenderStateList = new List<BaseCommand>();
+            PreRenderStateList = new List<ICommand>();
+            PostRenderStateList = new List<ICommand>();
         }
 
         #region Properties
@@ -59,11 +59,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// </summary>
         public virtual EffectDescription EffectDescription { get; private set; }
         public RenderableCollectionDescription RenderableCollectionDescription { get; protected set; }
+        
+        protected List<ICommand> PreRenderStateList { get; private set; }
+        protected List<ICommand> PostRenderStateList { get; private set; }
 
-        public MaterialNode OwningNode { get; internal set; }
-
-        protected List<BaseCommand> PreRenderStateList { get; private set; }
-        protected List<BaseCommand> PostRenderStateList { get; private set; }
+        public MaterialNode ParentNode { get; private set; }
 
         public bool RequirePreRenderStateChange
         {
@@ -75,12 +75,12 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             get { return PostRenderStateList.Count > 0; }
         }
 
-        public BaseCommand[] PreRenderStates
+        public ICommand[] PreRenderStates
         {
             get { return PreRenderStateList.ToArray(); }
         }
 
-        public BaseCommand[] PostRenderStates
+        public ICommand[] PostRenderStates
         {
             get { return PostRenderStateList.ToArray(); }
         }
@@ -139,6 +139,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         public virtual void ApplyDynamicParameters(Renderer rendererContext)
         {
             EffectDescription.ApplyDynamicParameters(rendererContext);
+        }
+
+        void IMaterial.SetParentNode(MaterialNode mNode)
+        {
+            ParentNode = mNode;
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class CameraOverlayNode : TransformNode
     {
-        private const string NodeTag = "CO_";
         private static int count;
         private readonly QuaternionCam camera;
 
 
         public CameraOverlayNode(QuaternionCam camera)
-            : base(NodeTag + ++count, true)
+            : base(Text.GetCapitalLetters(typeof(CameraOverlayNode).GetType().Name) + '_' + ++count, true)
         {
             this.camera = camera;
             camera.CameraMoved += CameraMoved;

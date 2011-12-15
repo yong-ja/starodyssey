@@ -41,7 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
 
 
                     using (ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.Debug,
-                                                                   EffectFlags.None, null, new IncludeHandler(), out compilationErrors))
+                                                                   EffectFlags.None, null, new IncludeHandler(filename), out compilationErrors))
                     {
                         Effect effect = new Effect(Game.Context.Device, byteCode);
                         EffectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
