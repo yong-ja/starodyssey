@@ -264,4 +264,7 @@
   <data name="ERR_Thread_Aborted" xml:space="preserve">
     <value>Thread {0} aborted.</value>
   </data>
+  <data name="ERR_IO_EffectMissingIncludeFile" xml:space="preserve">
+    <value>Include file {0} is missing from effect file {1}</value>
+  </data>
 </root>

@@ -211,17 +211,18 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             MaterialNode mTextNode = new MaterialNode(textMaterial);
             MaterialNode mUINode = new MaterialNode(uiMaterial);
+            UserInterfaceNode mUiNode = new UserInterfaceNode();
             RenderableNode rNode = new RenderableNode(InterfaceMesh);
             CameraOverlayNode caNode = new CameraOverlayNode(renderer.Camera);
 
-            caNode.AppendChild(mUINode);
-            caNode.AppendChild(mTextNode);
+            caNode.AppendChild(mUiNode);
+            //caNode.AppendChild(mTextNode);
 
-            mUINode.AppendChild(rNode);
+            mUiNode.AppendChild(rNode);
 
-            uiRCommand = new UserInterfaceRenderCommand
-                (renderer, mUINode, mUINode.RenderableCollection,
-                 mTextNode, this);
+            uiRCommand = new UserInterfaceRenderCommand(renderer,  mUiNode, this);
+                //(renderer, mUINode, mUINode.RenderableCollection,
+                // mTextNode, this);
 
             uiUCommand = new UserInterfaceUpdateCommand(this, uiRCommand);
 

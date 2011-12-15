@@ -241,6 +241,15 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include file {0} is missing from effect file {1}.
+        /// </summary>
+        internal static string ERR_IO_EffectMissingIncludeFile {
+            get {
+                return ResourceManager.GetString("ERR_IO_EffectMissingIncludeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key not found in {0}: {1}.
         /// </summary>
         internal static string ERR_KeyNotFound {
