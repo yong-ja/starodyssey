@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class EllipticalOrbitNode : TransformNode
     {
-        const string nodeTag = "EoN_";
         static int count;
         double semiMajorAxis;
         double semiMinorAxis;
@@ -50,7 +50,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
 
         public EllipticalOrbitNode(double semiMajorAxis, double semiMinorAxis, double eccentricity, double orbitalDelta)
-            : base(nodeTag + (++count), true)
+            : base(Text.GetCapitalLetters(typeof(EllipticalOrbitNode).GetType().Name) + '_' + ++count, true)
         {
             this.semiMajorAxis = semiMajorAxis;
             this.semiMinorAxis = semiMinorAxis;

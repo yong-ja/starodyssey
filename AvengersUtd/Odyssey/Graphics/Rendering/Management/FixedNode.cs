@@ -1,4 +1,5 @@
-﻿using AvengersUtd.Odyssey.Utils.Collections;
+﻿using AvengersUtd.Odyssey.Utils;
+using AvengersUtd.Odyssey.Utils.Collections;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
@@ -6,11 +7,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
     public sealed class FixedNode : TransformNode
     {
         static int count;
-        const string NodeTag = "FN_";
 
         #region Constructors
         public FixedNode()
-            : base(NodeTag + (++count), false)
+            : base(Text.GetCapitalLetters(typeof(FixedNode).GetType().Name) + '_' + ++count, false)
         {}
         #endregion
 

@@ -1,32 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Contracts;
+﻿#region Using directives
+
+using System;
 using System.Linq;
-using System.Text;
+using AvengersUtd.Odyssey.Utils;
 using AvengersUtd.Odyssey.Utils.Collections;
+
+#endregion
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
-  
     public abstract class SceneNode : Node
     {
-       
         #region Private Fields
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        ///   Gets or sets the label for this node
+        /// </summary>
+        /// <value>
+        ///   A <see cref = "string" /> that contains the label of the node.
+        /// </value>
         public string Label { get; set; }
 
         public SceneNodeType NodeType { get; private set; }
 
-        public bool Inited
-        {
-            get;
-            protected set;
-        }
+        public bool Inited { get; protected set; }
+
 
         #endregion
 
@@ -46,7 +48,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             if (!sNode.Inited)
                 sNode.Init();
         }
-
 
         #endregion
 
@@ -94,13 +95,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         protected SceneNode(string label, SceneNodeType nodeType)
         {
-            this.Label = label;
-            this.NodeType = nodeType;
+            Label = label;
+            NodeType = nodeType;
         }
 
         protected SceneNode(SceneNodeType nodeType) : this(nodeType.ToString(), nodeType)
         {
         }
+
         #endregion
 
         #region Base Node Methods
@@ -111,48 +113,48 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         }
 
         /// <summary>
-        /// Removes the node from this node's children.
+        ///   Removes the node from this node's children.
         /// </summary>
-        /// <param name="oldChild">The node to remove.</param>
+        /// <param name = "oldChild">The node to remove.</param>
         public void RemoveChild(SceneNode oldChild)
         {
             OnRemoveChild(oldChild);
         }
 
         /// <summary>
-        /// Replaces a node with another one.
+        ///   Replaces a node with another one.
         /// </summary>
-        /// <param name="newChild">The new node.</param>
-        /// <param name="oldChild">The node to be replaced.</param>
+        /// <param name = "newChild">The new node.</param>
+        /// <param name = "oldChild">The node to be replaced.</param>
         public void ReplaceChild(SceneNode newChild, SceneNode oldChild)
         {
             OnReplaceChild(newChild, oldChild);
         }
 
         /// <summary>
-        /// Inserts a new node immediately before the referenced one.
+        ///   Inserts a new node immediately before the referenced one.
         /// </summary>
-        /// <param name="newChild">The new node.</param>
-        /// <param name="refNode">The referenced node.</param>
+        /// <param name = "newChild">The new node.</param>
+        /// <param name = "refNode">The referenced node.</param>
         public void InsertBefore(SceneNode newChild, SceneNode refNode)
         {
             OnInsertBefore(newChild, refNode);
         }
 
         /// <summary>
-        /// Inserts a new node immediately after the referenced one.
+        ///   Inserts a new node immediately after the referenced one.
         /// </summary>
-        /// <param name="newChild">The new node.</param>
-        /// <param name="refNode">The referenced node.</param>
+        /// <param name = "newChild">The new node.</param>
+        /// <param name = "refNode">The referenced node.</param>
         public void InsertAfter(SceneNode newChild, Node refNode)
         {
             OnInsertAfter(newChild, refNode);
         }
 
         /// <summary>
-        /// Inserts the specified node before every other node.
+        ///   Inserts the specified node before every other node.
         /// </summary>
-        /// <param name="newChild">The new child node.</param>
+        /// <param name = "newChild">The new child node.</param>
         public void PrependChild(SceneNode newChild)
         {
             OnPrependChild(newChild);
@@ -175,21 +177,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             return result;
         }
 
-        public SceneNodeCollection<T> SelectNodes<T>(Predicate<T> predicate)
+        public SceneNodeCollection<T> SelectDescendants<T>(Predicate<T> predicate)
             where T : SceneNode
         {
             SceneNodeCollection<T> nodeCollection = new SceneNodeCollection<T>();
-            foreach (INode node in Node.PreOrderVisit(this))
+            foreach (T node in PreOrderVisit(this).OfType<T>().Where(node => node != null && predicate(node)))
             {
-                T nodeT = node as T;
-                if (nodeT != null && predicate(nodeT))
-                    nodeCollection.Add(nodeT);
+                nodeCollection.Add(node);
             }
 
             return nodeCollection;
         }
 
-        public SceneNodeCollection<T> SelectNodes<T>()
+        public SceneNodeCollection<T> SelectDescendants<T>()
             where T : SceneNode
         {
             SceneNodeCollection<T> nodeCollection = new SceneNodeCollection<T>();
@@ -204,14 +204,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         #endregion
 
         #region Static Methods
+
         /// <summary>
-        /// Finds first node of type TNode that is parent of startingNode.
+        ///   Finds first node of type TNode that is parent of startingNode.
         /// </summary>
-        /// <typeparam name="TNode">The type of the Node, derived from SceneNode.</typeparam>
-        /// <param name="startingNode">The node from where to start searching.</param>
+        /// <typeparam name = "TNode">The type of the Node, derived from SceneNode.</typeparam>
+        /// <param name = "startingNode">The node from where to start searching.</param>
         /// <returns>The node of type T if found, otherwise null.</returns>
         public static TNode FindFirstTParentNode<TNode>(SceneNode startingNode)
-            where TNode:SceneNode
+            where TNode : SceneNode
         {
             SceneNode node = startingNode;
             while (node != null)
@@ -226,10 +227,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         }
 
         /// <summary>
-        /// Finds first node of type TNode that is a child of startingNode.
+        ///   Finds first node of type TNode that is a child of startingNode.
         /// </summary>
-        /// <typeparam name="TNode">The type of the Node, derived from SceneNode.</typeparam>
-        /// <param name="startingNode">The node from where to start searching.</param>
+        /// <typeparam name = "TNode">The type of the Node, derived from SceneNode.</typeparam>
+        /// <param name = "startingNode">The node from where to start searching.</param>
         /// <returns>The node of type T if found, otherwise null.</returns>
         public static TNode FindFirstTChildNode<TNode>(SceneNode startingNode)
             where TNode : SceneNode
@@ -243,9 +244,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
                     return tNode;
             }
             return null;
-
         }
-        #endregion
 
+        #endregion
     }
 }

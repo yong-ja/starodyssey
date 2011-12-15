@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Utils;
 using AvengersUtd.Odyssey.Utils.Collections;
 using SlimDX;
 
@@ -9,13 +10,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class FreeTransformNode : TransformNode
     {
-        const string nodeTag = "FtN_";
         static int count;
 
         public RenderableNode LeadNode { get; set; }
 
         public FreeTransformNode()
-            : base(nodeTag + (++count), true)
+            : base(Text.GetCapitalLetters(typeof(FreeTransformNode).GetType().Name) + '_' + ++count, true)
         {
         }
 

@@ -57,7 +57,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddBaseCommands(ICommand[] commands)
         {
-            foreach (BaseCommand command in commands)
+            foreach (ICommand command in commands)
                 AddBaseCommand(command);
         }
 
@@ -72,8 +72,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddRenderCommand(MaterialNode mNode, RenderableCollection rNodeCollection)
         {
-           
-            Type renderCommandType = mNode.RenderableCollection.Description.PreferredRenderCommandType;
+
+            Type renderCommandType = rNodeCollection.Description.PreferredRenderCommandType;
             RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {mNode, rNodeCollection});
             rCommand.Init();
             commandList.AddLast(rCommand);
@@ -88,7 +88,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             commandList.AddLast(rCommand);
         }
 
-        public void RunCommand(BaseCommand command, bool waitRender=false)
+        public void RunCommand(ICommand command, bool waitRender=false)
         {
             if (waitRender)
                 Game.RenderEvent.Wait();

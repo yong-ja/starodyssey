@@ -55,16 +55,17 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             CommandManager.Updater.AddRecurrentTask(new RecurrentTask(TaskType.SceneTreeUpdate, Tree.UpdateAllNodes, 1));
             renderMapper.Clear();
+            Tree.Reset();
 
             foreach (SceneNode node in Node.PostOrderVisit(Tree.RootNode))
             {
                 RenderableNode rNode = node as RenderableNode;
                 if (rNode == null) continue;
 
-                AbstractMaterial currentMaterial = rNode.CurrentMaterial;
+                IMaterial currentMaterial = rNode.CurrentMaterial;
                 if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
                 {
-                    renderMapper.Add(currentMaterial.OwningNode,
+                    renderMapper.Add(currentMaterial.ParentNode,
                         new RenderableCollection(currentMaterial.RenderableCollectionDescription));
                 }
                 renderMapper[currentMaterial.TechniqueName].Add(rNode);
@@ -85,7 +86,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Display()
         {
-            foreach (BaseCommand command in CommandManager.Commands)
+            foreach (ICommand command in CommandManager.Commands)
             {
                 command.Execute();
             }

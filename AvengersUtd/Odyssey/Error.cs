@@ -59,7 +59,7 @@ namespace AvengersUtd.Odyssey
         internal static KeyNotFoundException KeyNotFound(string key, string collection, string message=null)
         {
             if (message == null)
-                message = Properties.Resources.ERR_KeyNotFound;
+                message = Resources.ERR_KeyNotFound;
 
             return new KeyNotFoundException(string.Format(message, collection, key));
         }
@@ -74,10 +74,10 @@ namespace AvengersUtd.Odyssey
             return new InvalidOperationException(message);
         }
 
-        internal static void MessageMissingFile(string filename, string message)
+        internal static void MessageMissingFile(string format, string filename, params object[] args)
         {
-            message = string.Format(message, filename);
-            MessageBox.Show(message, Properties.Resources.ERR_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string message = string.Format(format, filename, args);
+            MessageBox.Show(message, Resources.ERR_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }

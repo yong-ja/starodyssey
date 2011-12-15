@@ -10,9 +10,19 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public interface IMaterial
     {
-        MaterialNode OwningNode { get; }
         EffectDescription EffectDescription { get; }
         void ApplyDynamicParameters(Renderer rendererContext);
-        
+        MaterialNode ParentNode { get; }
+        void SetParentNode(MaterialNode mNode);
+
+        bool RequirePreRenderStateChange { get; }
+        bool RequirePostRenderStateChange { get; }
+        string TechniqueName { get; }
+        ICommand[] PreRenderStates {get;}
+        ICommand[] PostRenderStates {get;}
+        RenderableCollectionDescription RenderableCollectionDescription { get; }
+
+        void InitParameters(Renderer renderer);
+        void ApplyInstanceParameters(IRenderable renderableObject);
     }
 }

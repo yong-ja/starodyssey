@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AvengersUtd.Odyssey.Utils;
 using AvengersUtd.Odyssey.Utils.Collections;
 using AvengersUtd.Odyssey.Graphics.Materials;
 
@@ -8,8 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
     public class MaterialNode : SceneNode
     {
         static int count;
-        const string NodeTag = "MAT_";
-        AbstractMaterial material;
+        IMaterial material;
 
         #region Events
         static readonly object EventMaterialChanged;
@@ -36,16 +36,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             EventMaterialChanged = new object();
         }
 
-        public MaterialNode(AbstractMaterial material)
-            : base(NodeTag + (++count), SceneNodeType.Material)
+        public MaterialNode(IMaterial material)
+            : base(Text.GetCapitalLetters(typeof(FreeTransformNode).GetType().Name) + '_' + ++count, SceneNodeType.Material)
         {
-            this.material = material;
-            material.OwningNode = this;
+            this.Material = material;
+
         }
 
         #endregion
 
-        public AbstractMaterial Material
+        public IMaterial Material
         {
             get { return material; }
             set {
@@ -55,17 +55,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             }
         }
 
-        public RenderableCollection RenderableCollection
+        public override void Init()
         {
-            get
-            {
-                RenderableCollection rCollection = new RenderableCollection(material.RenderableCollectionDescription);
-                foreach (RenderableNode rNode in PostOrderVisit(this).OfType<RenderableNode>())
-                {
-                    rCollection.Add(rNode);
-                }
-                return rCollection;
-            }
+            material.SetParentNode(this);
+            base.Init();
         }
 
         public override void Update()

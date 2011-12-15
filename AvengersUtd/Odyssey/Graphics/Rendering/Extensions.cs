@@ -9,9 +9,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public static class Extensions
     {
         #region LinkedListNode<BaseCommand>
-        public static LinkedListNode<BaseCommand> FindFirstBackward(this LinkedListNode<BaseCommand> lNode, BaseCommand command)
+        public static LinkedListNode<ICommand> FindFirstBackward(this LinkedListNode<ICommand> lNode, ICommand command)
         {
-            LinkedListNode<BaseCommand> currentNode = lNode;
+            LinkedListNode<ICommand> currentNode = lNode;
 
             while (currentNode.Value == command)
             {
@@ -23,9 +23,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             return currentNode;
         }
 
-        public static LinkedListNode<BaseCommand> FindFirstForward(this LinkedListNode<BaseCommand> lNode, BaseCommand command)
+        public static LinkedListNode<ICommand> FindFirstForward(this LinkedListNode<ICommand> lNode, ICommand command)
         {
-            LinkedListNode<BaseCommand> currentNode = lNode;
+            LinkedListNode<ICommand> currentNode = lNode;
 
             while (currentNode.Value == command)
             {

@@ -28,6 +28,8 @@
 #region Using directives
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 
@@ -107,6 +109,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
     public class RenderableCollection : SceneNodeCollection<RenderableNode>
     {
+        public RenderableCollection(RenderableCollectionDescription rDescription, IEnumerable<RenderableNode> rNodeCollection) : base(rNodeCollection)
+        {
+            Contract.Requires<NullReferenceException>(rNodeCollection != null);
+            Description = rDescription;
+        }
+
         public RenderableCollection(RenderableCollectionDescription rDescription)
         {
             Description = rDescription;
