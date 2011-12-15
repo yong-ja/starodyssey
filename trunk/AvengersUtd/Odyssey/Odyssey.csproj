@@ -143,7 +143,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Graphics\Materials\WireframeMaterial.cs" />
+    <Compile Include="Graphics\Materials\WireframeMaterial.cs" />
     <Compile Include="Graphics\Meshes\ColoredVertex.cs" />
     <Compile Include="Graphics\Meshes\Copy of TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\Grid.cs" />
@@ -158,6 +158,7 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
+    <Compile Include="Graphics\Rendering\Management\UserInterfaceNode.cs" />
     <Compile Include="Utils\Collections\Cache.cs" />
     <Compile Include="Utils\Collections\GenericNode.cs" />
     <Compile Include="Utils\Collections\INode.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Utils\Logging\TraceExtensions.cs" />
     <Compile Include="Utils\Logging\WarningEvent.cs" />
     <Compile Include="Utils\SafeNativeMethods.cs" />
+    <Compile Include="Utils\Text.cs" />
     <Compile Include="Utils\Timer.cs" />
     <Compile Include="Utils\Xml\Data.cs" />
     <None Include="Graphics\Meshes\TexturedVertex.cs" />
@@ -323,9 +325,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Utils\Utils.csproj" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
