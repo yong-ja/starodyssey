@@ -61,6 +61,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenes\ImageRenderer.cs" />
     <Compile Include="Scenes\TestRenderer.cs" />
+    <Content Include="Resources\Textures\negX.png" />
+    <Content Include="Resources\Textures\negX1.png" />
+    <Content Include="Resources\Textures\negY.png" />
+    <Content Include="Resources\Textures\negY1.png" />
+    <Content Include="Resources\Textures\negZ.png" />
+    <Content Include="Resources\Textures\negZ1.png" />
+    <Content Include="Resources\Textures\posX.png" />
+    <Content Include="Resources\Textures\posX1.png" />
+    <Content Include="Resources\Textures\posY.png" />
+    <Content Include="Resources\Textures\posY1.png" />
+    <Content Include="Resources\Textures\posZ.png" />
+    <Content Include="Resources\Textures\posZ1.png" />
+    <Content Include="Resources\Textures\StarBackground.jpg" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -127,6 +140,7 @@
     <None Include="Resources\Odyssey TextDescriptions.otd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Textures\OutputCube.dds" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">
