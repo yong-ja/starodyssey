@@ -35,7 +35,7 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
-    public class SkyBox : BaseMesh<Textured3DVertex>, AvengersUtd.Odyssey.Graphics.Materials.IColor4Material, AvengersUtd.Odyssey.Graphics.Materials.IDiffuseMap
+    public class SkyBox : BaseMesh<Textured3DVertex>, Materials.IColor4Material, Materials.IDiffuseMap
     {
         private string diffuseMapKey;
 

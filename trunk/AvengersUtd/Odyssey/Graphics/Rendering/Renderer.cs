@@ -35,7 +35,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         static Renderer()
         {
-            ClearColor = new Color4(1.0f, 0.0f, 0.0f, 0.0f);
+            //ClearColor = new Color4(1.0f, 0.0f, 0.0f, 0.0f);
+            ClearColor = new Color4(1.0f, 0.25f, 0.25f, 0.25f);
         }
 
         protected Renderer(DeviceContext11 deviceContext11)

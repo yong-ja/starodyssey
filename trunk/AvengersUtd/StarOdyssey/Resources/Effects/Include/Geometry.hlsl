@@ -3,12 +3,13 @@
 //--------------------------------------------------------------------------------------
 float4 ModelToProj(in float4 pos)
 {
-    return mul(pos, mWorldViewProjection);
+
+    return mul(pos, mul(mul(mWorld,mView),mProjection));
 }
 
 float4 ModelToView(in float4 pos)
 {
-    return mul(pos, mWorldView);
+    return mul(pos, mul(mWorld,mView));
 }
 
 float4 ViewToProj(in float4 pos)

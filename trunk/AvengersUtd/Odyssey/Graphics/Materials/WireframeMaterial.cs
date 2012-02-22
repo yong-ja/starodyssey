@@ -29,13 +29,13 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected override void OnDynamicParametersInit()
         {
             EffectDescription.SetDynamicParameter(SceneVariable.CameraView);
-            EffectDescription.SetDynamicParameter(SceneVariable.CameraWorldView);
-            EffectDescription.SetDynamicParameter(SceneVariable.CameraWorldViewProjection);
+            EffectDescription.SetDynamicParameter(SceneVariable.CameraProjection);
+            //EffectDescription.SetDynamicParameter(SceneVariable.CameraWorld);
         }
 
         protected override void OnInstanceParametersInit()
         {
-            //EffectDescription.SetInstanceParameter(InstanceVariable.ObjectWorld);
+            EffectDescription.SetInstanceParameter(InstanceVariable.ObjectWorld);
         }
     }
 }

@@ -35,13 +35,15 @@ namespace AvengersUtd.StarOdyssey.Scenes
             StyleManager.LoadTextDescription(Global.Resources + "Odyssey TextDescriptions.otd");
 
             PhongMaterial phong = new PhongMaterial();
-            WireframeMaterial wireframe = new WireframeMaterial();
+            IMaterial wireframe = new WireframeMaterial();
 
-            MaterialNode mNode1 = new MaterialNode(wireframe);
+            MaterialNode mNode1 = new MaterialNode(phong);
             MaterialNode mNode2 = new MaterialNode(wireframe);
             MaterialNode mNode3 = new MaterialNode(new SkyBoxMaterial());
             SkyBox skybox = new SkyBox();
             Sphere lightSphere = Primitive.CreateSphere(0.5f,4);
+            AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
+            grid.DiffuseColor = Color.DarkGreen;
             lightSphere.DiffuseColor = new Color4(Color.Yellow);
             lightSphere.PositionV3 = new Vector3(0,0,0);
             Sphere sphere = Primitive.CreateSphere(6f, 10);
@@ -50,10 +52,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             rNode = new RenderableNode(sphere);
             rNode1 = new RenderableNode(lightSphere);
             RenderableNode rNode3 = new RenderableNode(skybox);
+            RenderableNode rNodeGrid = new RenderableNode(grid);
             FixedNode fNode = new FixedNode {Position = sphere.PositionV3};
             FixedNode fNode2 = new FixedNode {Position = lightSphere.PositionV3};
             CameraAnchorNode coNode = new CameraAnchorNode();
-            //Scene.Tree.RootNode.AppendChild(fNode);
+            Scene.Tree.RootNode.AppendChild(fNode);
 
             Scene.Tree.RootNode.AppendChild(fNode2);
             //Scene.Tree.RootNode.AppendChild(coNode);
@@ -62,7 +65,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
             coNode.AppendChild(mNode3);
     
             mNode1.AppendChild(rNode);
-            mNode2.AppendChild(rNode1);
+            mNode1.AppendChild(rNode1);
+            mNode2.AppendChild(rNodeGrid);
             mNode3.AppendChild(rNode3);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;

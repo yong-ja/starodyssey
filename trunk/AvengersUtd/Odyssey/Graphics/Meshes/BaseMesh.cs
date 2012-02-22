@@ -201,12 +201,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return qRotation; }
             set
             {
+                if (qRotation == value) return;
                 RotationEventArgs e = new RotationEventArgs(qRotation, rotationAngles);
 
                 if (!e.CancelEvent && qRotation != value)
                 {
-                    OnRotationChanged(e);
                     qRotation = value;
+                    OnRotationChanged(e);
                 }
             }
         }
