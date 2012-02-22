@@ -9,6 +9,11 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey
 {
+    enum StereoSide
+    {
+        Left, Right
+    }
+
     public class QuaternionCam
     {
         private readonly EventHandlerList eventHandlerList;
@@ -25,6 +30,8 @@ namespace AvengersUtd.Odyssey
         Matrix mView;
         Matrix mProjection;
         private Matrix mOrthoProjection;
+        private Matrix mStereoLeftProjection;
+        private Matrix mStereoRightProjection;
 
         public const float DefaultSpeed = 20f;
         public const float DefaultRotationSpeed = 0.5f;
@@ -299,6 +306,41 @@ namespace AvengersUtd.Odyssey
             mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, width/height, nearClip, farClip);
         }
 
+        void BuildStereoProjectionMatrices(float separation, float convergence)
+        {
+            float m11 = mProjection.M11;
+            float m13 = mProjection.M13;
+            float m22 = mProjection.M22;
+            float m32 = mProjection.M32;
+            float m33 = mProjection.M33;
+            float m34 = mProjection.M34;
+
+            mStereoLeftProjection = new Matrix
+                                        {
+                                            M11 = m11,
+                                            M13 = m13 - separation,
+                                            M14 = separation*convergence,
+                                            M22 = m22,
+                                            M32 = m32,
+                                            M33 = m33,
+                                            M34 = m34,
+                                            M43 = 1
+                                        };
+
+            mStereoRightProjection = new Matrix
+            {
+                M11 = m11,
+                M13 = m13 + separation,
+                M14 = -separation * convergence,
+                M22 = m22,
+                M32 = m32,
+                M33 = m33,
+                M34 = m34,
+                M43 = 1
+            };
+
+        }
+
 
         //public void SetState(CameraAction action, bool state)
         //{
@@ -320,4 +362,6 @@ namespace AvengersUtd.Odyssey
         //    qOrientation = Quaternion.Normalize(qOrientation);
         //}
     }
+
+
 }

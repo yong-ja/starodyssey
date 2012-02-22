@@ -171,9 +171,7 @@ namespace AvengersUtd.Odyssey.UserInterface
         /// <param name="target">The container control that hosts the DirectX viewport.</param>
         public static void SetupHooks(Control target)
         {
-
             Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
-            
 
             target.KeyDown += Keyboard.KeyDown;
             target.KeyUp += Keyboard.KeyUp;
@@ -187,6 +185,26 @@ namespace AvengersUtd.Odyssey.UserInterface
             target.MouseDown += ProcessMouseInputPress;
             target.MouseUp += ProcessMouseInputRelease;
             target.MouseMove += MouseMovementHandler;
+        }
+
+        public static void RemoveHooks(Control target)
+        {
+            Contract.Requires<ArgumentNullException>(target != null, Resources.ERR_UI_TargetControlNull);
+
+            target.KeyDown -= Keyboard.KeyDown;
+            target.KeyUp -= Keyboard.KeyUp;
+            target.MouseDown -= Mouse.MouseDown;
+            target.MouseUp -= Mouse.MouseUp;
+            target.MouseMove -= Mouse.MouseMove;
+
+            target.KeyDown -= ProcessKeyDown;
+            target.KeyUp -= ProcessKeyUp;
+            target.KeyPress -= ProcessKeyPress;
+            target.MouseDown -= ProcessMouseInputPress;
+            target.MouseUp -= ProcessMouseInputRelease;
+            target.MouseMove -= MouseMovementHandler;
+
+            Game.IsInputEnabled = false;
         }
         #endregion
 

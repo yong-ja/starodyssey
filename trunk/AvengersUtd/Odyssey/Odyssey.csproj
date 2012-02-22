@@ -159,6 +159,8 @@
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
     <Compile Include="Graphics\Rendering\Management\UserInterfaceNode.cs" />
+    <Compile Include="Graphics\Rendering\NvStereoImageHeader.cs" />
+    <Compile Include="Graphics\Rendering\Stereo.cs" />
     <Compile Include="Utils\Collections\Cache.cs" />
     <Compile Include="Utils\Collections\GenericNode.cs" />
     <Compile Include="Utils\Collections\INode.cs" />

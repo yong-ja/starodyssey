@@ -20,6 +20,7 @@ namespace AvengersUtd.Odyssey
         public const string EngineTag = "Odyssey";
         private static object locker;
         private static Timer timer;
+        private static bool inputEnabled;
         static internal ManualResetEventSlim RenderEvent { get; private set; }
 
         
@@ -27,6 +28,7 @@ namespace AvengersUtd.Odyssey
         public static DebugLogger Logger { get; private set; }
         public static DeviceContext11 Context { get; set; }
         public static double FrameTime { get; private set; }
+        public static bool IsInputEnabled { get; internal set; }
 
         public static bool IsRunning { get; private set; }
 
@@ -38,6 +40,7 @@ namespace AvengersUtd.Odyssey
             Logger = new DebugLogger();
             RenderEvent = new ManualResetEventSlim(false);
             IsRunning = true;
+            IsInputEnabled = true;
         }
 
         public static void Init()
