@@ -182,7 +182,7 @@ namespace AvengersUtd.Odyssey
 
         private void CreateTargets()
         {
-            using (Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(swapChain, 0))
+            using (Texture2D backBuffer = GetBackBuffer())
             {
                 RenderTargetView = new RenderTargetView(device, backBuffer);
             }
@@ -224,6 +224,11 @@ namespace AvengersUtd.Odyssey
             OnDeviceResize(new ResizeEventArgs(previousSize, newSize, fullScreen));
 
             OnDeviceResume(EventArgs.Empty);
+        }
+
+        public Texture2D GetBackBuffer()
+        {
+            return Resource.FromSwapChain<Texture2D>(swapChain, 0);
         }
 
         protected void Dispose(bool disposing)
