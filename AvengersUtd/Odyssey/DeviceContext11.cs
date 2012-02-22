@@ -145,7 +145,7 @@ namespace AvengersUtd.Odyssey
                                                          ModeDescription =
                                                              new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight,
                                                                                  new Rational(120, 1), Settings.Format),
-                                                         IsWindowed = true,
+                                                         IsWindowed = false,
                                                          OutputHandle = handle,
                                                          SampleDescription = Settings.SampleDescription,
                                                          SwapEffect = SwapEffect.Discard,

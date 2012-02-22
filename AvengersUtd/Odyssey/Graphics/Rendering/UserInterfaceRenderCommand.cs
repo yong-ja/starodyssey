@@ -44,7 +44,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     {
         private readonly Hud hud;
         private readonly InputLayout textLayout;
-        private readonly TextMaterial textMaterial;
+        private readonly IMaterial textMaterial;
         private readonly MaterialNode textMaterialNode;
         private readonly UserInterfaceNode uiNode;
         private readonly EffectPass textPass;
@@ -54,7 +54,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             this.uiNode = uiNode;
             this.hud = hud;
+            textMaterial = uiNode.TextMaterial;
             UpdateSprites(hud.SpriteControls);
+            textTechnique = textMaterial.EffectDescription.Technique;
+            textPass = textTechnique.GetPassByIndex(textMaterial.EffectDescription.Pass);
+            textLayout = new InputLayout(Game.Context.Device, textPass.Description.Signature,
+                TextItems.Description.InputElements);
         }
        
         public UserInterfaceRenderCommand(Renderer renderer, MaterialNode uiMaterialNode,
@@ -122,11 +127,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         void UpdateSprites(IEnumerable<ISpriteObject> spriteControls)
         {
             //textMaterialNode.RemoveAll();
-            uiNode.te
+            TextItems = new RenderableCollection(textMaterial.RenderableCollectionDescription);
             foreach (ISpriteObject spriteControl in spriteControls)
-                textMaterialNode.AppendChild(new RenderableNode(spriteControl.RenderableObject));
+                //uiNode.AppendChild(new RenderableNode(spriteControl.RenderableObject));
+                TextItems.Add(new RenderableNode(spriteControl.RenderableObject));
             //TextItems = textMaterialNode.RenderableCollection;
-            TextItems = uiNode.GetTextNodes();
+            //TextItems = uiNode.GetTextNodes();
         }
 
         protected override void OnDispose()
