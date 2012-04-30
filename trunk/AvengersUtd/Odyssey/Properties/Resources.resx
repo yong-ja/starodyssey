@@ -174,7 +174,7 @@
   <data name="ERR_KeyNotFound" xml:space="preserve">
     <value>Key not found in {0}: {1}</value>
   </data>
-  <data name="ERR_MissingFile" xml:space="preserve">
+  <data name="ERR_IO_MissingFile" xml:space="preserve">
     <value>The file: {0} is missing.</value>
   </data>
   <data name="ERR_Error" xml:space="preserve">
@@ -266,5 +266,9 @@
   </data>
   <data name="ERR_IO_EffectMissingIncludeFile" xml:space="preserve">
     <value>Include file {0} is missing from effect file {1}</value>
+  </data>
+  <data name="ERR_IO_EffectCompilationError" xml:space="preserve">
+    <value>Shader compilation error in {0}:
+{1}</value>
   </data>
 </root>

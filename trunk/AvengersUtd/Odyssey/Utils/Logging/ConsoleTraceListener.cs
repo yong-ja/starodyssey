@@ -8,7 +8,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 {
     public class ConsoleTraceListener : TraceListener
     {
-        private const string LogTag = "[{0:HH:mm:ss.fff]} ({1}):{2}";
+        private const string LogTag = "[{0:HH:mm:ss.fff]}:\t{1}({2})";
 
         
 
@@ -23,14 +23,9 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
-            string logEntry = string.Format(LogTag, DateTime.Now, source, GetCode(eventType, id));
-            WriteLine(string.Format("{0} {1}", logEntry, message));
-        }
-
-        public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
-        {
-            string logEntry = string.Format(LogTag, DateTime.Now, source, GetCode(eventType, id));
-            WriteLine(string.Format("{0} {1}", logEntry, string.Format(format, args)));
+            string logEntry = string.Format(LogTag, DateTime.Now, eventType != TraceEventType.Information ? eventType.ToString() : string.Empty, source);
+            WriteLine(string.Format("{0} {1}", logEntry, message,id));
+            
         }
 
         /// <summary>
@@ -60,13 +55,13 @@ namespace AvengersUtd.Odyssey.Utils.Logging
                     return string.Empty;
                     
                 case TraceEventType.Warning:
-                    return string.Format("Warning #{0:000000} -", eventCode);
+                    return string.Format(" Warning #{0:000000}\n", eventCode);
 
                 case TraceEventType.Critical:
-                    return string.Format("Critical Failure #{0:000000} -", eventCode);
+                    return string.Format(" Critical Failure #{0:000000}\n", eventCode);
 
                 case TraceEventType.Error:
-                    return string.Format("Error #{0:000000} -", eventCode);
+                    return string.Format(" Error #{0:000000}\n", eventCode);
 
             }
         }

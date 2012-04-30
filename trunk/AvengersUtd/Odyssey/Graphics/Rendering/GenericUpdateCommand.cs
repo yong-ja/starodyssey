@@ -57,7 +57,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             }
             catch(Exception ex)
             {
-                CriticalEvent.UnhandledEvent.LogError(new TraceData(this.GetType(), MethodBase.GetCurrentMethod()), ex);
+                CriticalEvent.Unhandled.LogError(new TraceData(this.GetType(), MethodBase.GetCurrentMethod()), ex);
             }
         }
 

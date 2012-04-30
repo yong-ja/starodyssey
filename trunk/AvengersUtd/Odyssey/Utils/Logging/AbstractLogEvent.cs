@@ -7,14 +7,19 @@ using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
-    public enum EventCode
+    public enum EventCode : int
     {
         LogMessage = 10001,
+        // Warnings
+        ThreadAbort = 70001,
+        // Exceptions
         ArgumentException = 80001,
-        ArgumentNull,
-        UnhandledException = 90000,
-        CriticalFault,
-        ThreadAbort
+        ArgumentNull = 80002,
+        // Critical Errors
+        CriticalFault = 90001,
+        UnhandledException = 90002,
+        
+        
     }
 
     public abstract class AbstractLogEvent
@@ -46,7 +51,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
         protected string Source { get; private set; }
 
-        protected string Format { get; private set; }
+        protected internal string Format { get; private set; }
 
         protected TraceSource TraceSource
         {

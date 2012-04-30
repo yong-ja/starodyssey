@@ -5,12 +5,47 @@ using AvengersUtd.Odyssey.Collections;
 using System.IO;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+using AvengersUtd.Odyssey.Utils.Logging;
+using System.Reflection;
+using System.Diagnostics.Contracts;
+using AvengersUtd.Odyssey.Utils.Xml;
 
 namespace AvengersUtd.Odyssey.Graphics.Resources
 {
     public static class ResourceManager
     {
         static readonly Cache<string, CacheNode<ShaderResourceView>> ResourceCache = new Cache<string, CacheNode<ShaderResourceView>>();
+
+        internal static void UpdateFileList()
+        {
+            System.Collections.Generic.List<string> files = new System.Collections.Generic.List<string>();
+            DirectoryInfo dir = new DirectoryInfo(Global.Resources);
+            Uri resourcePath = new Uri(Path.GetFullPath(Global.Resources));
+            foreach (FileInfo f in dir.EnumerateFiles("*", SearchOption.AllDirectories))
+            {
+                Uri absolutePath = new Uri(f.FullName);
+                files.Add(resourcePath.MakeRelativeUri(absolutePath).ToString());
+            }
+            AvengersUtd.Odyssey.Utils.Xml.Data.Serialize<System.Collections.Generic.List<string>>(files, "Resources\\resources.xml");
+        }
+
+        internal static void PerformIntegrityCheck() 
+        {
+            UpdateFileList();
+            string[] files = Data.DeserializeCollection<string>(Global.Resources + "resources.xml");
+            bool missing = false;
+            foreach (string filename in files)
+            {
+                if (!File.Exists(Global.Resources + filename))
+                {
+                    CriticalEvent.MissingFile.LogError(new TraceData(typeof(ResourceManager), MethodBase.GetCurrentMethod(), 
+                        new Dictionary<string,string>{{"filename", filename}}));
+                    missing = true;
+                }
+            }
+            if (missing)
+                Game.Close((int)EventCode.CriticalFault);
+        }
         
         public static void Add(string resourceKey, Texture2D texture)
         {
@@ -195,6 +230,8 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
         }
         public static ShaderResourceView LoadTexture2DResource(string filename)
         {
+            ShaderResourceView resource = null;
+
             if (ResourceCache.ContainsKey(filename))
             {
                 return ResourceCache[filename].Object;
@@ -205,18 +242,24 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 {
                     Texture2D texture2D = Texture2D.FromFile(Game.Context.Device, filename);
                     Add(filename, texture2D);
-                    return ResourceCache[filename].Object;
+                    resource = ResourceCache[filename].Object;
                 }
-                catch (InvalidDataException)
+                catch (Direct3D11Exception ex)
                 {
-                    Error.MessageMissingFile(filename, Properties.Resources.ERR_MissingFile);
-                    return null;
+                    CriticalEvent.MissingFile.LogError(new TraceData(typeof(ResourceManager), MethodBase.GetCurrentMethod(),
+                        new Dictionary<string,string>{{"filename",filename}}), ex);
+
+                    MessageBox.Show(string.Format(CriticalEvent.MissingFile.Format, filename, ex.Message), "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
+            return resource;
         }
 
         public static ShaderResourceView LoadTexture3DResource(string filename)
         {
+            ShaderResourceView resource = null;
+          
             if (ResourceCache.ContainsKey(filename))
             {
                 return ResourceCache[filename].Object;
@@ -227,14 +270,17 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 {
                     Texture3D texture3D = Texture3D.FromFile(Game.Context.Device, filename);
                     Add(filename, texture3D);
-                    return ResourceCache[filename].Object;
+                    resource = ResourceCache[filename].Object;
                 }
-                catch (InvalidDataException)
+                catch (InvalidDataException ex)
                 {
-                    Error.MessageMissingFile(filename, Properties.Resources.ERR_MissingFile);
-                    return null;
+                    CriticalEvent.MissingFile.LogError(new TraceData(typeof(ResourceManager), MethodBase.GetCurrentMethod(),
+                        new Dictionary<string, string> { { "filename", filename } }), ex);
+                    MessageBox.Show(string.Format(CriticalEvent.MissingFile.Format, filename, ex.Message), "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
+            return resource;
         }
 
         internal static void OnDispose(object sender, EventArgs e)
@@ -249,7 +295,6 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
 
                 if (!node.Object.Disposed)
                 {
-
                     node.Object.Dispose();
                 }
             }

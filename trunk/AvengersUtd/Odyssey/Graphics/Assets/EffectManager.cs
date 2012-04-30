@@ -5,6 +5,9 @@ using AvengersUtd.Odyssey.Collections;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D11;
+using AvengersUtd.Odyssey.Utils.Logging;
+using System.Reflection;
+using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Resources
 {
@@ -14,6 +17,8 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
 
         public static Effect LoadEffect(string filename)
         {
+            Effect effect= null;
+
             if (EffectCache.ContainsKey(filename))
             {
                 return EffectCache[filename].Object;
@@ -43,27 +48,29 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                     using (ShaderBytecode byteCode = ShaderBytecode.CompileFromFile(filename, "fx_5_0", ShaderFlags.Debug,
                                                                    EffectFlags.None, null, new IncludeHandler(filename), out compilationErrors))
                     {
-                        Effect effect = new Effect(Game.Context.Device, byteCode);
+                        effect = new Effect(Game.Context.Device, byteCode);
                         EffectCache.Add(filename, new CacheNode<Effect>(fileSize, effect));
                         return effect;
                     }
                     
                 }
-                    catch(SlimDX.CompilationException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Compilation error in " + filename, MessageBoxButtons.OK,
-                                        MessageBoxIcon.Error);
-                        
-                    }
-                //catch (InvalidDataException ex)
-                catch (Exception ex)
+                catch(SlimDX.CompilationException ex)
                 {
-                    MessageBox.Show("This file is missing or invalid: " +
-                                    filename);
-                    
+                    CriticalEvent.ShaderCompilationError.LogError(new TraceData(typeof(EffectManager), MethodBase.GetCurrentMethod(),
+                        new System.Collections.Generic.Dictionary<string, string> { { "filename", filename } }), ex);
+
+                    MessageBox.Show(string.Format(CriticalEvent.ShaderCompilationError.Format, filename, ex.Message), "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    CriticalEvent.MissingFile.LogError(new TraceData(typeof(EffectManager), MethodBase.GetCurrentMethod(),
+                            new System.Collections.Generic.Dictionary<string, string> { { "filename", filename } }), ex);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
 
-                return null;
+                return effect;
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
@@ -11,12 +12,25 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         public Type Type { get; private set; }
         public MethodBase Method { get; private set; }
         public ParameterInfo[] Parameters { get; private set; }
-       
-        public TraceData(Type type, MethodBase method, params object[] values) : this()
+        Dictionary<string, string> data;
+               
+        public TraceData(Type type, MethodBase method) : this()
         {
             Type = type;
             Method = method;
             Parameters = method.GetParameters();
+            data = new Dictionary<string, string>();
+
+        }
+
+        public TraceData(Type type, MethodBase method, Dictionary<string, string> data)
+            : this()
+        {
+            Contract.Requires(data != null);
+            Type = type;
+            Method = method;
+            Parameters = method.GetParameters();
+            this.data = data;
         }
 
         public string MethodSignature 
@@ -33,6 +47,12 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
                 return string.Format("{0}.{1}({2})", Type.Name, Method.Name, arguments);
             }
+        }
+
+        public string GetValue(string key)
+        {
+            Contract.Ensures(data.ContainsKey(key));
+            return data[key];
         }
     }
 }

@@ -99,6 +99,8 @@
     <Content Include="medusa.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Data\Odyssey ControlDescriptions.ocd" />
+    <None Include="Resources\Data\Odyssey TextDescriptions.otd" />
     <Content Include="Resources\Textures\negX.png" />
     <Content Include="Resources\Textures\negX1.png" />
     <Content Include="Resources\Textures\negY.png" />
@@ -135,24 +137,18 @@
     <None Include="Resources\Effects\Include\Geometry.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Resources\Odyssey ControlDescriptions.ocd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Odyssey TextDescriptions.otd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\Effects\Include\Common.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Resources\Effects\Include\Lighting.h">
+    <None Include="Resources\Effects\Include\Lighting.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Effects\Include\Materials.h">
+    </None>
+    <None Include="Resources\Effects\Include\Materials.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Effects\Include\Shadows.h">
+    </None>
+    <None Include="Resources\Effects\Include\Shadows.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Resources\Effects\Include\Structs.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -171,14 +167,9 @@
     <None Include="Resources\Effects\SolidWireframe.fx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Odyssey ControlDescriptions.ocd">
-      <SubType>Designer</SubType>
+    <None Include="Resources\Textures\OutputCube.dds1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Odyssey TextDescriptions.otd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Textures\OutputCube.dds" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Odyssey\Odyssey.csproj">
@@ -186,6 +177,7 @@
       <Name>Odyssey</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
