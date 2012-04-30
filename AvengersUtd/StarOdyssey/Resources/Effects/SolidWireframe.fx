@@ -19,6 +19,8 @@
 //----------------------------------------------------------------------------------
 #include <Include/Common.hlsl>
 #include <Include/Geometry.hlsl>
+#include <Include/Materials.hlsl>
+
 DepthStencilState DSSDepthWriteLess
 {
   DepthEnable = true;
@@ -98,7 +100,7 @@ float FadeDistance = 50;
 float PatternPeriod = 1.5;
 
 float4 FillColor = float4(0.1, 0.2, 0.4, 1);
-float4 WireColor = float4(1, 1, 1, 1);
+//float4 WireColor = float4(1, 1, 1, 1);
 float4 PatternColor = float4(1, 1, 0.5, 1);
 
 uint infoA[]     = { 0, 0, 0, 0, 1, 1, 2 };
@@ -325,7 +327,7 @@ float4 PSColor( PSInput input) : SV_Target
 
 float4 PSDXWire( PSInput input) : SV_Target
 {
-    return WireColor;
+    return cMaterialDiffuse;
 }
 
 float evalMinDistanceToEdges(in PSInputWire input)
@@ -383,10 +385,10 @@ float4 PSSolidWire( PSInputWire input) : SV_Target
     float alpha = exp2(-2*dist);
 
     // Standard wire color
-    float4 color = WireColor;
+    float4 color = cMaterialDiffuse;
     color.a *= alpha;
 	
-    return float4(1,1,1,1);
+    return color;
 }
 
 float4 PSSolidWireFade( PSInputWire input) : SV_Target
@@ -408,7 +410,7 @@ float4 PSSolidWireFade( PSInputWire input) : SV_Target
     // Dividing by pos.w, the depth in view space
     float fading = clamp(FadeDistance / input.Position.w, 0, 1);
 
-    float4 color = WireColor * fading;
+    float4 color = cMaterialDiffuse * fading;
     color.a *= alpha;
     return color;
 }
@@ -500,7 +502,7 @@ float4 PSSolidWirePattern( PSInputWire input) : SV_Target
     float dist = evalMinDistanceToEdgesExt(input, edgeSqDists, edgeCoords, edgeOrder);
 
     // Standard wire color
-    float4 color = WireColor;
+    float4 color = cMaterialDiffuse;
     float realLineWidth = 0.5*LineWidth;
 
     // Except if on the diagonal edge
@@ -518,7 +520,7 @@ float4 PSSolidWirePattern( PSInputWire input) : SV_Target
         if ( edgeSqDists[edgeOrder.y] < pow(0.5*LineWidth+1, 2) )
         {
             dist = edgeSqDists[edgeOrder.y];
-            color = WireColor;
+            color = cMaterialDiffuse;
             realLineWidth = 0.5*LineWidth;
         }
         dist = sqrt(dist);

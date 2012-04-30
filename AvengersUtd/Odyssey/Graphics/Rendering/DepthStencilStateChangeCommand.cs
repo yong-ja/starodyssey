@@ -25,7 +25,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected override void OnDispose()
         {
-            depthStencilState.Dispose();
+            if (depthStencilState != null)
+                depthStencilState.Dispose();
         }
 
         public static DepthStencilStateChangeCommand Default

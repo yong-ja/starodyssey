@@ -20,7 +20,6 @@ namespace AvengersUtd.Odysseus
             Odysseus.Main.FormInstance  = mainForm;
             MessagePump.Run(mainForm, Game.Loop);
 
-            Game.Close();
             //Application.Run(new Main());
         }
     }

@@ -12,6 +12,9 @@ using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 using SlimDX.Windows;
 using Timer = AvengersUtd.Odyssey.Utils.Timer;
+using System.Windows.Forms;
+using AvengersUtd.Odyssey.Graphics.Resources;
+using System.IO;
 
 namespace AvengersUtd.Odyssey
 {
@@ -43,8 +46,12 @@ namespace AvengersUtd.Odyssey
             IsInputEnabled = true;
         }
 
+
+
         public static void Init()
         {
+            ResourceManager.PerformIntegrityCheck();
+
             LogEvent.Engine.Log(Resources.INFO_OE_Starting);
 
             DeviceSettings deviceSettings = new DeviceSettings
@@ -80,10 +87,15 @@ namespace AvengersUtd.Odyssey
             Context.DeviceDisposing += OdysseyUI.OnDispose;
         }
 
-        public static void Close()
+        public static void Close(int exitCode=0)
         {
             IsRunning = false;
-            Context.Dispose();
+            if (CurrentRenderer != null)
+                CurrentRenderer.Dispose();
+            if (Context != null)
+                Context.Dispose();
+
+            Environment.Exit(exitCode);
         }
 
         public static void Loop()
@@ -104,9 +116,8 @@ namespace AvengersUtd.Odyssey
             }
             catch (Exception ex)
             {
-                CriticalEvent.UnhandledEvent.LogError(new TraceData(ex.TargetSite.DeclaringType,  ex.TargetSite), ex);
-                CurrentRenderer.Dispose();
-                Environment.Exit((int) EventCode.CriticalFault);
+                CriticalEvent.Unhandled.LogError(new TraceData(ex.TargetSite.DeclaringType,  ex.TargetSite), ex);
+                Game.Close(CriticalEvent.Unhandled.Id);
             }
         }
 

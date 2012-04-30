@@ -31,8 +31,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
 
-            StyleManager.LoadControlDescription(Global.Resources + "Odyssey ControlDescriptions.ocd");
-            StyleManager.LoadTextDescription(Global.Resources + "Odyssey TextDescriptions.otd");
+            StyleManager.LoadControlDescription(Global.XmlPath + "Odyssey ControlDescriptions.ocd");
+            StyleManager.LoadTextDescription(Global.XmlPath + "Odyssey TextDescriptions.otd");
 
             PhongMaterial phong = new PhongMaterial();
             IMaterial wireframe = new WireframeMaterial();
@@ -59,15 +59,15 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Scene.Tree.RootNode.AppendChild(fNode);
 
             Scene.Tree.RootNode.AppendChild(fNode2);
-            //Scene.Tree.RootNode.AppendChild(coNode);
+            Scene.Tree.RootNode.AppendChild(coNode);
             fNode.AppendChild(mNode1);
             fNode2.AppendChild(mNode2);
             coNode.AppendChild(mNode3);
     
             mNode1.AppendChild(rNode);
-            mNode1.AppendChild(rNode1);
+            //mNode1.AppendChild(rNode1);
             mNode2.AppendChild(rNodeGrid);
-            mNode3.AppendChild(rNode3);
+            //mNode3.AppendChild(rNode3);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 

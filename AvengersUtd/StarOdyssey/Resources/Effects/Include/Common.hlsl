@@ -12,9 +12,6 @@ matrix mView;
 matrix mProjection;
 matrix mWorldView;
 matrix mWorldViewProjection;
-
-float4 cMaterialDiffuse;
-
 matrix mWorldInv;
 
 
