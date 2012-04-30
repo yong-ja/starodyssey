@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     /// <summary>
     /// Generate a spherical mesh of VertexPositionNormalTexture vertices
     /// </summary>
-    public class Sphere : BaseMesh<TexturedMeshVertex>, IColor4Material
+    public class Sphere : BaseMesh<TexturedMeshVertex>, ISphere, IColor4Material
     {
         private readonly int numStrips;
         private int nextIndex;

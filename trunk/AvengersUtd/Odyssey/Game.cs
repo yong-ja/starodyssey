@@ -82,16 +82,18 @@ namespace AvengersUtd.Odyssey
 
         public static void HookEvents()
         {
-            Context.DeviceDisposing += Graphics.Resources.EffectManager.OnDispose;
-            Context.DeviceDisposing += Graphics.Resources.ResourceManager.OnDispose;
             Context.DeviceDisposing += OdysseyUI.OnDispose;
         }
 
         public static void Close(int exitCode=0)
         {
             IsRunning = false;
+            ResourceManager.Dispose();
+            EffectManager.Dispose();
+
             if (CurrentRenderer != null)
                 CurrentRenderer.Dispose();
+
             if (Context != null)
                 Context.Dispose();
 

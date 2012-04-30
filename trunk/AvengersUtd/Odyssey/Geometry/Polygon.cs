@@ -86,9 +86,9 @@ namespace AvengersUtd.Odyssey.Geometry
         /// Returns an AABB for vertex.
         /// </summary>
         /// <returns></returns>
-        public AABB GetCollisionBox()
+        public AABB2D GetCollisionBox()
         {
-            AABB aabb;
+            AABB2D aabb;
             Vector2D lowerBound = new Vector2D(float.MaxValue, float.MaxValue);
             Vector2D upperBound = new Vector2D(float.MinValue, float.MinValue);
 

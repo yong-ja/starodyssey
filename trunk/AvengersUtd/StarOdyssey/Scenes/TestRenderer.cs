@@ -31,8 +31,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
 
-            StyleManager.LoadControlDescription(Global.XmlPath + "Odyssey ControlDescriptions.ocd");
-            StyleManager.LoadTextDescription(Global.XmlPath + "Odyssey TextDescriptions.otd");
+            StyleManager.LoadControlDescription(Global.XmlPath + "ControlDescriptions.ocd");
+            StyleManager.LoadTextDescription(Global.XmlPath + "TextDescriptions.otd");
 
             PhongMaterial phong = new PhongMaterial();
             IMaterial wireframe = new WireframeMaterial();

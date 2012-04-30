@@ -95,7 +95,7 @@ BlendState BSBlending
 
 float4 LightVector = float4( 0, 0, 1, 0);
 
-float LineWidth = 1.5;
+float LineWidth = 2.5;
 float FadeDistance = 50;
 float PatternPeriod = 1.5;
 
