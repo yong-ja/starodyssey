@@ -3,7 +3,7 @@
     /// <summary>
     /// An axis aligned bounding box.
     /// </summary>
-    public struct AABB
+    public struct AABB2D
     {
         /// <summary>
         /// The lower vertex
@@ -15,18 +15,18 @@
         /// </summary>
         public Vector2D UpperBound;
 
-        public AABB(Vector2D min, Vector2D max)
+        public AABB2D(Vector2D min, Vector2D max)
             : this(ref min, ref max)
         {
         }
 
-        public AABB(ref Vector2D min, ref Vector2D max)
+        public AABB2D(ref Vector2D min, ref Vector2D max)
         {
             LowerBound = min;
             UpperBound = max;
         }
 
-        public AABB(Vector2D center, double width, double height)
+        public AABB2D(Vector2D center, double width, double height)
         {
             LowerBound = center - new Vector2D(width / 2, height / 2);
             UpperBound = center + new Vector2D(width / 2, height / 2);
@@ -73,12 +73,12 @@
             get
             {
                 Vertices vertices = new Vertices
-                                                            {
-                                                                LowerBound,
-                                                                new Vector2D(LowerBound.X, UpperBound.Y),
-                                                                UpperBound,
-                                                                new Vector2D(UpperBound.X, LowerBound.Y)
-                                                            };
+                                                {
+                                                    LowerBound,
+                                                    new Vector2D(LowerBound.X, UpperBound.Y),
+                                                    UpperBound,
+                                                    new Vector2D(UpperBound.X, LowerBound.Y)
+                                                };
                 return vertices;
             }
         }
@@ -86,27 +86,27 @@
         /// <summary>
         /// first quadrant
         /// </summary>
-        public AABB Q1
+        public AABB2D Q1
         {
-            get { return new AABB(Center, UpperBound); }
+            get { return new AABB2D(Center, UpperBound); }
         }
 
-        public AABB Q2
+        public AABB2D Q2
         {
             get
             {
-                return new AABB(new Vector2D(LowerBound.X, Center.Y), new Vector2D(Center.X, UpperBound.Y));
+                return new AABB2D(new Vector2D(LowerBound.X, Center.Y), new Vector2D(Center.X, UpperBound.Y));
             }
         }
 
-        public AABB Q3
+        public AABB2D Q3
         {
-            get { return new AABB(LowerBound, Center); }
+            get { return new AABB2D(LowerBound, Center); }
         }
 
-        public AABB Q4
+        public AABB2D Q4
         {
-            get { return new AABB(new Vector2D(Center.X, LowerBound.Y), new Vector2D(UpperBound.X, Center.Y)); }
+            get { return new AABB2D(new Vector2D(Center.X, LowerBound.Y), new Vector2D(UpperBound.X, Center.Y)); }
         }
 
         public Vector2D[] GetVerticesCollection()
@@ -136,7 +136,7 @@
         /// Combine an AABB into this one.
         /// </summary>
         /// <param name="aabb">The aabb.</param>
-        public void Combine(ref AABB aabb)
+        public void Combine(ref AABB2D aabb)
         {
             LowerBound = Vector2D.Min(LowerBound, aabb.LowerBound);
             UpperBound = Vector2D.Max(UpperBound, aabb.UpperBound);
@@ -147,7 +147,7 @@
         /// </summary>
         /// <param name="aabb1">The aabb1.</param>
         /// <param name="aabb2">The aabb2.</param>
-        public void Combine(ref AABB aabb1, ref AABB aabb2)
+        public void Combine(ref AABB2D aabb1, ref AABB2D aabb2)
         {
             LowerBound = Vector2D.Min(aabb1.LowerBound, aabb2.LowerBound);
             UpperBound = Vector2D.Max(aabb1.UpperBound, aabb2.UpperBound);
@@ -160,7 +160,7 @@
         /// <returns>
         /// 	<c>true</c> if it contains the specified aabb; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(ref AABB aabb)
+        public bool Contains(ref AABB2D aabb)
         {
             bool result = LowerBound.X <= aabb.LowerBound.X;
             result = result && LowerBound.Y <= aabb.LowerBound.Y;
@@ -187,12 +187,12 @@
             return false;
         }
 
-        public static bool TestOverlap(AABB a, AABB b)
+        public static bool TestOverlap(AABB2D a, AABB2D b)
         {
             return TestOverlap(ref a, ref b);
         }
 
-        public static bool TestOverlap(ref AABB a, ref AABB b)
+        public static bool TestOverlap(ref AABB2D a, ref AABB2D b)
         {
             Vector2D d1 = b.LowerBound - a.UpperBound;
             Vector2D d2 = a.LowerBound - b.UpperBound;

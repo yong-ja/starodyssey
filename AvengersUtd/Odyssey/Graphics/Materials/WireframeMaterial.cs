@@ -36,6 +36,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected override void OnInstanceParametersInit()
         {
             EffectDescription.SetInstanceParameter(InstanceVariable.ObjectWorld);
+            EffectDescription.SetInstanceParameter(InstanceVariable.Diffuse);
         }
     }
 }

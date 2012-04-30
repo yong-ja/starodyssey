@@ -92,9 +92,11 @@
   <ItemGroup>
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
-    <Compile Include="Geometry\AABB.cs" />
+    <Compile Include="Geometry\AABB2D.cs" />
+    <Compile Include="Geometry\AABB3D.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
+    <Compile Include="Geometry\ISphere.cs" />
     <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
     <Compile Include="Geometry\RectangleF.cs" />
