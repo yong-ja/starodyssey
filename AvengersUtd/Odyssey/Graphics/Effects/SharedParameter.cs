@@ -21,6 +21,8 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         readonly dynamic effectVariable;
         UpdateSharedParameter update;
 
+        public SceneVariable Type { get; private set; }
+
         public override dynamic EffectVariable
         {
             get { return effectVariable; }
@@ -35,11 +37,13 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// Creates a description of a parameter used in a shader.
         /// </summary>
         /// <param name="name">The variable name used in the shader.</param>
+        /// <param name="type">An identifier of the variable used in the shader.</param>
         /// <param name="effect">A reference to the effect instance.</param>
         /// <param name="updateMethod">A delegate method that "polls" the updated value.</param>
-        public SharedParameter(string name, Effect effect, dynamic variableRef, UpdateSharedParameter updateMethod)
+        public SharedParameter(string name, SceneVariable type, Effect effect, dynamic variableRef, UpdateSharedParameter updateMethod)
             : base(name, effect)
         {
+            Type = type;
             effectVariable = variableRef;
             update = updateMethod;
         }
@@ -196,7 +200,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
 
             }
 
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, type, effect, eV, update);
         }
 
 
@@ -213,35 +217,35 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
             UpdateSharedParameter update = ((fxParam, renderer) => FloatUpdate(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.CustomFloat, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(string varName, Effect effect, int value)
         {
             EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
             UpdateSharedParameter update = ((fxParam, renderer) => IntUpdate(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName,SceneVariable.CustomInt, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Color4 value)
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
             UpdateSharedParameter update = ((fxParam, renderer) => Color44Update(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.CustomColor4, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Matrix value)
         {
             EffectMatrixVariable eV = effect.GetVariableByName(varName).AsMatrix();
             UpdateSharedParameter update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.CustomMatrix, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, Texture2D value)
         {
             EffectResourceVariable eV = effect.GetVariableByName(varName).AsResource();
             UpdateSharedParameter update = ((fxParam, renderer) => TextureUpdate(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.CustomTexture2D, effect, eV, update);
         }
 
         //public static EffectParameter CreateCustom(String varName, Effect effect, ICastsShadows value)
@@ -255,21 +259,21 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
             UpdateSharedParameter update = ((fxParam, renderer) => Vector4Update(fxParam.EffectVariable, value));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.CustomVector4, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, FloatOp floatOp)
         {
             EffectScalarVariable eV = effect.GetVariableByName(varName).AsScalar();
             UpdateSharedParameter update = ((fxParam, renderer) => FloatUpdate(fxParam.EffectVariable, floatOp()));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.FloatOp, effect, eV, update);
         }
 
         public static SharedParameter CreateCustom(String varName, Effect effect, MatrixOp matrixOp)
         {
             EffectMatrixVariable eV = effect.GetVariableByName(varName).AsMatrix();
             UpdateSharedParameter update = ((fxParam, renderer) => MatrixUpdate(fxParam.EffectVariable, matrixOp()));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.MatrixOp, effect, eV, update);
         }
 
         /// <summary>
@@ -284,7 +288,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             EffectVectorVariable eV = effect.GetVariableByName(varName).AsVector();
             UpdateSharedParameter update = ((fxParam, renderer) => Vector4Update(fxParam.EffectVariable, vectorOp()));
-            return new SharedParameter(varName, effect, eV, update);
+            return new SharedParameter(varName, SceneVariable.VectorOp,effect, eV, update);
         }
 
 

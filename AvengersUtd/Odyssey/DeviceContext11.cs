@@ -248,7 +248,7 @@ namespace AvengersUtd.Odyssey
                     device.ImmediateContext.Flush();
 
                     device.Dispose();
-                    BaseMesh<TexturedMeshVertex>.DebugBuffers();
+                    Game.CurrentRenderer.DebugBuffers();
                 }
             }
             disposed = true;

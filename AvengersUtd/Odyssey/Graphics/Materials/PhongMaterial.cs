@@ -11,7 +11,7 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public class PhongMaterial : AbstractMaterial
+    public class PhongMaterial : ShaderMaterial
     {
         public PhongMaterial() : base("Phong.fx")
         {
@@ -43,7 +43,10 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected override void OnInstanceParametersInit()
         {
             EffectDescription.SetInstanceParameter(InstanceVariable.ObjectWorld);
-            EffectDescription.SetInstanceParameter(InstanceVariable.Diffuse);
+            //EffectDescription.SetInstanceParameter(InstanceVariable.Diffuse);
+            //EffectDescription.SetInstanceParameter(InstanceVariable.Ambient);
+            //EffectDescription.SetInstanceParameter(InstanceVariable.AmbientCoefficient);
+            EffectDescription.SetInstanceParameter(InstanceVariable.MaterialBuffer);
         }
     }
 }

@@ -256,7 +256,7 @@
     <value>Index {0}[{1}] with value {2} out of range</value>
   </data>
   <data name="INFO_OE_Disposed" xml:space="preserve">
-    <value>{1} disposed</value>
+    <value>{0} disposed</value>
   </data>
   <data name="INFO_OE_Disposing" xml:space="preserve">
     <value>{0} disposing</value>
@@ -268,7 +268,18 @@
     <value>Include file {0} is missing from effect file {1}</value>
   </data>
   <data name="ERR_IO_EffectCompilationError" xml:space="preserve">
-    <value>Shader compilation error in {0}:
-{1}</value>
+    <value>Shader compilation error in {0}.</value>
+  </data>
+  <data name="INFO_Graphics_InstanceParameterCreation" xml:space="preserve">
+    <value>Creating instance parameter: [{0}]</value>
+  </data>
+  <data name="INFO_Rendering_ApplyInstanceParameter" xml:space="preserve">
+    <value>Applying instance parameter: [{0}].[{1}]</value>
+  </data>
+  <data name="INFO_Rendering_ApplySceneParameter" xml:space="preserve">
+    <value>Applying scene parameter: [{0}].[{1}]</value>
+  </data>
+  <data name="INFO_OE_BufferDisposed" xml:space="preserve">
+    <value>Buffer [{0}] disposed: [{1}]</value>
   </data>
 </root>

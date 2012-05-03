@@ -199,6 +199,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 {
                     // dispose managed components
                     font.Dispose();
+                    text.Dispose();
                 }
 
                 // dispose unmanaged components

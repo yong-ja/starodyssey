@@ -7,11 +7,14 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public interface IColor4Material
+    public interface IColorMaterial
     {
-        Color4 AmbientColor4 { get;  }
+        Color4 AmbientColor { get;  }
         Color4 DiffuseColor { get; }
-        Color4 SpecularColor4 { get; }
+        Color4 SpecularColor { get; }
+        float AmbientCoefficient { get; }
+        float SpecularCoefficient { get; }
+        float DiffuseCoefficient { get; }
 
     }
 

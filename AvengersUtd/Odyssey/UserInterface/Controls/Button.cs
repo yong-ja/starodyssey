@@ -100,6 +100,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             label.Position = TextManager.ComputeTextPosition(this, label);
             label.ComputeAbsolutePosition();
         }
+
+        protected override void OnDisposing(EventArgs e)
+        {
+            base.OnDisposing(e);
+            if (!label.Disposed)
+                label.Dispose();
+        }
         
         #region ISpriteObject
 

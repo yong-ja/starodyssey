@@ -7,14 +7,15 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public class ShaderMaterial : AbstractMaterial, IColor4Material
+    public class ShaderMaterial : AbstractMaterial, IColorMaterial
     {
-        Color4 ambientColor4 = new Color4(0, 0, 0, 0);
-        Color4 diffuseColor = new Color4(0, 0, 0, 1);
-        Color4 specularColor4;
+        Color4 ambientColor;
+        Color4 diffuseColor;
+        Color4 specularColor;
         float kA;
         float kD;
         float kS;
+        float sP;
 
         protected LightingAlgorithm lightingAlgorithm;
         protected LightingTechnique lightingTechnique;
@@ -22,6 +23,13 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         public ShaderMaterial(string filename) : base(filename)
         {
+            kA = 0;
+            kD = 1;
+            kS = 1;
+            sP = 16;
+            specularColor = new Color4(1f, 1f, 1f, 1f);
+            ambientColor = new Color4(1f, 1f, 1f, 1f);
+            diffuseColor = new Color4(1, 0, 0, 1);
         }
 
         public Color4 DiffuseColor
@@ -37,23 +45,59 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             }
         }
 
-        public Color4 AmbientColor4
+        public Color4 AmbientColor
         {
-            get { return ambientColor4; }
-            set { ambientColor4 = value; }
+            get { return ambientColor; }
+            set { ambientColor = value; }
         }
 
-        public Color4 SpecularColor4
+        public Color4 SpecularColor
         {
-            get { return specularColor4; }
+            get { return specularColor; }
             set
             {
-                if (specularColor4 != value)
+                if (specularColor != value)
                 {
-                    specularColor4 = value;
+                    specularColor = value;
                     EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.Specular, EffectDescription.Effect));
                 }
             }
+        }
+
+        public float AmbientCoefficient
+        {
+            get { return kA; }
+                        set
+            {
+                if (kA != value)
+                {
+                    kA = value;
+                    EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.AmbientCoefficient, EffectDescription.Effect));
+                }
+            }
+        }
+
+        public float SpecularCoefficient
+        {
+            get { return kS; }
+        }
+
+        public float DiffuseCoefficient
+        {
+            get { return kD; }
+            set
+            {
+                if (kD != value)
+                {
+                    kD = value;
+                    EffectDescription.SetInstanceParameter(InstanceParameter.Create(InstanceVariable.DiffuseCoefficient, EffectDescription.Effect));
+                }
+            }
+        }
+
+        public float SpecularPower
+        {
+            get { return sP;}
         }
 
         public LightingTechnique LightingTechnique
@@ -65,11 +109,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         {
             if ((lightingTechnique & LightingTechnique.Diffuse) != LightingTechnique.Diffuse)
             {
-                AmbientColor4 = new Color4(0, 0, 0, 0);
+                AmbientColor = new Color4(0, 0, 0, 0);
                 DiffuseColor = new Color4(1, 0, 1, 0);
             }
             if ((lightingTechnique & LightingTechnique.Specular) != LightingTechnique.None)
-                SpecularColor4 = new Color4(1, 1, 1, 1);
+                SpecularColor = new Color4(1, 1, 1, 1);
         }
 
         public void SetLightingTechnique(LightingTechnique technique, bool value)
@@ -83,5 +127,8 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             //if (value != previousValue)
             //    ChooseTechnique();
         }
+
+
+
     }
 }

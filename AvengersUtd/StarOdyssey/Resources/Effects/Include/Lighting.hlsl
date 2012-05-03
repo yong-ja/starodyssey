@@ -2,7 +2,7 @@
 float fLightRadius = 100;
 float3 vLightPosition = float3(0,0,0);
 float4 cLightDiffuse = float4(1,1,1,1);
-float4 cLightAmbient = float4(0.15, 0.15, 0.15, 1);
+float4 cLightAmbient = float4(0.15,0.15,0.15,1);
 float4 cLightSpecular = float4(1,1,1,1);
 
 // Spotlight Parameters
@@ -42,20 +42,6 @@ float GetSpotlightEffect(
           (rho - cosPhi) / (cosTheta - cosPhi)), 
           falloff); 
 }
-
-//float4 Prova(float4 vShadowProjection, uniform sampler2D tShadowMapSampler)
-//{
-	//float3 shadowColorValue = tex2Dproj(tShadowMapSampler, vShadowProjection).rgb;      
-	//
-	//if (isnan(shadowColorValue.x) || isnan(shadowColorValue.y) || isnan(shadowColorValue.z))
-		//return float4(1,0,0,1);
-	//else if (isinf(shadowColorValue.x) || isinf(shadowColorValue.y) || isinf(shadowColorValue.z))
-		//return float4(0,0,1,1);
-	//else
-		//return float4(0,1,0,1);
-	//
-	////return float4(saturate(shadowColorValue),1);
-//}
 
 float ComputeShadowsSSM(
 	float3 vLightDirection,
@@ -112,16 +98,16 @@ float4 PhongLighting(
    
     float fSelfShadow = saturate (4 * NdotL);
     float4 cDiffuse = (kD * NdotL * cMaterialDiffuse * cLightDiffuse);
-	
+	float4 cAmbient = kA *cMaterialDiffuse *cLightAmbient;
 	
 	if (bDoSpecular) 
 	{
 		float RdotV = saturate(dot(R,V));
 		float4 cSpecular = (kS * pow(RdotV,fMaterialSpecularPower) * cMaterialSpecular * cLightSpecular);
-		color = kA + (fSelfShadow * (cDiffuse + cSpecular));
+		color = cAmbient + (fSelfShadow * (cDiffuse + cSpecular));
 	}
 	else 
-		color = kA + fSelfShadow * cDiffuse;
+		color = cAmbient + fSelfShadow * cDiffuse;
 		
 	return color;
 }

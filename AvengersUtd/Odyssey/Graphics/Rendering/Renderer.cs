@@ -5,6 +5,7 @@ using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+using System.Collections.Generic;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
@@ -14,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public abstract class Renderer : IDisposable
     {
         public static Color4 ClearColor { get; set; }
+        private readonly List<SlimDX.Direct3D11.Buffer> buffers;
 
         private bool disposed;
         private readonly DeviceContext11 deviceContext;
@@ -48,6 +50,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             deviceContext.DeviceResume += OnDeviceResume;
             Scene = new SceneManager();
             Camera = new QuaternionCam();
+            buffers = new List<SlimDX.Direct3D11.Buffer>();
         }
 
         public void Reset()
@@ -71,6 +74,21 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             deviceContext.SwapChain.Present(1, PresentFlags.None);
         }
 
+        public void RegisterBuffer(SlimDX.Direct3D11.Buffer buffer)
+        {
+            buffers.Add(buffer);
+        }
+
+        public void DebugBuffers()
+        {
+            LogEvent.Engine.Log("List of registered buffers:");
+            foreach (SlimDX.Direct3D11.Buffer buffer in buffers)
+            {
+                if (!buffer.Disposed)
+                LogEvent.BufferDisposed.Log((string)buffer.Tag, buffer.Disposed.ToString());
+            }
+        }
+
         protected virtual void OnDeviceResize(object sender,ResizeEventArgs e)
         {
             Camera.Reset();
@@ -83,6 +101,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected virtual void OnDisposing(object sender, EventArgs e)
         {
             Scene.Dispose();
+            Hud.Dispose();
         }
 
         protected virtual void OnDeviceSuspend(object sender, EventArgs e)

@@ -363,6 +363,77 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         #endregion
 
+        #region Boxes
+        public static MeshVertex[] CreateBox(Vector4 center, float width, float height, float depth,
+                                                out ushort[] indices)
+        {
+            Vector3 frontNormal = new Vector3(0.0f, 0.0f, 1.0f);
+            Vector3 backNormal = new Vector3(0.0f, 0.0f, -1.0f);
+            Vector3 topNormal = new Vector3(0.0f, 1.0f, 0.0f);
+            Vector3 bottomNormal = new Vector3(0.0f, -1.0f, 0.0f);
+            Vector3 leftNormal = new Vector3(-1.0f, 0.0f, 0.0f);
+            Vector3 rightNormal = new Vector3(1.0f, 0.0f, 0.0f);
+
+            Vector2 textureTopLeft = new Vector2(0.0f, 0.0f);
+            Vector2 textureTopRight = new Vector2(1.0f, 0.0f);
+            Vector2 textureBottomLeft = new Vector2(0.0f, 1.0f);
+            Vector2 textureBottomRight = new Vector2(1.0f, 1.0f);
+
+            MeshVertex[] vertices = new MeshVertex[]
+            {
+                // Front Surface
+                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0), frontNormal, textureBottomLeft),
+                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),frontNormal,textureTopLeft), 
+                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),frontNormal,textureBottomRight),
+                new MeshVertex(center + new Vector4(width/2, height/2, depth/2, 0),frontNormal,textureTopRight),  
+ 
+                // Back Surface
+                new MeshVertex(center +new Vector4(width/2, -height/2, -depth/2, 0),backNormal, textureBottomLeft),
+                new MeshVertex(center +new Vector4(width/2, height/2, -depth/2, 0),backNormal, textureTopLeft), 
+                new MeshVertex(center +new Vector4(-width/2, -height/2, -depth/2, 0),backNormal, textureBottomRight),
+                new MeshVertex(center +new Vector4(-width/2, height/2, -depth/2, 0), backNormal, textureTopRight), 
+ 
+                // Left Surface
+                new MeshVertex(center + new Vector4(-width/2, -height/2, -depth/2, 0), leftNormal, textureBottomLeft),
+                new MeshVertex(center + new Vector4(-width/2, height/2, -depth/2, 0),leftNormal, textureTopLeft),
+                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0),leftNormal, textureBottomRight),
+                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),leftNormal, textureTopRight),
+ 
+                // Right Surface
+                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),rightNormal, textureBottomLeft),
+                new MeshVertex(center + new Vector4(width/2, height/2,depth/2, 0),rightNormal, textureTopLeft),
+                new MeshVertex(center + new Vector4(width/2, -height/2, -depth/2, 0),rightNormal, textureBottomRight),
+                new MeshVertex(center + new Vector4(width/2, height/2, -depth/2, 0),rightNormal, textureTopRight),
+ 
+                // Top Surface
+                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),topNormal,textureBottomLeft),
+                new MeshVertex(center + new Vector4(-width/2, height/2, -depth/2, 0),topNormal,textureTopLeft),
+                new MeshVertex(center + new Vector4(width/2, height/2, depth/2, 0),topNormal,textureBottomRight),
+                new MeshVertex(center + new Vector4(width/2, height/2, -depth/2, 0),topNormal,textureTopRight),
+ 
+                // Bottom Surface
+                new MeshVertex(center + new Vector4(-width/2, -height/2, -depth/2, 0), bottomNormal,textureBottomLeft),
+                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0),bottomNormal,textureTopLeft),
+                new MeshVertex(center + new Vector4(width/2, -height/2, -depth/2, 0),bottomNormal,textureBottomRight),
+                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),bottomNormal,textureTopRight),
+            };
+
+           
+            indices = new ushort[] { 
+                    0, 1, 2, 2, 1, 3,   
+                    4, 5, 6, 6, 5, 7,
+                    8, 9, 10, 10, 9, 11, 
+                    12, 13, 14, 14, 13, 15, 
+                    16, 17, 18, 18, 17, 19,
+                    20, 21, 22, 22, 21, 23
+                };
+
+            return vertices;
+
+        }
+
+        #endregion
+
         #region Ellipse
 
         static Vector4 CreateEllipseVertex(Vector4 center, float theta, float radiusX, float radiusY, float ringOffset=1)

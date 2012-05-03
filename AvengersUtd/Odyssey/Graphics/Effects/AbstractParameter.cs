@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using SlimDX;
 using SlimDX.Direct3D11;
+using AvengersUtd.Odyssey.Graphics.Materials;
+using System.Runtime.InteropServices;
 
 namespace AvengersUtd.Odyssey.Graphics.Effects
 {
@@ -117,7 +119,18 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         public static Result TextureUpdate(EffectResourceVariable textureVar, Texture2D texture)
         {
             return textureVar.SetResource(new ShaderResourceView(Game.Context.Device, texture));
-        } 
+        }
+
+        public static Result BufferUpdate<TBuffer>(EffectConstantBuffer cBuffer, TBuffer value)
+            where TBuffer : struct
+        {
+            using (DataStream data = new DataStream(Marshal.SizeOf(typeof(TBuffer)), true, true))
+            {
+                data.Write(value);
+                data.Position= 0;
+                return cBuffer.SetRawValue(data, (int)data.Length);
+            }
+        }
         #endregion
 
     }

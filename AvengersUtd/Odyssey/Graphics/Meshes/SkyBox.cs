@@ -35,20 +35,13 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
-    public class SkyBox : BaseMesh<Textured3DVertex>, Materials.IColor4Material, Materials.IDiffuseMap
+    public class SkyBox : BaseMesh<Textured3DVertex>, Materials.IDiffuseMap
     {
         private string diffuseMapKey;
-
-        public Color4 DiffuseColor { get; set; }
-
-        public Color4 SpecularColor4 { get; set; }
-
-        public Color4 AmbientColor4 { get; set; }
 
         public SkyBox() : base(Textured3DVertex.Description)
         {
             Create();
-            DiffuseColor = new Color4(System.Drawing.Color.CornflowerBlue);
             diffuseMapKey = Global.TexturePath + "OutputCube.dds";
             
             ShaderResourceList.Add(ResourceManager.LoadTexture2DResource(diffuseMapKey));
