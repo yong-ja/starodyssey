@@ -21,6 +21,8 @@ namespace AvengersUtd.Odyssey
     public static class Game
     {
         public const string EngineTag = "Odyssey";
+        public const string GraphicsTag = "Graphics";
+        public const string RenderingTag = "Rendering";
         private static object locker;
         private static Timer timer;
         private static bool inputEnabled;

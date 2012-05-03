@@ -3,13 +3,14 @@ using System.Diagnostics;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using SlimDX;
+using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     /// <summary>
     /// Generate a spherical mesh of VertexPositionNormalTexture vertices
     /// </summary>
-    public class Sphere : BaseMesh<TexturedMeshVertex>, ISphere, IColor4Material
+    public class Sphere : BaseMesh<TexturedMeshVertex>, ISphere
     {
         private readonly int numStrips;
         private int nextIndex;
@@ -17,26 +18,20 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public float Radius { get; private set; }
 
-        public Color4 DiffuseColor { get; set; }
-        public Color4 SpecularColor4 { get; set;}
-        public Color4 AmbientColor4 { get; set;}
-
         /// <summary>
         /// construtor
         /// <param name="numStrips">Number of strips we sphere has between pole and equator</param>
         /// </summary>
         public Sphere(float radius, int numStrips):base(TexturedMeshVertex.Description)
         {
+            Contract.Requires(1 <= numStrips && numStrips < 20);
+            Contract.Ensures(VertexCount == nextVertex);
+            Contract.Ensures(IndexCount == nextIndex * 2);
             this.numStrips = numStrips;
-            Debug.Assert(1 <= numStrips && numStrips < 20);
-            DiffuseColor = new Color4(1, 1, 0, 0);
             Radius = radius;
             AllocateStorage();
             ConstructMeshStructure();
-
-            // check calculations
-            Debug.Assert(VertexCount == nextVertex);
-            Debug.Assert(IndexCount == nextIndex * 2);
+            Material = new PhongMaterial() { DiffuseColor = new Color4(1.0f, 0.867f, 0.737f, 1.0f) };
         }
        
         /// <summary>

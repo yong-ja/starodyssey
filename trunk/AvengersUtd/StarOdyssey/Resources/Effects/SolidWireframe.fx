@@ -97,7 +97,7 @@ float4 LightVector = float4( 0, 0, 1, 0);
 
 float LineWidth = 2.5;
 float FadeDistance = 50;
-float PatternPeriod = 1.5;
+float PatternPeriod = 20.5;
 
 float4 FillColor = float4(0.1, 0.2, 0.4, 1);
 //float4 WireColor = float4(1, 1, 1, 1);

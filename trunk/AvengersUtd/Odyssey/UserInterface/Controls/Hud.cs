@@ -564,6 +564,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 control.Dispose();
             }
+
+            foreach (ISpriteObject spriteControl in spriteControls.Where(sCtl => !sCtl.Disposed))
+                spriteControl.Dispose();
+
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

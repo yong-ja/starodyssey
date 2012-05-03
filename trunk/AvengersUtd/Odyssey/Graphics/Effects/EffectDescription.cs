@@ -5,6 +5,7 @@ using AvengersUtd.Odyssey.Graphics.Resources;
 using AvengersUtd.Odyssey.Assets;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 namespace AvengersUtd.Odyssey.Graphics.Effects
 {
@@ -133,13 +134,19 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         public void ApplyDynamicParameters(Renderer rendererContext)
         {
             foreach (SharedParameter p in dynamicParameters.Values)
+            {
+                VerboseEvent.DynamicParameterSetting.Log(rendererContext.GetType().Name.ToString(), p.Type.ToString());
                 p.Apply(rendererContext);
+            }
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)
         {
             foreach (InstanceParameter p in instanceParameters.Values)
+            {
+                VerboseEvent.InstanceParameterSetting.Log(rObject.Name, p.Type.ToString());
                 p.Apply(rObject);
+            }
         }
     }
 }

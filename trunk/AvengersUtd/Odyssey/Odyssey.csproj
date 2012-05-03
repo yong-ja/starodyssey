@@ -93,9 +93,12 @@
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB2D.cs" />
-    <Compile Include="Geometry\AABB3D.cs" />
+    <Compile Include="Graphics\Materials\MaterialBuffer.cs" />
+    <Compile Include="Graphics\Meshes\AABB3D.cs" />
+    <Compile Include="Graphics\Meshes\Box.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
+    <Compile Include="Geometry\IBox.cs" />
     <Compile Include="Geometry\ISphere.cs" />
     <Compile Include="Geometry\PolyEllipse.cs" />
     <Compile Include="Geometry\Polygon.Tools.cs" />
@@ -157,7 +160,9 @@
     <Compile Include="Graphics\Meshes\ColoredVertex.cs" />
     <Compile Include="Graphics\Meshes\Copy of TexturedVertex.cs" />
     <Compile Include="Graphics\Meshes\Grid.cs" />
+    <Compile Include="Graphics\Meshes\ICollidable.cs" />
     <Compile Include="Graphics\Meshes\IVertex.cs" />
+    <Compile Include="Graphics\Meshes\MeshGroup.cs" />
     <Compile Include="Graphics\Meshes\MeshVertex.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.cs" />
     <Compile Include="Graphics\Meshes\PolyMesh.Factory.cs" />
@@ -182,6 +187,7 @@
     <Compile Include="Utils\Logging\LogEvent.cs" />
     <Compile Include="Utils\Logging\TraceData.cs" />
     <Compile Include="Utils\Logging\TraceExtensions.cs" />
+    <Compile Include="Utils\Logging\VerboseEvent.cs" />
     <Compile Include="Utils\Logging\WarningEvent.cs" />
     <Compile Include="Utils\SafeNativeMethods.cs" />
     <Compile Include="Utils\Text.cs" />

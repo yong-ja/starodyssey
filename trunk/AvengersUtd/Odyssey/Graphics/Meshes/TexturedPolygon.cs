@@ -11,7 +11,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private string diffuseMapKey;
         private Texture2D diffuseMap;
                 
-        public TexturedPolygon(Vector3 topLeftVertex, float width, float height, bool dynamic = false) : base(TexturedVertex.Description)
+        public TexturedPolygon(string tag, Vector3 topLeftVertex, float width, float height, bool dynamic = false) : base(TexturedVertex.Description)
         {
             ushort[] indices;
             Vertices = CreateTexturedQuad(topLeftVertex, width, height, out indices);
@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 ResourceUsage = ResourceUsage.Dynamic;
             }
            
-            diffuseMapKey = string.Empty;
+            Name = diffuseMapKey = tag;
         }
 
         #region IDiffuseMap Members
@@ -66,11 +66,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected override void OnDisposing(EventArgs e)
         {
             base.OnDisposing(e);
-            if (!diffuseMap.Disposed)
+            if (diffuseMap != null)
                 diffuseMap.Dispose();
+
+            if (ShaderResourceList.Count == 0)
+                return;
 
             if (!ShaderResourceList[0].Disposed)
                 ShaderResourceList[0].Dispose();
         }
+
     }
 }

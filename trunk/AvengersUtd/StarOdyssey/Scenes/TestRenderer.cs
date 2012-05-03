@@ -37,41 +37,47 @@ namespace AvengersUtd.StarOdyssey.Scenes
             PhongMaterial phong = new PhongMaterial();
             IMaterial wireframe = new WireframeMaterial();
 
-            MaterialNode mNode1 = new MaterialNode(phong);
-            MaterialNode mNode2 = new MaterialNode(wireframe);
-            MaterialNode mNode3 = new MaterialNode(new SkyBoxMaterial());
+            MaterialNode mNodePhong = new MaterialNode(phong);
+            MaterialNode mNodeWire = new MaterialNode(wireframe);
+            MaterialNode mNodeSkybox = new MaterialNode(new SkyBoxMaterial());
             SkyBox skybox = new SkyBox();
-            Sphere lightSphere = Primitive.CreateSphere(0.5f,4);
+            Sphere lightSphere = Primitive.CreateSphere(1f, 8);
+            AABB3D box = AABB3D.FromSphere(lightSphere);
+            lightSphere.PositionV3 = new Vector3(2,0,0);
+
             AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
-            grid.DiffuseColor = Color.DarkGreen;
-            lightSphere.DiffuseColor = new Color4(Color.Yellow);
-            lightSphere.PositionV3 = new Vector3(0,0,0);
+            //Box box = new Box(grid.PositionV3, 5f, 20f, 5f);
+            
+            //lightSphere.DiffuseColor = new Color4(Color.Yellow);
+            
             Sphere sphere = Primitive.CreateSphere(6f, 10);
-            sphere.DiffuseColor = new Color4(1.0f, 0.867f,0.737f,1.0f);
-            sphere.PositionV3 = new Vector3(0f,0, 10f);
+            //sphere.DiffuseColor = new Color4(1.0f, 0.867f,0.737f,1.0f);
+            sphere.PositionV3 = new Vector3(0f,0, 20f);
             rNode = new RenderableNode(sphere);
             rNode1 = new RenderableNode(lightSphere);
-            RenderableNode rNode3 = new RenderableNode(skybox);
+            RenderableNode rNodeBox = new RenderableNode(box);
+            RenderableNode rNodeSky = new RenderableNode(skybox);
             RenderableNode rNodeGrid = new RenderableNode(grid);
-            FixedNode fNode = new FixedNode {Position = sphere.PositionV3};
-            FixedNode fNode2 = new FixedNode {Position = lightSphere.PositionV3};
+            FixedNode fNodeSphere = new FixedNode {Position = box.PositionV3};
+            FixedNode fNodeGrid = new FixedNode {Position = grid.PositionV3};
             CameraAnchorNode coNode = new CameraAnchorNode();
-            Scene.Tree.RootNode.AppendChild(fNode);
+            Scene.Tree.RootNode.AppendChild(fNodeSphere);
 
-            Scene.Tree.RootNode.AppendChild(fNode2);
+            Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
-            fNode.AppendChild(mNode1);
-            fNode2.AppendChild(mNode2);
-            coNode.AppendChild(mNode3);
+            fNodeSphere.AppendChild(mNodePhong);
+            fNodeGrid.AppendChild(mNodeWire);
+            coNode.AppendChild(mNodeSkybox);
     
-            mNode1.AppendChild(rNode);
-            //mNode1.AppendChild(rNode1);
-            mNode2.AppendChild(rNodeGrid);
+            mNodePhong.AppendChild(rNode);
+            mNodePhong.AppendChild(rNode1);
+            mNodePhong.AppendChild(rNodeBox);
+            mNodeWire.AppendChild(rNodeGrid);
             //mNode3.AppendChild(rNode3);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            Hud hud = Hud.FromDescription(Game.Context.Device,
+            Hud = Hud.FromDescription(Game.Context.Device,
                 new HudDescription(
                     width: Game.Context.Settings.ScreenWidth,
                     height: Game.Context.Settings.ScreenHeight,
@@ -80,7 +86,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
                     cameraEnabled: true,
                     multithreaded: true
                     ));
-            hud.BeginDesign();
+            Hud.BeginDesign();
 
             //hud.Add(new Button
             //{
@@ -90,18 +96,18 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //});
 
 
-            hud.Add(new Panel
+            Hud.Add(new Panel
             {
                 Position = new Vector2(300f, 175f),
                 Size = new Size(200, 200)
             });
 
-            hud.Add(new DecoratorButton
+            Hud.Add(new DecoratorButton
                         {
                             Position = new Vector2(550f, 300f),
                         });
 
-            hud.Add(new Button
+            Hud.Add(new Button
             {
                 Position = new Vector2(300f, 650f),
                 Size = new Size(400, 100)
@@ -113,11 +119,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //                     };
             //hud.Add(d);
             Game.Logger.Activate();
-            hud.Init();
-            hud.EndDesign();
+            Hud.Init();
+            Hud.EndDesign();
 
             Scene.BuildRenderScene();
-            hud.AddToScene(this, Scene);
+            //hud.AddToScene(this, Scene);
         }
         
         public override void Render()
@@ -131,6 +137,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Camera.UpdateStates();
         }
 
-        
+       
     }
 }

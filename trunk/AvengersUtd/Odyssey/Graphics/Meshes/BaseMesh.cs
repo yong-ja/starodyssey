@@ -36,12 +36,13 @@ using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 using Buffer = SlimDX.Direct3D11.Buffer;
+using AvengersUtd.Odyssey.Graphics.Materials;
 
 #endregion
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
-    public abstract class BaseMesh<TVertex> : IRenderable
+    public abstract class BaseMesh<TVertex> : IMesh
         where TVertex : struct, IPositionVertex
     {
         private readonly EventHandlerList eventHandlerList;
@@ -135,6 +136,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #endregion
 
         #region Properties
+        public string Name { get; set; }
 
         protected TVertex[] Vertices { get; set; }
         protected ushort[] Indices { get; set; }
@@ -150,8 +152,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public int VertexCount { get { return Vertices.Length; }}
         public int IndexCount { get { return Indices.Length; } }
         public int TotalFaces { get { return IndexCount / 3; } }
+        public Buffer VertexBuffer { get; protected set; }
+        public Buffer IndexBuffer { get; protected set; }
 
-        public Vector3 ScalingValues { get; set; }
+        public ShaderResourceView[] ShaderResources
+        {
+            get { return shaderResources.ToArray(); }
+        }
 
         public bool Inited { get; private set; }
         public bool IsCollidable { get; private set; }
@@ -164,12 +171,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public Matrix World { get; set; }
         public Matrix Translation { get; private set; }
         public Matrix Rotation { get; private set; }
-
+        public Vector3 ScalingValues { get; set; }
         public Vector4 PositionV4
         {
             get { return vPosition.ToVector4(); }
         }
-
         public Vector3 PositionV3
         {
             get { return vPosition; }
@@ -195,7 +201,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return rotationAngles; }
             set { rotationAngles = value; }
         }
-
         public Quaternion CurrentRotation
         {
             get { return qRotation; }
@@ -212,14 +217,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
         }
 
-        public Buffer VertexBuffer { get; protected set; }
+        public IColorMaterial Material { get; protected set; }
 
-        public Buffer IndexBuffer { get; protected set; }
-
-        public ShaderResourceView[] ShaderResources
-        {
-            get { return shaderResources.ToArray(); }
-        }
 
         #endregion
 
@@ -234,9 +233,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             EventDisposing = new object();
         }
 
-
         protected BaseMesh(VertexDescription vertexDescription)
         {
+            Name = GetType().Name.ToString();
             eventHandlerList = new EventHandlerList();
             CastsShadows = false;
             IsCollidable = false;
@@ -257,13 +256,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #region IRenderable Members
 
         public RenderableNode ParentNode { get; set; }
-        public static List<Buffer> bf = new List<Buffer>();
-
-        public static void DebugBuffers()
-        {
-            foreach (Buffer buffer in bf)
-                Console.WriteLine(buffer.Tag + " Disposed:" + buffer.Disposed);
-        }
 
         public virtual void Init()
         {
@@ -279,7 +271,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 OptionFlags = ResourceOptionFlags.None,
                 SizeInBytes = Vertices.Length * VertexDescription.Stride,
                 Usage = ResourceUsage,
-            }) {Tag = GetType().Name + "_VB"};
+            }) {Tag = Name + "_VB"};
 
             stream.Close();
 
@@ -293,11 +285,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 OptionFlags = ResourceOptionFlags.None,
                 SizeInBytes = (int)stream.Length,
                 Usage =ResourceUsage
-            }) { Tag = GetType().Name + "_IB" };
+            }) { Tag = Name + "_IB" };
             stream.Dispose();
 
-            bf.Add(VertexBuffer);
-            bf.Add(IndexBuffer);
+            Game.CurrentRenderer.RegisterBuffer(VertexBuffer);
+            Game.CurrentRenderer.RegisterBuffer(IndexBuffer);
+
             Inited = true;
         }
 
@@ -328,23 +321,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Game.Context.Device.ImmediateContext.DrawIndexed(indexCount, startIndex, baseVertex);
         }
 
-        public void UpdatePosition()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CollideWith(IRenderable collidedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
         public bool IsInViewFrustum()
         {
             throw new NotImplementedException();
         }
-
+ 
         #endregion
 
         #region IDisposable members
@@ -360,8 +341,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 if (disposing)
                 {
                     // dispose managed components
-                    VertexBuffer.Dispose();
-                    IndexBuffer.Dispose();
+                    if (VertexBuffer!=null)
+                        VertexBuffer.Dispose();
+                    if (IndexBuffer!= null)
+                        IndexBuffer.Dispose();
                     OnDisposing(EventArgs.Empty);
                 }
             }
@@ -373,5 +356,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Dispose(false);
         } 
         #endregion
+
+
     }
 }

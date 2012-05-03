@@ -22,9 +22,11 @@ using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
+using AvengersUtd.Odyssey.Properties;
 using SlimDX;
 using SlimDX.Direct3D11;
 using EffectDescription = AvengersUtd.Odyssey.Graphics.Effects.EffectDescription;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 #endregion
 

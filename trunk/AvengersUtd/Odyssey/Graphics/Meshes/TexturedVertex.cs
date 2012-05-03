@@ -52,9 +52,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// Gets or sets the texture coordinate for the vertex.
         /// </summary>
         public Vector2 TextureCoordinate { get; set; }
+
         public const int Stride = 24;
         public const VertexFormat VertexFormat = Geometry.VertexFormat.PositionTextureUV;
-
         private static readonly InputElement[] inputElements;
         private static readonly VertexDescription description = new VertexDescription(VertexFormat, Stride);
 

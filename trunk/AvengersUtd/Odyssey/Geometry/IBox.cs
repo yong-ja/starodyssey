@@ -6,9 +6,11 @@ using SlimDX;
 
 namespace AvengersUtd.Odyssey.Geometry
 {
-    public interface ISphere
+    public interface IBox
     {
         Vector3 PositionV3 { get; }
-        float Radius { get; }
+        float Width { get; }
+        float Height { get; }
+        float Depth { get; }
     }
 }

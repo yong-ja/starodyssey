@@ -5,9 +5,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     public partial class TexturedPolygon
     {
         #region Quads
-        public static TexturedPolygon CreateTexturedQuad(Vector3 topLeftVertex, float width, float height, bool dynamic = false)
+        public static TexturedPolygon CreateTexturedQuad(string tag, Vector3 topLeftVertex, float width, float height, bool dynamic = false)
         {
-            TexturedPolygon texturedPolygon = new TexturedPolygon(topLeftVertex, width, height, dynamic);
+            TexturedPolygon texturedPolygon = new TexturedPolygon(tag, topLeftVertex, width, height, dynamic);
             texturedPolygon.Init();
             return texturedPolygon;
         }

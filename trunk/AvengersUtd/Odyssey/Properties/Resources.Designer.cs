@@ -241,8 +241,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shader compilation error in {0}:
-        ///{1}.
+        ///   Looks up a localized string similar to Shader compilation error in {0}..
         /// </summary>
         internal static string ERR_IO_EffectCompilationError {
             get {
@@ -458,6 +457,24 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating instance parameter: [{0}].
+        /// </summary>
+        internal static string INFO_Graphics_InstanceParameterCreation {
+            get {
+                return ResourceManager.GetString("INFO_Graphics_InstanceParameterCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buffer [{0}] disposed: [{1}].
+        /// </summary>
+        internal static string INFO_OE_BufferDisposed {
+            get {
+                return ResourceManager.GetString("INFO_OE_BufferDisposed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DX11 device created.
         /// </summary>
         internal static string INFO_OE_DeviceCreated {
@@ -476,7 +493,7 @@ namespace AvengersUtd.Odyssey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1} disposed.
+        ///   Looks up a localized string similar to {0} disposed.
         /// </summary>
         internal static string INFO_OE_Disposed {
             get {
@@ -508,6 +525,24 @@ namespace AvengersUtd.Odyssey.Properties {
         internal static string INFO_OE_Starting {
             get {
                 return ResourceManager.GetString("INFO_OE_Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applying instance parameter: [{0}].[{1}].
+        /// </summary>
+        internal static string INFO_Rendering_ApplyInstanceParameter {
+            get {
+                return ResourceManager.GetString("INFO_Rendering_ApplyInstanceParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applying scene parameter: [{0}].[{1}].
+        /// </summary>
+        internal static string INFO_Rendering_ApplySceneParameter {
+            get {
+                return ResourceManager.GetString("INFO_Rendering_ApplySceneParameter", resourceCulture);
             }
         }
         

@@ -55,7 +55,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public override void Init()
         {
-            TexturedPolygon quad = TexturedPolygon.CreateTexturedQuad(Vector3.Zero, 1920, 1080);
+            TexturedPolygon quad = TexturedPolygon.CreateTexturedQuad("ScreenQuad", Vector3.Zero, 1920, 1080);
             ImageLoadInformation info = new ImageLoadInformation()
             {
                 BindFlags = BindFlags.None,

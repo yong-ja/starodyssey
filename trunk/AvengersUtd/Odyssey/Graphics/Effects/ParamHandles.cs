@@ -8,7 +8,15 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             public const string LightAmbient = "cLightAmbient";
             public const string MaterialDiffuse = "cMaterialDiffuse";
+            public const string MaterialAmbient= "cMaterialAmbient";
             public const string MaterialSpecular = "cMaterialSpecular";
+            public const string MaterialkA = "kA";
+            public const string MaterialkD = "kD";
+        }
+
+        public struct CBuffers
+        {
+            public const string MaterialBuffer = "mBuffer";
         }
 
         public struct Floats
@@ -99,17 +107,29 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         CameraViewTranspose,
         CameraProjectionTranspose,
         CameraRotation,
-        CameraWorldView
+        CameraWorldView,
+        CustomFloat,
+        CustomInt,
+        CustomColor4,
+        CustomMatrix,
+        CustomTexture2D,
+        CustomVector4,
+        FloatOp,
+        MatrixOp,
+        VectorOp,
     }
 
     public enum InstanceVariable
     {
         ObjectWorld,
         DiffuseMap,
-        Ambient,
+        LightAmbient,
         Diffuse,
         DiffuseCoefficient,
         Specular,
-        SpecularCoefficient
+        SpecularCoefficient,
+        AmbientCoefficient,
+        Ambient,
+        MaterialBuffer
     }
 }

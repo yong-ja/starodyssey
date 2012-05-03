@@ -87,7 +87,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         {
             if (quad == null)
             {
-                quad = TexturedPolygon.CreateTexturedQuad(Vector3.Zero, Size.Width, Size.Height, Dynamic);
+                quad = TexturedPolygon.CreateTexturedQuad(Key, Vector3.Zero, Size.Width, Size.Height, Dynamic);
                 quad.PositionV3 = AbsoluteOrthoPosition;
                 if (CacheText)
                     quad.DiffuseMapKey = Key;
@@ -109,7 +109,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 Game.Context.Immediate.UnmapSubresource(quad.VertexBuffer, 0);
 
                 if (CacheText)
+                {
                     quad.DiffuseMapKey = Key;
+                    quad.Name = Key;
+                }
                 else
                 {
                     quad.DiffuseMapResource.Resource.Dispose();
@@ -131,6 +134,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             base.OnHighlightedChanged(e);
             CreateResource();
             quad.DiffuseMapKey = Key;
+        }
+
+        protected override void OnDisposing(EventArgs e)
+        {
+            base.OnDisposing(e);
+            if (!quad.Disposed)
+                quad.Dispose();
         }
 
         #region ISpriteObject Members

@@ -9,6 +9,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 {
     public enum EventCode : int
     {
+        VerboseMessage = 00001,
         LogMessage = 10001,
         // Warnings
         ThreadAbort = 70001,
@@ -58,19 +59,23 @@ namespace AvengersUtd.Odyssey.Utils.Logging
             get { return ts; }
         }
 
-        public void Log()
+        /// <summary>
+        /// Writes custom text as part of this logging event.
+        /// </summary>
+        /// <param name="message"></param>
+        public void Write(string message)
         {
-            Log(Format);
+            Log(message);
         }
 
-        public void Log(string message)
-        {
-            TraceSource.TraceEvent(EventType, Id, message);
-        }
-
-        public void Log(params object[] args)
+        /// <summary>
+        /// Writes formatted text by passing the relevant arguments.
+        /// </summary>
+        /// <param name="args"></param>
+        public void Log(params string[] args)
         {
             TraceSource.TraceEvent(EventType, Id, string.Format(Format, args));
         }
+
     }
 }
