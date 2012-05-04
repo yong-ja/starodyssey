@@ -308,5 +308,119 @@ namespace AvengersUtd.Odyssey.Geometry
 
             return result;
         }
+
+        public static bool RayAABBIntersection(Ray ray, IBox box, out Vector3 pEnter, out Vector3 pExit)
+        {
+            // original ray interval
+            float tMin = float.NegativeInfinity;
+            float tMax = float.PositiveInfinity;
+            Vector3 origin = ray.Position;
+            Vector3 dir = ray.Direction;
+            pEnter = Vector3.Zero;
+            pExit = Vector3.Zero;
+
+            // test X slab
+            if (!RayAABBIntersect(origin.X, dir.X, box.Min.X, box.Max.X, ref tMin, ref tMax))
+                return false;
+
+            // test Y slab
+            if (!RayAABBIntersect(origin.Y, dir.Y, box.Min.Y, box.Max.Y, ref tMin, ref tMax))
+                return false;
+
+            // test Z slab
+            if (!RayAABBIntersect(origin.Z, dir.Z, box.Min.Z, box.Max.Z, ref tMin, ref tMax))
+                return false;
+
+            // compute final entry point
+            float pEnterX = origin.X + dir.X * tMin;
+            float pEnterY = origin.Y + dir.Y * tMin;
+            float pEnterZ = origin.Z + dir.Z * tMin;
+
+            pEnter = new Vector3(pEnterX, pEnterY, pEnterZ);
+            
+            // compute final exit point
+            float pExitX = origin.X + dir.X * tMax;
+            float pExitY = origin.Y + dir.Y * tMax;
+            float pExitZ = origin.Z + dir.Z * tMax;
+
+            pExit = new Vector3(pExitX, pExitY, pExitZ);
+
+            return true;
+        }
+
+        static bool RayAABBIntersect(float o, float d, float min, float max, ref float tMin, ref float tMax)
+        {
+            // ray parallel to slab. if origin outside the slab, no intersection.
+            if (Math.Abs(d) < MathHelper.Epsilon)
+                return (o <= max && o >= min);
+
+            // slab intersection interval
+            float t0 = (min - o) / d;
+            float t1 = (max - o) / d;
+
+            // sort interval
+            if (t0 > t1)
+            {
+                float temp = t0;
+                t0 = t1;
+                t1 = temp;
+            }
+
+            // slab outside current interval
+            if (t0 > tMax || t1 < tMin)
+                return false;
+
+            else
+            {
+                // update the intersection interval
+                tMin = Math.Max(tMin, t0);
+                tMax = Math.Min(tMax, t1);
+                return true;
+            }
+
+            //// reduce ray to slab interval
+            //if (t0 > tMin)
+            //    tMin = t0;
+
+            //// reduce ray to slab interval
+            //if (t1 < tMax)
+            //    tMax = t1;
+
+            return true;
+        }
+
+        public static bool RayAABBTest(Ray r, IBox box, out float tEnter, out float tExit)
+        {
+            float t0 = 0;
+            float t1 = 1;
+            tEnter = t0; tExit = t1;
+
+            float[] min = new[] { box.Min.X, box.Min.Y, box.Min.Z };
+            float[] max = new[] { box.Max.X, box.Max.Y, box.Max.Z };
+            float[] rOrigin = new[] { r.Position.X, r.Position.Y, r.Position.Z };
+            float[] rDir = new[] { r.Direction.X, r.Direction.Y, r.Direction.Z };
+
+            for (int i = 0; i < 3; ++i)
+            {
+                float invRayDir = 1 / rDir[i];
+                float near_t = (min[i] - rOrigin[i]) * invRayDir;
+                float far_t = (max[i] - rOrigin[i]) * invRayDir;
+
+                if (near_t > far_t)
+                {
+                    float temp = near_t;
+                    near_t = far_t;
+                    far_t = temp;
+                }
+                t0 = near_t > t0 ? near_t : t0;
+                t1 = far_t < t1 ? far_t : t1;
+
+                if (t0 > t1)
+                    return false;
+            }
+            tEnter = t0;
+            tExit = t1;
+            return true;
+        }
     }
 }

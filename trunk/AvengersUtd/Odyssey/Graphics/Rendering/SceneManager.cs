@@ -33,6 +33,9 @@ using System.Linq;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Utils.Collections;
+using SlimDX;
+using AvengersUtd.Odyssey.Graphics.Meshes;
+using AvengersUtd.Odyssey.Geometry;
 #endregion
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -96,6 +99,30 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             CommandManager.Dispose();
             renderMapper.Dispose();
+        }
+
+        public bool CheckIntersection(Ray ray, out IRenderable rObject)
+        {
+            bool result = false;
+            rObject = null;
+            foreach (RenderableNode rNode in Tree.Nodes)
+            {
+                rObject = rNode.RenderableObject;
+                ISphere sphere = rObject as ISphere;
+                if (sphere == null)
+                    continue;
+
+                IBox box = Box.FromSphere(sphere);
+                Vector3 pEnter, pExit;
+                result = Intersection.RayAABBIntersection(ray, box, out pEnter, out pExit);
+                float tEnter, tExit;
+                //result = Intersection.RayAABBTest(ray, box, out tEnter, out tExit);
+
+                if (result) 
+                    break;
+            }
+            
+            return result;
         }
 
 

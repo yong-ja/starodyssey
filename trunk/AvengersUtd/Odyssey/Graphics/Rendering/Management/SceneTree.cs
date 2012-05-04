@@ -1,5 +1,7 @@
 ﻿using System.Text;
+using System.Linq;
 using AvengersUtd.Odyssey.Utils.Collections;
+using System.Collections.Generic;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
@@ -28,16 +30,23 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         {
             get
             {
-                SceneNodeCollection<RenderableNode> visibleNodes = new SceneNodeCollection<RenderableNode>();
-                foreach (SceneNode node in Node.PostOrderVisit(RootNode))
-                {
-                    RenderableNode rNode = node as RenderableNode;
-                    if (rNode != null && rNode.RenderableObject.IsInViewFrustum())
-                        visibleNodes.Add(rNode);
-                }
-                return visibleNodes;
+                
+                var visibleNodes = from rNode in Node.PostOrderVisit(RootNode).OfType<RenderableNode>()
+                        where rNode.RenderableObject.IsInViewFrustum()
+                        select rNode;
+                return new SceneNodeCollection<RenderableNode>(visibleNodes);        
             }
         }
+
+        public IEnumerable<SceneNode> Nodes
+        {
+            get
+            {
+                return from rNode in Node.PostOrderVisit(RootNode).OfType<RenderableNode>()
+                       select rNode;
+            }
+        }
+
 
         public void Render()
         {

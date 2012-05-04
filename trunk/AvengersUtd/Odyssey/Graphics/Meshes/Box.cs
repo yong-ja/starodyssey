@@ -6,6 +6,7 @@ using SlimDX;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using System.Drawing;
+using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
@@ -15,10 +16,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public float Height { get; private set; }
         public float Depth { get; private set; }
 
+        public Vector3 Min { get; private set; }
+        public Vector3 Max { get; private set; }
+
         public static Box FromSphere(ISphere sphere)
         {
             return new Box(sphere.PositionV3, sphere.Radius);
         }
+
 
         public Box(Vector3 position, float width, float height, float depth)
             : base(MeshVertex.Description)
@@ -30,6 +35,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
             ushort[] indices;
             Vertices = PolyMesh.CreateBox(PositionV4, Width, Height, Depth, out indices);
+            Vector3 pMin, pMax;
+            
+
+            FindMinMax(Vertices.Cast<IPositionVertex>(), out pMin, out pMax);
+            Min = pMin;
+            Max = pMax;
             Indices = indices;
 
             Material = new PhongMaterial();
@@ -44,7 +55,20 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
         }
 
+        static void FindMinMax(IEnumerable<IPositionVertex> vertices, out Vector3 pMin, out Vector3 pMax)
+        {
+            Contract.Requires(vertices != null);
+            Contract.Requires(vertices.Count() >= 2);
+            float minX = vertices.Min(v => v.Position.X);
+            float minY = vertices.Min(v => v.Position.Y);
+            float minZ = vertices.Min(v => v.Position.Z);
+            float maxX = vertices.Max(v => v.Position.X);
+            float maxY = vertices.Max(v => v.Position.Y);
+            float maxZ = vertices.Max(v => v.Position.Z);
 
-        
+            pMin = new Vector3(minX, minY, minZ);
+            pMax = new Vector3(maxX, maxY, maxZ);
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace AvengersUtd.Odyssey
         Left, Right
     }
 
-    public class QuaternionCam
+    public class QuaternionCam : ICamera
     {
         private readonly EventHandlerList eventHandlerList;
         private static readonly object EventCameraMoved;
