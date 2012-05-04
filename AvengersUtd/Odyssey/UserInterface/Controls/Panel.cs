@@ -40,6 +40,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
         }
 
+        protected Panel(string tag, string controlClass)
+            : base(tag, controlClass)
+        {}
+
         #endregion
 
         public override bool IntersectTest(Point cursorLocation)

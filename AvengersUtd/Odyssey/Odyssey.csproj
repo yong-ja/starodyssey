@@ -94,7 +94,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Geometry\AABB2D.cs" />
     <Compile Include="Graphics\Materials\MaterialBuffer.cs" />
-    <Compile Include="Graphics\Meshes\AABB3D.cs" />
+    <Compile Include="Graphics\Meshes\BoundingBox.cs" />
     <Compile Include="Graphics\Meshes\Box.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\Clipping\YuPengClipper.cs" />
@@ -176,6 +176,9 @@
     <Compile Include="Graphics\Rendering\Management\UserInterfaceNode.cs" />
     <Compile Include="Graphics\Rendering\NvStereoImageHeader.cs" />
     <Compile Include="Graphics\Rendering\Stereo.cs" />
+    <Compile Include="ICamera.cs" />
+    <Compile Include="UserInterface\Controls\RayPickingPanel.cs" />
+    <Compile Include="UserInterface\Controls\RenderableObject.cs" />
     <Compile Include="Utils\Collections\Cache.cs" />
     <Compile Include="Utils\Collections\GenericNode.cs" />
     <Compile Include="Utils\Collections\INode.cs" />
