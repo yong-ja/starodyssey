@@ -39,7 +39,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //SkyBox skybox = new SkyBox();
             Sphere lightSphere = Primitive.CreateSphere(1f, 8);
             lightSphere.Name = "LightSphere";
-            lightSphere.SetBehaviour(new MouseDraggingBehaviour(lightSphere, Camera));
+            lightSphere.SetBehaviour(new MouseDraggingBehaviour(Camera));
+            lightSphere.SetBehaviour(new KeyboardBehaviour());
            
             //lightSphere.PositionV3 = new Vector3(5, 0, 0);
             AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox box = AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox.FromSphere(lightSphere);
@@ -134,7 +135,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Hud.EndDesign();
 
             Scene.BuildRenderScene();
-            lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(lightSphere, 50));
+            //lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(lightSphere, 50));
             //hud.AddToScene(this, Scene);
             IsInited = true;
         }

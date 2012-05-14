@@ -97,7 +97,7 @@ namespace AvengersUtd.Odyssey.Graphics
         ShadowMapping
     }
 
-    public enum CameraAction
+    public enum KeyAction
     {
         MoveForward,
         MoveBackward,

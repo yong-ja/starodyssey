@@ -26,6 +26,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         //EntityDescriptor Descriptor { get; }
         //Mesh Mesh { get; }
 
+        event MouseEventHandler MouseDown;
+        event MouseEventHandler MouseUp;
+        event MouseEventHandler MouseClick;
+        event MouseEventHandler MouseMove;
+        event KeyEventHandler KeyDown;
+        event KeyEventHandler KeyPress;
+        event KeyEventHandler KeyUp;
+
         string Name { get; }
         bool Inited { get; }
         bool IsVisible { get; }
@@ -54,12 +62,16 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// </summary>
         void Render();
         void Render(int indexCount, int vertexOffset=0, int indexOffet=0, int startIndex=0, int baseVertex=0);
-        void SetBehaviour(IMouseBehaviour mouseBehaviour);
-        void SetBehaviour(IGamepadBehaviour gBehaviour);
-        void RemoveBehaviour(IMouseBehaviour mouseBehaviour);
-        void RemoveBehaviour(IGamepadBehaviour gamepadBehaviour);
-        void ProcessMouseEvent(MouseEventType type, MouseEventArgs e);
+
+        void Move(float distance, Vector3 direction);
+        void Rotate(float distance, Vector3 axis);
+
+        void SetBehaviour<T>(T inputBehaviour) where T : class, IBehaviour;
+        bool RemoveBehaviour<T>(T inputBehaviour) where T : class,IBehaviour;
         bool HasBehaviour(string behaviourName);
+        T GetBehaviour<T>() where T : class,IBehaviour;
+
+        void ProcessMouseEvent(MouseEventType type, MouseEventArgs e);
 
     }
 }

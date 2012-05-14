@@ -166,7 +166,7 @@ namespace AvengersUtd.Odyssey
             ZoomLevel = 0;
             actions = new bool[8];
             nearClip = 0.1f;
-            farClip = 1000.0f;
+            farClip = 100.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
             
             mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
@@ -193,42 +193,42 @@ namespace AvengersUtd.Odyssey
 
         public void UpdateStates()
         {
-            if (actions[(int)CameraAction.MoveForward])
+            if (actions[(int)KeyAction.MoveForward])
             {
                 Move(DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.MoveBackward])
+            if (actions[(int)KeyAction.MoveBackward])
             {
                 Move(-DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.StrafeLeft])
+            if (actions[(int)KeyAction.StrafeLeft])
             {
                 Strafe(-DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.StrafeRight])
+            if (actions[(int)KeyAction.StrafeRight])
             {
                 Strafe(DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.HoverUp])
+            if (actions[(int)KeyAction.HoverUp])
             {
                 Hover(-DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.HoverDown])
+            if (actions[(int)KeyAction.HoverDown])
             {
                 Hover(DefaultSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.RotateLeft])
+            if (actions[(int)KeyAction.RotateLeft])
             {
                 RotateY(DefaultRotationSpeed);
                 ShouldUpdateFrustum = true;
             }
-            if (actions[(int)CameraAction.RotateRight])
+            if (actions[(int)KeyAction.RotateRight])
             {
                 RotateY(-DefaultRotationSpeed);
                 ShouldUpdateFrustum = true;
@@ -238,7 +238,7 @@ namespace AvengersUtd.Odyssey
                 OnCameraMoved(this, EventArgs.Empty);
         }
 
-        public void SetState(CameraAction action, bool state)
+        public void SetState(KeyAction action, bool state)
         {
             ShouldUpdateFrustum = true;
             actions[(int)action] = state;
