@@ -23,7 +23,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public static BoundingBox FromSphere(ISphere sphere)
         {
-            return new BoundingBox(sphere.PositionV3, 2 * sphere.Radius);
+            return new BoundingBox(sphere.AbsolutePosition, 2 * sphere.Radius);
         }
 
         public BoundingBox(Vector3 position, float side)

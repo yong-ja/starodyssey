@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This is an Odyssey Mesh Declaration file, generated on 08 May 2012 12:16.
+Please do not modify it if you don't know what you are doing. Visit the Odyssey website at http://www.avengersutd.com/wiki/ for more information.
+!-->
+<ArrayOfString xmlns:Style="http://www.avengersutd.com">
+  <string>Data/ControlDescriptions.ocd</string>
+  <string>Data/TextDescriptions.otd</string>
+  <string>Effects/Phong.fx</string>
+  <string>Effects/SkyBox.fx</string>
+  <string>Effects/SolidWireframe.fx</string>
+  <string>Effects/Texture.fx</string>
+  <string>Effects/UIMaterial.fx</string>
+  <string>Effects/Include/Common.hlsl</string>
+  <string>Effects/Include/Geometry.hlsl</string>
+  <string>Effects/Include/Lighting.hlsl</string>
+  <string>Effects/Include/Materials.hlsl</string>
+  <string>Effects/Include/Shadows.hlsl</string>
+  <string>Effects/Include/Structs.hlsl</string>
+  <string>Textures/negX.png</string>
+  <string>Textures/negX1.png</string>
+  <string>Textures/negY.png</string>
+  <string>Textures/negY1.png</string>
+  <string>Textures/negZ.png</string>
+  <string>Textures/negZ1.png</string>
+  <string>Textures/OutputCube.dds</string>
+  <string>Textures/posX.png</string>
+  <string>Textures/posX1.png</string>
+  <string>Textures/posY.png</string>
+  <string>Textures/posY1.png</string>
+  <string>Textures/posZ.png</string>
+  <string>Textures/posZ1.png</string>
+  <string>Textures/StarBackground.jpg</string>
+</ArrayOfString>

@@ -54,6 +54,14 @@ namespace AvengersUtd.Odyssey.Geometry
             return (newStart + ((value - originalStart)*scale));
         }
 
+        public static int ConvertRange( int originalStart, int originalEnd, // original range
+                int newStart, int newEnd, // desired range
+                int value) // value to convert
+        {
+            int scale = (newEnd - newStart) / (originalEnd - originalStart);
+            return (newStart + ((value - originalStart) * scale));
+        }
+
         public static float Clamp(float value, float min, float max)
         {
             return (value > max) ? max : (value < min) ? min : value;

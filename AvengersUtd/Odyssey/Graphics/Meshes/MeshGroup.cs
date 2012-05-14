@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using SlimDX;
 using AvengersUtd.Odyssey.Geometry;
 using System.ComponentModel;
@@ -246,7 +247,40 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             throw new NotImplementedException();
         }
 
+        public Vector3 AbsolutePosition
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void SetBehaviour(UserInterface.Controls.IMouseBehaviour mouseBehaviour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveBehaviour(UserInterface.Controls.IMouseBehaviour mouseBehaviour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProcessMouseEvent(MouseEventType type, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasBehaviour(string behaviourName)
+        {
+            throw new NotImplementedException();
+        }
 
 
+        public void SetBehaviour(UserInterface.Controls.IGamepadBehaviour gBehaviour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveBehaviour(UserInterface.Controls.IGamepadBehaviour gamepadBehaviour)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

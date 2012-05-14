@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -70,11 +71,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             updateList.Add(command);
         }
 
-        public void AddRenderCommand(MaterialNode mNode, RenderableCollection rNodeCollection)
+        public void AddRenderCommand(IMaterial material, RenderableCollection rNodeCollection)
         {
 
             Type renderCommandType = rNodeCollection.Description.PreferredRenderCommandType;
-            RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {mNode, rNodeCollection});
+            RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {material, rNodeCollection});
             rCommand.Init();
             commandList.AddLast(rCommand);
         }

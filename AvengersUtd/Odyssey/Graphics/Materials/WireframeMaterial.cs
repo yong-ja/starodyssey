@@ -10,7 +10,7 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public class WireframeMaterial : AbstractMaterial
+    public class WireframeMaterial : ShaderMaterial
     {
         public WireframeMaterial()
             : base("SolidWireframe.fx")

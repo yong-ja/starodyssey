@@ -21,7 +21,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public static Box FromSphere(ISphere sphere)
         {
-            return new Box(sphere.PositionV3, sphere.Radius);
+            return new Box(sphere.AbsolutePosition, 2*sphere.Radius);
         }
 
 

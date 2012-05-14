@@ -30,8 +30,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Windows.Forms;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
+using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
@@ -42,11 +45,22 @@ using AvengersUtd.Odyssey.Graphics.Materials;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
+    public enum MouseEventType
+    {
+        MouseDown,
+        MouseUp,
+        MouseClick,
+        MouseMove
+    }
+
     public abstract class BaseMesh<TVertex> : IMesh
         where TVertex : struct, IPositionVertex
     {
         private readonly EventHandlerList eventHandlerList;
         private readonly List<ShaderResourceView> shaderResources;
+        private readonly List<string> behaviours;
+        private IMouseBehaviour mouseBehaviour;
+        private IGamepadBehaviour gamepadBehaviour;
 
         private Quaternion qRotation;
         private Vector3 rotationAngles;
@@ -59,6 +73,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private static readonly object EventCollision;
         private static readonly object EventRotationChanged;
         private static readonly object EventDisposing;
+        private static readonly object EventMouseClick;
+        private static readonly object EventMouseDown;
+        private static readonly object EventMouseMove;
+        private static readonly object EventMouseUp;
 
         public event EventHandler<CollisionEventArgs> Collision
         {
@@ -70,6 +88,62 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             add { eventHandlerList.AddHandler(EventPositionChanged, value); }
             remove { eventHandlerList.RemoveHandler(EventPositionChanged, value); }
+        }
+
+        public event EventHandler<MouseEventArgs> MouseDown
+        {
+            add { eventHandlerList.AddHandler(EventMouseDown, value); }
+            remove { eventHandlerList.RemoveHandler(EventMouseDown, value); }
+        }
+
+        public event EventHandler<MouseEventArgs> MouseUp
+        {
+            add { eventHandlerList.AddHandler(EventMouseUp, value); }
+            remove { eventHandlerList.RemoveHandler(EventMouseUp, value); }
+        }
+
+        public event EventHandler<MouseEventArgs> MouseClick
+        {
+            add { eventHandlerList.AddHandler(EventMouseClick, value); }
+            remove { eventHandlerList.RemoveHandler(EventMouseClick, value); }
+        }
+
+        public event EventHandler<MouseEventArgs> MouseMove
+        {
+            add { eventHandlerList.AddHandler(EventMouseMove, value); }
+            remove { eventHandlerList.RemoveHandler(EventMouseMove, value); }
+        }
+
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseDown];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseUp];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnMouseClick(MouseEventArgs e)
+        {
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseClick];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnMouseMove(MouseEventArgs e)
+        {
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseMove];
+            if (handler != null)
+                handler(this, e);
         }
 
         protected virtual void OnCollision(CollisionEventArgs e)
@@ -133,6 +207,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 handler(this, e);
         }
 
+
         #endregion
 
         #region Properties
@@ -192,6 +267,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
         }
 
+        public Vector3 AbsolutePosition
+        {
+            get { return new Vector3(World[3, 0], World[3, 1], World[3, 2]); }
+        }
+
         /// <summary>
         /// This vector contains the delta increment for yaw,
         /// pitch and roll values in its components, in radians.
@@ -217,7 +297,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
         }
 
-        public IColorMaterial Material { get; protected set; }
+        public IColorMaterial Material { get; set; }
 
 
         #endregion
@@ -231,6 +311,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             EventPositionChanged = new object();
             EventRotationChanged = new object();
             EventDisposing = new object();
+            EventMouseDown = new object();
+            EventMouseUp = new object();
+            EventMouseClick = new object();
+            EventMouseMove = new object();
         }
 
         protected BaseMesh(VertexDescription vertexDescription)
@@ -242,6 +326,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             IsVisible = true;
             shaderResources = new List<ShaderResourceView>();
             IndexFormat = DeviceContext11.DefaultIndexFormat;
+            behaviours = new List<string>();
             
             CpuAccessFlags = CpuAccessFlags.None;
             ResourceUsage = ResourceUsage.Default;
@@ -325,7 +410,71 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             throw new NotImplementedException();
         }
- 
+
+        public void SetBehaviour(IMouseBehaviour mBehaviour)
+        {
+            behaviours.Add(mBehaviour.GetType().Name);
+            
+            MouseDown += mBehaviour.OnMouseDown;
+            MouseUp += mBehaviour.OnMouseUp;
+            MouseMove += mBehaviour.OnMouseMove;
+            MouseClick += mBehaviour.OnMouseClick;
+            mouseBehaviour = mBehaviour;
+        }
+
+        public void SetBehaviour(IGamepadBehaviour gBehaviour)
+        {
+            behaviours.Add(gBehaviour.GetType().Name);
+
+            gamepadBehaviour = gBehaviour;
+        }
+
+        public void RemoveBehaviour(IGamepadBehaviour gBehaviour)
+        {
+            behaviours.Remove(gBehaviour.GetType().Name);
+
+            gamepadBehaviour = null;
+        }
+
+        public void RemoveBehaviour(IMouseBehaviour mBehaviour)
+        {
+            behaviours.Remove(mBehaviour.GetType().Name);
+
+            MouseDown -= mBehaviour.OnMouseDown;
+            MouseUp -= mBehaviour.OnMouseUp;
+            MouseMove -= mBehaviour.OnMouseMove;
+            MouseClick -= mBehaviour.OnMouseClick;
+
+            mouseBehaviour = null;
+        }
+
+        public bool HasBehaviour(string behaviourName)
+        {
+            return behaviours.Contains(behaviourName);
+        }
+
+        public void ProcessMouseEvent(MouseEventType type, MouseEventArgs e)
+        {
+            switch (type)
+            {
+                case MouseEventType.MouseDown:
+                    OnMouseDown(e);
+                    break;
+                case MouseEventType.MouseUp:
+                    OnMouseUp(e);
+                    break;
+                case MouseEventType.MouseClick:
+                    OnMouseClick(e);
+                    break;
+                case MouseEventType.MouseMove:
+                    OnMouseMove(e);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("type");
+            }
+        }
+
+
         #endregion
 
         #region IDisposable members
@@ -356,6 +505,11 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Dispose(false);
         } 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
 
 
     }

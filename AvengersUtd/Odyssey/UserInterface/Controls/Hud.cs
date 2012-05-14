@@ -220,7 +220,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             mUiNode.AppendChild(rNode);
 
-            uiRCommand = new UserInterfaceRenderCommand(renderer,  mUiNode, this);
+            uiRCommand = new UserInterfaceRenderCommand(renderer, this);
                 //(renderer, mUINode, mUINode.RenderableCollection,
                 // mTextNode, this);
 

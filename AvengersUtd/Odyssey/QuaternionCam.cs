@@ -5,6 +5,7 @@ using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Settings;
 using SlimDX;
+using SlimDX.Direct3D11;
 
 
 namespace AvengersUtd.Odyssey
@@ -71,6 +72,8 @@ namespace AvengersUtd.Odyssey
             get { return farClip; }
         }
 
+        public Viewport Viewport { get; private set; }
+
         //public BoundingFrustum Frustum
         //{
         //    get { return frustum; }
@@ -79,6 +82,11 @@ namespace AvengersUtd.Odyssey
         public Matrix World
         {
             get { return mWorld; }
+        }
+
+        public Matrix WorldViewProjection
+        {
+            get { return mWorld*mView*mProjection; }
         }
 
         public Matrix View
@@ -118,7 +126,7 @@ namespace AvengersUtd.Odyssey
             get { return mProjection; }
         }
 
-        Vector3 ViewVector
+        public Vector3 ViewVector
         {
             get { return new Vector3(mView.M13, mView.M23, mView.M33); }
         }
@@ -158,12 +166,14 @@ namespace AvengersUtd.Odyssey
             ZoomLevel = 0;
             actions = new bool[8];
             nearClip = 0.1f;
-            farClip = 100.0f;
+            farClip = 1000.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
             
             mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
             //mOrthoProjection = Matrix.OrthoLH(1920, 1080, nearClip, farClip);
             //frustum = new BoundingFrustum();
+            Viewport = new SlimDX.Direct3D11.Viewport(0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
+                                                      nearClip, farClip);
             Reset();
         }
 

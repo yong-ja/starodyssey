@@ -29,7 +29,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Vertices = (from v in vertices select new MeshVertex(v, Vector3.UnitY, Vector2.Zero)).ToArray();
             Indices = indices;
             CurrentRotation = Quaternion.RotationAxis(Vector3.UnitX, MathHelper.PiOver2);
-            Material = new PhongMaterial { DiffuseColor = Color.Green };
+            Material = new WireframeMaterial { DiffuseColor = Color.Green };
         }
 
 

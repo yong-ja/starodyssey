@@ -8,7 +8,7 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public interface ISphere
     {
-        Vector3 PositionV3 { get; }
+        Vector3 AbsolutePosition { get; }
         float Radius { get; }
     }
 }
