@@ -19,21 +19,29 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         private const short MaxValue = 32767;
         private Thread pollingThread;
         private readonly X360Gamepad controller;
-        private IRenderable rObject;
         private State state;
         private readonly float speed;
         private Vector2 vDelta;
         private Vector2 vCurrentValue;
         private Vector2 vLastValue;
 
-        public FreeMovementGamepadBehaviour(IRenderable rObject, float speed)
+        public string Name
         {
-            this.rObject = rObject;
+            get { return GetType().Name; }
+        }
+        
+        public IRenderable RenderableObject
+        {
+            get;
+            set;
+        }
+
+        public FreeMovementGamepadBehaviour(float speed)
+        {
             this.speed = speed;
             controller = new X360Gamepad();
 
             Start();
-
         }
 
         public void Start()
@@ -59,7 +67,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
 
                 //LogEvent.UserInterface.Write(vDelta.ToString());
-                ((TransformNode)(rObject.ParentNode.Parent)).Position += new Vector3(vCurrentValue.X, 0, vCurrentValue.Y);
+                ((TransformNode)(RenderableObject.ParentNode.Parent)).Position += new Vector3(vCurrentValue.X, 0, vCurrentValue.Y);
                 Thread.Sleep(10);
             }
         }
@@ -80,12 +88,24 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             //vLastValue = vCurrentValue;
         }
 
+
+
         void IGamepadBehaviour.OnButtonPress(object sender, Input.GamepadEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        
+
+
+        void IBehaviour.Add()
+        {
+            return;
+        }
+
+        void IBehaviour.Remove()
+        {
+            return;
+        }
 
 
     }

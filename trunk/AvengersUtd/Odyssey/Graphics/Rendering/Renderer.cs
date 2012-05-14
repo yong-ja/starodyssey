@@ -60,8 +60,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public abstract void Init();
         public abstract void Render();
-        
-
         public abstract void ProcessInput();
 
         public void Begin()

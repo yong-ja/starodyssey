@@ -7,27 +7,38 @@ using AvengersUtd.Odyssey.Graphics;
 
 namespace AvengersUtd.Odyssey.UserInterface.Input
 {
-    public delegate void CameraTransformState(CameraAction action, bool state);
+    public delegate void TransformStateMethod(KeyAction action, bool state);
 
-    public class CameraBinding
+    public class KeyBinding
     {
-        readonly CameraTransformState transformState;
+        readonly TransformStateMethod transformState;
 
-        public CameraAction Action { get; private set; }
+        public KeyAction Action { get; private set; }
         public Keys Key { get; private set; }
         public float Amount { get; private set; }
+        public bool State { get; private set; }
 
         public void Apply(bool state)
         {
-            transformState(Action, state);
+            if (transformState == null)
+                State = state;
+            else 
+                transformState(Action, state);
         }
 
-        public CameraBinding(CameraAction action, CameraTransformState transformState, Keys key, float amount)
+        public KeyBinding(KeyAction action, TransformStateMethod transformState, Keys key, float amount)
         {
             Action = action;
             Key = key;
             Amount = amount;
             this.transformState = transformState;
+        }
+
+        public KeyBinding(KeyAction action, Keys key, float amount)
+        {
+            Action = action;
+            Key = key;
+            Amount = amount;
         }
 
     }

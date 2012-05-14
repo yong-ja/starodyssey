@@ -60,7 +60,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
     {
         private const string ControlTag = "Hud";
 
-        private readonly SortedList<Keys, CameraBinding> keyBindings;
+        private readonly SortedList<Keys, KeyBinding> keyBindings;
         private readonly List<RenderStep> renderInfoList;
         private readonly Queue<UpdateElement> updateQueue;
         private readonly List<ISpriteObject> spriteControls;
@@ -94,14 +94,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (description.CameraEnabled)
             {
-                hud.SetBinding(new CameraBinding(CameraAction.StrafeLeft, Game.CurrentRenderer.Camera.SetState, Keys.A, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.StrafeRight, Game.CurrentRenderer.Camera.SetState, Keys.D, -QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.HoverUp, Game.CurrentRenderer.Camera.SetState, Keys.Q, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.HoverDown, Game.CurrentRenderer.Camera.SetState, Keys.E, -QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.RotateLeft, Game.CurrentRenderer.Camera.SetState, Keys.Z, QuaternionCam.DefaultRotationSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.RotateRight, Game.CurrentRenderer.Camera.SetState, Keys.C, -QuaternionCam.DefaultRotationSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.MoveForward, Game.CurrentRenderer.Camera.SetState, Keys.W, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new CameraBinding(CameraAction.MoveBackward, Game.CurrentRenderer.Camera.SetState, Keys.S, -QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Game.CurrentRenderer.Camera.SetState, Keys.A, QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Game.CurrentRenderer.Camera.SetState, Keys.D, -QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Game.CurrentRenderer.Camera.SetState, Keys.Q, QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Game.CurrentRenderer.Camera.SetState, Keys.E, -QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Game.CurrentRenderer.Camera.SetState, Keys.Z, QuaternionCam.DefaultRotationSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Game.CurrentRenderer.Camera.SetState, Keys.C, -QuaternionCam.DefaultRotationSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Game.CurrentRenderer.Camera.SetState, Keys.W, QuaternionCam.DefaultSpeed));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Game.CurrentRenderer.Camera.SetState, Keys.S, -QuaternionCam.DefaultSpeed));
             }
 
             return hud;
@@ -116,7 +116,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             updateQueue = new Queue<UpdateElement>();
             spriteControls = new List<ISpriteObject>();
             hudShapes = new List<ShapeDescription>();
-            keyBindings = new SortedList<Keys, CameraBinding>();
+            keyBindings = new SortedList<Keys, KeyBinding>();
             Shapes = new ShapeCollection(1);
 
             FocusedControl = EnteredControl = this;
@@ -513,7 +513,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }
 
-        public void SetBinding(CameraBinding binding)
+        public void SetBinding(KeyBinding binding)
         {
             if (!keyBindings.ContainsKey(binding.Key))
                 keyBindings.Add(binding.Key, binding);
@@ -572,7 +572,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            CameraBinding binding = null;
+            KeyBinding binding = null;
             if (keyBindings.ContainsKey(e.KeyCode))
                 binding = keyBindings[e.KeyCode];
 
@@ -582,7 +582,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            CameraBinding binding = null;
+            KeyBinding binding = null;
             if (keyBindings.ContainsKey(e.KeyCode))
                 binding = keyBindings[e.KeyCode];
 

@@ -6,7 +6,7 @@ using AvengersUtd.Odyssey.UserInterface.Input;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
-    public interface IGamepadBehaviour
+    public interface IGamepadBehaviour : IBehaviour
     {
         void OnButtonPress(object sender, GamepadEventArgs e);
     }

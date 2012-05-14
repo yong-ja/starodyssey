@@ -65,6 +65,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
                 objectMatrix *= RenderableObject.Rotation;
                 multiply = true;
             }
+
+            if (RenderableObject.HasBehaviour(typeof(KeyboardBehaviour).Name))
+            {
+                KeyboardBehaviour kBehaviour = RenderableObject.GetBehaviour<KeyboardBehaviour>();
+                kBehaviour.Update();
+            }
+
+
             if (RenderableObject.PositionV3 != Vector3.Zero)
             {
                 objectMatrix *= RenderableObject.Translation;

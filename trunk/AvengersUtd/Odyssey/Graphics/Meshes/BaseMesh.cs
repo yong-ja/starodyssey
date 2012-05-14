@@ -59,8 +59,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private readonly EventHandlerList eventHandlerList;
         private readonly List<ShaderResourceView> shaderResources;
         private readonly List<string> behaviours;
-        private IMouseBehaviour mouseBehaviour;
-        private IGamepadBehaviour gamepadBehaviour;
+        Dictionary<string, IBehaviour> inputBehaviours;
+
 
         private Quaternion qRotation;
         private Vector3 rotationAngles;
@@ -77,6 +77,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private static readonly object EventMouseDown;
         private static readonly object EventMouseMove;
         private static readonly object EventMouseUp;
+        private static readonly object EventKeyPress;
+        private static readonly object EventKeyDown;
+        private static readonly object EventKeyUp;
 
         public event EventHandler<CollisionEventArgs> Collision
         {
@@ -90,58 +93,97 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             remove { eventHandlerList.RemoveHandler(EventPositionChanged, value); }
         }
 
-        public event EventHandler<MouseEventArgs> MouseDown
+        public event MouseEventHandler MouseDown
         {
             add { eventHandlerList.AddHandler(EventMouseDown, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseDown, value); }
         }
 
-        public event EventHandler<MouseEventArgs> MouseUp
+        public event MouseEventHandler MouseUp
         {
             add { eventHandlerList.AddHandler(EventMouseUp, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseUp, value); }
         }
 
-        public event EventHandler<MouseEventArgs> MouseClick
+        public event MouseEventHandler MouseClick
         {
             add { eventHandlerList.AddHandler(EventMouseClick, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseClick, value); }
         }
 
-        public event EventHandler<MouseEventArgs> MouseMove
+        public event MouseEventHandler MouseMove
         {
             add { eventHandlerList.AddHandler(EventMouseMove, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseMove, value); }
         }
 
+        public event KeyEventHandler KeyDown
+        {
+            add { eventHandlerList.AddHandler(EventKeyDown, value); }
+            remove { eventHandlerList.RemoveHandler(EventKeyDown, value); }
+        }
+
+        public event KeyEventHandler KeyUp
+        {
+            add { eventHandlerList.AddHandler(EventKeyUp, value); }
+            remove { eventHandlerList.RemoveHandler(EventKeyUp, value); }
+        }
+
+        public event KeyEventHandler KeyPress
+        {
+            add { eventHandlerList.AddHandler(EventKeyPress, value); }
+            remove { eventHandlerList.RemoveHandler(EventKeyPress, value); }
+        }
+
         protected virtual void OnMouseDown(MouseEventArgs e)
         {
-            EventHandler<MouseEventArgs> handler =
-                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseDown];
+            MouseEventHandler handler =
+                (MouseEventHandler)eventHandlerList[EventMouseDown];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseUp(MouseEventArgs e)
         {
-            EventHandler<MouseEventArgs> handler =
-                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseUp];
+            MouseEventHandler handler =
+                (MouseEventHandler)eventHandlerList[EventMouseUp];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseClick(MouseEventArgs e)
         {
-            EventHandler<MouseEventArgs> handler =
-                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseClick];
+            MouseEventHandler handler =
+                (MouseEventHandler)eventHandlerList[EventMouseClick];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseMove(MouseEventArgs e)
         {
-            EventHandler<MouseEventArgs> handler =
-                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseMove];
+            MouseEventHandler handler =
+                (MouseEventHandler)eventHandlerList[EventMouseMove];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnKeyDown(KeyEventArgs e)
+        {
+            KeyEventHandler handler = (KeyEventHandler)eventHandlerList[EventKeyDown];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnKeyUp(KeyEventArgs e)
+        {
+            KeyEventHandler handler = (KeyEventHandler)eventHandlerList[EventKeyUp];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnKeyPress(KeyEventArgs e)
+        {
+            KeyEventHandler handler = (KeyEventHandler)eventHandlerList[EventKeyPress];
             if (handler != null)
                 handler(this, e);
         }
@@ -326,6 +368,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             IsVisible = true;
             shaderResources = new List<ShaderResourceView>();
             IndexFormat = DeviceContext11.DefaultIndexFormat;
+            inputBehaviours = new Dictionary<string, IBehaviour>();
             behaviours = new List<string>();
             
             CpuAccessFlags = CpuAccessFlags.None;
@@ -392,7 +435,19 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// <summary>
         /// Renders the mesh
         /// </summary>
-    
+
+        public void Move(float distance, Vector3 direction)
+        {
+            //vPosition += direction * distance * (float)Game.FrameTime;
+            Vector3 vPos = direction * distance * (float)Game.FrameTime;
+            ((TransformNode)(ParentNode.Parent)).Position += vPos;
+        }
+
+        public void Rotate(float angle, Vector3 axis)
+        {
+            qRotation *= Quaternion.RotationAxis(axis, angle * (float)Game.FrameTime);
+        }
+
         public virtual void Render()
         {
             Render(IndexCount);
@@ -411,46 +466,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             throw new NotImplementedException();
         }
 
-        public void SetBehaviour(IMouseBehaviour mBehaviour)
-        {
-            behaviours.Add(mBehaviour.GetType().Name);
-            
-            MouseDown += mBehaviour.OnMouseDown;
-            MouseUp += mBehaviour.OnMouseUp;
-            MouseMove += mBehaviour.OnMouseMove;
-            MouseClick += mBehaviour.OnMouseClick;
-            mouseBehaviour = mBehaviour;
-        }
-
-        public void SetBehaviour(IGamepadBehaviour gBehaviour)
-        {
-            behaviours.Add(gBehaviour.GetType().Name);
-
-            gamepadBehaviour = gBehaviour;
-        }
-
-        public void RemoveBehaviour(IGamepadBehaviour gBehaviour)
-        {
-            behaviours.Remove(gBehaviour.GetType().Name);
-
-            gamepadBehaviour = null;
-        }
-
-        public void RemoveBehaviour(IMouseBehaviour mBehaviour)
-        {
-            behaviours.Remove(mBehaviour.GetType().Name);
-
-            MouseDown -= mBehaviour.OnMouseDown;
-            MouseUp -= mBehaviour.OnMouseUp;
-            MouseMove -= mBehaviour.OnMouseMove;
-            MouseClick -= mBehaviour.OnMouseClick;
-
-            mouseBehaviour = null;
-        }
-
         public bool HasBehaviour(string behaviourName)
         {
-            return behaviours.Contains(behaviourName);
+            return inputBehaviours.ContainsKey(behaviourName);
         }
 
         public void ProcessMouseEvent(MouseEventType type, MouseEventArgs e)
@@ -509,6 +527,35 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public override string ToString()
         {
             return Name;
+        }
+
+        public void SetBehaviour<T>(T inputBehaviour)
+            where T : class,IBehaviour
+        {
+            inputBehaviours.Add(inputBehaviour.Name, inputBehaviour);
+            inputBehaviour.RenderableObject = this;
+            inputBehaviour.Add();
+        }
+
+        public bool RemoveBehaviour<T>(T inputBehaviour)
+            where T : class,IBehaviour
+        {
+            if (HasBehaviour(inputBehaviour.Name))
+            {
+                inputBehaviours.Remove(inputBehaviour.Name);
+                return true;
+            }
+            return false;
+        }
+
+        public T GetBehaviour<T>()
+            where T : class,IBehaviour 
+        {
+            string name = typeof(T).Name;
+            if (HasBehaviour(name))
+                return (T)inputBehaviours[name];
+            else
+                return default(T);
         }
 
 
