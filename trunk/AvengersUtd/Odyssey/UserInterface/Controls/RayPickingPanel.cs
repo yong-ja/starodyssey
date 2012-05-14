@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using AvengersUtd.Odyssey.Utils.Logging;
 using SlimDX;
 using SlimDX.Direct3D11;
@@ -14,6 +15,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
     {
         const string ControlTag = "RayPickingPanel";
         private static int count;
+        private IRenderable rObject;
 
         #region Constructors
 
@@ -26,27 +28,57 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public ICamera Camera { get; set; }
 
-        protected override void OnMouseClick(System.Windows.Forms.MouseEventArgs e)
+        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
         {
             Contract.Requires(Camera != null);
             base.OnMouseClick(e);
-            //LogEvent.UserInterface.Log(this.Id + " clicked.");
-            Matrix mWVP = Camera.World * Camera.View * Camera.Projection;
-            Vector3 vNear = Vector3.Unproject(new Vector3(e.X, e.Y, 0), 0, 0, Width, Height, Camera.NearClip, Camera.FarClip, mWVP);
-            Vector3 vFar = Vector3.Unproject(new Vector3(e.X, e.Y, 1), 0, 0, Width, Height, Camera.NearClip, Camera.FarClip, mWVP);
-            Ray ray = new Ray(vNear, vFar - vNear);
-            ray.Direction.Normalize();
+            Ray ray = GetRay(Camera, e);
             LogEvent.UserInterface.Log(ray.ToString());
 
-            IRenderable rObject;
-            //bool result = Game.CurrentRenderer.Scene.CheckIntersection(ray, out rObject);
-            bool result = Game.CurrentRenderer.Scene.CheckIntersection(UnprojectPoint(Camera, e.X, e.Y), out rObject);
+            bool result = Game.CurrentRenderer.Scene.CheckIntersection(ray, out rObject);
 
             if (!result)
+            {
                 LogEvent.UserInterface.Log("Intersection failed)");
+            }
             else
+            {
                 LogEvent.UserInterface.Log("Intersected [" + rObject.Name + "]");
+                rObject.ProcessMouseEvent(MouseEventType.MouseDown, e);
+            }
+
         }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            Ray ray = GetRay(Camera, e);
+            //
+
+            //if (!result)
+            //    return;
+            if (rObject != null && rObject.HasBehaviour(typeof(MouseDraggingBehaviour).Name))
+            {
+                rObject.ProcessMouseEvent(MouseEventType.MouseMove, e);
+                return;
+            }
+            bool result = Game.CurrentRenderer.Scene.CheckIntersection(ray, out rObject);
+            if (result)
+                rObject.ProcessMouseEvent(MouseEventType.MouseMove, e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            Ray ray = GetRay(Camera, e);
+            IRenderable rObject;
+            bool result = Game.CurrentRenderer.Scene.CheckIntersection(ray, out rObject);
+
+            if (!result)
+                return;
+            rObject.ProcessMouseEvent(MouseEventType.MouseUp, e);
+        }
+
 
         public static Vector4 UnprojectD(ICamera camera, Vector3 screenSpace)
         {
@@ -93,5 +125,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Vector4 uv3 = Vector3.Transform(up3, Matrix.Invert(camera.View));
             return (uv3);
         } 
+
+        static Ray GetRay(ICamera camera, MouseEventArgs e)
+        {
+            Matrix mWVP = camera.WorldViewProjection;
+            Viewport viewport = camera.Viewport;
+            Vector3 vNear = Vector3.Unproject(new Vector3(e.X, e.Y, 0), viewport.X, viewport.Y,
+                viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, mWVP);
+            Vector3 vFar = Vector3.Unproject(new Vector3(e.X, e.Y, 1), viewport.X, viewport.Y,
+                viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, mWVP);
+            return new Ray(vNear, vFar - vNear);
+        }
     }
 }

@@ -32,7 +32,20 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
         internal static void PerformIntegrityCheck() 
         {
             //UpdateFileList();
-            string[] files = Data.DeserializeCollection<string>(Global.Resources + "resources.xml");
+            string[] files;
+            try
+            {
+                files = Data.DeserializeCollection<string>(Global.Resources + "resources.xml");
+            }
+            catch (FileNotFoundException ex)
+            {
+                CriticalEvent.MissingFile.LogError(new TraceData(typeof(EffectManager), MethodBase.GetCurrentMethod(),
+                            new System.Collections.Generic.Dictionary<string, string> { { "filename", ex.FileName } }), ex);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return;
+            }
+
             bool missing = false;
             foreach (string filename in files)
             {

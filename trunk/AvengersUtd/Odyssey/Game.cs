@@ -46,7 +46,6 @@ namespace AvengersUtd.Odyssey
             Logger = new DebugLogger();
             RenderEvent = new ManualResetEventSlim(false);
             IsRunning = true;
-            IsInputEnabled = true;
         }
 
 
@@ -73,6 +72,7 @@ namespace AvengersUtd.Odyssey
                                       ClientSize = new Size(deviceSettings.ScreenWidth, deviceSettings.ScreenHeight),
                                       Text = "Odyssey11 Demo" 
                                   };
+            form.Activated += delegate { IsInputEnabled = true; };
             
             Context = new DeviceContext11(form.Handle, deviceSettings);
             OdysseyUI.SetupHooks(form);

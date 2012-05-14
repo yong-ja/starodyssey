@@ -33,6 +33,7 @@ using System.Linq;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Utils.Collections;
+using AvengersUtd.Odyssey.Utils.Logging;
 using SlimDX;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Geometry;
@@ -65,25 +66,44 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 RenderableNode rNode = node as RenderableNode;
                 if (rNode == null) continue;
 
-                IMaterial currentMaterial = rNode.CurrentMaterial;
+                IMaterial currentMaterial = rNode.RenderableObject.Material;
+
                 if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
                 {
-                    renderMapper.Add(currentMaterial.ParentNode,
+                     renderMapper.Add(currentMaterial,
                         new RenderableCollection(currentMaterial.RenderableCollectionDescription));
                 }
                 renderMapper[currentMaterial.TechniqueName].Add(rNode);
+                //IMaterial currentMaterial = rNode.CurrentMaterial;
+                //if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
+                //{
+                //    renderMapper.Add(currentMaterial.ParentNode,
+                //        new RenderableCollection(currentMaterial.RenderableCollectionDescription));
+                //}
+                //renderMapper[currentMaterial.TechniqueName].Add(rNode);
             }
 
-            foreach (MaterialNode mNode in renderMapper.OpaqueToTransparent)
+            foreach (IMaterial material in renderMapper.OpaqueToTransparent)
             {
-                if (mNode.Material.RequirePreRenderStateChange)
-                    CommandManager.AddBaseCommands(mNode.Material.PreRenderStates);
+                if (material.RequirePreRenderStateChange)
+                    CommandManager.AddBaseCommands(material.PreRenderStates);
+                CommandManager.AddRenderCommand(material, renderMapper[material]);
 
-                CommandManager.AddRenderCommand(mNode, renderMapper[mNode]);
+                if (material.RequirePostRenderStateChange)
+                    CommandManager.AddBaseCommands(material.PostRenderStates);
 
-                if (mNode.Material.RequirePostRenderStateChange)
-                    CommandManager.AddBaseCommands(mNode.Material.PostRenderStates);
             }
+
+            //foreach (MaterialNode mNode in renderMapper.OpaqueToTransparent)
+            //{
+            //    if (mNode.Material.RequirePreRenderStateChange)
+            //        CommandManager.AddBaseCommands(mNode.Material.PreRenderStates);
+
+            //    CommandManager.AddRenderCommand(mNode, renderMapper[mNode]);
+
+            //    if (mNode.Material.RequirePostRenderStateChange)
+            //        CommandManager.AddBaseCommands(mNode.Material.PostRenderStates);
+            //}
         }
 
 
@@ -113,10 +133,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                     continue;
 
                 IBox box = Box.FromSphere(sphere);
-                Vector3 pEnter, pExit;
-                result = Intersection.RayAABBIntersection(ray, box, out pEnter, out pExit);
-                float tEnter, tExit;
-                //result = Intersection.RayAABBTest(ray, box, out tEnter, out tExit);
+                result = Intersection.RayAABBTest(ray, box);
 
                 if (result) 
                     break;

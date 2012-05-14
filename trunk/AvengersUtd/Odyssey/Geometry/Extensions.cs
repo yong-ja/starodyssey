@@ -40,6 +40,9 @@ namespace AvengersUtd.Odyssey.Geometry
         }
         #endregion 
 
+        #region Plane extensions
+        #endregion
+
         #endregion
 
     }

@@ -1,9 +1,11 @@
 
 using System;
+using System.Windows.Forms;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Assets;
+using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
@@ -34,6 +36,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Matrix World { get; set; }
         Matrix Translation { get; }
         Matrix Rotation { get; }
+        Vector3 AbsolutePosition { get; }
         Vector3 PositionV3 { get; set; }
         Vector4 PositionV4 { get; }
         Vector3 RotationDelta { get; set; }
@@ -51,7 +54,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// </summary>
         void Render();
         void Render(int indexCount, int vertexOffset=0, int indexOffet=0, int startIndex=0, int baseVertex=0);
+        void SetBehaviour(IMouseBehaviour mouseBehaviour);
+        void SetBehaviour(IGamepadBehaviour gBehaviour);
+        void RemoveBehaviour(IMouseBehaviour mouseBehaviour);
+        void RemoveBehaviour(IGamepadBehaviour gamepadBehaviour);
+        void ProcessMouseEvent(MouseEventType type, MouseEventArgs e);
+        bool HasBehaviour(string behaviourName);
 
-        
     }
 }

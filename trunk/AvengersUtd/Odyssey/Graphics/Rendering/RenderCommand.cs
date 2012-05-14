@@ -21,13 +21,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public RenderableCollection Items { get; internal set; }
 
-        public RenderCommand(Renderer renderer, MaterialNode mNode) : base(CommandType.Render)
+        public RenderCommand(Renderer renderer, IMaterial material) : base(CommandType.Render)
         {
             Contract.Requires<NullReferenceException>(renderer != null);
-            Contract.Requires<NullReferenceException>(mNode != null);
+            Contract.Requires<NullReferenceException>(material != null);
             Renderer = renderer;
-            MaterialNode = mNode;
-            Material = MaterialNode.Material;
+            Material = material;
             Technique = Material.EffectDescription.Technique;
             Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
             Items = new RenderableCollection(Material.RenderableCollectionDescription, MaterialNode.SelectDescendants<RenderableNode>());
@@ -35,20 +34,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             
         }
 
-        public RenderCommand(Renderer renderer,MaterialNode mNode, RenderableCollection sceneNodeCollection)
+        public RenderCommand(Renderer renderer, IMaterial material, RenderableCollection sceneNodeCollection)
             : base(CommandType.Render)
         {
             Renderer = renderer;
             Items = sceneNodeCollection;
-            MaterialNode = mNode;
-            Material = MaterialNode.Material;
+            Material = material;
             Technique = Material.EffectDescription.Technique;
             Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
             InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
         }
 
-        public RenderCommand(MaterialNode mNode, RenderableCollection sceneNodeCollection)
-            : this(Game.CurrentRenderer, mNode, sceneNodeCollection)
+        public RenderCommand(IMaterial material, RenderableCollection sceneNodeCollection)
+            : this(Game.CurrentRenderer, material, sceneNodeCollection)
         {
         }
 

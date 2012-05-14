@@ -24,6 +24,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public Hud Hud { get; set; }
         public QuaternionCam Camera { get; private set; }
         public SceneManager Scene { get; private set; }
+        public bool IsInited { get; protected set; }
 
         //public LightManager LightManager
         //{
@@ -59,6 +60,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public abstract void Init();
         public abstract void Render();
+        
+
         public abstract void ProcessInput();
 
         public void Begin()

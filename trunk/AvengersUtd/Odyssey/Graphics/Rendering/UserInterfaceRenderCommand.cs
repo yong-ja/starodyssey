@@ -45,16 +45,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly Hud hud;
         private readonly InputLayout textLayout;
         private readonly IMaterial textMaterial;
-        private readonly MaterialNode textMaterialNode;
-        private readonly UserInterfaceNode uiNode;
         private readonly EffectPass textPass;
         private readonly EffectTechnique textTechnique;
 
-        public UserInterfaceRenderCommand(Renderer renderer, UserInterfaceNode uiNode, Hud hud) : base(renderer,uiNode)
+        public UserInterfaceRenderCommand(Renderer renderer, Hud hud) : base(renderer, new UIMaterial())
         {
-            this.uiNode = uiNode;
             this.hud = hud;
-            textMaterial = uiNode.TextMaterial;
+            textMaterial =new TextMaterial();
             UpdateSprites(hud.SpriteControls);
             textTechnique = textMaterial.EffectDescription.Technique;
             textPass = textTechnique.GetPassByIndex(textMaterial.EffectDescription.Pass);
@@ -62,16 +59,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 TextItems.Description.InputElements);
         }
        
-        public UserInterfaceRenderCommand(Renderer renderer, MaterialNode uiMaterialNode,
+        public UserInterfaceRenderCommand(Renderer renderer, IMaterial uiMaterial,
             RenderableCollection uiRCollection, 
-            MaterialNode textMaterialNode, Hud hud) : base(renderer, uiMaterialNode, uiRCollection)
+            IMaterial textMaterial, Hud hud) : base(renderer, uiMaterial, uiRCollection)
         {
-            this.textMaterialNode = textMaterialNode;
             this.hud = hud;
 
             UpdateSprites(hud.SpriteControls);
 
-            textMaterial = (TextMaterial) textMaterialNode.Material;
+            this.textMaterial = textMaterial;
             textTechnique = textMaterial.EffectDescription.Technique;
             textPass = textTechnique.GetPassByIndex(textMaterial.EffectDescription.Pass);
             textLayout = new InputLayout(Game.Context.Device, textPass.Description.Signature,

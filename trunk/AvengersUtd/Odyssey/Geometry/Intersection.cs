@@ -283,144 +283,50 @@ namespace AvengersUtd.Odyssey.Geometry
         }
 
 
-        public static bool RayPlaneTest(Ray ray, Plane plane, out Vector3 intersectionPoint)
+        /*
+         * Ray-box intersection using IEEE numerical properties to ensure that the
+         * test is both robust and efficient, as described in:
+         *
+         *      Amy Williams, Steve Barrus, R. Keith Morley, and Peter Shirley
+         *      "An Efficient and Robust Ray-Box Intersection Algorithm"
+         *      Journal of graphics tools, 10(1):49-54, 2005
+         *
+         */
+        public static bool RayAABBTest(Ray r, IBox box)
         {
-            bool result;
-            intersectionPoint = new Vector3();
-            Vector3 rD = ray.Direction;
-            Vector3 r0 = ray.Position;
+            const float t0 = float.NegativeInfinity;
+            const float t1 = float.PositiveInfinity;
+            Vector3[] bounds = new[] {box.Min, box.Max};
+            Vector3 rInvDir = new Vector3(1 / r.Direction.X, 1 / r.Direction.Y, 1 / r.Direction.Z);
+            int rSignX = rInvDir.X < 0 ? 1 : 0;
+            int rSignY = rInvDir.Y < 0 ? 1 : 0;
+            int rSignZ = rInvDir.Z < 0 ? 1 : 0;
 
-            ray.Direction.Normalize();
+            float tMin = (bounds[rSignX].X - r.Position.X) * rInvDir.X;
+            float tMax = (bounds[1 - rSignX].X - r.Position.X) * rInvDir.X;
+            float tyMin = (bounds[rSignY].Y - r.Position.Y) * rInvDir.Y;
+            float tyMax = (bounds[1 - rSignY].Y - r.Position.Y) * rInvDir.Y;
 
-            float vD = Vector3.Dot(plane.Normal, rD);
-            if (vD == 0)
+            if ((tMin > tyMax) || (tyMin > tMax))
                 return false;
-            float v0 = -(Vector3.Dot(plane.Normal, r0) + plane.D);
-            float t = v0/vD;
+            if (tyMin > tMin)
+                tMin = tyMin;
+            if (tyMax < tMax)
+                tMax = tyMax;
 
-            if (t > 0)
-            {
-                result = true;
-                intersectionPoint = r0 + t*rD;
-            }
-            else
-                result = false;
+            float tzMin = (bounds[rSignZ].Z - r.Position.Z)*rInvDir.Z;
+            float tzMax = (bounds[1 - rSignZ].Z - r.Position.Z)*rInvDir.Z;
 
-            return result;
+            if ((tMin > tzMax) || (tzMin > tMax))
+                return false;
+            if (tzMin > tMin)
+                tMin = tzMin;
+            if (tzMax < tMax)
+                tMax = tzMax;
+            return ((tMin < t1) && (tMax > t0));
+
         }
 
-        public static bool RayAABBIntersection(Ray ray, IBox box, out Vector3 pEnter, out Vector3 pExit)
-        {
-            // original ray interval
-            float tMin = float.NegativeInfinity;
-            float tMax = float.PositiveInfinity;
-            Vector3 origin = ray.Position;
-            Vector3 dir = ray.Direction;
-            pEnter = Vector3.Zero;
-            pExit = Vector3.Zero;
-
-            // test X slab
-            if (!RayAABBIntersect(origin.X, dir.X, box.Min.X, box.Max.X, ref tMin, ref tMax))
-                return false;
-
-            // test Y slab
-            if (!RayAABBIntersect(origin.Y, dir.Y, box.Min.Y, box.Max.Y, ref tMin, ref tMax))
-                return false;
-
-            // test Z slab
-            if (!RayAABBIntersect(origin.Z, dir.Z, box.Min.Z, box.Max.Z, ref tMin, ref tMax))
-                return false;
-
-            // compute final entry point
-            float pEnterX = origin.X + dir.X * tMin;
-            float pEnterY = origin.Y + dir.Y * tMin;
-            float pEnterZ = origin.Z + dir.Z * tMin;
-
-            pEnter = new Vector3(pEnterX, pEnterY, pEnterZ);
-            
-            // compute final exit point
-            float pExitX = origin.X + dir.X * tMax;
-            float pExitY = origin.Y + dir.Y * tMax;
-            float pExitZ = origin.Z + dir.Z * tMax;
-
-            pExit = new Vector3(pExitX, pExitY, pExitZ);
-
-            return true;
-        }
-
-        static bool RayAABBIntersect(float o, float d, float min, float max, ref float tMin, ref float tMax)
-        {
-            // ray parallel to slab. if origin outside the slab, no intersection.
-            if (Math.Abs(d) < MathHelper.Epsilon)
-                return (o <= max && o >= min);
-
-            // slab intersection interval
-            float t0 = (min - o) / d;
-            float t1 = (max - o) / d;
-
-            // sort interval
-            if (t0 > t1)
-            {
-                float temp = t0;
-                t0 = t1;
-                t1 = temp;
-            }
-
-            // slab outside current interval
-            if (t0 > tMax || t1 < tMin)
-                return false;
-
-            else
-            {
-                // update the intersection interval
-                tMin = Math.Max(tMin, t0);
-                tMax = Math.Min(tMax, t1);
-                return true;
-            }
-
-            //// reduce ray to slab interval
-            //if (t0 > tMin)
-            //    tMin = t0;
-
-            //// reduce ray to slab interval
-            //if (t1 < tMax)
-            //    tMax = t1;
-
-            return true;
-        }
-
-        public static bool RayAABBTest(Ray r, IBox box, out float tEnter, out float tExit)
-        {
-            float t0 = 0;
-            float t1 = 1;
-            tEnter = t0; tExit = t1;
-
-            float[] min = new[] { box.Min.X, box.Min.Y, box.Min.Z };
-            float[] max = new[] { box.Max.X, box.Max.Y, box.Max.Z };
-            float[] rOrigin = new[] { r.Position.X, r.Position.Y, r.Position.Z };
-            float[] rDir = new[] { r.Direction.X, r.Direction.Y, r.Direction.Z };
-
-            for (int i = 0; i < 3; ++i)
-            {
-                float invRayDir = 1 / rDir[i];
-                float near_t = (min[i] - rOrigin[i]) * invRayDir;
-                float far_t = (max[i] - rOrigin[i]) * invRayDir;
-
-                if (near_t > far_t)
-                {
-                    float temp = near_t;
-                    near_t = far_t;
-                    far_t = temp;
-                }
-                t0 = near_t > t0 ? near_t : t0;
-                t1 = far_t < t1 ? far_t : t1;
-
-                if (t0 > t1)
-                    return false;
-            }
-            tEnter = t0;
-            tExit = t1;
-            return true;
-        }
+    
     }
 }

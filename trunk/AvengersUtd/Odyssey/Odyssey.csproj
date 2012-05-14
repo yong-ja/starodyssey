@@ -177,8 +177,14 @@
     <Compile Include="Graphics\Rendering\NvStereoImageHeader.cs" />
     <Compile Include="Graphics\Rendering\Stereo.cs" />
     <Compile Include="ICamera.cs" />
+    <Compile Include="UserInterface\Controls\FreeMovementGamepadBehaviour.cs" />
+    <Compile Include="UserInterface\Controls\IGamepadBehaviour.cs" />
+    <Compile Include="UserInterface\Controls\IMouseBehaviour.cs" />
+    <Compile Include="UserInterface\Controls\MouseDraggingBehaviour.cs" />
     <Compile Include="UserInterface\Controls\RayPickingPanel.cs" />
     <Compile Include="UserInterface\Controls\RenderableObject.cs" />
+    <Compile Include="UserInterface\Input\GamepadEventArgs.cs" />
+    <Compile Include="UserInterface\Input\X360Gamepad.cs" />
     <Compile Include="Utils\Collections\Cache.cs" />
     <Compile Include="Utils\Collections\GenericNode.cs" />
     <Compile Include="Utils\Collections\INode.cs" />
