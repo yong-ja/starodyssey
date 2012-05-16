@@ -13,7 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public class RenderCommand : BaseCommand, IRenderCommand
     {
         protected Renderer Renderer { get; private set; }
-        protected MaterialNode MaterialNode {get; private set; }
+        //protected MaterialNode MaterialNode {get; private set; }
         protected InputLayout InputLayout { get; private set; }
         protected IMaterial Material { get; private set; }
         protected EffectTechnique Technique { get; private set; }
@@ -21,22 +21,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public RenderableCollection Items { get; internal set; }
 
-        public RenderCommand(Renderer renderer, IMaterial material) : base(CommandType.Render)
-        {
-            Contract.Requires<NullReferenceException>(renderer != null);
-            Contract.Requires<NullReferenceException>(material != null);
-            Renderer = renderer;
-            Material = material;
-            Technique = Material.EffectDescription.Technique;
-            Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
-            Items = new RenderableCollection(Material.RenderableCollectionDescription, MaterialNode.SelectDescendants<RenderableNode>());
-            InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
-            
-        }
-
         public RenderCommand(Renderer renderer, IMaterial material, RenderableCollection sceneNodeCollection)
             : base(CommandType.Render)
         {
+            Contract.Requires<NullReferenceException>(renderer != null);
+            Contract.Requires<NullReferenceException>(material != null);
             Renderer = renderer;
             Items = sceneNodeCollection;
             Material = material;

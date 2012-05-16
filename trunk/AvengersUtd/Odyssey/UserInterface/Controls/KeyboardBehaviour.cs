@@ -12,6 +12,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
     public class KeyboardBehaviour : IKeyboardBehaviour
     {
+        const float Speed = 5.0f;
+
         SortedList<Keys, KeyBinding> keyBindings;
         bool[] actions;
 
@@ -19,15 +21,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             keyBindings = new SortedList<Keys, KeyBinding>();
             KeyBinding[] keyArray = new KeyBinding[] {
-                new KeyBinding(KeyAction.MoveForward,  Keys.W, 5f),
-                new KeyBinding(KeyAction.MoveBackward, Keys.S, 5.0f),
-                new KeyBinding(KeyAction.StrafeLeft, Keys.A, 5f),
-                new KeyBinding(KeyAction.RotateRight, Keys.D, 5.0f)
-
-                //new KeyBinding(KeyAction.MoveForward, SetState, Keys.W, 5f),
-                //new KeyBinding(KeyAction.MoveBackward, SetState, Keys.S, 5.0f),
-                //new KeyBinding(KeyAction.StrafeLeft, SetState, Keys.A, 5f),
-                //new KeyBinding(KeyAction.RotateRight, SetState, Keys.D, 5.0f)
+                //new KeyBinding(KeyAction.MoveForward,  Keys.W, 5f),
+                //new KeyBinding(KeyAction.MoveBackward, Keys.S, 5.0f),
+                //new KeyBinding(KeyAction.StrafeLeft, Keys.A, 5f),
+                //new KeyBinding(KeyAction.StrafeRight, Keys.D, 5.0f)
+                 new KeyBinding(KeyAction.MoveForward,  Keys.W, MoveForward),
+                new KeyBinding(KeyAction.MoveBackward, Keys.S, MoveBackard),
+                new KeyBinding(KeyAction.StrafeLeft, Keys.A, MoveLeft),
+                new KeyBinding(KeyAction.StrafeRight, Keys.D, MoveRight)
             };
 
             foreach (KeyBinding kb in keyArray)
@@ -82,27 +83,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 binding.Apply(false);
         }
 
-        void ExecuteAction(KeyBinding kb)
-        {
-            switch (kb.Action)
-            {
-                case KeyAction.MoveBackward:
-                    RenderableObject.Move(-kb.Amount, Vector3.UnitZ);
-                    break;
-                case KeyAction.MoveForward:
-                    RenderableObject.Move(kb.Amount, Vector3.UnitZ);
-                    break;
-
-                case KeyAction.StrafeLeft:
-                    RenderableObject.Move(-kb.Amount, Vector3.UnitX);
-                    break;
-
-                case KeyAction.StrafeRight:
-                    RenderableObject.Move(kb.Amount, Vector3.UnitX);
-                    break;
-                    
-            }
-        }
 
         public void Update()
         {
@@ -110,7 +90,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 KeyBinding kb = kvp.Value;
 
-                if (kb.State) ExecuteAction(kb);
+                if (kb.State) kb.Operation();
             }
         }
 
@@ -131,11 +111,33 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             //RenderableObject.KeyUp -= kBehaviour.OnKeyUp;
             //RenderableObject.KeyDown -= kBehaviour.OnKeyDown;
             //RenderableObject.KeyPress -= kBehaviour.OnKeyPress;
+
+            Global.FormOwner.KeyDown -= kBehaviour.OnKeyDown;
+            Global.FormOwner.KeyUp -= kBehaviour.OnKeyUp;
         }
 
         public void SetState(KeyAction action, bool state)
         {
             actions[(int)action] = state;
+        }
+
+
+        void MoveLeft()
+        {
+            RenderableObject.Move(-Speed, Vector3.UnitX);
+        }
+        void MoveRight()
+        {
+            RenderableObject.Move(Speed, Vector3.UnitX);
+        }
+
+        void MoveForward()
+        {
+            RenderableObject.Move(Speed, Vector3.UnitZ);
+        }
+        void MoveBackard()
+        {
+            RenderableObject.Move(-Speed, Vector3.UnitZ);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
     public class UserInterfaceNode : MaterialNode
     {
-        public IMaterial TextMaterial { get; private set; }
+        public TextMaterial TextMaterial { get; private set; }
 
         public UserInterfaceNode() : base(new UIMaterial())
         {
@@ -17,7 +17,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         public RenderableCollection GetTextNodes()
         {
-            return new RenderableCollection(TextMaterial.RenderableCollectionDescription, SelectDescendants<RenderableNode>());
+            return new RenderableCollection(TextMaterial.ItemsDescription, SelectDescendants<RenderableNode>());
         }
     }
 }

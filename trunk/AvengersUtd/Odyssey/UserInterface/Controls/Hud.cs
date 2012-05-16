@@ -94,14 +94,25 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (description.CameraEnabled)
             {
-                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Game.CurrentRenderer.Camera.SetState, Keys.A, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Game.CurrentRenderer.Camera.SetState, Keys.D, -QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Game.CurrentRenderer.Camera.SetState, Keys.Q, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Game.CurrentRenderer.Camera.SetState, Keys.E, -QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Game.CurrentRenderer.Camera.SetState, Keys.Z, QuaternionCam.DefaultRotationSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Game.CurrentRenderer.Camera.SetState, Keys.C, -QuaternionCam.DefaultRotationSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Game.CurrentRenderer.Camera.SetState, Keys.W, QuaternionCam.DefaultSpeed));
-                hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Game.CurrentRenderer.Camera.SetState, Keys.S, -QuaternionCam.DefaultSpeed));
+                QuaternionCam camera = Game.CurrentRenderer.Camera;
+
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Keys.A, delegate() { camera.Strafe(-QuaternionCam.DefaultSpeed);}));
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Keys.D, delegate() { camera.Strafe(QuaternionCam.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Keys.W, delegate() { camera.Move(QuaternionCam.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Keys.S, delegate() { camera.Move(-QuaternionCam.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Keys.Z, delegate() { camera.RotateY(QuaternionCam.DefaultRotationSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Keys.C, delegate() { camera.RotateY(-QuaternionCam.DefaultRotationSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Keys.Q, delegate() { camera.Hover(QuaternionCam.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Keys.E, delegate() { camera.Hover(-QuaternionCam.DefaultSpeed); }));
+
+                //hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Game.CurrentRenderer.Camera.SetState, Keys.A, QuaternionCam.DefaultSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Game.CurrentRenderer.Camera.SetState, Keys.D, -QuaternionCam.DefaultSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Game.CurrentRenderer.Camera.SetState, Keys.Q, QuaternionCam.DefaultSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Game.CurrentRenderer.Camera.SetState, Keys.E, -QuaternionCam.DefaultSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Game.CurrentRenderer.Camera.SetState, Keys.Z, QuaternionCam.DefaultRotationSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Game.CurrentRenderer.Camera.SetState, Keys.C, -QuaternionCam.DefaultRotationSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Game.CurrentRenderer.Camera.SetState, Keys.W, QuaternionCam.DefaultSpeed));
+                //hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Game.CurrentRenderer.Camera.SetState, Keys.S, -QuaternionCam.DefaultSpeed));
             }
 
             return hud;
@@ -155,6 +166,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                     captureControl.HasCaptured = false;
                 captureControl = value;
             }
+        }
+
+        public IEnumerable<KeyBinding> KeyBindings
+        {
+            get { return keyBindings.Values; }
         }
 
         public static Device Device { get; set; }
@@ -211,16 +227,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             MaterialNode mTextNode = new MaterialNode(textMaterial);
             MaterialNode mUINode = new MaterialNode(uiMaterial);
-            UserInterfaceNode mUiNode = new UserInterfaceNode();
+            //UserInterfaceNode mUiNode = new UserInterfaceNode();
             RenderableNode rNode = new RenderableNode(InterfaceMesh);
             CameraOverlayNode caNode = new CameraOverlayNode(renderer.Camera);
 
-            caNode.AppendChild(mUiNode);
+            caNode.AppendChild(rNode);
+            //caNode.AppendChild(mUiNode);
             //caNode.AppendChild(mTextNode);
 
-            mUiNode.AppendChild(rNode);
+            //mUiNode.AppendChild(rNode);
 
-            uiRCommand = new UserInterfaceRenderCommand(renderer, this);
+            uiRCommand = new UserInterfaceRenderCommand(renderer, this, rNode);
                 //(renderer, mUINode, mUINode.RenderableCollection,
                 // mTextNode, this);
 
@@ -588,6 +605,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (binding != null)
                 binding.Apply(false);
+        }
+
+        public void ProcessKeyEvents()
+        {
+            foreach (KeyValuePair<Keys, KeyBinding> kvp in keyBindings)
+            {
+                KeyBinding kb = kvp.Value;
+
+                if (kb.State) kb.Operation();
+            }
         }
 
         #endregion

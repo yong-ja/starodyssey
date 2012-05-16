@@ -71,7 +71,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
                 {
                      renderMapper.Add(currentMaterial,
-                        new RenderableCollection(currentMaterial.RenderableCollectionDescription));
+                        new RenderableCollection(currentMaterial.ItemsDescription));
                 }
                 renderMapper[currentMaterial.TechniqueName].Add(rNode);
                 //IMaterial currentMaterial = rNode.CurrentMaterial;

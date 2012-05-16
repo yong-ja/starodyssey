@@ -20,7 +20,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         string TechniqueName { get; }
         ICommand[] PreRenderStates {get;}
         ICommand[] PostRenderStates {get;}
-        RenderableCollectionDescription RenderableCollectionDescription { get; }
+        RenderableCollectionDescription ItemsDescription { get; }
 
         void InitParameters(Renderer renderer);
         void ApplyInstanceParameters(IRenderable renderableObject);

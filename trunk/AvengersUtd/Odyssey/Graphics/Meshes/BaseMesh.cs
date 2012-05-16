@@ -293,6 +293,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             get { return vPosition.ToVector4(); }
         }
+
         public Vector3 PositionV3
         {
             get { return vPosition; }
@@ -438,9 +439,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public void Move(float distance, Vector3 direction)
         {
-            //vPosition += direction * distance * (float)Game.FrameTime;
-            Vector3 vPos = direction * distance * (float)Game.FrameTime;
-            ((TransformNode)(ParentNode.Parent)).Position += vPos;
+            PositionV3 += direction * distance * (float)Game.FrameTime;
+            //Vector3 vPos = direction * distance * (float)Game.FrameTime;
+            //((TransformNode)(ParentNode.Parent)).Position += vPos;
         }
 
         public void Rotate(float angle, Vector3 axis)

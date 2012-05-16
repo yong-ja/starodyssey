@@ -15,20 +15,27 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class TextMaterial:AbstractMaterial
     {
+
+        public static RenderableCollectionDescription ItemsDescription 
+        {
+            get
+            {
+                return new RenderableCollectionDescription
+                    {
+                        CommonResources = false,
+                        PrimitiveTopology = PrimitiveTopology.TriangleList,
+                        IndexFormat = DeviceContext11.DefaultIndexFormat,
+                        RenderingOrderType = RenderingOrderType.AdditiveBlendingGeometry,
+                        InputElements = TexturedVertex.InputElements,
+                        PreferredRenderCommandType = typeof(UserInterfaceRenderCommand)
+                    };
+            }
+        }
         
-        public TextMaterial():base("Texture.fx")
+        public TextMaterial():base("Texture.fx", ItemsDescription)
         {
             PreRenderStateList.Add(BlendStateChangeCommand.DefaultEnabled);
             PostRenderStateList.Add(BlendStateChangeCommand.DefaultDisabled);
-            RenderableCollectionDescription = new RenderableCollectionDescription
-                                                  {
-                                                      CommonResources = false,
-                                                      PrimitiveTopology = PrimitiveTopology.TriangleList,
-                                                      IndexFormat = DeviceContext11.DefaultIndexFormat,
-                                                      RenderingOrderType = RenderingOrderType.AdditiveBlendingGeometry,
-                                                      InputElements = TexturedVertex.InputElements,
-                                                      PreferredRenderCommandType = typeof(UserInterfaceRenderCommand)
-                                                  };
         }
 
         protected override void OnInstanceParametersInit()

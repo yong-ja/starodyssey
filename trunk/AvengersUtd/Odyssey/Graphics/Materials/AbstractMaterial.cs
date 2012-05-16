@@ -40,12 +40,14 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public abstract class AbstractMaterial : IMaterial, IDisposable
     {
         private bool disposed;
+        RenderableCollectionDescription itemsDescription;
 
-        protected AbstractMaterial(string filename)
+        protected AbstractMaterial(string filename, RenderableCollectionDescription description)
         {
             EffectDescription = new EffectDescription(filename);
             PreRenderStateList = new List<ICommand>();
             PostRenderStateList = new List<ICommand>();
+            itemsDescription = description;
         }
 
         #region Properties
@@ -60,7 +62,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         /// instance uses to setup its shader.
         /// </summary>
         public virtual EffectDescription EffectDescription { get; private set; }
-        public RenderableCollectionDescription RenderableCollectionDescription { get; protected set; }
         
         protected List<ICommand> PreRenderStateList { get; private set; }
         protected List<ICommand> PostRenderStateList { get; private set; }
@@ -90,6 +91,11 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         public string TechniqueName
         {
             get { return EffectDescription.Technique.Description.Name; }
+        }
+
+        RenderableCollectionDescription IMaterial.ItemsDescription
+        {
+            get { return itemsDescription; }
         }
 
         #endregion
@@ -215,5 +221,9 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         }
 
         #endregion
+
+
+
+        
     }
 }
