@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Effects;
 using SlimDX;
+using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 
 namespace AvengersUtd.Odyssey.Graphics.Materials
 {
-    public class ShaderMaterial : AbstractMaterial, IColorMaterial
+    public abstract class ShaderMaterial : AbstractMaterial, IColorMaterial
     {
         Color4 ambientColor;
         Color4 diffuseColor;
@@ -21,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected LightingTechnique lightingTechnique;
 
 
-        public ShaderMaterial(string filename) : base(filename)
+        public ShaderMaterial(string filename, RenderableCollectionDescription description) : base(filename, description)
         {
             kA = 0;
             kD = 1;
@@ -127,8 +128,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
             //if (value != previousValue)
             //    ChooseTechnique();
         }
-
-
 
     }
 }

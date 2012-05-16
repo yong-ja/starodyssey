@@ -136,7 +136,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             Scene.BuildRenderScene();
             //lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(lightSphere, 50));
-            //hud.AddToScene(this, Scene);
+            Hud.AddToScene(this, Scene);
             IsInited = true;
         }
         
@@ -148,7 +148,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public override void ProcessInput()
         {
-            Camera.UpdateStates();
+            //Camera.UpdateStates();
+            Hud.ProcessKeyEvents();
         }
 
        

@@ -19,7 +19,6 @@ namespace AvengersUtd.Odyssey
     {
         private readonly EventHandlerList eventHandlerList;
         private static readonly object EventCameraMoved;
-        bool[] actions;
 
         //BoundingFrustum frustum;
         Vector3 vPosition;
@@ -35,7 +34,7 @@ namespace AvengersUtd.Odyssey
         private Matrix mStereoRightProjection;
 
         public const float DefaultSpeed = 20f;
-        public const float DefaultRotationSpeed = 0.5f;
+        public const float DefaultRotationSpeed = 1f;
         public const float DefaultSlerpSpeed = 0.01f;
         public const float DefaultZoomSpeed = 200f;
         static readonly Vector3 YAxis = new Vector3(0f, 1f, 0f);
@@ -164,7 +163,6 @@ namespace AvengersUtd.Odyssey
         {
             eventHandlerList = new EventHandlerList();
             ZoomLevel = 0;
-            actions = new bool[8];
             nearClip = 0.1f;
             farClip = 100.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
@@ -191,58 +189,7 @@ namespace AvengersUtd.Odyssey
             vPosition = vNewPos;
         }
 
-        public void UpdateStates()
-        {
-            if (actions[(int)KeyAction.MoveForward])
-            {
-                Move(DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.MoveBackward])
-            {
-                Move(-DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.StrafeLeft])
-            {
-                Strafe(-DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.StrafeRight])
-            {
-                Strafe(DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.HoverUp])
-            {
-                Hover(-DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.HoverDown])
-            {
-                Hover(DefaultSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.RotateLeft])
-            {
-                RotateY(DefaultRotationSpeed);
-                ShouldUpdateFrustum = true;
-            }
-            if (actions[(int)KeyAction.RotateRight])
-            {
-                RotateY(-DefaultRotationSpeed);
-                ShouldUpdateFrustum = true;
-            }
-           
-            if (ShouldUpdateFrustum)
-                OnCameraMoved(this, EventArgs.Empty);
-        }
-
-        public void SetState(KeyAction action, bool state)
-        {
-            ShouldUpdateFrustum = true;
-            actions[(int)action] = state;
-        }
+        
 
         /// <summary>
         /// Updates the camera view matrix. Should be called once per frame.
@@ -258,7 +205,6 @@ namespace AvengersUtd.Odyssey
                 //frustum.SetMatrix(mView * mProjection);
                 ShouldUpdateFrustum = false;
             }
-
         }
 
         public void LookAt(Vector3 vTo, Vector3 vFrom)
@@ -269,19 +215,26 @@ namespace AvengersUtd.Odyssey
             qOrientation = Quaternion.RotationMatrix(r);
         }
 
+        public void Move(float distance, Vector3 direction)
+        {
+            vPosition += direction * distance * (float)Game.FrameTime;
+            ShouldUpdateFrustum = true;
+        }
+
+
         public void Move(float distance)
         {
-            vPosition += ViewVector * distance * (float)Game.FrameTime;
+            Move(distance, ViewVector);
         }
 
         public void Strafe(float distance)
         {
-            vPosition += AxisX * distance * (float)Game.FrameTime;
+            Move(distance, AxisX);
         }
 
         public void Hover(float distance)
         {
-            vPosition += YAxis * distance * (float)Game.FrameTime;
+            Move(distance, YAxis);
         }
 
         public void Rotate(float angle, Vector3 vAxis)

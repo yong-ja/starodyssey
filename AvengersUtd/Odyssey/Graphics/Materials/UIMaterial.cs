@@ -14,21 +14,29 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class UIMaterial : AbstractMaterial
     {
-        public UIMaterial() : base("UIMaterial.fx")
+        public static RenderableCollectionDescription ItemsDescription
+        {
+            get
+            {
+                return new RenderableCollectionDescription
+                    {
+                        CommonResources = true,
+                        PrimitiveTopology = PrimitiveTopology.TriangleList,
+                        IndexFormat = DeviceContext11.DefaultIndexFormat,
+                        RenderingOrderType = RenderingOrderType.MixedGeometry,
+                        InputElements = ColoredVertex.InputElements,
+                        PreferredRenderCommandType = typeof(UserInterfaceRenderCommand)
+                    };
+            }
+        }
+
+        public UIMaterial() : base("UIMaterial.fx", ItemsDescription)
         {
             PreRenderStateList.Add(BlendStateChangeCommand.DefaultEnabled);
             PreRenderStateList.Add(DepthStencilStateChangeCommand.DepthWriteDisabled);
             PostRenderStateList.Add(BlendStateChangeCommand.DefaultDisabled);
             PostRenderStateList.Add(DepthStencilStateChangeCommand.Default);
-            RenderableCollectionDescription = new RenderableCollectionDescription
-            {
-                CommonResources = true,
-                PrimitiveTopology = PrimitiveTopology.TriangleList,
-                IndexFormat = DeviceContext11.DefaultIndexFormat,
-                RenderingOrderType = RenderingOrderType.MixedGeometry,
-                InputElements = ColoredVertex.InputElements,
-                PreferredRenderCommandType = typeof(UserInterfaceRenderCommand)
-            };
+
         }
 
         protected override void OnInstanceParametersInit()

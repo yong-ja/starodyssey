@@ -13,17 +13,23 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class SkyBoxMaterial : AbstractMaterial
     {
-        public SkyBoxMaterial() : base("SkyBox.fx")
+        public static RenderableCollectionDescription ItemsDescription
         {
-            RenderableCollectionDescription = new RenderableCollectionDescription
+            get
             {
-                CommonResources = false,
-                PrimitiveTopology = PrimitiveTopology.TriangleList,
-                IndexFormat = DeviceContext11.DefaultIndexFormat,
-                RenderingOrderType = RenderingOrderType.Last,
-                InputElements = Textured3DVertex.InputElements,
-                PreferredRenderCommandType = typeof(RenderCommand)
-            };
+                return new RenderableCollectionDescription
+                    {
+                        CommonResources = false,
+                        PrimitiveTopology = PrimitiveTopology.TriangleList,
+                        IndexFormat = DeviceContext11.DefaultIndexFormat,
+                        RenderingOrderType = RenderingOrderType.Last,
+                        InputElements = Textured3DVertex.InputElements,
+                        PreferredRenderCommandType = typeof(RenderCommand)
+                    };
+            }
+        }
+        public SkyBoxMaterial() : base("SkyBox.fx", ItemsDescription)
+        {
         }
 
         protected override void OnDynamicParametersInit()

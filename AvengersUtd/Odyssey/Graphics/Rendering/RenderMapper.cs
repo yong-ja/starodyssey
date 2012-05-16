@@ -36,7 +36,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         IEnumerable<IMaterial> Select(RenderingOrderType renderingOrderType)
         {
             return (from material in Keys
-                    where material.RenderableCollectionDescription.RenderingOrderType == renderingOrderType
+                    where material.ItemsDescription.RenderingOrderType == renderingOrderType
                     select material);
         }
 

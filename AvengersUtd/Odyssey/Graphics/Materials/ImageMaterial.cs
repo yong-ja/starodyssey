@@ -12,17 +12,24 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class ImageMaterial : AbstractMaterial
     {
-        public ImageMaterial() : base("Texture.fx")
+        static RenderableCollectionDescription ItemsDescription
         {
-            RenderableCollectionDescription = new RenderableCollectionDescription
+            get
             {
-                CommonResources = false,
-                PrimitiveTopology = PrimitiveTopology.TriangleList,
-                IndexFormat = DeviceContext11.DefaultIndexFormat,
-                RenderingOrderType = RenderingOrderType.OpaqueGeometry,
-                InputElements = TexturedVertex.InputElements,
-                PreferredRenderCommandType = typeof(RenderCommand)
-            };
+                return new RenderableCollectionDescription
+                    {
+                        CommonResources = false,
+                        PrimitiveTopology = PrimitiveTopology.TriangleList,
+                        IndexFormat = DeviceContext11.DefaultIndexFormat,
+                        RenderingOrderType = RenderingOrderType.OpaqueGeometry,
+                        InputElements = TexturedVertex.InputElements,
+                        PreferredRenderCommandType = typeof(RenderCommand)
+                    };
+            }
+        }
+
+        public ImageMaterial() : base("Texture.fx", ItemsDescription)
+        {
         }
 
         protected override void OnDynamicParametersInit()

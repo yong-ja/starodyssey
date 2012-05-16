@@ -12,18 +12,24 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class WireframeMaterial : ShaderMaterial
     {
-        public WireframeMaterial()
-            : base("SolidWireframe.fx")
+        public static RenderableCollectionDescription ItemsDescription
         {
-            RenderableCollectionDescription = new RenderableCollectionDescription
+            get
             {
-                CommonResources = false,
-                PrimitiveTopology = PrimitiveTopology.TriangleList,
-                IndexFormat = DeviceContext11.DefaultIndexFormat,
-                RenderingOrderType = RenderingOrderType.MixedGeometry,
-                InputElements = TexturedMeshVertex.InputElements,
-                PreferredRenderCommandType = typeof(RenderCommand)
-            };
+                return new RenderableCollectionDescription
+                    {
+                        CommonResources = false,
+                        PrimitiveTopology = PrimitiveTopology.TriangleList,
+                        IndexFormat = DeviceContext11.DefaultIndexFormat,
+                        RenderingOrderType = RenderingOrderType.MixedGeometry,
+                        InputElements = TexturedMeshVertex.InputElements,
+                        PreferredRenderCommandType = typeof(RenderCommand)
+                    };
+            }
+        }
+        public WireframeMaterial()
+            : base("SolidWireframe.fx", ItemsDescription)
+        {
         }
 
         protected override void OnDynamicParametersInit()

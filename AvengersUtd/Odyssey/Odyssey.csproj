@@ -245,7 +245,7 @@
     <Compile Include="Geometry\Enums.cs" />
     <Compile Include="UserInterface\Drawing\Designer.cs" />
     <Compile Include="UserInterface\HitManager.cs" />
-    <Compile Include="UserInterface\Input\CameraBinding.cs" />
+    <Compile Include="UserInterface\Input\KeyBinding.cs" />
     <Compile Include="UserInterface\Input\Mouse.cs" />
     <Compile Include="UserInterface\InterfaceMesh.cs" />
     <Compile Include="UserInterface\Structs.cs" />

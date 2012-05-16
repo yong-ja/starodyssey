@@ -13,17 +13,25 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 {
     public class PhongMaterial : ShaderMaterial
     {
-        public PhongMaterial() : base("Phong.fx")
+        public static RenderableCollectionDescription ItemsDescription 
         {
-            RenderableCollectionDescription = new RenderableCollectionDescription
+            get
             {
-                CommonResources = false,
-                PrimitiveTopology = PrimitiveTopology.TriangleList,
-                IndexFormat = DeviceContext11.DefaultIndexFormat,
-                RenderingOrderType = RenderingOrderType.MixedGeometry,
-                InputElements = TexturedMeshVertex.InputElements,
-                PreferredRenderCommandType = typeof(RenderCommand)
-            };
+                return new RenderableCollectionDescription
+                {
+                    CommonResources = false,
+                    PrimitiveTopology = PrimitiveTopology.TriangleList,
+                    IndexFormat = DeviceContext11.DefaultIndexFormat,
+                    RenderingOrderType = RenderingOrderType.MixedGeometry,
+                    InputElements = TexturedMeshVertex.InputElements,
+                    PreferredRenderCommandType = typeof(RenderCommand)
+                };
+            }
+        }
+
+        public PhongMaterial() : base("Phong.fx", ItemsDescription)
+        {
+            
 
         }
 
