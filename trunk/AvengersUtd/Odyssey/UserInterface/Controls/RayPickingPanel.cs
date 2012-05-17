@@ -20,7 +20,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         #region Constructors
 
         public RayPickingPanel()
-            : base(ControlTag + ++count, "Panel")
+            : base(ControlTag + ++count, "Empty")
         {
         }
 

@@ -38,6 +38,22 @@
       <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
     </ColorArray>
   </ControlDescription>
+  <ControlDescription Name="Panel" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
+    <BorderShaders>
+      <Border Name="RaisedTL" Color="49FFFFFF" Borders="Top Left" />
+      <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
+    </BorderShaders>
+    <Enabled>
+      <!--<LinearGradient Color="FFFF0000" GradientType="Uniform"/>-->
+      <LinearGradient GradientType="LinearVerticalGradient">
+        <Gradient>
+          <GradientStop Color="#FFFFFFFF" Offset="0"/>
+          <GradientStop Color="#22FFFFFF" Offset="0.5"/>
+          <GradientStop Color="#FFFF0000" Offset="0.1"/>
+        </Gradient>
+      </LinearGradient>
+    </Enabled>
+  </ControlDescription>
   <ControlDescription Name="Error" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
     <BorderShaders>
       <Border Name="RaisedTL" Color="49FFFFFF" Borders="Top Left" />

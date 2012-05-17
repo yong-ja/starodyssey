@@ -182,6 +182,7 @@
     <Compile Include="UserInterface\Controls\IKeyboardBehaviour.cs" />
     <Compile Include="UserInterface\Controls\IMouseBehaviour.cs" />
     <Compile Include="UserInterface\Controls\KeyboardBehaviour.cs" />
+    <Compile Include="UserInterface\Controls\LoggerPanel.cs" />
     <Compile Include="UserInterface\Controls\MouseDraggingBehaviour.cs" />
     <Compile Include="UserInterface\Controls\RayPickingPanel.cs" />
     <Compile Include="UserInterface\Controls\RenderableObject.cs" />
