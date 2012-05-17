@@ -241,6 +241,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                         indices[indexCount + 3] = (ushort)(indices[indexCount + 2] + 1);
                         indices[indexCount + 4] = indices[indexCount];
                         indices[indexCount + 5] = indices[indexCount + 2];
+
                         indexCount += 6;
                     }
 
@@ -266,9 +267,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
             Vector4[] vertices = CreateRectangleMesh(topLeftVertex, width, height, out indices,
                                                      widthOffsets, heightOffsets);
-            return (from v in vertices
-                    from c in colors
-                    select new ColoredVertex(v, c)).ToArray();
+
+            ColoredVertex[] coloredVertices = new ColoredVertex[vertices.Length];
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                coloredVertices[i] = new ColoredVertex(vertices[i], colors[i]);
+            }
+
+            return coloredVertices;
         }
 
         static float[] CreateOffsetsArray(int offsets)
@@ -305,61 +312,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                     select new MeshVertex(v, n, t)).ToArray();
         }
 
-        //public static PolyMesh CreateColoredPolygon(Vector3 topLeftVertex, float width, float height, Color4[] colors)
-        //{
-        //    PolyMesh coloredPolygon = new PolyMesh(topLeftVertex, width, height, colors);
-        //    coloredPolygon.Init();
-        //    return coloredPolygon;
-        //}
-
-        //public static ColoredVertex[] CreateRectangleOutline(Vector4 topLeftVertex, float width,
-        //    float height, Thickness borderSize, int widthSegments, int heightSegments, Color4[] colors,
-        //    out ushort[] indices, float[] widthOffsets=null, float[] heightOffsets=null)
-        //{
-        //    float leftSegmentOffset = borderSize.Left/width;
-        //    float rightSegmentOffset = (width - borderSize.Right)/width;
-        //    float topSegmentOffset = borderSize.Top/height;
-        //    float bottomSegmentOffset = (height - borderSize.Bottom)/height;
-
-        //    if (widthOffsets == null)
-        //        widthOffsets = new float[]{0, leftSegmentOffset, rightSegmentOffset, 1};
-        //    else
-        //    {
-        //        List<float> tempList = new List<float>(widthOffsets);
-        //        if (leftSegmentOffset > 0)
-        //            tempList.Add(leftSegmentOffset);
-        //        if (rightSegmentOffset>0)
-        //            tempList.Add(rightSegmentOffset);
-        //        if (tempList.Count > widthOffsets.Length)
-        //            tempList.Sort();
-        //    }
-        //    if (heightOffsets == null)
-        //        heightOffsets = new float[] {0, topSegmentOffset, bottomSegmentOffset, 1};
-        //    else
-        //    {
-        //        List<float> tempList = new List<float>(widthOffsets);
-        //        if (topSegmentOffset > 0)
-        //            tempList.Add(topSegmentOffset);
-        //        if (bottomSegmentOffset > 0)
-        //            tempList.Add(bottomSegmentOffset);
-        //        if (tempList.Count > heightOffsets.Length)
-        //            tempList.Sort();
-        //    }
-
-        //    List<ColoredVertex> vertices = new List<ColoredVertex>();
-        //    int topHeightSegments= heightOffsets.Count(f => f <= topSegmentOffset);
-        //    ushort[] tempIndices;
-        //    // Draw top border
-        //    vertices.AddRange(CreateRectangleMesh(topLeftVertex,
-        //        width, borderSize.Top,
-        //        widthSegments,
-        //        topHeightSegments,
-        //        colors,
-        //        out tempIndices,
-        //        widthOffsets,
-        //        heightOffsets));
-        // }
-
+      
 
         #endregion
 

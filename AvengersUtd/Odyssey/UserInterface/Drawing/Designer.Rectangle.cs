@@ -188,7 +188,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             Color4[] colors = Shader.Method(Shader, (1 + widthSegments) * (1 + heightSegments), Shape.Rectangle);
 
             ushort[] indices;
-            ColoredVertex[] vertices = PolyMesh.CreateRectangleMesh
+            ColoredVertex[] vertices;
+
+            if (widthSegments == 1 && heightSegments == 1)
+                vertices = PolyMesh.CreateQuad(Position.ToVector4(),
+                Width,
+                Height,
+                colors, out indices);
+            else
+                vertices = PolyMesh.CreateRectangleMesh
                     (Position.ToVector4(),
                      Width,
                      Height,

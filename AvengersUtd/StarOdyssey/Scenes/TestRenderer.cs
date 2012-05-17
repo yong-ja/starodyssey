@@ -74,9 +74,9 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //lightSphere.Material = phong;
             //grid.Material = wireframe;
 
-            fNodeSphere.AppendChild(rNodeSphere);
-            fNodeSphere.AppendChild(rNodeLightSphere);
-            fNodeSphere.AppendChild(rNodeBox);
+            //fNodeSphere.AppendChild(rNodeSphere);
+            //fNodeSphere.AppendChild(rNodeLightSphere);
+            //fNodeSphere.AppendChild(rNodeBox);
             fNodeGrid.AppendChild(rNodeGrid);
 
     
@@ -106,11 +106,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //});
 
 
-            //Hud.Add(new Panel
-            //{
-            //    Position = new Vector2(300f, 175f),
-            //    Size = new Size(200, 200)
-            //});
+            Hud.Add(new Panel
+            {
+                Position = new Vector2(300f, 175f),
+                Size = new Size(200, 200)
+            });
 
             //Hud.Add(new DecoratorButton
             //            {
@@ -130,7 +130,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //hud.Add(d);
 
             Hud.Add(new RayPickingPanel { Size = Hud.Size, Camera = this.Camera });
-            Game.Logger.Activate();
+            //Game.Logger.Activate();
             Hud.Init();
             Hud.EndDesign();
 
@@ -142,7 +142,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
         
         public override void Render()
         {
-            Game.Logger.Update();
+            //Game.Logger.Update();
             Scene.Display();
         }
 
