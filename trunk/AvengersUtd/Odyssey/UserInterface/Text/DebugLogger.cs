@@ -34,6 +34,7 @@ using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.Utils;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Controls;
 
 #endregion
 
@@ -49,24 +50,31 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         //static FrameTimeCounter frameTimeCounter;
         
         bool disposed;
-        string debugInfo = string.Empty;
         string frameStats = string.Empty;
         uint lastStatsUpdateFrames; // frames count since last time the stats were updated
         double lastStatsUpdateTime; // last time the stats were updated
-        
-        Font font;
+        static LoggerPanel loggerPanel;
         private TextLiteral text;
 
-        Queue<string> messageQueue = new Queue<string>(messageLimit);
-        StringBuilder stringBuffer = new StringBuilder();
         Timer timer;
-
 
         public DebugLogger()
         {
             DeviceInfo = string.Empty;
             timer = new Timer();
 
+
+        }
+
+        public void Init()
+        {
+            loggerPanel = new LoggerPanel
+            {
+                Position = new Vector2(0f, Game.Context.Settings.ScreenHeight * 2 / 3),
+                Size = new Size(576, 256),
+                Lines = 8
+            };
+            AvengersUtd.Odyssey.Utils.Logging.LoggerTraceListener.SetLoggerPanel(loggerPanel);
         }
 
         public string DeviceInfo { get; private set; }
@@ -86,71 +94,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                        {
                            Position = new Vector2(10, 10),
                            Content = "FPSCounter",
-                           Depth = Depth.Topmost
+                           Depth = Depth.Topmost,
                        };
             OdysseyUI.CurrentHud.Add(text);
-            //TextMaterial textWriter = new TextMaterial();
-            //MaterialNode mNode = new MaterialNode("Logger", textWriter);
-            //RenderableNode rNode = new RenderableNode(text);
-            //mNode.AppendChild(rNode);
-            //RenderableCollection rCollection = new RenderableCollection(textWriter.RenderableCollectionDescription)
-            //                                       {rNode};
-            ////RenderCommand rCommand = new RenderCommand(mNode, rCollection);
-            //Game.CurrentRenderer.Scene.Tree.RootNode.AppendChild(mNode);
+            OdysseyUI.CurrentHud.Add(loggerPanel);
         }
 
         public void Update()
         {
             text.Content = FrameStats;
         }
-
-        public void DisplayStats()
-        {
-            //TextManager txtManager = new TextManager(font, 15);
-
-            //// Output statistics
-            ////txtManager.Begin();
-            //OdysseyUI.CurrentHud.SpriteManager.Begin(SpriteFlags.AlphaBlend);
-            //txtManager.SetInsertionPoint(200, 5);
-            //txtManager.SetForegroundColor4(Color.Yellow);
-            //txtManager.DrawTextLine(FrameStats);
-            //txtManager.DrawTextLine(deviceStats);
-            //txtManager.DrawTextLine(debugInfo);
-            //OdysseyUI.CurrentHud.SpriteManager.End();
-            ////txtManager.SetForegroundColor4(Color.White);
-            ////txtManager.End();
-        }
-
-        void CheckBounds()
-        {
-            if (messageQueue.Count > messageLimit)
-            {
-                messageQueue.Dequeue();
-            }
-
-            stringBuffer = new StringBuilder();
-            foreach (string s in messageQueue.ToArray())
-            {
-                stringBuffer.AppendLine(s);
-            }
-            debugInfo = stringBuffer.ToString();
-        }
-
-
-        //public static void LogError(string method, string text, string id)
-        //{
-        //    DebugManager dm = Instance;
-        //    dm.messageQueue.Enqueue(string.Format("Error in {0}: {1} ({2})", method, text, id));
-        //    dm.CheckBounds();
-        //}
-
-        //public static void LogToScreen(string text)
-        //{
-        //    DebugManager dm = Instance;
-        //    dm.messageQueue.Enqueue(text);
-        //    dm.CheckBounds();
-        //}
-
+ 
         /// <summary>
         /// Updates the frames/sec stat once per second
         /// </summary>
@@ -171,6 +125,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 frameStats = "FPS: " + fps.ToString("f2");
             }
         }
+
+        public void AddLoggerPanelToHud(Hud hud)
+        {
+            hud.Controls.Add(loggerPanel);
+        }
+
+        public void Log(string message)
+        {
+            loggerPanel.EnqueueMessage(message);
+        }
+
 
         #region IDisposable Members
 
@@ -198,7 +163,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 if (disposing)
                 {
                     // dispose managed components
-                    font.Dispose();
                     text.Dispose();
                 }
 

@@ -110,7 +110,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             ApplyStatusChanges = false;
         }
 
-        public virtual void AddRange(BaseControl[] controls)
+        public virtual void AddRange(IEnumerable<BaseControl> controls)
         {
             foreach (BaseControl ctl in controls)
                 Add(ctl);

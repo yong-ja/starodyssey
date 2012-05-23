@@ -25,7 +25,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         }
 
         public bool CacheText { get; set; }
-        public bool Dynamic { get; private set; }
+        public bool IsDynamic { get; internal set; }
+        public bool Wrapping { get; internal set; }
+
+        public Size Bounds { get; set; }
        
         public string Content
         {
@@ -56,8 +59,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         public TextLiteral(bool dynamic) :
             base(ControlTag + (++count), "Empty")
         {
-            CacheText = true;
-            Dynamic = dynamic;
+            CacheText = !dynamic;
+            IsDynamic = dynamic;
             IsFocusable = false;
             CanRaiseEvents = false;
         }
@@ -67,7 +70,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             if (CacheText)
                 if (!ResourceManager.Contains(Key))
                 {
-                    Texture2D texture = TextManager.DrawText(text, TextDescription, IsHighlighted, IsSelected);
+                    Texture2D texture = TextManager.DrawText(
+                        text,
+                        TextDescription,
+                        Wrapping ? new SizeF(Bounds.Width, Bounds.Height) : SizeF.Empty,
+                        IsHighlighted,
+                        IsSelected);
                     ResourceManager.Add(Key , texture);
                     srvTexture = ResourceManager.GetResource(Key);
                 }
@@ -79,15 +87,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 srvTexture = new ShaderResourceView(Game.Context.Device, texture);
             }
 
-            Texture2DDescription tDesc = ((Texture2D)srvTexture.Resource).Description;
-            Size = new Size(tDesc.Width, tDesc.Height);
+                Texture2DDescription tDesc = ((Texture2D)srvTexture.Resource).Description;
+                Size = new Size(tDesc.Width, tDesc.Height);
+
         }
 
         public override void CreateShape()
         {
             if (quad == null)
             {
-                quad = TexturedPolygon.CreateTexturedQuad(Key, Vector3.Zero, Size.Width, Size.Height, Dynamic);
+                quad = TexturedPolygon.CreateTexturedQuad(Key, Vector3.Zero, Size.Width, Size.Height, IsDynamic);
                 quad.PositionV3 = AbsoluteOrthoPosition;
                 if (CacheText)
                     quad.DiffuseMapKey = Key;
@@ -139,7 +148,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         protected override void OnDisposing(EventArgs e)
         {
             base.OnDisposing(e);
-            if (!quad.Disposed)
+            if (quad != null && !quad.Disposed)
                 quad.Dispose();
         }
 

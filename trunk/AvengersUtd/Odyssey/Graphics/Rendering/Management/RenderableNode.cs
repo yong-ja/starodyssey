@@ -15,7 +15,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         static int count;
 
         TransformNode tParent;
-        private MaterialNode mParent;
 
         public Matrix CurrentAbsoluteWorldMatrix
         {
@@ -24,14 +23,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         public IMaterial CurrentMaterial
         {
-            get { return mParent.Material; }
+            get { return RenderableObject.Material; }
         }
 
         protected override void OnParentChanged(object sender, Utils.Collections.NodeEventArgs e)
         {
             base.OnParentChanged(sender, e);
             tParent = FindFirstTParentNode<TransformNode>(this);
-            mParent = FindFirstTParentNode<MaterialNode>(this);
         }
 
         public IRenderable RenderableObject { get; private set; }

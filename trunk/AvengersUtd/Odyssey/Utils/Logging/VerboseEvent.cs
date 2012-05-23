@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 {
     public class VerboseEvent : AbstractLogEvent
     {
-        public static VerboseEvent InstanceParameterCreation = new VerboseEvent(Game.GraphicsTag, Resources.INFO_Graphics_InstanceParameterCreation);
+        public static VerboseEvent InstanceParameterCreation = new VerboseEvent(Game.RenderingTag, Resources.INFO_Graphics_InstanceParameterCreation);
         public static VerboseEvent InstanceParameterSetting = new VerboseEvent(Game.RenderingTag, Resources.INFO_Rendering_ApplyInstanceParameter);
         public static VerboseEvent DynamicParameterSetting = new VerboseEvent(Game.RenderingTag, Resources.INFO_Rendering_ApplyInstanceParameter);
 

@@ -30,8 +30,24 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public partial class PolyMesh
     {
+
+        public static bool CheckOffsets(float[] offsets)
+        {
+            float prevValue=-1f;
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                float curValue = offsets[i];
+                float delta = curValue - prevValue;
+                if (delta >= 0.025f)
+                    prevValue = curValue;
+                else
+                    return false;
+            }
+            return true;
+        }
+
         #region Lines
-        public static ColoredVertex[] CreateLineMesh(float width, Color4 color, Vector4 v1, Vector4 v2, out ushort[] indices, ushort baseIndex=(ushort) 0)
+        public static ColoredVertex[] CreateLineMesh(float width, Color4 color, Vector4 v1, Vector4 v2, out ushort[] indices, ushort baseIndex = (ushort) 0)
         {
             ColoredVertex[] vertices = new ColoredVertex[4];
             float z = v1.Z;
@@ -210,6 +226,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             Contract.Requires<ArgumentException>(widthOffsets != null);
             Contract.Requires<ArgumentException>(heightOffsets != null);
+            Contract.Requires<ArgumentException>(CheckOffsets(widthOffsets));
+            Contract.Requires<ArgumentException>(CheckOffsets(heightOffsets));
 
             int widthSegments = widthOffsets.Length-1;
             int heightSegments = heightOffsets.Length-1;

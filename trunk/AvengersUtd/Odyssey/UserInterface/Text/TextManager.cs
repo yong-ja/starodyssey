@@ -10,6 +10,8 @@ using AvengersUtd.Odyssey.Utils;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AvengersUtd.Odyssey.UserInterface.Text
 {
@@ -28,9 +30,20 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                                    Trimming =  StringTrimming.None,
                                };
         }
+
+        public static SizeF MeasureSize(string text, Font font)
+        {
+            using (Bitmap dummyimage = new Bitmap(1, 1))
+            {
+                using (System.Drawing.Graphics dummygraphics = System.Drawing.Graphics.FromImage(dummyimage))
+                {
+                    return dummygraphics.MeasureString(text, font, PointF.Empty, StringFormat);
+                }
+            }
+        }
         
         
-        public static Texture2D DrawText(string text, TextDescription description, bool isHighlighted = false, bool isSelected=false)
+        public static Texture2D DrawText(string text, TextDescription description, SizeF size=default(SizeF), bool isHighlighted = false, bool isSelected=false)
         {
             //Our return value.
             Texture2D t;
@@ -46,7 +59,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                     using (System.Drawing.Graphics dummygraphics = System.Drawing.Graphics.FromImage(dummyimage))
                     {
                         //Measure the string...
-                        strsize = dummygraphics.MeasureString(text, font,PointF.Empty, StringFormat);
+                        strsize = dummygraphics.MeasureString(text, font, PointF.Empty, StringFormat);
+
+                        if (size.Width > 0  && strsize.Width > size.Width)
+                        {
+                            string[] lines = WrapText(text, size.Width,  font);
+                            strsize = new SizeF(size.Width, strsize.Height * lines.Length);
+                        }
                     }
                 }
 
@@ -68,9 +87,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                             graphics.SmoothingMode = SmoothingMode.HighQuality;
 
                             GraphicsPath path = new GraphicsPath();
-                            path.AddString(text, font.FontFamily, (int)description.FontStyle, description.Size,
-                                PointF.Empty, StringFormat);
-
+                            //path.AddString(text, font.FontFamily, (int)description.FontStyle, description.Size,
+                                //PointF.Empty, StringFormat);
+                            path.AddString(text,font.FontFamily, (int)description.FontStyle, description.Size,
+                                new RectangleF(PointF.Empty, strsize), StringFormat);
                             if (description.IsOutlined)
                                 graphics.DrawPath(Pens.Black, path);
                             graphics.FillPath(brush, path);
@@ -80,6 +100,40 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 }
             }
             return t;
+        }
+
+        public static string[] WrapText(string text, double pixels, Font font)
+        {
+            List<string> wrappedLines = new List<string>();
+
+            using (Bitmap dummyimage = new Bitmap(1, 1))
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(dummyimage))
+            {
+                string[] originalLines = text.Split(new string[] { " " }, StringSplitOptions.None);
+                
+
+                StringBuilder actualLine = new StringBuilder();
+                double actualWidth = 0;
+
+                foreach (string item in originalLines)
+                {
+
+                    actualLine.Append(item + " ");
+                    actualWidth += graphics.MeasureString(item, font, PointF.Empty, StringFormat).Width;
+
+                    if (actualWidth > pixels)
+                    {
+                        wrappedLines.Add(actualLine.ToString());
+                        actualLine.Clear();
+                        actualWidth = 0;
+                    }
+                }
+
+                if (actualWidth > 0)
+                    wrappedLines.Add(actualLine.ToString());
+            }
+
+            return wrappedLines.ToArray();
         }
 
         internal static Vector2 ComputeTextPosition(BaseControl hostControl, TextLiteral textControl)

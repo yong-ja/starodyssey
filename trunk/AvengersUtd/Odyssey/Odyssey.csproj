@@ -173,15 +173,16 @@
     <Compile Include="Graphics\Meshes\TexturedMeshVertex.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.cs" />
     <Compile Include="Graphics\Meshes\TexturedPolygon.Factory.cs" />
-    <Compile Include="Graphics\Rendering\Management\UserInterfaceNode.cs" />
     <Compile Include="Graphics\Rendering\NvStereoImageHeader.cs" />
     <Compile Include="Graphics\Rendering\Stereo.cs" />
     <Compile Include="ICamera.cs" />
+    <Compile Include="Network\UdpServer.cs" />
     <Compile Include="UserInterface\Controls\FreeMovementGamepadBehaviour.cs" />
     <Compile Include="UserInterface\Controls\IGamepadBehaviour.cs" />
     <Compile Include="UserInterface\Controls\IKeyboardBehaviour.cs" />
     <Compile Include="UserInterface\Controls\IMouseBehaviour.cs" />
     <Compile Include="UserInterface\Controls\KeyboardBehaviour.cs" />
+    <Compile Include="UserInterface\Controls\Label.cs" />
     <Compile Include="UserInterface\Controls\LoggerPanel.cs" />
     <Compile Include="UserInterface\Controls\MouseDraggingBehaviour.cs" />
     <Compile Include="UserInterface\Controls\RayPickingPanel.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Utils\Logging\ConsoleTraceListener.cs" />
     <Compile Include="Utils\Logging\CriticalEvent.cs" />
     <Compile Include="Utils\Logging\LogEvent.cs" />
+    <Compile Include="Utils\Logging\LoggerTraceListener.cs" />
     <Compile Include="Utils\Logging\TraceData.cs" />
     <Compile Include="Utils\Logging\TraceExtensions.cs" />
     <Compile Include="Utils\Logging\VerboseEvent.cs" />
@@ -286,7 +288,6 @@
     <Compile Include="Graphics\Rendering\Management\EllipticalOrbitNode.cs" />
     <Compile Include="Graphics\Rendering\Management\FixedNode.cs" />
     <Compile Include="Graphics\Rendering\Management\FreeTransformNode.cs" />
-    <Compile Include="Graphics\Rendering\Management\MaterialNode.cs" />
     <Compile Include="Graphics\Rendering\Management\RenderableNode.cs" />
     <Compile Include="Graphics\Rendering\Management\RenderableNodeCollection.cs" />
     <Compile Include="Graphics\Rendering\Management\SceneTree.cs" />

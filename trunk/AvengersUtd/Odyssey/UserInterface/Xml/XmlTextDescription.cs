@@ -43,7 +43,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
         public XmlTextDescription()
         {
             Name = FontFamily = string.Empty;
-            IsBold = IsItalic = ApplyShadowing = ApplyHighlight = IgnoreBounds = false;
+            IsBold = IsItalic = ApplyShadowing = ApplyHighlight = false;
             StandardColor = new XmlColor();
             StandardColor = new XmlColor();
             HorizontalAlignment = HorizontalAlignment.Left;
@@ -94,9 +94,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Xml
 
         [XmlAttribute]
         public bool ApplyHighlight { get; set; }
-
-        [XmlAttribute]
-        public bool IgnoreBounds { get; set; }
 
         [XmlElement]
         public XmlColor StandardColor { get; set; }

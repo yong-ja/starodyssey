@@ -12,14 +12,12 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     {
         EffectDescription EffectDescription { get; }
         void ApplyDynamicParameters(Renderer rendererContext);
-        MaterialNode ParentNode { get; }
-        void SetParentNode(MaterialNode mNode);
 
         bool RequirePreRenderStateChange { get; }
         bool RequirePostRenderStateChange { get; }
         string TechniqueName { get; }
-        ICommand[] PreRenderStates {get;}
-        ICommand[] PostRenderStates {get;}
+        ICommand[] PreRenderStates { get; }
+        ICommand[] PostRenderStates { get; }
         RenderableCollectionDescription ItemsDescription { get; }
 
         void InitParameters(Renderer renderer);

@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
 
             ShapeDescription result = ShapeDescription.Join(inside, outline);
             result.Shape = Shape.RectangleWithOutline;
-            return result;
+            return result; 
         }
 
 
