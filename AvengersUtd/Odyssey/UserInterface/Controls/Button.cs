@@ -34,7 +34,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public const string ControlTag = "Button";
         static int count;
 
-        private readonly TextLiteral label;
+        private TextLiteral label;
 
         #region Properties
         public string Content { get { return label.Content; } set { label.Content = value; } }
@@ -58,15 +58,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public Button() : base(ControlTag + (++count), ControlTag)
         {
             IsFocusable = false;
-
-            label = new TextLiteral
-                        {
-                            Id = ControlTag + TextLiteral.ControlTag,
-                            Content = Id,
-                            IsSubComponent = true,
-                            Parent = this,
-                            TextDescriptionClass = TextDescriptionClass,
-                        };
         }
        
         #endregion
@@ -122,6 +113,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void ISpriteObject.CreateResource()
         {
+
+            label = new TextLiteral
+            {
+                Id = ControlTag + TextLiteral.ControlTag,
+                Content = Id,
+                IsSubComponent = true,
+                Parent = this,
+                TextDescriptionClass = TextDescriptionClass,
+            };
             label.CreateResource();
         }
 

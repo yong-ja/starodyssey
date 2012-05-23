@@ -533,9 +533,10 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             IContainer iContainer = this as IContainer;
             if (iContainer == null) return;
-            foreach (BaseControl ctl in iContainer.PrivateControlCollection.AllControls)
+            foreach (BaseControl ctl in TreeTraversal.PreOrderControlVisit(iContainer))
+            //foreach (BaseControl ctl in iContainer.PrivateControlCollection.AllControls)
             {
-                ctl.Depth = Style.Depth.AsChildOf(Depth);
+                ctl.Depth = Style.Depth.AsChildOf(ctl.Parent.Depth);
             }
 
             if (DesignMode) return;

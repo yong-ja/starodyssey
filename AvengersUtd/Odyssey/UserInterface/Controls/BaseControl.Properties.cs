@@ -69,6 +69,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 if (textDescription.Name != value)
                 {
                     textDescription = StyleManager.GetTextDescription(value);
+                    OnTextDescriptionChanged(EventArgs.Empty);
                 }
             }
         }
@@ -465,7 +466,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         internal bool IsSubComponent { get; set; }
         internal bool IsBeingRemoved { get; set; }
 
-        protected internal Depth Depth { get; set; }
+        protected internal virtual Depth Depth { get; set; }
 
         #endregion
     }

@@ -24,12 +24,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Rows = rows;
             Columns = columns;
             ushort[] indices;
-            Vector4[] vertices = PolyMesh.CreateRectangleMesh(Vector4.Zero, width, height, Rows, Columns, out indices);
+            Vector4[] vertices = PolyMesh.CreateRectangleMesh(Vector4.Zero, width, height, Columns, Rows, out indices);
 
             Vertices = (from v in vertices select new MeshVertex(v, Vector3.UnitY, Vector2.Zero)).ToArray();
             Indices = indices;
             CurrentRotation = Quaternion.RotationAxis(Vector3.UnitX, MathHelper.PiOver2);
-            Material = new WireframeMaterial { DiffuseColor = Color.Green };
+            Material = new WireframeMaterial { DiffuseColor = Color.Green };            
         }
 
 

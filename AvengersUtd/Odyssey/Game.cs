@@ -21,7 +21,7 @@ namespace AvengersUtd.Odyssey
     public static class Game
     {
         public const string EngineTag = "Odyssey";
-        public const string GraphicsTag = "Graphics";
+        public const string NetworkTag = "Network";
         public const string RenderingTag = "Rendering";
         public const string UITag = "UI";
         private static object locker;
@@ -53,6 +53,7 @@ namespace AvengersUtd.Odyssey
         public static void Init()
         {
             ResourceManager.PerformIntegrityCheck();
+            ResourceManager.LoadDefaultStyles();
 
             LogEvent.Engine.Log(Resources.INFO_OE_Starting);
 
@@ -80,7 +81,7 @@ namespace AvengersUtd.Odyssey
             HookEvents();
 
             LogEvent.Engine.Log(Resources.INFO_OE_Started);
-
+            Logger.Init();
         }
 
         public static void HookEvents()

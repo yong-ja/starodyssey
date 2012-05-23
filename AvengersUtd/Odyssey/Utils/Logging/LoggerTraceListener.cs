@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using AvengersUtd.Odyssey.UserInterface.Controls;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
-    public class ConsoleTraceListener : TraceListener
+    public class LoggerTraceListener : TraceListener
     {
+        private static LoggerPanel loggerPanel;
         private const string LogTag = "[{0:HH:mm:ss.fff]}:\t{1}({2})";
+        
 
-
-        public ConsoleTraceListener(string name) : base(name)
+        public LoggerTraceListener(string name)
+            : base(name)
         {
         }
 
@@ -23,7 +26,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
             string logEntry = string.Format(LogTag, DateTime.Now, eventType != TraceEventType.Information ? eventType.ToString() : string.Empty, source);
-            WriteLine(string.Format("{0} {1}", logEntry, message,id));
+            loggerPanel.EnqueueMessage(string.Format("{0} {1}", logEntry, message,id));
             
         }
 
@@ -33,7 +36,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         /// <param name="message">A message to write.</param>
         public override void Write(string message)
         {
-            Console.Write(message);
+            loggerPanel.EnqueueMessage(message);
         }
 
         /// <summary>
@@ -42,28 +45,13 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         /// <param name="message">A message to write.</param>
         public override void WriteLine(string message)
         {
-            Console.WriteLine(message);
+            loggerPanel.EnqueueMessage(message);
         }
 
-        
-        static string GetCode(TraceEventType eventType, int eventCode)
+        public static void SetLoggerPanel(LoggerPanel lPanel)
         {
-            switch (eventType)
-            {
-                default:
-                    return string.Empty;
-                    
-                case TraceEventType.Warning:
-                    return string.Format(" Warning #{0:000000}\n", eventCode);
-
-                case TraceEventType.Critical:
-                    return string.Format(" Critical Failure #{0:000000}\n", eventCode);
-
-                case TraceEventType.Error:
-                    return string.Format(" Error #{0:000000}\n", eventCode);
-
-            }
+            loggerPanel = lPanel;
         }
-        
+
     }
 }

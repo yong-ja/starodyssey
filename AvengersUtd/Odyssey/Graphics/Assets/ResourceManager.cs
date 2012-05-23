@@ -9,6 +9,7 @@ using AvengersUtd.Odyssey.Utils.Logging;
 using System.Reflection;
 using System.Diagnostics.Contracts;
 using AvengersUtd.Odyssey.Utils.Xml;
+using AvengersUtd.Odyssey.UserInterface.Style;
 
 namespace AvengersUtd.Odyssey.Graphics.Resources
 {
@@ -294,6 +295,12 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
                 }
             }
             return resource;
+        }
+
+        internal static void LoadDefaultStyles()
+        {
+            StyleManager.LoadControlDescription(Global.XmlPath + "ControlDescriptions.ocd");
+            StyleManager.LoadTextDescription(Global.XmlPath + "TextDescriptions.otd");
         }
 
         internal static void OnDispose(object sender, EventArgs e)

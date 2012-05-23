@@ -66,8 +66,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         protected List<ICommand> PreRenderStateList { get; private set; }
         protected List<ICommand> PostRenderStateList { get; private set; }
 
-        public MaterialNode ParentNode { get; private set; }
-
         public bool RequirePreRenderStateChange
         {
             get { return PreRenderStateList.Count > 0; }
@@ -147,11 +145,6 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
         public virtual void ApplyDynamicParameters(Renderer rendererContext)
         {
             EffectDescription.ApplyDynamicParameters(rendererContext);
-        }
-
-        void IMaterial.SetParentNode(MaterialNode mNode)
-        {
-            ParentNode = mNode;
         }
 
         public void ApplyInstanceParameters(IRenderable rObject)

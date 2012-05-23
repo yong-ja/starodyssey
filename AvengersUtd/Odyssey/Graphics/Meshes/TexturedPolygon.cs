@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 ResourceUsage = ResourceUsage.Dynamic;
             }
            
-            Name = diffuseMapKey = tag;
+            Name = tag;
         }
 
         #region IDiffuseMap Members

@@ -9,6 +9,8 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Rendering;
+using AvengersUtd.Odyssey.UserInterface.Text;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
@@ -27,8 +29,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0f, 0.5f, 0.5f, 1f), 0.5f, 0.5f);
             //triangle = PolyMesh.CreateTexturedQuad(new Vector4(0, 50, 0f, 1f), 105f, 105f);
 
-            StyleManager.LoadControlDescription(Global.XmlPath + "ControlDescriptions.ocd");
-            StyleManager.LoadTextDescription(Global.XmlPath + "TextDescriptions.otd");
+
 
             //PhongMaterial phong = new PhongMaterial();
             //WireframeMaterial wireframe = new WireframeMaterial();
@@ -66,24 +67,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
-            //fNodeSphere.AppendChild(mNodePhong);
-            //fNodeGrid.AppendChild(mNodeWire);
-            //coNode.AppendChild(rNodeSky);
 
-            //sphere.Material = phong;
-            //lightSphere.Material = phong;
-            //grid.Material = wireframe;
 
-            //fNodeSphere.AppendChild(rNodeSphere);
-            //fNodeSphere.AppendChild(rNodeLightSphere);
-            //fNodeSphere.AppendChild(rNodeBox);
+            fNodeSphere.AppendChild(rNodeSphere);
+            fNodeSphere.AppendChild(rNodeLightSphere);
+            fNodeSphere.AppendChild(rNodeBox);
             fNodeGrid.AppendChild(rNodeGrid);
 
-    
-            //mNodePhong.AppendChild(rNodeSphere);
-            //mNodePhong.AppendChild(rNodeLightSphere);
-            //mNodePhong.AppendChild(rNodeBox);
-            //mNodeWire.AppendChild(rNodeGrid);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
@@ -105,17 +95,34 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //    Content = "Adal & Nadia :)",
             //});
 
+            //LoggerPanel lp = new LoggerPanel {
+            //    Position = new Vector2(0f, 720),
+            //    Size = new Size(576, 256),
+            //    Lines = 8
+            //};
 
-            Hud.Add(new Panel
-            {
-                Position = new Vector2(300f, 175f),
-                Size = new Size(200, 200)
-            });
+           
 
-            //Hud.Add(new DecoratorButton
-            //            {
-            //                Position = new Vector2(550f, 300f),
-            //            });
+            Game.Logger.Log("Prova1");
+            Game.Logger.Log("Prova2");
+            Game.Logger.Log("Prova3");
+            Game.Logger.Log("Prova4");
+            //Game.Logger.Log("Prova5");
+            Game.Logger.Log("U MAD?");
+            Game.Logger.Log("PROBLEM?");
+            LogEvent.UserInterface.Write("U MAD?");
+            LogEvent.Engine.Write("YO DAWG");
+
+            //Hud.Add(new Panel
+            //{
+            //    Position = new Vector2(500f, 175f),
+            //    Size = new Size(200, 200)
+            //});
+
+            Hud.Add(new DecoratorButton
+                        {
+                            Position = new Vector2(550f, 300f),
+                        });
 
             //Hud.Add(new Button
             //{
@@ -130,19 +137,21 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //hud.Add(d);
 
             Hud.Add(new RayPickingPanel { Size = Hud.Size, Camera = this.Camera });
-            //Game.Logger.Activate();
+            Game.Logger.Activate();
             Hud.Init();
             Hud.EndDesign();
 
             Scene.BuildRenderScene();
-            //lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(lightSphere, 50));
+            lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
             Hud.AddToScene(this, Scene);
             IsInited = true;
+            AvengersUtd.Odyssey.Network.UdpServer server = new Odyssey.Network.UdpServer();
+            server.Start();
         }
-        
+
         public override void Render()
         {
-            //Game.Logger.Update();
+            Game.Logger.Update();
             Scene.Display();
         }
 

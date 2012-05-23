@@ -195,7 +195,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             int hiddenVertices = 0;
             int hiddenIndices = 0;
             foreach (ShapeDescription sDesc in
-                TreeTraversal.PreOrderHiddenControlsVisit(this).SelectMany(control => control.Shapes))
+                TreeTraversal.PreOrderHiddenControlsVisit(this).Where(control => control.Description.Shape != Shape.None)
+                    .SelectMany(control => control.Shapes))
             {
                 hiddenVertices += sDesc.Vertices.Length;
                 hiddenIndices += sDesc.Indices.Length;
@@ -225,8 +226,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             TextMaterial textMaterial = new TextMaterial();
             UIMaterial uiMaterial = new UIMaterial();
 
-            MaterialNode mTextNode = new MaterialNode(textMaterial);
-            MaterialNode mUINode = new MaterialNode(uiMaterial);
             //UserInterfaceNode mUiNode = new UserInterfaceNode();
             RenderableNode rNode = new RenderableNode(InterfaceMesh);
             CameraOverlayNode caNode = new CameraOverlayNode(renderer.Camera);
@@ -386,7 +385,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         private void AddControl(BaseControl control)
         {
-            hudShapes.AddRange(control.Shapes.Array);
+            if (control.Description.Shape != Shape.None)
+                hudShapes.AddRange(control.Shapes.Array);
             IContainer containerControl = control as IContainer;
 
             if (containerControl != null)
