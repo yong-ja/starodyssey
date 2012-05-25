@@ -9,12 +9,22 @@ using System.Threading;
 
 namespace AvengersUtd.Odyssey.Network
 {
-    public class UdpServer
+    public abstract class UdpServer
     {
         byte[] data;
         Thread networkThread;
         UdpClient socket;
         IPEndPoint sender;
+
+        public event EventHandler<EventArgs> DataReceived;
+
+        protected void OnDataReceived(EventArgs e)
+        {
+            EventHandler<EventArgs> dataReceived = DataReceived;
+            if (dataReceived != null)
+                dataReceived(this, e);
+        }
+
 
         public UdpServer()
         {
@@ -26,7 +36,6 @@ namespace AvengersUtd.Odyssey.Network
 
         public void Start()
         {
-            
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 5555);
             socket = new UdpClient(ipep);
             
@@ -43,8 +52,11 @@ namespace AvengersUtd.Odyssey.Network
             while (true)
             {
                 data = socket.Receive(ref sender);
-                LogEvent.Network.Write(Encoding.ASCII.GetString(data, 0, data.Length));
+                ProcessData(data);
+                OnDataReceived(EventArgs.Empty);
             }
         }
+
+        protected abstract void ProcessData(byte[] data);
     }
 }

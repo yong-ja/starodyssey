@@ -107,7 +107,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected override void OnDisposing(EventArgs e)
         {
             base.OnDisposing(e);
-            if (!TextLiteral.Disposed)
+            if (TextLiteral != null && !TextLiteral.Disposed)
                 TextLiteral.Dispose();
         }
 

@@ -92,6 +92,9 @@ namespace AvengersUtd.Odyssey
         public static void Close(int exitCode=0)
         {
             IsRunning = false;
+            if (Logger.IsActive)
+                Logger.Deactivate();
+
             ResourceManager.Dispose();
             EffectManager.Dispose();
 

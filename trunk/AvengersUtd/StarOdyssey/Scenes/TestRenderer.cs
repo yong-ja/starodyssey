@@ -88,20 +88,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
                     ));
             Hud.BeginDesign();
 
-            //hud.Add(new Button
-            //{
-            //    Position = new Vector2(200f, 50f),
-            //    Size = new Size(200, 200),
-            //    Content = "Adal & Nadia :)",
-            //});
-
-            //LoggerPanel lp = new LoggerPanel {
-            //    Position = new Vector2(0f, 720),
-            //    Size = new Size(576, 256),
-            //    Lines = 8
-            //};
-
-           
+          
 
             Game.Logger.Log("Prova1");
             Game.Logger.Log("Prova2");
@@ -112,6 +99,14 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Game.Logger.Log("PROBLEM?");
             LogEvent.UserInterface.Write("U MAD?");
             LogEvent.Engine.Write("YO DAWG");
+
+            Hud.Add(new TexturedIcon
+            {
+                Position = new Vector2(512f, 512f),
+                Size = new Size(64,64),
+                Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
+
+            });
 
             //Hud.Add(new Panel
             //{
@@ -145,7 +140,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
             Hud.AddToScene(this, Scene);
             IsInited = true;
-            AvengersUtd.Odyssey.Network.UdpServer server = new Odyssey.Network.UdpServer();
+            AvengersUtd.Odyssey.Network.UdpServer server = new Odyssey.Network.EyeTrackerServer();
             server.Start();
         }
 
