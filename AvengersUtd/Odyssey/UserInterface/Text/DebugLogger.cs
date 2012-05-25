@@ -58,6 +58,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
 
         Timer timer;
 
+        public bool IsActive { get; private set; }
+
         public DebugLogger()
         {
             DeviceInfo = string.Empty;
@@ -98,6 +100,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                        };
             OdysseyUI.CurrentHud.Add(text);
             OdysseyUI.CurrentHud.Add(loggerPanel);
+            IsActive = true;
+        }
+
+        public void Deactivate()
+        {
+            System.Diagnostics.Trace.Listeners.Remove("logger");
+            OdysseyUI.CurrentHud.Remove(text);
+            OdysseyUI.CurrentHud.Remove(loggerPanel);
         }
 
         public void Update()
