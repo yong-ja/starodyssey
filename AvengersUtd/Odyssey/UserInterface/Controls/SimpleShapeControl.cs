@@ -71,7 +71,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <seealso cref="BaseControl.CreateShape"/>
         public override void CreateShape()
         {
-            if (Description.Shape == Shape.Custom || Description.Shape == Shape.None) return;
+            if (!Description.HasShape) return;
 
             ShapeDescription = ShapeCreator.ComputeData(this);
             Shapes[0] = ShapeDescription;
@@ -84,7 +84,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <seealso cref="BaseControl.UpdateShape"/>
         public override void UpdateShape()
         {
-            if (Description.Shape != Shape.Custom && Description.Shape != Shape.None)
+            if (Description.HasShape)
             {
                 ShapeDescription.UpdateVertices(ShapeCreator.ComputeData(this).Vertices);
             }

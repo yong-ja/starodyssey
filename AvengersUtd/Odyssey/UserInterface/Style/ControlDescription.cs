@@ -54,6 +54,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Style
         public IGradientShader[] Enabled { get; set; }
         public LinearShader[] BorderShaders { get; set; }
 
+        public bool HasShape
+        {
+            get
+            {
+                return Shape != Shape.None && Shape != Shape.Sprite;
+            }
+        }
+
         public static ControlDescription EmptyDescription
         {
             get

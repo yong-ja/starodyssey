@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Utils.Logging;
+using AvengersUtd.Odyssey.Geometry;
 
 namespace AvengersUtd.Odyssey.Network
 {
     public struct GazeData
     {
+        const float MarkerSize = 107;
+        const float ScreenWidth = 598;
+        const float ScreenHeight = 336;
+          
         public uint Index { get; private set; }
         public uint TimestampMs { get; private set; }
         public bool EyeDetected { get; private set; }
@@ -30,6 +35,9 @@ namespace AvengersUtd.Odyssey.Network
         public float M0llY { get; private set; }
 
         bool hasMarkerData;
+
+        public float ScreenX { get; private set; }
+        public float ScreenY { get; private set; }
         
 
         public GazeData(uint index, uint timestampMs, bool eyeDetected, ushort eyeX, ushort eyeY, ushort fieldX, ushort fieldY, ushort markers)
@@ -52,7 +60,7 @@ namespace AvengersUtd.Odyssey.Network
             : this(index, timestampMs, eyeDetected, eyeX, eyeY, fieldX, fieldY, markers)
         {
             GazePoint0X = gazePoint0X;
-            GazePoint0Y = GazePoint0Y;
+            GazePoint0Y = gazePoint0Y;
             M0ulX = m0ulX;
             M0ulY = m0ulY;
             M0urX = m0urX;
@@ -62,13 +70,41 @@ namespace AvengersUtd.Odyssey.Network
             M0llX = m0llX;
             M0llY = m0llY;
             hasMarkerData = true;
+            ComputeScreenCoordinates();
+        }
+
+        void ComputeScreenCoordinates() 
+        {
+
+            const float markerScreenWidth = (ScreenWidth / MarkerSize);
+            const float markerScreenHeight = (ScreenHeight / MarkerSize);
+
+            //const float offsetBorder = 0.125f;
+            //const float offsetX = 1 + offsetBorder;
+
+            float offsetX = 1f;
+            //float offsetY = 1.15f;
+
+            //float x = GazePoint0X == 0 ? 0 : MathHelper.Clamp(-markerScreenWidth + (GazePoint0X + offsetX), 0, markerScreenWidth);
+            //float y = GazePoint0Y == 0 ? 0 : MathHelper.Clamp(Math.Abs(GazePoint0Y + offsetY), 0, markerScreenHeight);
+
+            float x = (markerScreenWidth + offsetX) - GazePoint0X;
+            //float y = GazePoint0Y + offsetY;
+            //float y = GazePoint0Y + offsetY;
+            float y = Math.Abs(GazePoint0Y);
+
+            ScreenX = (x/ markerScreenWidth) * 1920;
+            ScreenY = (y / markerScreenHeight) * 1080;
+
+            ScreenX = MathHelper.Clamp(ScreenX, 0, 1920);
+            ScreenY = MathHelper.Clamp(ScreenY, 0, 1080);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format("{0} {1} {2} - Eye ({3:f2},{4:f2}) Field({5},{6}) nM: {7}",
-                Index, TimestampMs, EyeDetected ? "Yes" : "No", EyeX, EyeY, FieldX, FieldY, Markers));
+            sb.AppendLine(string.Format("{0} {1} {2} - Eye ({3:f2},{4:f2}) Field({5},{6}) nM: {7} Screen ({8},{9})",
+                Index, TimestampMs, EyeDetected ? "Yes" : "No", EyeX, EyeY, FieldX, FieldY, Markers, ScreenX, ScreenY));
             
             if (hasMarkerData)
                 sb.AppendLine(string.Format("G0 ({0},{1}) - M0 ul ({2:f2},{3:f2}) ur ({4:f2},{5:f2}) lr ({6:f2},{7:f2}) ll ({8:f2},{9:f2})",
@@ -82,6 +118,8 @@ namespace AvengersUtd.Odyssey.Network
     public class EyeTrackerServer : UdpServer
     {
 
+        public GazeData LastGazeData { get; private set; }
+
         protected override void ProcessData(byte[] data)
         {
             if (data == null)
@@ -92,9 +130,9 @@ namespace AvengersUtd.Odyssey.Network
             if (dataArray == null)
                 return;
 
-            GazeData gazeData = dataArray.Length == 8 ? ParseNoMarkerData(dataArray) : ParseMarkerData(dataArray);
+            LastGazeData = dataArray.Length == 8 ? ParseNoMarkerData(dataArray) : ParseMarkerData(dataArray);
 
-            LogEvent.Engine.Write(gazeData.ToString());
+            //LogEvent.Engine.Write(LastGazeData.ToString());
         }
 
         GazeData ParseNoMarkerData(string[] dataArray)
@@ -110,7 +148,13 @@ namespace AvengersUtd.Odyssey.Network
                     continue;
                 }
                 else
-                    convertedData.Add(uint.Parse(item));
+                {
+                    int value = int.Parse(item);
+                    if (value > 0)
+                        convertedData.Add((uint)value);
+                    else
+                        convertedData.Add(0);
+                }
             }
 
             GazeData gazeData = new GazeData(convertedData[0], convertedData[1],
@@ -134,11 +178,17 @@ namespace AvengersUtd.Odyssey.Network
                     continue;
                 }
                 else
-                    convertedData.Add(uint.Parse(item));
+                {
+                    int value = int.Parse(item);
+                    if (value > 0)
+                        convertedData.Add((uint)value);
+                    else
+                        convertedData.Add(0);
+                }
             }
 
+            convertedDataF.Add(string.IsNullOrEmpty(dataArray[8]) ? 0 : float.Parse(dataArray[8]));
             convertedDataF.Add(string.IsNullOrEmpty(dataArray[9]) ? 0 : float.Parse(dataArray[9]));
-            convertedDataF.Add(string.IsNullOrEmpty(dataArray[10]) ? 0 : float.Parse(dataArray[10]));
 
             for (int i = 40; i <= 47; i++)
             {

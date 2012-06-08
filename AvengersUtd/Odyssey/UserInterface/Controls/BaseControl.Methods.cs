@@ -62,7 +62,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             
             if (isVisible && !DesignMode 
                 && (ApplyStatusChanges || updateAction == UpdateAction.Move)
-                && !IsBeingRemoved && Description.Shape != Shape.None)
+                && !IsBeingRemoved && Description.HasShape)
             {
                 UpdateStatus();
                 OdysseyUI.CurrentHud.EnqueueForUpdate(this, updateAction);

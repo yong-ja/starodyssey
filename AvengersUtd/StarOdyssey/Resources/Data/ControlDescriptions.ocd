@@ -92,4 +92,6 @@
   </ControlDescription>
   <ControlDescription Name="Empty" Shape="None" BorderStyle="Raised" BorderSize="2">
   </ControlDescription>
+  <ControlDescription Name="Sprite" Shape="Sprite" BorderStyle="None" BorderSize="0">
+  </ControlDescription>
 </ArrayOfControlDescription>

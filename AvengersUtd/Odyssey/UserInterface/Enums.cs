@@ -41,7 +41,8 @@ namespace AvengersUtd.Odyssey.UserInterface
     public enum Shape
     {
         None = 0,
-        Custom,
+        Sprite,
+
         Rectangle,
         Circle,
         LeftTrapezoidUpside,
@@ -50,7 +51,8 @@ namespace AvengersUtd.Odyssey.UserInterface
         RightTrapezoidDownside,
         Triangle,
         RectangleWithOutline,
-        RectangleMesh
+        RectangleMesh,
+                Custom,
     }
 
     public enum DecorationType

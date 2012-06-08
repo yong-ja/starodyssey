@@ -20,13 +20,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             switch (ctl.Description.Shape)
             {
                 case Shape.None:
+                case Shape.Sprite:
                     break;
                 case Shape.Custom:
                     break;
-
                 case Shape.Triangle:
                     break;
-
                 case Shape.Circle:
                     break;
                 case Shape.LeftTrapezoidUpside:

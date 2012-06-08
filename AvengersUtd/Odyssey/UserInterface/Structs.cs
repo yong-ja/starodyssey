@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey.UserInterface
             Action = action;
 
             if (Action == UpdateAction.None)
-                    Console.WriteLine("!");
+                    Console.WriteLine("!Terribile");
         }
     }
 

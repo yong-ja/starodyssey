@@ -111,6 +111,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             get { return label.Inited; }
         }
 
+
         void ISpriteObject.CreateResource()
         {
 

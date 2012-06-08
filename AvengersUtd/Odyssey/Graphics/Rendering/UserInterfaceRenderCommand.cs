@@ -120,6 +120,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 RenderableNode textNode = new RenderableNode(spriteControl.RenderableObject);
                 tNode.AppendChild(textNode);
                 TextItems.Add(textNode);
+                textNode.Update();
             }
 
             //TextItems = textMaterialNode.RenderableCollection;
