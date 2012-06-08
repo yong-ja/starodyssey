@@ -7,6 +7,7 @@ using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using SlimDX.Direct3D11;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 namespace AvengersUtd.Odyssey.UserInterface.Text
 {
@@ -97,6 +98,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             if (quad == null)
             {
                 quad = TexturedPolygon.CreateTexturedQuad(Key, Vector3.Zero, Size.Width, Size.Height, IsDynamic);
+                
                 quad.PositionV3 = AbsoluteOrthoPosition;
                 if (CacheText)
                     quad.DiffuseMapKey = Key;
@@ -158,6 +160,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             get { return quad; }
         }
 
+ 
         #endregion
 
         public override string ToString()

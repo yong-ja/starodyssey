@@ -13,12 +13,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         const int minimumLines = 4;
         const string ControlTag = "LoggerPanel";
         const int lineMargin = 4;
-        const int rowHeight = 20;
+        int rowHeight = 20;
+        int labelCount;
         private static int count;
 
         private int lines;
         List<string> logLines;
-        Label[] labels;
+        List<Label> labels;
 
         public int Lines
         {
@@ -30,7 +31,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 else
                 {
                     lines = value;
-                   RebuildLabels();
+                   ///RebuildLabels();
                 }
             }
         }
@@ -38,14 +39,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public LoggerPanel()
             : base(ControlTag + ++count, "LoggerPanel")
         {
-            lines = -1;
+            rowHeight = (int)Math.Ceiling(TextManager.MeasureSize("Test", TextDescription.ToFont()).Height);
             logLines = new List<string>();
+            labels = new List<Label>();
         }
 
         void RebuildLabels()
         {
-            labels = BuildLabels(lines, Description.Padding, lineMargin, rowHeight, TextDescriptionClass,
-                DesignMode, new Size(ContentAreaSize.Width, 0));
+            lines = (int)Math.Floor(ContentAreaSize.Height / (float)rowHeight);
+            labels.AddRange(BuildLabels(lines, Description.Padding, lineMargin, rowHeight, TextDescriptionClass,
+                DesignMode, new Size(ContentAreaSize.Width, 0)));
             if (!Controls.IsEmpty)
                 Controls.Clear();
             AddRange(labels);
@@ -54,28 +57,66 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void EnqueueMessage(string message)
         {
-            if (logLines.Count == lines)
-                logLines.RemoveAt(0);
-            logLines.Add(message);
+            //logLines.Add(message);
+OdysseyUI.CurrentHud.BeginDesign();
+            Label newLabel = new Label
+                {
+                    Id = string.Format("{0}_{1}{2}", ControlTag, TextLiteral.ControlTag, ++labelCount),
+                    //Position = new SlimDX.Vector2(Description.Padding.Left, Description.Padding.Top + (labels.Count * rowHeight)),
+                    TextDescriptionClass = TextDescriptionClass,
+                    //DesignMode = DesignMode,
+                    //IsVisible = true,
+                    Wrapping = true,
+                    Size = new Size(ContentAreaSize.Width, 0),
+                    Content = message
+                };
 
+            
+            labels.Add(newLabel);
+            Add(newLabel);
+            CheckOverflow();
+            CheckPositions();
+            OdysseyUI.CurrentHud.EndDesign();
+
+            
+
+        }
+
+        void ScrollLabelsUp()
+        {
             for (int i = 0; i < logLines.Count; i++)
             {
                 labels[i].Content = logLines[i];
                 labels[i].IsVisible = true;
             }
-            if (!DesignMode)
-                CheckPositions();
+        }
+
+        void CheckOverflow()
+        {
+            int totalLines = (from l in labels
+                                  select l.Lines).Sum();
+
+            if (totalLines <= lines)
+                return;
+
+            while (totalLines > lines)
+            {
+                //logLines.RemoveAt(0);
+                labels.RemoveAt(0);
+                Controls.RemoveAt(0);
+                totalLines = (from l in labels
+                                  select l.Lines).Sum();
+            }
         }
 
         void CheckPositions()
         {
             float height = Description.Padding.Top;
-            float lineHeight = labels[0].TextSize.Height;
 
-            for (int i = 0; i < logLines.Count; i++)
+            foreach (Label label in labels)
             {
-                labels[i].Position = new SlimDX.Vector2(Description.Padding.Left, height);
-                height += lineHeight * labels[i].Lines;
+                label.Position = new SlimDX.Vector2(Description.Padding.Left, height);
+                height += rowHeight * label.Lines;
             }
         }
 

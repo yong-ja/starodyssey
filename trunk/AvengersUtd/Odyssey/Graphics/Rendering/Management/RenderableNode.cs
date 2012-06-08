@@ -79,7 +79,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
             RenderableObject.World = multiply ? objectMatrix*tParent.AbsoluteWorldMatrix : tParent.AbsoluteWorldMatrix;
 
-
             //RenderableObject.PositionV3 = new Vector3(tParent.AbsoluteWorldMatrix.M41,
             //                                  tParent.AbsoluteWorldMatrix.M42,
             //                                  tParent.AbsoluteWorldMatrix.M43);

@@ -25,13 +25,9 @@ namespace AvengersUtd.Odyssey.Network
                 dataReceived(this, e);
         }
 
-
         public UdpServer()
         {
             data = new byte[1024];
-            
-
-            
         }
 
         public void Start()
@@ -43,7 +39,6 @@ namespace AvengersUtd.Odyssey.Network
             LogEvent.Network.Write("Waiting for a client...");
             networkThread = new Thread(Loop) { Name = "Network" };
             networkThread.Start();
-            
         }
 
 

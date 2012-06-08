@@ -11,6 +11,7 @@ using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using AvengersUtd.Odyssey.Utils.Logging;
+using AvengersUtd.Odyssey.Network;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
@@ -94,19 +95,26 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Game.Logger.Log("Prova2");
             Game.Logger.Log("Prova3");
             Game.Logger.Log("Prova4");
+            Game.Logger.Log("Prova5");
+            //Game.Logger.Log("Prova1");
+            //Game.Logger.Log("Prova2");
+            //Game.Logger.Log("Prova3");
+            //Game.Logger.Log("Prova4");
             //Game.Logger.Log("Prova5");
-            Game.Logger.Log("U MAD?");
-            Game.Logger.Log("PROBLEM?");
+            //Game.Logger.Log("U MAD?");
+            //Game.Logger.Log("PROBLEM?");
             LogEvent.UserInterface.Write("U MAD?");
             LogEvent.Engine.Write("YO DAWG");
 
-            Hud.Add(new TexturedIcon
+            TexturedIcon crosshair = new TexturedIcon
             {
                 Position = new Vector2(512f, 512f),
-                Size = new Size(64,64),
+                Size = new Size(64, 64),
                 Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
 
-            });
+            };
+
+            Hud.Add(crosshair);
 
             //Hud.Add(new Panel
             //{
@@ -140,8 +148,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
             Hud.AddToScene(this, Scene);
             IsInited = true;
-            AvengersUtd.Odyssey.Network.UdpServer server = new Odyssey.Network.EyeTrackerServer();
+            EyeTrackerServer server = new Odyssey.Network.EyeTrackerServer();
             server.Start();
+
+            server.DataReceived += (sender, e) => crosshair.Position = new Vector2(server.LastGazeData.ScreenX - crosshair.Width/2, 
+                server.LastGazeData.ScreenY - crosshair.Height/2);
         }
 
         public override void Render()

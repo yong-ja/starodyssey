@@ -607,7 +607,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected virtual void OnVisibleChanged(EventArgs e)
         {
             if (!DesignMode)
-            OdysseyUI.CurrentHud.EnqueueForUpdate(this, IsVisible ? UpdateAction.Add: UpdateAction.Remove);
+            {
+                OdysseyUI.CurrentHud.EnqueueForUpdate(this, IsVisible ? UpdateAction.Add : UpdateAction.Remove);
+            }
 
             EventHandler handler = (EventHandler) Events[EventVisibleChanged];
             if (handler != null)

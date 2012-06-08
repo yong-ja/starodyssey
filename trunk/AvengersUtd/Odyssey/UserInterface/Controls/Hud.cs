@@ -185,7 +185,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 if (sCtl != null && ctl.IsVisible)
                     spriteControls.Add(sCtl);
 
-                if (ctl.IsVisible && ctl.Description.Shape != Shape.None)
+                if (ctl.IsVisible && ctl.Description.HasShape)
                     hudShapes.AddRange(ctl.Shapes.Array);
             }
         }
@@ -385,26 +385,30 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         private void AddControl(BaseControl control)
         {
-            if (control.Description.Shape != Shape.None)
+            if (control.Description.HasShape)
                 hudShapes.AddRange(control.Shapes.Array);
+
+            ISpriteObject sObj = control as ISpriteObject;
+
+            if (sObj != null)
+                spriteControls.Add(sObj);
+
             IContainer containerControl = control as IContainer;
 
             if (containerControl != null)
                 ComputeShapes(containerControl);
 
-            if (HudDescription.Multithreaded)
+            if (!HudDescription.Multithreaded)
+                UpdateSprites();
+            else if (!uiUCommand.TaskQueue.Contains(UpdateSprites))
             {
-                if (!uiUCommand.TaskQueue.Contains(UpdateSprites))
+                if (sObj != null || (containerControl != null && containerControl.ContainsSprites))
                 {
-                    if (control is ISpriteObject || (containerControl != null && containerControl.ContainsSprites))
-                    {
-                        uiUCommand.TaskQueue.Enqueue(UpdateSprites);
-                        uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
-                    }
+                    uiUCommand.TaskQueue.Enqueue(UpdateSprites);
+                    uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
                 }
             }
-            else
-                UpdateSprites();
+
         }
 
         private void RemoveControl(BaseControl control)
@@ -466,7 +470,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             spriteControls.Clear();
             ComputeAbsolutePosition();
 
-            foreach (BaseControl ctl in TreeTraversal.PreOrderControlVisit(this).Where(ctl => ctl.Description.Shape != Shape.None))
+            foreach (BaseControl ctl in TreeTraversal.PreOrderControlVisit(this).Where(ctl => ctl.Description.HasShape))
                 ctl.CreateShape();
 
             ComputeShapes(this);
@@ -512,17 +516,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (control.IsBeingUpdated)
                 return;
 
+            ///TODO 
             //Console.WriteLine(string.Format("Enqueing {0} for {1}",control.Id, updateAction));
             UpdateElement updateElement = new UpdateElement(control, updateAction);
             updateQueue.Enqueue(updateElement);
             control.IsBeingUpdated = true;
         }
-
-        //void DebugQueue(List<ISpriteControl> spriteList)
-        //{
-        //    foreach (BaseControl ctl in spriteList)
-        //        Console.WriteLine(ctl.Id);
-        //}
 
 
         public override bool IntersectTest(Point cursorLocation)
@@ -562,6 +561,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 uiUCommand.TaskQueue.Enqueue(Init);
                 uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
+                uiUCommand.Resume();
             }
         }
 

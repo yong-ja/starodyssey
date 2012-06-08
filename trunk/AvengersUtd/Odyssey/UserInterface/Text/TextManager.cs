@@ -110,14 +110,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(dummyimage))
             {
                 string[] originalLines = text.Split(new string[] { " " }, StringSplitOptions.None);
-                
 
                 StringBuilder actualLine = new StringBuilder();
                 double actualWidth = 0;
 
                 foreach (string item in originalLines)
                 {
-
                     actualLine.Append(item + " ");
                     actualWidth += graphics.MeasureString(item, font, PointF.Empty, StringFormat).Width;
 

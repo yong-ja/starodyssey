@@ -163,6 +163,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void ISpriteObject.ComputeAbsolutePosition()
         {
+            if (TextLiteral == null)
+                return;
             TextLiteral.Position = TextManager.ComputeTextPosition(this, TextLiteral);
             TextLiteral.ComputeAbsolutePosition();
 

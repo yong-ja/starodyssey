@@ -22,8 +22,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public Texture2D Texture { get; set; }
 
         public TexturedIcon()
-            : base(ControlTag + ++count, "Empty")
+            : base(ControlTag + ++count, "Sprite")
         {
+        }
+
+        protected override void UpdatePositionDependantParameters()
+        {
+            base.UpdatePositionDependantParameters();
+            quad.PositionV3 = AbsoluteOrthoPosition;
         }
 
         #region ISpriteObject
