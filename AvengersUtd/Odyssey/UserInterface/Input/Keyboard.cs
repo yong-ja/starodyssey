@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows;
 
 namespace AvengersUtd.Odyssey.UserInterface.Input
 {
@@ -15,7 +16,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
             keystate = new bool[256];
         }
 
-        public bool this[Keys key]
+        public bool this[Key key]
         {
             get
             {
@@ -25,13 +26,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
 
         public void KeyDown(object sender, KeyEventArgs e)
         {
-            keystate[e.KeyValue] = true;
+            keystate[(int)e.Key] = true;
         }
 
 
         public void KeyUp(object sender, KeyEventArgs e)
         {
-            keystate[e.KeyValue] = false;
+            keystate[(int)e.Key] = false;
         }
+
+
     }
 }

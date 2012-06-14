@@ -28,6 +28,7 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -59,9 +60,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         event MouseEventHandler MouseMove;
         event MouseEventHandler MouseWheel;
 
-        event KeyEventHandler KeyDown;
+        event EventHandler<KeyEventArgs> KeyDown;
         event KeyPressEventHandler KeyPress;
-        event KeyEventHandler KeyUp;
+        event EventHandler<KeyEventArgs> KeyUp;
 
         event EventHandler MouseEnter;
         event EventHandler MouseLeave;

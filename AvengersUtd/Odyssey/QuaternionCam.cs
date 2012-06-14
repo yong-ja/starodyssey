@@ -7,7 +7,6 @@ using AvengersUtd.Odyssey.Settings;
 using SlimDX;
 using SlimDX.Direct3D11;
 
-
 namespace AvengersUtd.Odyssey
 {
     enum StereoSide

@@ -74,7 +74,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             {
                 Position = new Vector2(0f, Game.Context.Settings.ScreenHeight * 2 / 3),
                 Size = new Size(576, 256),
-                Lines = 10
             };
             AvengersUtd.Odyssey.Utils.Logging.LoggerTraceListener.SetLoggerPanel(loggerPanel);
         }

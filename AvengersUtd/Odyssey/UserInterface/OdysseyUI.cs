@@ -7,18 +7,22 @@ using System.Windows.Forms;
 using AvengersUtd.Odyssey.Properties;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Input;
+using System.Windows;
+using System.Windows.Input;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using SlimDX.RawInput;
 
 namespace AvengersUtd.Odyssey.UserInterface
 {
-    public static class OdysseyUI
+    public static partial class OdysseyUI
     {
-        public static Keyboard Keyboard { get; private set;  }
-        public static Mouse Mouse { get; private set; }
+        public static AvengersUtd.Odyssey.UserInterface.Input.Keyboard Keyboard { get; private set;  }
+        public static AvengersUtd.Odyssey.UserInterface.Input.Mouse Mouse { get; private set; }
 
         static OdysseyUI()
         {
-            Keyboard = new Keyboard();
-            Mouse = new Mouse();
+            Keyboard = new AvengersUtd.Odyssey.UserInterface.Input.Keyboard();
+            Mouse = new AvengersUtd.Odyssey.UserInterface.Input.Mouse();
         }
 
         /// <summary>
@@ -146,13 +150,13 @@ namespace AvengersUtd.Odyssey.UserInterface
                 CurrentHud.ProcessMouseRelease(e);
         }
 
-        static void ProcessKeyDown(object sender, KeyEventArgs e)
+        static void ProcessKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (CurrentHud.FocusedControl != null)
                 CurrentHud.FocusedControl.ProcessKeyDown(e);
         }
 
-        static void ProcessKeyUp(object sender, KeyEventArgs e)
+        static void ProcessKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (CurrentHud.FocusedControl != null)
                 CurrentHud.FocusedControl.ProcessKeyUp(e);
@@ -173,11 +177,11 @@ namespace AvengersUtd.Odyssey.UserInterface
         {
             Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
 
-            target.KeyDown += Keyboard.KeyDown;
-            target.KeyUp += Keyboard.KeyUp;
-            target.MouseDown += Mouse.MouseDown;
-            target.MouseUp += Mouse.MouseUp;
-            target.MouseMove += Mouse.MouseMove;
+            //target.KeyDown += Keyboard.KeyDown;
+            //target.KeyUp += Keyboard.KeyUp;
+            //target.MouseDown += Mouse.MouseDown;
+            //target.MouseUp += Mouse.MouseUp;
+            //target.MouseMove += Mouse.MouseMove;
 
             target.KeyDown += ProcessKeyDown;
             target.KeyUp += ProcessKeyUp;
@@ -187,12 +191,28 @@ namespace AvengersUtd.Odyssey.UserInterface
             target.MouseMove += MouseMovementHandler;
         }
 
+        public static void SetupHooksWpf(Window target)
+        {
+            Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
+            target.KeyDown += ProcessKeyDown;
+            target.KeyUp += ProcessKeyUp;
+            target.TouchDown += ProcessTouchDown;
+            Global.Window = target;
+
+            //target.KeyDown += ProcessKeyDown;
+            
+            //target.KeyPress += ProcessKeyPress;
+            //target.MouseDown += ProcessMouseInputPress;
+            //target.MouseUp += ProcessMouseInputRelease;
+            //target.MouseMove += MouseMovementHandler;
+        }
+
         public static void RemoveHooks(Control target)
         {
             Contract.Requires<ArgumentNullException>(target != null, Resources.ERR_UI_TargetControlNull);
 
-            target.KeyDown -= Keyboard.KeyDown;
-            target.KeyUp -= Keyboard.KeyUp;
+            //target.KeyDown -= Keyboard.KeyDown;
+            //target.KeyUp -= Keyboard.KeyUp;
             target.MouseDown -= Mouse.MouseDown;
             target.MouseUp -= Mouse.MouseUp;
             target.MouseMove -= Mouse.MouseMove;

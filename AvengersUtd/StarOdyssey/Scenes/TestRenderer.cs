@@ -12,13 +12,14 @@ using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.Network;
+using AvengersUtd.Odyssey.UserInterface;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
     public class TestRenderer : Renderer
     {
        
-        public TestRenderer(DeviceContext11 deviceContext11) : base(deviceContext11)
+        public TestRenderer(AvengersUtd.Odyssey.IDeviceContext deviceContext) : base(deviceContext)
         {}
 
         public override void Init()
@@ -87,9 +88,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
                     cameraEnabled: true,
                     multithreaded: true
                     ));
+            OdysseyUI.CurrentHud = Hud;
             Hud.BeginDesign();
-
-          
 
             Game.Logger.Log("Prova1");
             Game.Logger.Log("Prova2");
@@ -145,8 +145,10 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Hud.EndDesign();
 
             Scene.BuildRenderScene();
-            lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
             Hud.AddToScene(this, Scene);
+            //
+            lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
+            
             IsInited = true;
             EyeTrackerServer server = new Odyssey.Network.EyeTrackerServer();
             server.Start();

@@ -5,7 +5,6 @@ using System.Text;
 using SlimDX;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Materials;
-using System.Drawing;
 using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes

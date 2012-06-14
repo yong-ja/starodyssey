@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Meshes;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.Graphics;
 using SlimDX;
+using KeyBinding = AvengersUtd.Odyssey.UserInterface.Input.KeyBinding;
+using System.Windows.Forms;
+
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -21,11 +23,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             keyBindings = new SortedList<Keys, KeyBinding>();
             KeyBinding[] keyArray = new KeyBinding[] {
-                //new KeyBinding(KeyAction.MoveForward,  Keys.W, 5f),
-                //new KeyBinding(KeyAction.MoveBackward, Keys.S, 5.0f),
-                //new KeyBinding(KeyAction.StrafeLeft, Keys.A, 5f),
-                //new KeyBinding(KeyAction.StrafeRight, Keys.D, 5.0f)
-                 new KeyBinding(KeyAction.MoveForward,  Keys.W, MoveForward),
+                 new KeyBinding(KeyAction.MoveForward,Keys.W, MoveForward),
                 new KeyBinding(KeyAction.MoveBackward, Keys.S, MoveBackard),
                 new KeyBinding(KeyAction.StrafeLeft, Keys.A, MoveLeft),
                 new KeyBinding(KeyAction.StrafeRight, Keys.D, MoveRight)
@@ -38,7 +36,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             
         }
 
-        public KeyboardBehaviour(IEnumerable<KeyBinding> keyBindings)
+        public KeyboardBehaviour(IEnumerable<AvengersUtd.Odyssey.UserInterface.Input.KeyBinding> keyBindings)
         {
             this.keyBindings = new SortedList<Keys, KeyBinding>();
             foreach (KeyBinding kb in keyBindings)
@@ -68,12 +66,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 binding.Apply(true);
         }
 
-        void IKeyboardBehaviour.OnKeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
+        void IKeyboardBehaviour.OnKeyPress(object sender, KeyEventArgs e)
         {
             return;
         }
 
-        void IKeyboardBehaviour.OnKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        void IKeyboardBehaviour.OnKeyUp(object sender, KeyEventArgs e)
         {
             KeyBinding binding = null;
             if (keyBindings.ContainsKey(e.KeyCode))
@@ -97,23 +95,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         void IBehaviour.Add()
         {
             IKeyboardBehaviour kBehaviour = ((IKeyboardBehaviour)this);
-            //RenderableObject.KeyUp += kBehaviour.OnKeyUp;
-            //RenderableObject.KeyDown += kBehaviour.OnKeyDown;
-            //RenderableObject.KeyPress += kBehaviour.OnKeyPress;
-
-            Global.FormOwner.KeyDown += kBehaviour.OnKeyDown;
-            Global.FormOwner.KeyUp += kBehaviour.OnKeyUp;
         }
 
         void IBehaviour.Remove()
         {
             IKeyboardBehaviour kBehaviour = ((IKeyboardBehaviour)this);
-            //RenderableObject.KeyUp -= kBehaviour.OnKeyUp;
-            //RenderableObject.KeyDown -= kBehaviour.OnKeyDown;
-            //RenderableObject.KeyPress -= kBehaviour.OnKeyPress;
-
-            Global.FormOwner.KeyDown -= kBehaviour.OnKeyDown;
-            Global.FormOwner.KeyUp -= kBehaviour.OnKeyUp;
         }
 
         public void SetState(KeyAction action, bool state)

@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics;
 using AvengersUtd.Odyssey.Graphics.Materials;
@@ -37,8 +36,12 @@ using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.UserInterface.Style;
+using KeyBinding = AvengersUtd.Odyssey.UserInterface.Input.KeyBinding;
 using SlimDX;
 using SlimDX.Direct3D11;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using System.Windows.Forms;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 #endregion
 
@@ -95,8 +98,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             if (description.CameraEnabled)
             {
                 QuaternionCam camera = Game.CurrentRenderer.Camera;
-
-                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Keys.A, delegate() { camera.Strafe(-QuaternionCam.DefaultSpeed);}));
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Keys.A, delegate() { camera.Strafe(-QuaternionCam.DefaultSpeed); }));
                 hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Keys.D, delegate() { camera.Strafe(QuaternionCam.DefaultSpeed); }));
                 hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Keys.W, delegate() { camera.Move(QuaternionCam.DefaultSpeed); }));
                 hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Keys.S, delegate() { camera.Move(-QuaternionCam.DefaultSpeed); }));
@@ -104,15 +106,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Keys.C, delegate() { camera.RotateY(-QuaternionCam.DefaultRotationSpeed); }));
                 hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Keys.Q, delegate() { camera.Hover(QuaternionCam.DefaultSpeed); }));
                 hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Keys.E, delegate() { camera.Hover(-QuaternionCam.DefaultSpeed); }));
-
-                //hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Game.CurrentRenderer.Camera.SetState, Keys.A, QuaternionCam.DefaultSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Game.CurrentRenderer.Camera.SetState, Keys.D, -QuaternionCam.DefaultSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Game.CurrentRenderer.Camera.SetState, Keys.Q, QuaternionCam.DefaultSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Game.CurrentRenderer.Camera.SetState, Keys.E, -QuaternionCam.DefaultSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Game.CurrentRenderer.Camera.SetState, Keys.Z, QuaternionCam.DefaultRotationSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Game.CurrentRenderer.Camera.SetState, Keys.C, -QuaternionCam.DefaultRotationSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Game.CurrentRenderer.Camera.SetState, Keys.W, QuaternionCam.DefaultSpeed));
-                //hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Game.CurrentRenderer.Camera.SetState, Keys.S, -QuaternionCam.DefaultSpeed));
             }
 
             return hud;
@@ -145,6 +138,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         internal BaseControl ClickedControl { get; set; }
         internal HudDescription HudDescription { get; set; }
         internal InterfaceMesh InterfaceMesh { get; set; }
+
+        public TouchOverlay TouchOverlay { get; set; }
 
         internal bool ShouldUpdateShapes
         {
@@ -226,19 +221,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             TextMaterial textMaterial = new TextMaterial();
             UIMaterial uiMaterial = new UIMaterial();
 
-            //UserInterfaceNode mUiNode = new UserInterfaceNode();
             RenderableNode rNode = new RenderableNode(InterfaceMesh);
             CameraOverlayNode caNode = new CameraOverlayNode(renderer.Camera);
 
             caNode.AppendChild(rNode);
-            //caNode.AppendChild(mUiNode);
-            //caNode.AppendChild(mTextNode);
-
-            //mUiNode.AppendChild(rNode);
 
             uiRCommand = new UserInterfaceRenderCommand(renderer, this, rNode);
-                //(renderer, mUINode, mUINode.RenderableCollection,
-                // mTextNode, this);
 
             uiUCommand = new UserInterfaceUpdateCommand(this, uiRCommand);
 
@@ -341,8 +329,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void Update()
         {
+            LogEvent.Engine.Write("Hud update requested");
+            bool doUpdate=false;
             while (updateQueue.Count > 0)
             {
+                doUpdate = true;
                 UpdateElement element = updateQueue.Dequeue();
 
                 switch (element.Action)
@@ -371,10 +362,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 element.Control.IsBeingUpdated = false;
             }
 
+            if (!doUpdate)
+                return;
+
             if (HudDescription.Multithreaded)
             {
-                if (!uiUCommand.TaskQueue.Contains(UpdateBuffers))
-                    uiUCommand.TaskQueue.Enqueue(UpdateBuffers);
+                if (!uiUCommand.ContainsTask(UpdateBuffers))
+                    uiUCommand.EnqueueTask(UpdateBuffers);
             }
             else
             {
@@ -400,12 +394,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (!HudDescription.Multithreaded)
                 UpdateSprites();
-            else if (!uiUCommand.TaskQueue.Contains(UpdateSprites))
+            else if (!uiUCommand.ContainsTask(UpdateSprites))
             {
                 if (sObj != null || (containerControl != null && containerControl.ContainsSprites))
                 {
-                    uiUCommand.TaskQueue.Enqueue(UpdateSprites);
-                    uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
+                    uiUCommand.EnqueueTask(UpdateSprites);
+                    uiUCommand.EnqueueTask(uiRCommand.UpdateItems);
                 }
             }
 
@@ -446,6 +440,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             BuildInterfaceMesh();
             UpdateSprites();
 
+            LogEvent.Engine.Write("UI Design Mode deactivated");
             DesignMode = false;
         }
 
@@ -478,6 +473,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         private void UpdateShapes(BaseControl control)
         {
+            LogEvent.Engine.Write("Updating Hud shapes");
             control.UpdateShape();
 
             foreach (ShapeDescription sDesc in control.Shapes)
@@ -492,6 +488,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         internal void UpdateSprites()
         {
+            LogEvent.Engine.Write("Updating Hud sprites");
             foreach (ISpriteObject spriteControl in spriteControls.Where(sCtl => !sCtl.Inited))
             {
                 spriteControl.CreateResource();
@@ -500,6 +497,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             }
 
             SpriteControls = spriteControls.ToArray();
+            CheckDisposed();
+        }
+
+        void CheckDisposed()
+        {
+            foreach (ISpriteObject spriteControl in SpriteControls)
+            {
+                if (spriteControl.RenderableObject.Disposed)
+                    break;
+            }
         }
 
         /// <summary>
@@ -521,6 +528,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             UpdateElement updateElement = new UpdateElement(control, updateAction);
             updateQueue.Enqueue(updateElement);
             control.IsBeingUpdated = true;
+            uiUCommand.Resume();
         }
 
 
@@ -543,8 +551,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <seealso cref="BaseControl.DesignMode"/>
         public void BeginDesign()
         {
+            if (DesignMode)
+                return;
+
             DesignMode = true;
-            OdysseyUI.CurrentHud = this;
+            LogEvent.Engine.Write("UI Design Mode activated");
         }
 
         /// <summary>
@@ -559,9 +570,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 Init();
             else if (uiUCommand != null)
             {
-                uiUCommand.TaskQueue.Enqueue(Init);
-                uiUCommand.TaskQueue.Enqueue(uiRCommand.UpdateItems);
-                uiUCommand.Resume();
+                uiUCommand.EnqueueTask(Init);
+                uiUCommand.EnqueueTask(uiRCommand.UpdateItems);
             }
         }
 

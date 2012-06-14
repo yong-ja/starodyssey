@@ -29,6 +29,7 @@ using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using SlimDX;
 
 

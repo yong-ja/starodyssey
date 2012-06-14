@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey.UserInterface.Style
 {

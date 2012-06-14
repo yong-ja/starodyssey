@@ -19,7 +19,7 @@ using Resources = AvengersUtd.Odyssey.Properties.Resources;
 
 namespace AvengersUtd.Odyssey
 {
-    public class DeviceContext11 : IDisposable
+    public class DeviceContext11 : IDisposable, IDeviceContext
     {
         public const Format DefaultIndexFormat = Format.R16_UInt;
 
@@ -95,7 +95,7 @@ namespace AvengersUtd.Odyssey
 
         public DepthStencilView DepthStencilView { get; private set; }
 
-        public RenderTargetView RenderTargetView { get; private set; }
+        public RenderTargetView RenderTargetView { get;  set; }
 
         public DeviceSettings Settings { get; private set; }
 
@@ -205,6 +205,11 @@ namespace AvengersUtd.Odyssey
             {
                 DepthStencilView = new DepthStencilView(device, depthBuffer);
             }
+        }
+
+        public void Present()
+        {
+            SwapChain.Present(1, PresentFlags.None);
         }
 
         public void ResizeDevice(Size newSize, bool fullScreen)

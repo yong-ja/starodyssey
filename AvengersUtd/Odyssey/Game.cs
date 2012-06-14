@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Reflection;
 using System.Threading;
 using AvengersUtd.Odyssey.Graphics.Rendering;
@@ -15,6 +14,8 @@ using Timer = AvengersUtd.Odyssey.Utils.Timer;
 using System.Windows.Forms;
 using AvengersUtd.Odyssey.Graphics.Resources;
 using System.IO;
+using System.Diagnostics.Contracts;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey
 {
@@ -32,7 +33,7 @@ namespace AvengersUtd.Odyssey
         
         public static Renderer CurrentRenderer { get; private set;}
         public static DebugLogger Logger { get; private set; }
-        public static DeviceContext11 Context { get; set; }
+        public static IDeviceContext Context { get; set; }
         public static double FrameTime { get; private set; }
         public static bool IsInputEnabled { get; internal set; }
 
@@ -49,7 +50,9 @@ namespace AvengersUtd.Odyssey
         }
 
 
-
+        /// <summary>
+        /// Init method for Windows.Forms applications
+        /// </summary>
         public static void Init()
         {
             ResourceManager.PerformIntegrityCheck();
@@ -74,14 +77,39 @@ namespace AvengersUtd.Odyssey
                                       Text = "Odyssey11 Demo" 
                                   };
             form.Activated += delegate { IsInputEnabled = true; };
-            
+            Global.Form = form;
             Context = new DeviceContext11(form.Handle, deviceSettings);
             OdysseyUI.SetupHooks(form);
-            Global.FormOwner = form;
             HookEvents();
 
             LogEvent.Engine.Log(Resources.INFO_OE_Started);
             Logger.Init();
+        }
+
+        public static void InitWPF()
+        {
+            ResourceManager.PerformIntegrityCheck();
+            ResourceManager.LoadDefaultStyles();
+
+            LogEvent.Engine.Log(Resources.INFO_OE_Starting);
+
+            DeviceSettings deviceSettings = new DeviceSettings
+                                          {
+                                              AdapterOrdinal = 0,
+                                              CreationFlags = DeviceCreationFlags.Debug | DeviceCreationFlags.BgraSupport,
+                                              ScreenWidth = 1920,
+                                              ScreenHeight = 1080,
+                                              SampleDescription = new SampleDescription(1,0),
+                                              Format = Format.R8G8B8A8_UNorm,
+                                              IsStereo = true
+                                          };
+
+            D3DImageSlimDX d3dImage = new D3DImageSlimDX();
+
+            Context = new DeviceContextWpf(deviceSettings);
+
+            LogEvent.Engine.Log(Resources.INFO_OE_Started);
+
         }
 
         public static void HookEvents()

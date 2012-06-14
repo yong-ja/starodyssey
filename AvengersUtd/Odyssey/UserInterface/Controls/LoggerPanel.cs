@@ -5,6 +5,7 @@ using System.Text;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Drawing;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -21,21 +22,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         List<string> logLines;
         List<Label> labels;
 
-        public int Lines
-        {
-            get { return lines; }
-            set
-            {
-                if (logLines.Count == value)
-                    return;
-                else
-                {
-                    lines = value;
-                   ///RebuildLabels();
-                }
-            }
-        }
-
         public LoggerPanel()
             : base(ControlTag + ++count, "LoggerPanel")
         {
@@ -44,21 +30,19 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             labels = new List<Label>();
         }
 
-        void RebuildLabels()
+        protected internal override void OnControlAdded(ControlEventArgs e)
         {
+            base.OnControlAdded(e);
             lines = (int)Math.Floor(ContentAreaSize.Height / (float)rowHeight);
-            labels.AddRange(BuildLabels(lines, Description.Padding, lineMargin, rowHeight, TextDescriptionClass,
-                DesignMode, new Size(ContentAreaSize.Width, 0)));
-            if (!Controls.IsEmpty)
-                Controls.Clear();
-            AddRange(labels);
-        
         }
+
 
         public void EnqueueMessage(string message)
         {
-            //logLines.Add(message);
-OdysseyUI.CurrentHud.BeginDesign();
+            bool alreadyInDesignMode = OdysseyUI.CurrentHud.DesignMode;
+            if (!alreadyInDesignMode)
+                OdysseyUI.CurrentHud.BeginDesign();
+
             Label newLabel = new Label
                 {
                     Id = string.Format("{0}_{1}{2}", ControlTag, TextLiteral.ControlTag, ++labelCount),
@@ -76,19 +60,10 @@ OdysseyUI.CurrentHud.BeginDesign();
             Add(newLabel);
             CheckOverflow();
             CheckPositions();
-            OdysseyUI.CurrentHud.EndDesign();
 
-            
+            if (!alreadyInDesignMode)
+                OdysseyUI.CurrentHud.EndDesign();
 
-        }
-
-        void ScrollLabelsUp()
-        {
-            for (int i = 0; i < logLines.Count; i++)
-            {
-                labels[i].Content = logLines[i];
-                labels[i].IsVisible = true;
-            }
         }
 
         void CheckOverflow()
@@ -101,11 +76,11 @@ OdysseyUI.CurrentHud.BeginDesign();
 
             while (totalLines > lines)
             {
-                //logLines.RemoveAt(0);
-                labels.RemoveAt(0);
-                Controls.RemoveAt(0);
-                totalLines = (from l in labels
-                                  select l.Lines).Sum();
+                Label label = labels[0];
+                label.Dispose();
+                labels.Remove(label);
+                Remove(label);
+                totalLines = (from l in labels select l.Lines).Sum();
             }
         }
 
@@ -116,6 +91,9 @@ OdysseyUI.CurrentHud.BeginDesign();
             foreach (Label label in labels)
             {
                 label.Position = new SlimDX.Vector2(Description.Padding.Left, height);
+                if (label.TextLiteral != null)
+                    label.TextLiteral.Inited = false;
+              
                 height += rowHeight * label.Lines;
             }
         }
