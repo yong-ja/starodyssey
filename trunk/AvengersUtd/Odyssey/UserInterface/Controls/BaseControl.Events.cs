@@ -24,8 +24,12 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Input;
+using System.Windows.Input;
+using System.Windows.Forms;
+using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -198,7 +202,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (ApplyStatusChanges)
             {
-                if (Mouse.ClickButton == e.Button)
+                if (AvengersUtd.Odyssey.UserInterface.Input.Mouse.ClickButton == e.Button)
                 {
                     if (OdysseyUI.CurrentHud.ClickedControl == this)
                     {
@@ -231,7 +235,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             isInside = false;
             if (ApplyStatusChanges)
             {
-                if (Mouse.ClickButton == e.Button)
+                if (AvengersUtd.Odyssey.UserInterface.Input.Mouse.ClickButton == e.Button)
                 {
                     if (OdysseyUI.CurrentHud.ClickedControl == this)
                     {
@@ -262,7 +266,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when a key is pressed while the control has focus.
         /// </summary>
-        public event KeyEventHandler KeyDown
+        public event EventHandler<KeyEventArgs> KeyDown
         {
             add { Events.AddHandler(EventKeyDown, value); }
             remove { Events.RemoveHandler(EventMouseDown, value); }
@@ -280,7 +284,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when a key is released while the control has focus.
         /// </summary>
-        public event KeyEventHandler KeyUp
+        public event EventHandler<KeyEventArgs> KeyUp
         {
             add { Events.AddHandler(EventKeyUp, value); }
             remove { Events.RemoveHandler(EventKeyUp, value); }
@@ -292,7 +296,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         protected virtual void OnKeyDown(KeyEventArgs e)
         {
-            KeyEventHandler handler = (KeyEventHandler) Events[EventKeyDown];
+            EventHandler<KeyEventArgs> handler = (EventHandler<KeyEventArgs>)Events[EventKeyDown];
             if (handler != null)
                 handler(this, e);
         }
@@ -314,11 +318,22 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         protected virtual void OnKeyUp(KeyEventArgs e)
         {
-            KeyEventHandler handler = (KeyEventHandler) Events[EventKeyUp];
+            EventHandler<KeyEventArgs> handler = (EventHandler<KeyEventArgs>)Events[EventKeyUp];
             if (handler != null)
                 handler(this, e);
         }
 
+        #endregion
+
+        #region Touch Events
+        static readonly object EventTouchDown;
+        static readonly object EventTouchUp;
+
+        //public event EventHandler<TouchEventArgs> MouseDown
+        //{
+        //    add { Events.AddHandler(EventMouseDown, value); }
+        //    remove { Events.RemoveHandler(EventMouseDown, value); }
+        //}
         #endregion
 
         #region Control Events

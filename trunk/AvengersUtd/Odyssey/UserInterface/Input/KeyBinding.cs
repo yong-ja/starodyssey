@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.Graphics;
 using SlimDX;
+using System.Windows.Forms;
 
 namespace AvengersUtd.Odyssey.UserInterface.Input
 {
@@ -12,7 +12,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
 
     public class KeyBinding
     {
-
         public KeyAction Action { get; private set; }
         public Keys Key { get; private set; }
         public bool State { get; private set; }

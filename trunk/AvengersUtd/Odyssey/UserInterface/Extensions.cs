@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using SlimDX;
+﻿using SlimDX;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey.UserInterface
 {

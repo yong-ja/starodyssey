@@ -114,7 +114,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void ISpriteObject.CreateResource()
         {
-
+            if (label != null)
+                return;
             label = new TextLiteral
             {
                 Id = ControlTag + TextLiteral.ControlTag,

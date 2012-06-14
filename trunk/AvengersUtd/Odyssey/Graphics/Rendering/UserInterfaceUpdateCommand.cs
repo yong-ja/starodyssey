@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using AvengersUtd.Odyssey.UserInterface.Controls;
+using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
@@ -12,7 +13,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly Hud hud;
         private readonly IRenderCommand uiRCommand;
 
-        public Queue<UpdateTask> TaskQueue { get; private set; }
+        private Queue<UpdateTask> taskQueue;
 
         public bool IsThreaded { get { return true; } }
         public ManualResetEventSlim EventHandle { get; private set; }
@@ -23,7 +24,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             uiUpdateThread = new Thread(Activate) {Name = "UI Update Thread", Priority = ThreadPriority.Lowest};
             EventHandle = new ManualResetEventSlim(false);
             this.uiRCommand = uiRCommand;
-            TaskQueue = new Queue<UpdateTask>();
+            taskQueue = new Queue<UpdateTask>();
         }
 
         public void StartThread()
@@ -47,25 +48,32 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             while (hud.IsEnabled)
             {
-                if (hud.ShouldUpdateShapes)
-                    EventHandle.Reset();
-                else continue;
-
+                EventHandle.Wait();
                 hud.Update();
-                EventHandle.Set();
+                EventHandle.Reset();
             }
+        }
+
+        public void EnqueueTask(UpdateTask task)
+        {
+            Contract.Requires(task != null);
+            taskQueue.Enqueue(task);
+        }
+
+        public bool ContainsTask(UpdateTask task)
+        {
+            Contract.Requires(task != null);
+            return taskQueue.Contains(task);
         }
 
         public override void Execute()
         {
-            if (TaskQueue.Count == 0)
+            if (taskQueue.Count == 0)
                 return;
-
-            EventHandle.Wait();
-            
-            while (TaskQueue.Count != 0)
+           
+            while (taskQueue.Count > 0)
             {
-                UpdateTask task = TaskQueue.Dequeue();
+                UpdateTask task = taskQueue.Dequeue();
                 task.Invoke();
             }
         }

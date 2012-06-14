@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly List<SlimDX.Direct3D11.Buffer> buffers;
 
         private bool disposed;
-        private readonly DeviceContext11 deviceContext;
+        private readonly IDeviceContext deviceContext;
 
         //LightManager lightManager;
         public Hud Hud { get; set; }
@@ -31,7 +31,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         //    get { return lightManager; }
         //}
 
-        public DeviceContext11 DeviceContext
+        public IDeviceContext DeviceContext
         {
             get { return deviceContext; }
         }
@@ -42,9 +42,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             ClearColor = new Color4(1.0f, 0.25f, 0.25f, 0.25f);
         }
 
-        protected Renderer(DeviceContext11 deviceContext11)
+        protected Renderer(IDeviceContext deviceContext)
         {
-            deviceContext = deviceContext11;
+            this.deviceContext = deviceContext;
             deviceContext.DeviceDisposing += OnDisposing;
             deviceContext.DeviceResize += OnDeviceResize;
             deviceContext.DeviceSuspend += OnDeviceSuspend;
@@ -72,7 +72,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Present()
         {
-            deviceContext.SwapChain.Present(1, PresentFlags.None);
+            deviceContext.Present();            
         }
 
         public void RegisterBuffer(SlimDX.Direct3D11.Buffer buffer)

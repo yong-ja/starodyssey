@@ -129,6 +129,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public void Remove(BaseControl control)
         {
             PrivateControlCollection.Remove(control);
+            OdysseyUI.CurrentHud.EnqueueForUpdate(control, UpdateAction.Remove);
         }
 
         public BaseControl Find(string id)

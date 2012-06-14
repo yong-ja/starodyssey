@@ -22,7 +22,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
         public override void Init()
         {
-            OdysseyUI.RemoveHooks(Global.FormOwner);
+            //OdysseyUI.RemoveHooks(Global.FormOwner);
 
             ImageLoadInformation imageLoadInfo = new ImageLoadInformation()
             {

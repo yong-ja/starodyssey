@@ -139,6 +139,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void ISpriteObject.CreateResource()
         {
+            if (TextLiteral != null)
+                return;
+
             TextLiteral = new TextLiteral
             {
                 Id = ControlTag + TextLiteral.ControlTag,
@@ -170,5 +173,8 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         } 
         #endregion
+
+
+
     }
 }

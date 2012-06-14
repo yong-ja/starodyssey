@@ -29,11 +29,12 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
+using System.Drawing;
 
 #endregion
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfControlDescription xmlns:Style="http://www.avengersutd.com">
+  <ControlDescription Name="Button" Shape="RectangleMesh" Size="Width:200 Height:50" BorderStyle="Raised" BorderSize="1" TextDescriptionClass="Button">
+    <BorderShaders>
+      <Border Name="RaisedTL" Color="49FFFFFF" Borders="Top Left" />
+      <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
+    </BorderShaders>
+    <Enabled>
+      <RadialGradient GradientType="Radial">
+        <Gradient>
+          <!--GradientStop Color="FF4169E1" Offset="0"/>
+          <GradientStop Color="FF3058AD" Offset="0.75"/>
+          <GradientStop Color="FF1F336B" Offset="0.80"/>
+          <GradientStop Color="FF0B1528" Offset="0.85"/>
+          <GradientStop Color="FF0B1428" Offset="1.0"/-->
+          <GradientStop Color="#FF57FFE6" Offset="0"/>
+          <GradientStop Color="#FF008EE7" Offset="0.7"/>
+          <GradientStop Color="#FF2C0072" Offset="1"/>
+        </Gradient>
+      </RadialGradient>
+      <LinearGradient GradientType="LinearVerticalGradient">
+        <Gradient>
+          <GradientStop Color="#FFFFFFFF" Offset="0"/>
+          <GradientStop Color="#22FFFFFF" Offset="0.48"/>
+          <GradientStop Color="#00000000" Offset="0.5"/>
+          <GradientStop Color="#00000000" Offset="1.0"/>              
+        </Gradient>
+      </LinearGradient>
+    </Enabled>
+    <ColorArray>
+      <Color Type="Enabled" Name="RoyalBlue" HexValue="FF4169E1" />
+      <Color Type="Highlighted" Name="Blue" HexValue="FF00FFFF" />
+      <Color Type="Pressed" Name="Navy" HexValue="FF000080" />
+      <Color Type="Disabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="Selected" Name="Red" HexValue="FFFF0000" />
+      <Color Type="Focused" Name="Yellow" HexValue="FFFFFF00" />
+      <Color Type="BorderEnabled" Name="Gray" HexValue="FF808080" />
+      <Color Type="BorderHighlighted" Name="Gray" HexValue="FF808080" />
+    </ColorArray>
+  </ControlDescription>
+  <ControlDescription Name="Panel" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
+    <BorderShaders>
+      <Border Name="RaisedTL" Color="C0FFFFFF" Borders="Top Left" />
+      <Border Name="RaisedBR" Color="C0000000" Borders="Right Bottom" />
+    </BorderShaders>
+    <Enabled>
+      <!--<LinearGradient Color="FFFF0000" GradientType="Uniform"/>-->
+      <LinearGradient GradientType="LinearVerticalGradient">
+        <Gradient>
+          <GradientStop Color="D04169E1" Offset="0"/>
+          <!--<GradientStop Color="D03058AD" Offset="0.5"/>
+          <GradientStop Color="D01F336B" Offset="0.75"/>
+          <GradientStop Color="D00B1528" Offset="0.85"/>-->
+          <GradientStop Color="D00B1428" Offset="1.0"/>
+        </Gradient>
+      </LinearGradient>
+    </Enabled>
+  </ControlDescription>
+  <ControlDescription Name="LoggerPanel" Shape="Rectangle" BorderStyle="Raised" BorderSize="2" TextDescriptionClass="LoggerPanel">
+    <BorderShaders>
+      <Border Name="RaisedTL" Color="C0FFFFFF" Borders="Top Left" />
+      <Border Name="RaisedBR" Color="C0000000" Borders="Right Bottom" />
+    </BorderShaders>
+    <Enabled>
+      <!--<LinearGradient Color="FFFF0000" GradientType="Uniform"/>-->
+      <LinearGradient GradientType="LinearVerticalGradient">
+        <Gradient>
+          <GradientStop Color="D04169E1" Offset="0"/>
+          <GradientStop Color="D00B1428" Offset="1.0"/>
+        </Gradient>
+      </LinearGradient>
+    </Enabled>
+  </ControlDescription>
+  <ControlDescription Name="Error" Shape="Rectangle" BorderStyle="Raised" BorderSize="2">
+    <BorderShaders>
+      <Border Name="RaisedTL" Color="49FFFFFF" Borders="Top Left" />
+      <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
+    </BorderShaders>
+    <Enabled>
+      <LinearGradient Color="FFFF0000" GradientType="Uniform"/>
+    </Enabled>
+    <ColorArray>
+      <Color Type="Enabled" Name="Red" HexValue="FFFF0000" />
+      <Color Type="Highlighted" Name="Violet" HexValue="FFEE82EE" />
+      <Color Type="Pressed" Name="Purple" HexValue="FF800080" />
+      <Color Type="Disabled" Name="Crimson" HexValue="FFDC143C" />
+      <Color Type="Selected" Name="Sienna" HexValue="FFA0522D" />
+      <Color Type="Focused" Name="Maroon" HexValue="FF800000" />
+      <Color Type="BorderEnabled" Name="DarkOrange" HexValue="FFFF8C00" />
+      <Color Type="BorderHighlighted" Name="Orange" HexValue="FFFFA500" />
+    </ColorArray>
+  </ControlDescription>
+  <ControlDescription Name="Empty" Shape="None" BorderStyle="Raised" BorderSize="2">
+  </ControlDescription>
+  <ControlDescription Name="Sprite" Shape="Sprite" BorderStyle="None" BorderSize="0">
+  </ControlDescription>
+</ArrayOfControlDescription>

@@ -32,6 +32,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             quad.PositionV3 = AbsoluteOrthoPosition;
         }
 
+        protected override void OnDisposing(EventArgs e)
+        {
+            base.OnDisposing(e);
+            if (quad != null && !quad.Disposed)
+                quad.Dispose();
+            
+        }
+
         #region ISpriteObject
         IRenderable ISpriteObject.RenderableObject
         {

@@ -74,13 +74,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                         new RenderableCollection(currentMaterial.ItemsDescription));
                 }
                 renderMapper[currentMaterial.TechniqueName].Add(rNode);
-                //IMaterial currentMaterial = rNode.CurrentMaterial;
-                //if (!renderMapper.ContainsKey(currentMaterial.TechniqueName))
-                //{
-                //    renderMapper.Add(currentMaterial.ParentNode,
-                //        new RenderableCollection(currentMaterial.RenderableCollectionDescription));
-                //}
-                //renderMapper[currentMaterial.TechniqueName].Add(rNode);
+
             }
 
             foreach (IMaterial material in renderMapper.OpaqueToTransparent)

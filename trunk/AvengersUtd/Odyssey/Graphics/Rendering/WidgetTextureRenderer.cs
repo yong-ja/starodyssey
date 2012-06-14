@@ -41,7 +41,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             }
         }
 
-        public WidgetTextureRenderer(int width, int height, DeviceContext11 deviceContext11) : base(deviceContext11)
+        public WidgetTextureRenderer(int width, int height, IDeviceContext deviceContext) : base(deviceContext)
         {
             this.width = width;
             this.height = height;

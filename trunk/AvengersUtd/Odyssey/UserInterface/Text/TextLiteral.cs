@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Resources;
@@ -8,6 +7,8 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Utils.Logging;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey.UserInterface.Text
 {
@@ -19,10 +20,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         private TexturedPolygon quad;
         private ShaderResourceView srvTexture;
         private string text;
-
+        
         public bool Inited
         {
-            get { return quad != null && srvTexture != null && quad.Inited; }
+             //return quad != null && srvTexture != null && quad.Inited;
+            get; internal set;
         }
 
         public bool CacheText { get; set; }
@@ -30,7 +32,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
         public bool Wrapping { get; internal set; }
 
         public Size Bounds { get; set; }
-       
+              
         public string Content
         {
             get { return text; }
@@ -77,7 +79,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                         Wrapping ? new SizeF(Bounds.Width, Bounds.Height) : SizeF.Empty,
                         IsHighlighted,
                         IsSelected);
-                    ResourceManager.Add(Key , texture);
+                    ResourceManager.Add(Key, texture);
                     srvTexture = ResourceManager.GetResource(Key);
                 }
                 else
@@ -88,9 +90,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
                 srvTexture = new ShaderResourceView(Game.Context.Device, texture);
             }
 
-                Texture2DDescription tDesc = ((Texture2D)srvTexture.Resource).Description;
-                Size = new Size(tDesc.Width, tDesc.Height);
-
+            Texture2DDescription tDesc = ((Texture2D)srvTexture.Resource).Description;
+            Size = new Size(tDesc.Width, tDesc.Height);
+            Inited = true;
         }
 
         public override void CreateShape()
@@ -160,7 +162,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
             get { return quad; }
         }
 
- 
+
         #endregion
 
         public override string ToString()

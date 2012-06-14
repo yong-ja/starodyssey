@@ -310,11 +310,9 @@ namespace AvengersUtd.Odyssey.Graphics.Resources
 
             foreach (CacheNode<ShaderResourceView> node in ResourceCache)
             {
-                if (!node.Object.Resource.Disposed)
-                        node.Object.Resource.Dispose();
-
-                if (!node.Object.Disposed)
+                if (node.Object != null && !node.Object.Disposed)
                 {
+                    node.Object.Resource.Dispose();
                     node.Object.Dispose();
                 }
             }

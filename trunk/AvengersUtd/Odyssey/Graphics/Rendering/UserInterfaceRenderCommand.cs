@@ -47,6 +47,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly IMaterial textMaterial;
         private readonly EffectPass textPass;
         private readonly EffectTechnique textTechnique;
+        RenderableNode rNode;
         TransformNode tNode;
         public RenderableCollection TextItems { get; internal set; }
 
@@ -56,6 +57,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             this.hud = hud;
             textMaterial = new TextMaterial();
+            this.rNode = rNode;
             tNode = (TransformNode)rNode.Parent;
             UpdateSprites(hud.SpriteControls);
             textTechnique = textMaterial.EffectDescription.Technique;
@@ -112,19 +114,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         void UpdateSprites(IEnumerable<ISpriteObject> spriteControls)
         {
-            //textMaterialNode.RemoveAll();
             TextItems = new RenderableCollection(TextMaterial.ItemsDescription);
+            tNode.RemoveAll();
+            tNode.AppendChild(rNode);
             foreach (ISpriteObject spriteControl in spriteControls)
-            //uiNode.AppendChild(new RenderableNode(spriteControl.RenderableObject));
             {
                 RenderableNode textNode = new RenderableNode(spriteControl.RenderableObject);
                 tNode.AppendChild(textNode);
                 TextItems.Add(textNode);
                 textNode.Update();
             }
-
-            //TextItems = textMaterialNode.RenderableCollection;
-            //TextItems = uiNode.GetTextNodes();
         }
 
         protected override void OnDispose()

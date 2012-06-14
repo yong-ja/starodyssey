@@ -24,13 +24,14 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.Settings;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
 using AvengersUtd.Odyssey.UserInterface.Xml;
+using AvengersUtd.Odyssey.UserInterface.Drawing;
+using System.Drawing;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -62,7 +63,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         #region Private fields
 
         bool canRaiseEvents = true;
-        bool designMode = true;
+        bool designMode=true;
         bool disposed;
 
         bool isEnabled = true;

@@ -45,7 +45,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 {
                     if (updateTasks.Count > 0)
                         EventHandle.Reset();
-                    else continue;
+                    else EventHandle.Wait();
 
                     while (updateTasks.Count > 0)
                     {
