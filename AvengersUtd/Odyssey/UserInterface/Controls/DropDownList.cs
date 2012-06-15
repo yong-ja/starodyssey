@@ -30,6 +30,7 @@ using AvengersUtd.Odyssey.Geometry;
 using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Text;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
@@ -326,7 +327,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             
         }
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }

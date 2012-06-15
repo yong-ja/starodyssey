@@ -8,6 +8,7 @@ using SlimDX;
 using SlimDX.Direct3D11;
 using System.Diagnostics.Contracts;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -28,7 +29,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public ICamera Camera { get; set; }
 
-        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
             Contract.Requires(Camera != null);
             base.OnMouseClick(e);
@@ -128,11 +129,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         static Ray GetRay(ICamera camera, MouseEventArgs e)
         {
+            Vector2 p = e.Location;
             Matrix mWVP = camera.WorldViewProjection;
             Viewport viewport = camera.Viewport;
-            Vector3 vNear = Vector3.Unproject(new Vector3(e.X, e.Y, 0), viewport.X, viewport.Y,
+            Vector3 vNear = Vector3.Unproject(new Vector3(p, 0), viewport.X, viewport.Y,
                 viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, mWVP);
-            Vector3 vFar = Vector3.Unproject(new Vector3(e.X, e.Y, 1), viewport.X, viewport.Y,
+            Vector3 vFar = Vector3.Unproject(new Vector3(p, 1), viewport.X, viewport.Y,
                 viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, mWVP);
             return new Ray(vNear, vFar - vNear);
         }

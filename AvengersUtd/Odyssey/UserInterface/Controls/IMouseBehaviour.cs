@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {

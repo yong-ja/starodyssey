@@ -30,6 +30,7 @@ using AvengersUtd.Odyssey.UserInterface.Input;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 using SlimDX;
 
 
@@ -220,7 +221,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             {
                 if (IsClicked)
                 {
-                    if (e.Button != MouseButtons.None)
+                    if (e.Button != MouseButton.None)
                         OnMouseClick(e);
                 }
                 OnMouseUp(e);
@@ -264,6 +265,38 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 return true;
             }
             return false;
+        }
+
+        internal virtual bool ProcessTouchDown(TouchEventArgs e)
+        {
+            if (!canRaiseEvents || !IntersectTest(e.Location))
+                return false;
+
+            if (!IsClicked && isEnabled)
+            {
+                OnTouchDown(e);
+
+                if (isFocusable && !IsFocused)
+                    OnGotFocus(EventArgs.Empty);
+            }
+
+            return true;
+        }
+
+        internal virtual bool ProcessTouchUp(TouchEventArgs e)
+        {
+            if (!canRaiseEvents || !IntersectTest(e.Location))
+                return false;
+
+            if (!IsClicked && isEnabled)
+            {
+                OnTouchUp(e);
+
+                if (isFocusable && !IsFocused)
+                    OnGotFocus(EventArgs.Empty);
+            }
+
+            return true;
         }
         #endregion
 

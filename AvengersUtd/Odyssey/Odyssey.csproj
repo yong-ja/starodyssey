@@ -191,7 +191,8 @@
     <Compile Include="Graphics\Materials\PhongMaterial.cs" />
     <Compile Include="Graphics\Materials\UIMaterial.cs" />
     <Compile Include="IDeviceContext.cs" />
-    <Compile Include="UserInterface\Controls\TouchOverlay.cs" />
+    <Compile Include="UserInterface\Input\Mouse.cs" />
+    <Compile Include="UserInterface\Input\MouseEventArgs.cs" />
     <Compile Include="UserInterface\Input\TouchEventArgs.cs" />
     <Compile Include="UserInterface\OdysseyUI.Wpf.cs" />
     <Compile Include="WpfWindow.cs" />
@@ -292,7 +293,6 @@
     <Compile Include="UserInterface\Drawing\Designer.cs" />
     <Compile Include="UserInterface\HitManager.cs" />
     <Compile Include="UserInterface\Input\KeyBinding.cs" />
-    <Compile Include="UserInterface\Input\Mouse.cs" />
     <Compile Include="UserInterface\InterfaceMesh.cs" />
     <Compile Include="UserInterface\Structs.cs" />
     <Compile Include="UserInterface\Style\Depth.cs" />
@@ -359,7 +359,6 @@
     <Compile Include="UserInterface\Controls\SimpleShapeControl.cs" />
     <Compile Include="UserInterface\Enums.cs" />
     <Compile Include="UserInterface\EventArgs.cs" />
-    <Compile Include="UserInterface\Input\Keyboard.cs" />
     <Compile Include="UserInterface\OdysseyUI.cs" />
     <Compile Include="UserInterface\Style\ColorArray.cs" />
     <Compile Include="UserInterface\Style\ControlDescription.cs" />

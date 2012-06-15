@@ -48,7 +48,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Shapes[0].Tag = Id;
         }
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return false;
         }

@@ -101,7 +101,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <remarks>When overriding, use the methods contained in the <see cref="Intersection"/>
         /// static class.</remarks>
         /// <seealso cref="Intersection"/>
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             switch (Description.Shape)
             {

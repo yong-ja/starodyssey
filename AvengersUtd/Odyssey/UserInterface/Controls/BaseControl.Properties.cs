@@ -35,6 +35,7 @@ using AvengersUtd.Odyssey.UserInterface.Text;
 using SlimDX;
 using AvengersUtd.Odyssey.UserInterface.Drawing;
 using System.Drawing;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 #endregion
 

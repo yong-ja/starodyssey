@@ -44,7 +44,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Shapes[1] = decorator.Shapes[0];
         }
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }

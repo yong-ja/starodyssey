@@ -9,6 +9,7 @@ using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX.Direct3D11;
 using SlimDX.DXGI;
+using SlimDX;
 
 namespace AvengersUtd.Odysseus
 {
@@ -104,7 +105,7 @@ namespace AvengersUtd.Odysseus
                     renderPanel.Cursor = controlSelector.GetCursorFor(e.Location);
                 else
                 {
-                    BaseControl control = hud.Find(e.Location);
+                    BaseControl control = hud.Find(new Vector2(e.X, e.Y));
                     if (control == null)
                     {
                         renderPanel.Cursor = Cursors.Arrow;

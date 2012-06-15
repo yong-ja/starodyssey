@@ -29,6 +29,7 @@ using AvengersUtd.Odyssey.UserInterface.Style;
 using AvengersUtd.Odyssey.UserInterface.Xml;
 using SlimDX;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -48,17 +49,17 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         Vector2 AbsolutePosition { get; }
         ControlDescription Description { get; set; }
 
-        bool IntersectTest(Point cursorLocation);
+        bool IntersectTest(Vector2 cursorLocation);
         void Focus();
         void UpdateAppearance(UpdateAction updateAction);
         void UpdateShape();
         void CreateShape();
 
-        event MouseEventHandler MouseDown;
-        event MouseEventHandler MouseClick;
-        event MouseEventHandler MouseUp;
-        event MouseEventHandler MouseMove;
-        event MouseEventHandler MouseWheel;
+        event EventHandler<MouseEventArgs> MouseDown;
+        event EventHandler<MouseEventArgs> MouseClick;
+        event EventHandler<MouseEventArgs> MouseUp;
+        event EventHandler<MouseEventArgs> MouseMove;
+        event EventHandler<MouseEventArgs> MouseWheel;
 
         event EventHandler<KeyEventArgs> KeyDown;
         event KeyPressEventHandler KeyPress;

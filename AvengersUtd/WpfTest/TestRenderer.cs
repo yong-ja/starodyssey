@@ -15,6 +15,7 @@ using System.Windows;
 using System.Drawing;
 using SlimDX.DXGI;
 using AvengersUtd.Odyssey.UserInterface;
+using WpfTest;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
@@ -94,8 +95,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
             OdysseyUI.CurrentHud = Hud;
             Game.Logger.Init();
             Hud.BeginDesign();
-            Hud.TouchOverlay = new TouchOverlay();
-
 
 
             Game.Logger.Log("Prova1");
@@ -113,15 +112,8 @@ namespace AvengersUtd.StarOdyssey.Scenes
             LogEvent.UserInterface.Write("U MAD?");
             LogEvent.Engine.Write("YO DAWG");
 
-            TexturedIcon crosshair = new TexturedIcon
-            {
-                Position = new Vector2(512f, 512f),
-                Size = new System.Drawing.Size(64, 64),
-                Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
+            
 
-            };
-
-            Hud.Add(crosshair);
 
             //Hud.Add(new Panel
             //{
@@ -145,8 +137,11 @@ namespace AvengersUtd.StarOdyssey.Scenes
             //                         Items = new[]{"Prova1", "Prova2", "Prova3"}
             //                     };
             //hud.Add(d);
+            TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, Camera = this.Camera };
+            Hud.Add(rp);
 
-            Hud.Add(new RayPickingPanel { Size = Hud.Size, Camera = this.Camera });
+            
+
             Game.Logger.Activate();
             Hud.Init();
             Hud.EndDesign();
@@ -159,9 +154,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
             IsInited = true;
             //EyeTrackerServer server = new Odyssey.Network.EyeTrackerServer();
             //server.Start();
-
-            //server.DataReceived += (sender, e) => crosshair.Position = new Vector2(server.LastGazeData.ScreenX - crosshair.Width / 2,
-            //    server.LastGazeData.ScreenY - crosshair.Height / 2);
         }
 
         public override void Render()

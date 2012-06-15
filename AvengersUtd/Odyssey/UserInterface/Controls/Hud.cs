@@ -139,8 +139,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         internal HudDescription HudDescription { get; set; }
         internal InterfaceMesh InterfaceMesh { get; set; }
 
-        public TouchOverlay TouchOverlay { get; set; }
-
         internal bool ShouldUpdateShapes
         {
             get { return updateQueue.Count > 0; }
@@ -532,7 +530,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         }
 
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using SlimDX;
+using AvengersUtd.Odyssey.UserInterface.Input;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -68,7 +68,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void UpdateSelectionExtents(MouseEventArgs e)
         {
-            selectionEnd = new Vector2(e.X, e.Y);
+            selectionEnd = e.Location;
             if (OwnerGrid.SnapToGrid)
                 selectionEnd = SnapPositionToGrid(selectionEnd, OwnerGrid.GridSpacing);
 
@@ -90,7 +90,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public void StartSelection(object sender, MouseEventArgs e)
         {
             isDragging = true;
-            selectionStart = new Vector2(e.X, e.Y);
+            selectionStart = e.Location;
 
             if (OwnerGrid.SnapToGrid)
                 selectionStart = SnapPositionToGrid(selectionStart, OwnerGrid.GridSpacing);

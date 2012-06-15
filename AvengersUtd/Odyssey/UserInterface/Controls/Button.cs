@@ -26,6 +26,7 @@ using System;
 using System.Drawing;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.UserInterface.Text;
+using SlimDX;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -76,7 +77,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         } 
         #endregion
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return Geometry.Intersection.RectangleTest(AbsolutePosition, Size, cursorLocation);
         }

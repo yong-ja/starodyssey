@@ -8,6 +8,7 @@ using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 using AvengersUtd.Odyssey.Utils.Logging;
 using SlimDX;
 using SlimDX.Direct3D11;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -33,38 +34,37 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             set;
         }
 
-        void IMouseBehaviour.OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        void IMouseBehaviour.OnMouseDown(object sender, MouseEventArgs e)
         {
-            new Vector2(e.X, e.Y);
             isDragging = true;
             Viewport viewport = camera.Viewport;
             Vector3 pObjCenter3 = Vector3.Project(RenderableObject.AbsolutePosition, viewport.X, viewport.Y, viewport.Width, viewport.Height,
                                                  viewport.MinZ, viewport.MaxZ, camera.WorldViewProjection);
-            pOffset = new Vector2(e.Location.X, e.Location.Y) - new Vector2(pObjCenter3.X, pObjCenter3.Y);
+            pOffset = e.Location - new Vector2(pObjCenter3.X, pObjCenter3.Y);
 
         }
 
-        void IMouseBehaviour.OnMouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        void IMouseBehaviour.OnMouseClick(object sender, MouseEventArgs e)
         {
             return;
         }
 
-        void IMouseBehaviour.OnMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        void IMouseBehaviour.OnMouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
         }
 
-        void IMouseBehaviour.OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        void IMouseBehaviour.OnMouseMove(object sender, MouseEventArgs e)
         {
             if (!isDragging)
                 return;
 
             Viewport viewport = camera.Viewport;
-           
-            Vector2 pNewPosition2 = new Vector2(e.Location.X, e.Location.Y) -pOffset;
-            Vector3 pNear = Vector3.Unproject( new Vector3(pNewPosition2.X, pNewPosition2.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+
+            Vector2 pNewPosition2 = new Vector2(e.Location.X, e.Location.Y) - pOffset;
+            Vector3 pNear = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
                               camera.WorldViewProjection);
-            Vector3 pFar = Vector3.Unproject( new Vector3(pNewPosition2.X, pNewPosition2.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+            Vector3 pFar = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
                               camera.WorldViewProjection);
             Ray r = new Ray(pNear, pFar - pNear);
             //Ray r = new Ray(pNear, camera.ViewVector);

@@ -4,6 +4,7 @@ using AvengersUtd.Odyssey.UserInterface.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Style;
 using System.Drawing;
 using SlimDX;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -56,7 +57,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Shapes = new ShapeCollection(8);
         }
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return hitmanager.Intersect(cursorLocation);
         }
@@ -156,7 +157,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             //if (previousIntersection != IntersectionLocation.None)
             //{
                 drag = true;
-                dragStartPosition = new Vector2(e.X, e.Y);
+                dragStartPosition = e.Location;
             initialSize = targetControl.Size;
             initialPosition = targetControl.Position;
             //width = initialSize.Width;
@@ -177,7 +178,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             Vector2 newPosition;
             Size prevSize = targetControl.Size;
             Size newSize;
-            Vector2 currentPosition = new Vector2(e.X, e.Y);
+            Vector2 currentPosition = e.Location;
             Vector2 delta = currentPosition - dragStartPosition;
 
             switch (previousIntersection)

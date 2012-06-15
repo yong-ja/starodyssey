@@ -27,9 +27,9 @@ using System.Drawing;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using System.Windows.Input;
 using System.Windows.Forms;
-using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
-using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using TouchEventArgs = AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when mouse pointer is over the control and a mouse button is pressed..
         /// </summary>
-        public event MouseEventHandler MouseDown
+        public event EventHandler<MouseEventArgs> MouseDown
         {
             add { Events.AddHandler(EventMouseDown, value); }
             remove { Events.RemoveHandler(EventMouseDown, value); }
@@ -58,7 +58,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when the control is clicked by the mouse.
         /// </summary>
-        public event MouseEventHandler MouseClick
+        public event EventHandler<MouseEventArgs> MouseClick
         {
             add { Events.AddHandler(EventMouseClick, value); }
             remove { Events.RemoveHandler(EventMouseClick, value); }
@@ -67,7 +67,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when the mouse pointer is over the control and a mouse button is released.
         /// </summary>
-        public event MouseEventHandler MouseUp
+        public event EventHandler<MouseEventArgs> MouseUp
         {
             add { Events.AddHandler(EventMouseUp, value); }
             remove { Events.RemoveHandler(EventMouseUp, value); }
@@ -76,7 +76,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when the mouse wheel moves while the control has focus.
         /// </summary>
-        public event MouseEventHandler MouseWheel
+        public event EventHandler<MouseEventArgs> MouseWheel
         {
             add { Events.AddHandler(EventMouseWheel, value); }
             remove { Events.RemoveHandler(EventMouseWheel, value); }
@@ -85,7 +85,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <summary>
         /// Occurs when the mouse pointer is moved over the control.
         /// </summary>
-        public event MouseEventHandler MouseMove
+        public event EventHandler<MouseEventArgs> MouseMove
         {
             add { Events.AddHandler(EventMouseMove, value); }
             remove { Events.RemoveHandler(EventMouseMove, value); }
@@ -115,7 +115,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         protected virtual void OnMouseMove(MouseEventArgs e)
         {
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseMove];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseMove];
             if (handler != null)
                 handler(this, e);
         }
@@ -137,7 +137,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             UpdateAppearance();
 
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseDown];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseDown];
             if (handler != null)
                 handler(this, e);
         }
@@ -150,7 +150,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             UpdateAppearance();
 
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseClick];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseClick];
             if (handler != null)
                 handler(this, e);
         }
@@ -167,7 +167,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             UpdateAppearance();
 
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseUp];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseUp];
             if (handler != null)
                 handler(this, e);
         }
@@ -179,7 +179,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         protected virtual void OnMouseWheel(MouseEventArgs e)
         {
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseWheel];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseWheel];
             if (handler != null)
                 handler(this, e);
         }
@@ -217,7 +217,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 }
             }
 
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseEnter];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseEnter];
             if (handler != null)
                 handler(this, e);
         }
@@ -250,7 +250,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 }
             }
 
-            MouseEventHandler handler = (MouseEventHandler) Events[EventMouseLeave];
+            EventHandler<MouseEventArgs> handler = (EventHandler<MouseEventArgs>) Events[EventMouseLeave];
             if (handler != null)
                 handler(this, e);
         }
@@ -329,11 +329,31 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         static readonly object EventTouchDown;
         static readonly object EventTouchUp;
 
-        //public event EventHandler<TouchEventArgs> MouseDown
-        //{
-        //    add { Events.AddHandler(EventMouseDown, value); }
-        //    remove { Events.RemoveHandler(EventMouseDown, value); }
-        //}
+        public event EventHandler<TouchEventArgs> TouchDown
+        {
+            add { Events.AddHandler(EventTouchDown, value); }
+            remove { Events.RemoveHandler(EventTouchDown, value); }
+        }
+
+        public event EventHandler<TouchEventArgs> TouchUp
+        {
+            add { Events.AddHandler(EventTouchUp, value); }
+            remove { Events.RemoveHandler(EventTouchUp, value); }
+        }
+
+        protected virtual void OnTouchDown(TouchEventArgs e)
+        {
+            EventHandler<TouchEventArgs> handler = (EventHandler<TouchEventArgs>)Events[EventTouchDown];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnTouchUp(TouchEventArgs e)
+        {
+            EventHandler<TouchEventArgs> handler = (EventHandler<TouchEventArgs>)Events[EventTouchUp];
+            if (handler != null)
+                handler(this, e);
+        }
         #endregion
 
         #region Control Events
