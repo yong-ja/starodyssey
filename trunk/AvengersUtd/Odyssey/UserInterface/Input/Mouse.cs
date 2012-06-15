@@ -1,46 +1,23 @@
-﻿
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using SlimDX;
+using System.Windows;
 
 namespace AvengersUtd.Odyssey.UserInterface.Input
 {
-    public class Mouse
+    public static class Mouse
     {
-        private MouseButtons activeButtons;
+        public const MouseButton ClickButton = MouseButton.Left;
 
-        private Point PreviousCursorLocation { get; set; }
-        private Point CursorLocation { get; set; }
-
-        public Mouse()
+        public static Vector2 CursorLocationWpf
         {
-            ClickButton = SystemInformation.MouseButtonsSwapped ? MouseButtons.Right : MouseButtons.Left;
-            
+            get
+            {
+                Point p = System.Windows.Input.Mouse.GetPosition(Global.Window);
+                return new Vector2((float)p.X, (float)p.Y);
+            }
         }
-
-        public void MouseDown(object sender, MouseEventArgs e)
-        {
-            activeButtons |= e.Button;
-            PreviousCursorLocation = CursorLocation;
-            CursorLocation = e.Location;
-        }
-
-        public void MouseUp(object sender, MouseEventArgs e)
-        {
-            activeButtons ^= e.Button;
-            PreviousCursorLocation = CursorLocation;
-            CursorLocation = e.Location;
-        }
-
-        public void MouseMove(object sender, MouseEventArgs e)
-        {
-            PreviousCursorLocation = CursorLocation;
-            CursorLocation = e.Location;
-        }
-
-        /// <summary>
-        /// Returns the mouse button used to function as the left mouse button. On some systems 
-        /// </summary>
-        /// <value>The button used to function as the left mouse button.</value>
-        public static MouseButtons ClickButton { get; private set; }
     }
 }

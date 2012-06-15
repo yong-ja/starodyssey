@@ -157,7 +157,7 @@ namespace AvengersUtd.Odyssey.UserInterface
                 return IntersectionLocation.None;
         }
 
-        public bool Intersect(Point location)
+        public bool Intersect(Vector2 location)
         {
             return Geometry.Intersection.RectangleTest(
                 new Vector2(totalArea.X, totalArea.Y), totalArea.Size, location);

@@ -17,4 +17,5 @@ Please do not modify it if you don't know what you are doing. Visit the Odyssey 
   <string>Effects/Include/Shadows.hlsl</string>
   <string>Effects/Include/Structs.hlsl</string>
   <string>Textures/crosshair.png</string>
+  <string>Textures/crosshairBlue.png</string>
 </ArrayOfString>

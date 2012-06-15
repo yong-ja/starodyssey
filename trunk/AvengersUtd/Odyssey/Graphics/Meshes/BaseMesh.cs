@@ -40,7 +40,7 @@ using SlimDX.Direct3D11;
 using SlimDX.DXGI;
 using Buffer = SlimDX.Direct3D11.Buffer;
 using AvengersUtd.Odyssey.Graphics.Materials;
-
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 #endregion
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
@@ -93,25 +93,25 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             remove { eventHandlerList.RemoveHandler(EventPositionChanged, value); }
         }
 
-        public event MouseEventHandler MouseDown
+        public event EventHandler<MouseEventArgs> MouseDown
         {
             add { eventHandlerList.AddHandler(EventMouseDown, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseDown, value); }
         }
 
-        public event MouseEventHandler MouseUp
+        public event EventHandler<MouseEventArgs> MouseUp
         {
             add { eventHandlerList.AddHandler(EventMouseUp, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseUp, value); }
         }
 
-        public event MouseEventHandler MouseClick
+        public event EventHandler<MouseEventArgs> MouseClick
         {
             add { eventHandlerList.AddHandler(EventMouseClick, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseClick, value); }
         }
 
-        public event MouseEventHandler MouseMove
+        public event EventHandler<MouseEventArgs> MouseMove
         {
             add { eventHandlerList.AddHandler(EventMouseMove, value); }
             remove { eventHandlerList.RemoveHandler(EventMouseMove, value); }
@@ -137,32 +137,32 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         protected virtual void OnMouseDown(MouseEventArgs e)
         {
-            MouseEventHandler handler =
-                (MouseEventHandler)eventHandlerList[EventMouseDown];
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseDown];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseUp(MouseEventArgs e)
         {
-            MouseEventHandler handler =
-                (MouseEventHandler)eventHandlerList[EventMouseUp];
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseUp];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseClick(MouseEventArgs e)
         {
-            MouseEventHandler handler =
-                (MouseEventHandler)eventHandlerList[EventMouseClick];
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseClick];
             if (handler != null)
                 handler(this, e);
         }
 
         protected virtual void OnMouseMove(MouseEventArgs e)
         {
-            MouseEventHandler handler =
-                (MouseEventHandler)eventHandlerList[EventMouseMove];
+            EventHandler<MouseEventArgs> handler =
+                (EventHandler<MouseEventArgs>)eventHandlerList[EventMouseMove];
             if (handler != null)
                 handler(this, e);
         }

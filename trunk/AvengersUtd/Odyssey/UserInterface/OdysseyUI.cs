@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using AvengersUtd.Odyssey.Properties;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface.Input;
 using System.Windows;
 using System.Windows.Input;
-using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 using SlimDX.RawInput;
 
 namespace AvengersUtd.Odyssey.UserInterface
 {
     public static partial class OdysseyUI
     {
-        public static AvengersUtd.Odyssey.UserInterface.Input.Keyboard Keyboard { get; private set;  }
-        public static AvengersUtd.Odyssey.UserInterface.Input.Mouse Mouse { get; private set; }
-
-        static OdysseyUI()
-        {
-            Keyboard = new AvengersUtd.Odyssey.UserInterface.Input.Keyboard();
-            Mouse = new AvengersUtd.Odyssey.UserInterface.Input.Mouse();
-        }
 
         /// <summary>
         /// Gets or sets a reference to current <see cref="Hud"/> overlayed on the screen. Since
@@ -39,9 +30,9 @@ namespace AvengersUtd.Odyssey.UserInterface
         }
 
         #region UI Input
+
         static void MouseMovementHandler(object sender, MouseEventArgs e)
         {
-
             bool handled = false;
 
             // Checks whether a control has captured the mouse pointer
@@ -84,7 +75,6 @@ namespace AvengersUtd.Odyssey.UserInterface
         static void ProcessMouseInputPress(object sender, MouseEventArgs e)
         {
             bool handled = false;
-
             //// Checks whether a modal window is displayed
             //if (CurrentHud.WindowManager.Foremost != null && CurrentHud.WindowManager.Foremost.IsModal)
             //{
@@ -150,6 +140,8 @@ namespace AvengersUtd.Odyssey.UserInterface
                 CurrentHud.ProcessMouseRelease(e);
         }
 
+
+
         static void ProcessKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (CurrentHud.FocusedControl != null)
@@ -162,70 +154,61 @@ namespace AvengersUtd.Odyssey.UserInterface
                 CurrentHud.FocusedControl.ProcessKeyUp(e);
         }
 
-        static void ProcessKeyPress(object sender, KeyPressEventArgs e)
+        static void ProcessKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (CurrentHud.FocusedControl != null)
                 CurrentHud.FocusedControl.ProcessKeyPress(e);
         }
+
+        static void FormsProcessMouseMovementHandler(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            MouseMovementHandler(sender, (MouseEventArgs)e);
+        }
+        static void FormsProcessMouseInputPress(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcessMouseInputPress(sender, (MouseEventArgs)e);
+        }
+
+        static void FormsProcessMouseInputRelease(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            ProcessMouseInputRelease(sender, (MouseEventArgs)e);
+        }
+
 
         /// <summary>
         /// This method hooks the events fired by the container control (a <see cref="System.Windows.Forms"/>
         /// for example) and allows them to be processed by the Odyssey UI.
         /// </summary>
         /// <param name="target">The container control that hosts the DirectX viewport.</param>
-        public static void SetupHooks(Control target)
+        public static void SetupHooks(System.Windows.Forms.Control target)
         {
             Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
-
-            //target.KeyDown += Keyboard.KeyDown;
-            //target.KeyUp += Keyboard.KeyUp;
-            //target.MouseDown += Mouse.MouseDown;
-            //target.MouseUp += Mouse.MouseUp;
-            //target.MouseMove += Mouse.MouseMove;
 
             target.KeyDown += ProcessKeyDown;
             target.KeyUp += ProcessKeyUp;
             target.KeyPress += ProcessKeyPress;
-            target.MouseDown += ProcessMouseInputPress;
-            target.MouseUp += ProcessMouseInputRelease;
-            target.MouseMove += MouseMovementHandler;
+            target.MouseDown += FormsProcessMouseInputPress;
+            target.MouseUp += FormsProcessMouseInputRelease;
+            target.MouseMove += FormsProcessMouseMovementHandler;
         }
 
-        public static void SetupHooksWpf(Window target)
-        {
-            Contract.Requires<ArgumentNullException>(target != null,Resources.ERR_UI_TargetControlNull );
-            target.KeyDown += ProcessKeyDown;
-            target.KeyUp += ProcessKeyUp;
-            target.TouchDown += ProcessTouchDown;
-            Global.Window = target;
+        
 
-            //target.KeyDown += ProcessKeyDown;
-            
-            //target.KeyPress += ProcessKeyPress;
-            //target.MouseDown += ProcessMouseInputPress;
-            //target.MouseUp += ProcessMouseInputRelease;
-            //target.MouseMove += MouseMovementHandler;
-        }
-
-        public static void RemoveHooks(Control target)
+        public static void RemoveHooks(System.Windows.Forms.Control target)
         {
             Contract.Requires<ArgumentNullException>(target != null, Resources.ERR_UI_TargetControlNull);
-
-            //target.KeyDown -= Keyboard.KeyDown;
-            //target.KeyUp -= Keyboard.KeyUp;
-            target.MouseDown -= Mouse.MouseDown;
-            target.MouseUp -= Mouse.MouseUp;
-            target.MouseMove -= Mouse.MouseMove;
 
             target.KeyDown -= ProcessKeyDown;
             target.KeyUp -= ProcessKeyUp;
             target.KeyPress -= ProcessKeyPress;
-            target.MouseDown -= ProcessMouseInputPress;
-            target.MouseUp -= ProcessMouseInputRelease;
-            target.MouseMove -= MouseMovementHandler;
+            target.MouseDown -= FormsProcessMouseInputPress;
+            target.MouseUp -= FormsProcessMouseInputRelease;
+            target.MouseMove -= FormsProcessMouseMovementHandler;
 
             Game.IsInputEnabled = false;
         }
+
+
         #endregion
 
         internal static void OnDispose(object sender, EventArgs e)

@@ -9,6 +9,7 @@ using AvengersUtd.Odyssey.UserInterface.Controls;
 using SlimDX;
 using SlimDX.Direct3D11;
 using Buffer = SlimDX.Direct3D11.Buffer;
+using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
@@ -26,10 +27,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         //EntityDescriptor Descriptor { get; }
         //Mesh Mesh { get; }
 
-        event MouseEventHandler MouseDown;
-        event MouseEventHandler MouseUp;
-        event MouseEventHandler MouseClick;
-        event MouseEventHandler MouseMove;
+        event EventHandler<MouseEventArgs> MouseDown;
+        event EventHandler<MouseEventArgs> MouseUp;
+        event EventHandler<MouseEventArgs> MouseClick;
+        event EventHandler<MouseEventArgs> MouseMove;
         event KeyEventHandler KeyDown;
         event KeyEventHandler KeyPress;
         event KeyEventHandler KeyUp;

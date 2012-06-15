@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             CanRaiseEvents = false;
         }
 
-        public override bool IntersectTest(Point cursorLocation)
+        public override bool IntersectTest(Vector2 cursorLocation)
         {
             return false;
         }

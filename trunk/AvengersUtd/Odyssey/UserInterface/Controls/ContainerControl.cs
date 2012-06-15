@@ -158,7 +158,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         #endregion
 
-        public BaseControl Find(Point cursorLocation)
+        public BaseControl Find(Vector2 cursorLocation)
         {
             return TreeTraversal.PostOrderControlInteractionVisit(this)
                 .Reverse()

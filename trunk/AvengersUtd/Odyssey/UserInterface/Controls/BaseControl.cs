@@ -109,6 +109,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             EventPositionChanged = new object();
             EventTextStyleChanged = new object();
             EventVisibleChanged = new object();
+
+            EventTouchDown = new object();
+            EventTouchUp = new object();
         }
 
         /// <summary>
@@ -140,7 +143,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         /// <param name="cursorLocation">The location of the mouse cursor</param>
         /// <returns><b>True</b> if the cursor is inside the control's boundaries. <b>False</b>, otherwise.</returns>
         /// <seealso cref="Intersection"/>
-        public abstract bool IntersectTest(Point cursorLocation);
+        public abstract bool IntersectTest(Vector2 cursorLocation);
 
         /// <summary>
         /// Computes the absolute position of the control, depending on the inherited position of the parent.

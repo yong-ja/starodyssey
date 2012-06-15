@@ -271,7 +271,7 @@ namespace AvengersUtd.Odyssey.Geometry
             return inside;
         }
 
-        public static bool RectangleTest(Vector2 position, Size size, Point cursorLocation)
+        public static bool RectangleTest(Vector2 position, Size size, Vector2 cursorLocation)
         {
             float xEvent = cursorLocation.X;
             float yEvent = cursorLocation.Y;

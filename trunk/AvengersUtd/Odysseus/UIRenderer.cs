@@ -58,7 +58,7 @@ namespace AvengersUtd.Odysseus
         internal static Main Form { get; set; }
 
         static object controlLock = new object();
-        void HudMouseClick(object sender, MouseEventArgs e)
+        void HudMouseClick(object sender, AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
         {
             BaseControl control = Hud.Find(e.Location);
             if (control == null)
