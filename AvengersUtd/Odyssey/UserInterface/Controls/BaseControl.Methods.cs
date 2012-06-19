@@ -298,6 +298,24 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             return true;
         }
+
+        internal virtual bool ProcessTouchMove(TouchEventArgs e)
+        {
+            if (!HasCaptured && !IntersectTest(e.Location))
+                return false;
+
+            if (canRaiseEvents)
+            {
+                //if (!isInside)
+                    //OnMouseEnter(e);
+
+                OnTouchMove(e);
+                return true;
+            }
+            return false;
+        }
+
+
         #endregion
 
         #region Static Methods

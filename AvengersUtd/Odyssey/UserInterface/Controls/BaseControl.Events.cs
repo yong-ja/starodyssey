@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using MouseEventArgs = AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using TouchEventArgs = AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 namespace AvengersUtd.Odyssey.UserInterface.Controls
 {
@@ -328,6 +329,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         #region Touch Events
         static readonly object EventTouchDown;
         static readonly object EventTouchUp;
+        static readonly object EventTouchMove;
 
         public event EventHandler<TouchEventArgs> TouchDown
         {
@@ -341,6 +343,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             remove { Events.RemoveHandler(EventTouchUp, value); }
         }
 
+        public event EventHandler<TouchEventArgs> TouchMove
+        {
+            add { Events.AddHandler(EventTouchMove, value); }
+            remove { Events.RemoveHandler(EventTouchMove, value); }
+        }
+
+
         protected virtual void OnTouchDown(TouchEventArgs e)
         {
             EventHandler<TouchEventArgs> handler = (EventHandler<TouchEventArgs>)Events[EventTouchDown];
@@ -351,6 +360,13 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected virtual void OnTouchUp(TouchEventArgs e)
         {
             EventHandler<TouchEventArgs> handler = (EventHandler<TouchEventArgs>)Events[EventTouchUp];
+            if (handler != null)
+                handler(this, e);
+        }
+
+        protected virtual void OnTouchMove(TouchEventArgs e)
+        {
+            EventHandler<TouchEventArgs> handler = (EventHandler<TouchEventArgs>)Events[EventTouchMove];
             if (handler != null)
                 handler(this, e);
         }
