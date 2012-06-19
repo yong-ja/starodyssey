@@ -1,0 +1,18 @@
+﻿<Window x:Class="EyeTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Closing="Window_Closing">
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top"> 
+            <MenuItem Header="File">
+                <MenuItem Header="Connect" Click="Connect_Click" />
+                <MenuItem Name="miTracking" Header="Tracking" Click="Tracking_Click" IsCheckable="True" IsEnabled="False" />
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" Height="26" Padding="2">
+            <TextBlock Name="StatusText" Text="Status message"/>
+        </StatusBar>
+        <Canvas></Canvas>
+    </DockPanel>
+
+</Window>
