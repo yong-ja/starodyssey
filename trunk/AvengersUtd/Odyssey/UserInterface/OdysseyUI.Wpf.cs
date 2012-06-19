@@ -23,6 +23,7 @@ namespace AvengersUtd.Odyssey.UserInterface
             target.KeyUp += ProcessKeyUp;
             target.TouchDown += ProcessTouchDown;
             target.TouchUp += ProcessTouchUp;
+            target.TouchMove += ProcessTouchMove;
 
             target.MouseDown += WpfProcessMouseDown;
             Global.Window = target;
@@ -49,40 +50,59 @@ namespace AvengersUtd.Odyssey.UserInterface
         static void ProcessTouchDown(object sender, System.Windows.Input.TouchEventArgs e)
         {
             bool handled = false;
-            Point p = e.GetTouchPoint(Global.Window).Position;
-            Vector2 vP = new Vector2((float)p.X, (float)p.Y);
-            LogEvent.Engine.Write(p.ToString());
+            
 
             // Proceeds with the rest
             foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(CurrentHud))
             {
-                handled = control.ProcessTouchDown( new TouchEventArgs(vP));
+                handled = control.ProcessTouchDown((TouchEventArgs)e);
                 if (handled)
                     break;
             }
 
             if (!handled)
-                CurrentHud.ProcessTouchDown(new TouchEventArgs(vP));
+                CurrentHud.ProcessTouchDown((TouchEventArgs)e);
 
         }
 
         static void ProcessTouchUp(object sender, System.Windows.Input.TouchEventArgs e)
         {
             bool handled = false;
-            Point p = e.GetTouchPoint(Global.Window).Position;
-            Vector2 vP = new Vector2((float)p.X, (float)p.Y);
-            LogEvent.Engine.Write(p.ToString());
 
             // Proceeds with the rest
             foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(CurrentHud))
             {
-                handled = control.ProcessTouchUp(new TouchEventArgs(vP));
+                handled = control.ProcessTouchUp((TouchEventArgs)e);
                 if (handled)
                     break;
             }
 
             if (!handled)
-                CurrentHud.ProcessTouchUp(new TouchEventArgs(vP));
+                CurrentHud.ProcessTouchUp((TouchEventArgs)e);
+        }
+
+        static void ProcessTouchMove(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+            bool handled = false;
+
+            // Checks whether a control has captured the mouse pointer
+            if (CurrentHud.CaptureControl != null)
+            {
+                CurrentHud.CaptureControl.ProcessTouchMove((TouchEventArgs)e);
+                return;
+            }
+
+            // Proceeds with the rest
+            foreach (BaseControl control in TreeTraversal.PostOrderControlInteractionVisit(CurrentHud))
+            {
+                handled = control.ProcessTouchMove((TouchEventArgs)e);
+                if (handled)
+                    break;
+            }
+
+
+            if (!handled)
+                CurrentHud.ProcessTouchMove((TouchEventArgs)e);
         }
     }
 }

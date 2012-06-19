@@ -112,6 +112,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             EventTouchDown = new object();
             EventTouchUp = new object();
+            EventTouchMove = new object();
         }
 
         /// <summary>

@@ -1,0 +1,15 @@
+﻿<Window x:Class="MultitouchExperiments.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Canvas
+            x:Name="TouchCanvas"
+            TouchDown="TouchCanvas_TouchDown" TouchUp="TouchCanvas_TouchUp"
+            TouchMove="TouchCanvas_TouchMove" TouchLeave="TouchCanvas_TouchLeave"
+            TouchEnter="TouchCanvas_TouchEnter"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+            Background="Black"
+             />
+    </Grid>
+</Window>
