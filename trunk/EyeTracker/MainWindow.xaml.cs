@@ -30,6 +30,8 @@ namespace EyeTracker
         private string connectionName;
         private SyncManager syncManager;
 
+        Point previousGazePoint;
+
         public MainWindow()
         {
             // Initialize Tobii SDK eyetracking library
@@ -149,15 +151,31 @@ namespace EyeTracker
         {
             // Send the gaze data to the track status control.
             GazeDataItem gd = e.GazeDataItem;
-            Console.WriteLine(string.Format("L({0:f2},{1:f2},{2:f2}) R:({3:f2},{4:f2},{5:f2})",
-                e.GazeDataItem.LeftEyePosition3DRelative.X, e.GazeDataItem.LeftEyePosition3DRelative.Y, e.GazeDataItem.LeftEyePosition3DRelative.Z,
-                e.GazeDataItem.RightEyePosition3DRelative.X, e.GazeDataItem.RightEyePosition3DRelative.Y, e.GazeDataItem.RightEyePosition3DRelative.Z));
-            
+            Point2D leftGaze= e.GazeDataItem.LeftGazePoint2D;
+            Point2D rightGaze = e.GazeDataItem.RightGazePoint2D;
+
+            Point gazePoint = new Point((leftGaze.X + rightGaze.X) / 2, (leftGaze.Y + rightGaze.Y) / 2);
+            Vector delta = Point.Subtract(gazePoint, previousGazePoint);
+
+            //gazePoint = new Point((gazePoint.X + previousGazePoint.X) / 2, (gazePoint.Y + previousGazePoint.Y / 2));
+
+            previousGazePoint = gazePoint;
+
+            //if (delta.LengthSquared < 0.001)
+            //    return;
+
+
+
+            Point screenPoint = new Point(gazePoint.X * SystemParameters.PrimaryScreenWidth, gazePoint.Y * SystemParameters.PrimaryScreenHeight);
+
 
             if (syncManager.SyncState.StateFlag == SyncStateFlag.Synchronized)
             {
                 Int64 convertedTime = syncManager.RemoteToLocal(gd.TimeStamp);
                 Int64 localTime = clock.GetTime();
+                Point clientPoint = canvas.PointFromScreen(new Point(screenPoint.X - crosshair.Width/2, screenPoint.Y - crosshair.Height/2)) ;
+                Canvas.SetLeft(crosshair, clientPoint.X);
+                Canvas.SetTop(crosshair, clientPoint.Y);
             }
             else
             {
