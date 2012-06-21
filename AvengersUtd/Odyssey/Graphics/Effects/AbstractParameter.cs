@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using SlimDX;
@@ -41,6 +42,8 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// <param name="updateMethod">A delegate method that "polls" the updated value.</param>
         protected AbstractParameter(string name, Effect effect)
         {
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(effect != null);
             this.name = name;
             ownerEffect = effect;
         }

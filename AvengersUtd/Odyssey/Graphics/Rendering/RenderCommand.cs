@@ -15,7 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected Renderer Renderer { get; private set; }
         //protected MaterialNode MaterialNode {get; private set; }
         protected InputLayout InputLayout { get; private set; }
-        protected IMaterial Material { get; private set; }
+        public IMaterial Material { get; private set; }
         protected EffectTechnique Technique { get; private set; }
         protected EffectPass Pass { get; private set; }
 

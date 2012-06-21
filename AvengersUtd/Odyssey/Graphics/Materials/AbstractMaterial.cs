@@ -40,7 +40,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public abstract class AbstractMaterial : IMaterial, IDisposable
     {
         private bool disposed;
-        RenderableCollectionDescription itemsDescription;
+        readonly RenderableCollectionDescription itemsDescription;
 
         protected AbstractMaterial(string filename, RenderableCollectionDescription description)
         {

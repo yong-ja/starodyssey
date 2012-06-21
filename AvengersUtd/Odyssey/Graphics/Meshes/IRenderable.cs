@@ -45,14 +45,16 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Matrix World { get; set; }
         Matrix Translation { get; }
         Matrix Rotation { get; }
+        Matrix Scaling { get; }
         Vector3 AbsolutePosition { get; }
         Vector3 PositionV3 { get; set; }
         Vector4 PositionV4 { get; }
         Vector3 RotationDelta { get; set; }
+        Vector3 ScalingValues { get; set; }
         Quaternion CurrentRotation { get; set; }
 
         RenderableNode ParentNode { get; set; }
-        IColorMaterial Material { get; }
+        IMaterial Material { get; set; }
 
         /// <summary>
         /// Loads resources and inits object.

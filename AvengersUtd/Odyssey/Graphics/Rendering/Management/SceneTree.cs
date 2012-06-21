@@ -76,6 +76,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             }
         }
 
+        public SceneNode FindNode(string label)
+        {
+            return (SceneNode)Node.PreOrderVisit(RootNode).First(n => n.Label == label);
+        }
+
         public string DisplayAsText()
         {
             StringBuilder sb = new StringBuilder();

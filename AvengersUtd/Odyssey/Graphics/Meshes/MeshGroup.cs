@@ -19,8 +19,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         Vector3 vPosition;
         private Quaternion qRotation;
         private Vector3 rotationAngles;
+        private Vector3 vScale;
         private readonly EventHandlerList eventHandlerList;
-        Dictionary<string, IBehaviour> inputBehaviours;
+        readonly Dictionary<string, IBehaviour> inputBehaviours;
 
         #region Events
 
@@ -37,6 +38,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private static readonly object EventKeyDown;
         private static readonly object EventKeyUp;
         
+
 
         public event EventHandler<CollisionEventArgs> Collision
         {
@@ -96,6 +98,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 (EventHandler<RotationEventArgs>)eventHandlerList[EventRotationChanged];
             if (handler != null)
                 handler(this, e);
+        }
+
+        public event EventHandler<ScaleEventArgs> ScaleChanged;
+
+        protected virtual void OnScaleChanged(ScaleEventArgs e)
+        {
+            Scaling = Matrix.Scaling(e.NewValue);
+            if (ScaleChanged != null)
+                ScaleChanged(this, e);
         }
 
         public event EventHandler<EventArgs> Disposing
@@ -217,6 +228,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public Matrix World { get; set; }
         public Matrix Translation { get; private set; }
         public Matrix Rotation { get; private set; }
+        public Matrix Scaling { get; private set; }
 
         public Vector3 PositionV3
         {
@@ -255,7 +267,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             set
             {
                 if (qRotation == value) return;
-                RotationEventArgs e = new RotationEventArgs(qRotation, rotationAngles);
+                RotationEventArgs e = new RotationEventArgs(value, rotationAngles, qRotation);
 
                 if (!e.CancelEvent && qRotation != value)
                 {
@@ -265,11 +277,27 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
         }
 
+        public Vector3 ScalingValues
+        {
+            get { return vScale; }
+            set
+            {
+                if (vScale == value) return;
+                ScaleEventArgs e = new ScaleEventArgs(value, vScale);
+                //OnScaleChangin
+                if (e.CancelEvent || vScale == value) return;
+
+                vScale = value;
+                OnScaleChanged(e);
+
+            }
+        }
+
         public RenderableNode ParentNode { get; set; }
 
-        public IColorMaterial Material
+        public IMaterial Material
         {
-            get; protected set;
+            get;  set;
         }
         #endregion
 

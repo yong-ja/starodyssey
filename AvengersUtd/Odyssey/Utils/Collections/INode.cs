@@ -23,6 +23,7 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         int Level { get; set; }
         int ChildrenCount { get; }
         bool IsLeaf { get; }
+        string Label { get; set; }
         
         void AppendChild(INode newChild);
         void InsertBefore(INode newChild, INode refNode);

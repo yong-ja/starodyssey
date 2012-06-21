@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTest", "WpfTest\WpfTest.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1135EEB-D506-4AF4-B15E-D0260D8B5492}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeTracker", "..\..\..\Documents\Visual Studio 2010\Projects\EyeTracker\EyeTracker\EyeTracker.csproj", "{DB7151DD-A7AA-4309-B74E-34E5CACC320D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeTracker", "EyeTracker\EyeTracker.csproj", "{DB7151DD-A7AA-4309-B74E-34E5CACC320D}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

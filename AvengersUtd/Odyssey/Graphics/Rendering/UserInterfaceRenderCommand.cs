@@ -47,8 +47,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly IMaterial textMaterial;
         private readonly EffectPass textPass;
         private readonly EffectTechnique textTechnique;
-        RenderableNode rNode;
-        TransformNode tNode;
+        readonly RenderableNode rNode;
+        readonly TransformNode tNode;
         public RenderableCollection TextItems { get; internal set; }
 
         public UserInterfaceRenderCommand(Renderer renderer, Hud hud, RenderableNode rNode)
@@ -58,6 +58,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             this.hud = hud;
             textMaterial = new TextMaterial();
             this.rNode = rNode;
+            this.rNode.RenderableObject.Material = Material;
             tNode = (TransformNode)rNode.Parent;
             UpdateSprites(hud.SpriteControls);
             textTechnique = textMaterial.EffectDescription.Technique;
@@ -81,16 +82,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void Render()
         {
-            RenderableNode rNode = Items[0];
+            RenderableNode rNodeInterface = Items[0];
 
             foreach (RenderStep renderStep in hud.RenderSteps)
             {
                 Game.Context.Immediate.InputAssembler.InputLayout = InputLayout;
                 Material.ApplyDynamicParameters(Renderer);
-                Material.ApplyInstanceParameters(rNode.RenderableObject);
+                Material.ApplyInstanceParameters(rNodeInterface.RenderableObject);
                 Pass.Apply(Game.Context.Immediate);
 
-                rNode.RenderableObject.Render(
+                rNodeInterface.RenderableObject.Render(
                     renderStep.PrimitiveCount * 3,
                     startIndex: renderStep.BaseIndex,
                     baseVertex: renderStep.BaseVertex);

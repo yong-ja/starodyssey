@@ -83,7 +83,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update =
                         (fxParam, rObject) =>
                         Color44Update(fxParam.EffectVariable,
-                                     rObject.Material.AmbientColor);
+                                     ((IColorMaterial)rObject.Material).AmbientColor);
                     break;
 
                 case InstanceVariable.Diffuse:
@@ -92,14 +92,14 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update =
                         (fxParam, rObject) =>
                         Color44Update(fxParam.EffectVariable,
-                                     rObject.Material.DiffuseColor);
+                                     ((IColorMaterial)rObject.Material).DiffuseColor);
                     break;
 
                 case InstanceVariable.Ambient:
                     varName = ParamHandles.Color4s.MaterialAmbient;
                     eV = effect.GetVariableByName(varName).AsVector();
                     update =
-                        (fxParam, rObject) => Color44Update(fxParam.EffectVariable, rObject.Material.AmbientColor);
+                        (fxParam, rObject) => Color44Update(fxParam.EffectVariable, ((IColorMaterial)rObject.Material).AmbientColor);
                     break;
 
                 case InstanceVariable.Specular:
@@ -108,7 +108,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                     update =
                         (fxParam, rObject) =>
                         Color44Update(fxParam.EffectVariable,
-                                     rObject.Material.SpecularColor);
+                                     ((IColorMaterial)rObject.Material).SpecularColor);
                     break;
 
                 case InstanceVariable.DiffuseMap:
@@ -122,13 +122,13 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 case InstanceVariable.AmbientCoefficient:
                     varName = ParamHandles.Color4s.MaterialkA;
                     eV = effect.GetVariableByName(varName).AsScalar();
-                    update = (fxParam, rObject) => FloatUpdate(fxParam.EffectVariable, rObject.Material.AmbientCoefficient);
+                    update = (fxParam, rObject) => FloatUpdate(fxParam.EffectVariable, ((IColorMaterial)rObject.Material).AmbientCoefficient);
                     break;
 
                 case InstanceVariable.DiffuseCoefficient:
                     varName = ParamHandles.Color4s.MaterialkD;
                     eV = effect.GetVariableByName(varName).AsScalar();
-                    update = (fxParam, rObject) => FloatUpdate(fxParam.EffectVariable, rObject.Material.AmbientCoefficient);
+                    update = (fxParam, rObject) => FloatUpdate(fxParam.EffectVariable, ((IColorMaterial)rObject.Material).AmbientCoefficient);
                     break;
 
                 case InstanceVariable.MaterialBuffer:
