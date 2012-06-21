@@ -18,7 +18,7 @@
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -119,6 +119,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tobii.Eyetracking.Sdk">
+      <HintPath>..\..\..\Tobii\Net\Binaries\Tobii.Eyetracking.Sdk.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -128,6 +131,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GazeEventArgs.cs" />
     <Compile Include="SurfaceWindow.xaml.cs">
       <DependentUpon>SurfaceWindow.xaml</DependentUpon>
     </Compile>
@@ -136,6 +140,7 @@
     </Compile>
     <Compile Include="TestRenderer.cs" />
     <Compile Include="TouchRayPanel.cs" />
+    <Compile Include="TrackerWrapper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -171,6 +176,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="tobiisdk.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\resources.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

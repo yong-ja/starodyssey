@@ -20,11 +20,47 @@ namespace WpfTest
     {
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
+        readonly Dictionary<TouchDevice, Vector3> points;
+        Vector3 defaultRight = new Vector3(3f, 0f, -3f);
+        RenderableNode rNode;
+        TrackerWrapper tracker;
+
+        TexturedIcon crosshair;
+
+
+        RenderableNode RNode
+        {
+            get
+            {
+                if (rNode == null)
+                    rNode = (RenderableNode)Game.CurrentRenderer.Scene.Tree.FindNode("RBox");
+                return rNode;
+            }
+            set {rNode = value;}
+        }
+
 
         public TouchRayPanel()
         {
             crosshairs = new Dictionary<TouchDevice, TexturedIcon>();
+            points = new Dictionary<TouchDevice, Vector3>();
             window = Global.Window;
+
+            crosshair = new TexturedIcon
+            {
+                CanRaiseEvents = false,
+                Position = Vector2.Zero,
+                Size = new System.Drawing.Size(64, 64),
+                Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
+            };
+
+            Add(crosshair);
+        }
+
+        public void SetTracker(TrackerWrapper tracker)
+        {
+            this.tracker = tracker;
+            tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -40,10 +76,33 @@ namespace WpfTest
                 Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
             };
             crosshairs.Add(e.TouchDevice, crosshair);
+            bool result;
+            points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
             OdysseyUI.CurrentHud.BeginDesign();
             Add(crosshair);
             OdysseyUI.CurrentHud.EndDesign();
 
+        }
+
+        Vector3 GetIntersection(Vector2 location, Vector3 axis, out bool result)
+        {
+            QuaternionCam camera = Game.CurrentRenderer.Camera;
+           
+
+            Viewport viewport = camera.Viewport;
+
+            Vector3 pNear = Vector3.Unproject(new Vector3(location.X, location.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+                              camera.WorldViewProjection);
+            Vector3 pFar = Vector3.Unproject(new Vector3(location.X, location.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+                              camera.WorldViewProjection);
+            Ray r = new Ray(pNear, pFar - pNear);
+            Plane p = new Plane(RNode.RenderableObject.AbsolutePosition, axis);
+
+            float distance;
+            result = Ray.Intersects(r, p, out distance);
+            Vector3 pIntersection = r.Position + distance * Vector3.Normalize(r.Direction);
+
+            return pIntersection;
         }
 
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -55,6 +114,7 @@ namespace WpfTest
             OdysseyUI.CurrentHud.EndDesign();
             
             crosshairs.Remove(e.TouchDevice);
+            points.Remove(e.TouchDevice);
 
         }
 
@@ -62,31 +122,48 @@ namespace WpfTest
         {
             base.OnTouchMove(e);
 
-            TexturedIcon crosshair = crosshairs[e.TouchDevice];
-            if (crosshair == null) return;
+            bool result;
 
-            crosshair.Position = e.Location - new Vector2(crosshair.Width / 2f, crosshair.Height / 2f);
+            Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
+
+            if (result)
+            {
+                points[e.TouchDevice] = pIntersection;
+                Vector3[] vPoints = points.Values.ToArray();
+                Vector3 vLeft=vPoints[0];
+                Vector3 vRight = vPoints.Length < 2 ? defaultRight : vPoints[1];
+
+                RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
+                RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
+                RNode.RenderableObject.ScalingValues);
+            }
 
         }
 
         protected override void OnMouseClick(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
         {
             base.OnMouseClick(e);
-            RenderableNode rNode = (RenderableNode) Game.CurrentRenderer.Scene.Tree.FindNode("RBox");
 
-            rNode.RenderableObject.ScalingValues = new Vector3(1f, rNode.RenderableObject.ScalingValues.Y+1, 1f);
-            rNode.RenderableObject.PositionV3 = new Vector3(0.25f, 0.25f*rNode.RenderableObject.ScalingValues.Y, 0.25f);
+            Vector3 scaling = RNode.RenderableObject.ScalingValues;
+            bool result;
+            Vector3 pIntersection =GetIntersection(tracker.GazePoint, Vector3.UnitZ, out result);
+            Vector3 pPosition = RNode.RenderableObject.PositionV3;
+            float y = Math.Max(0, pIntersection.Y);
+            if (result)
+            {
+                RNode.RenderableObject.ScalingValues = new Vector3(scaling.X, y, scaling.Z);
+                RNode.RenderableObject.PositionV3 = new Vector3(pPosition.X, RNode.RenderableObject.ScalingValues.Y/2, pPosition.Z);
+            }
             //rNode.Update();
         }
 
         protected override void OnMouseMove(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
         {
             base.OnMouseMove(e);
+            return;
             QuaternionCam camera = Game.CurrentRenderer.Camera;
             RenderableNode rNode = (RenderableNode)Game.CurrentRenderer.Scene.Tree.FindNode("RBox");
 
-            //rNode.RenderableObject.ScalingValues = new Vector3(1f, rNode.RenderableObject.ScalingValues.Y + 1, 1f);
-            //rNode.RenderableObject.PositionV3 = new Vector3(0f, 0.25f * rNode.RenderableObject.ScalingValues.Y, 0f);
 
             Viewport viewport = camera.Viewport;
 
@@ -115,9 +192,8 @@ namespace WpfTest
                 //rNode.RenderableObject.ScalingValues = new Vector3(1f, 1f, pIntersection.Z);
                 //rNode.RenderableObject.PositionV3 = new Vector3(0.25f, 0.25f, 0.25f * rNode.RenderableObject.ScalingValues.Z);
 
-                //rNode.RenderableObject.ScalingValues = FindScalingValues(pIntersection, new Vector3(2.5f, 0f, -2.5f));
-                rNode.RenderableObject.ScalingValues = FindScalingValues(pIntersection, new Vector3(3f, 0f, -3));
-                rNode.RenderableObject.PositionV3 = FindPosition(pIntersection, new Vector3(3f, 0f, -3f),
+                rNode.RenderableObject.ScalingValues = FindScalingValues(pIntersection, new Vector3(2.5f, 0f, -2.5f));
+                rNode.RenderableObject.PositionV3 = FindPosition(pIntersection, new Vector3(2.5f, 0f, -2.5f),
                     rNode.RenderableObject.ScalingValues);
             }
 

@@ -23,9 +23,13 @@ namespace AvengersUtd.StarOdyssey.Scenes
     {
 
         public Texture2D SharedTexture { get; set; }
+
+        public TrackerWrapper tracker { get; private set; }
        
         public TestRenderer(AvengersUtd.Odyssey.IDeviceContext deviceContext) : base(deviceContext)
-        {}
+        {
+            tracker = new TrackerWrapper();
+        }
 
         public override void Init()
         {
@@ -89,14 +93,31 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Game.Logger.Log("Prova4");
             Game.Logger.Log("Prova5");
 
-
-            Hud.Add(new DecoratorButton
+            Button bConnect = new Button()
             {
-                Position = new Vector2(550f, 300f),
-            });
+                Size = new System.Drawing.Size(120, 30),
+                //Content = "Start",
+                Position = new Vector2(1800, 0)
+            };
+
+            Button bTracking = new Button()
+            {
+                Size = new System.Drawing.Size(120, 30),
+                //Content = "Start",
+                Position = new Vector2(1800, 40)
+            };
+
+
+            bConnect.MouseClick += (sender, e) => { tracker.Connect(); };
+            bTracking.MouseClick += (sender, e) => { tracker.StartTracking(); };
+
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, Camera = this.Camera };
             Hud.Add(rp);
+
+            rp.Add(bConnect);
+            rp.Add(bTracking);
+            rp.SetTracker(tracker);
             
             Game.Logger.Activate();
             Hud.Init();
@@ -105,6 +126,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
             Scene.BuildRenderScene();
             Hud.AddToScene(this, Scene);
             IsInited = true;
+            tracker.StartBrowsing();
             //EyeTrackerServer server = new Odyssey.Network.EyeTrackerServer();
             //server.Start();
         }
@@ -119,6 +141,12 @@ namespace AvengersUtd.StarOdyssey.Scenes
         {
             //Camera.UpdateStates();
             Hud.ProcessKeyEvents();
+        }
+
+        protected override void OnDisposing(object sender, System.EventArgs e)
+        {
+            base.OnDisposing(sender, e);
+            tracker.DisconnectTracker();
         }
 
        
