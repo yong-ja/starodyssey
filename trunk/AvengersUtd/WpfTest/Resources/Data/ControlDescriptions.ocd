@@ -6,22 +6,22 @@
       <Border Name="RaisedBR" Color="49000000" Borders="Right Bottom" />
     </BorderShaders>
     <Enabled>
-      <RadialGradient GradientType="Radial">
+      <!--<RadialGradient GradientType="Radial">
         <Gradient>
-          <!--GradientStop Color="FF4169E1" Offset="0"/>
+          --><!--GradientStop Color="FF4169E1" Offset="0"/>
           <GradientStop Color="FF3058AD" Offset="0.75"/>
           <GradientStop Color="FF1F336B" Offset="0.80"/>
           <GradientStop Color="FF0B1528" Offset="0.85"/>
-          <GradientStop Color="FF0B1428" Offset="1.0"/-->
+          <GradientStop Color="FF0B1428" Offset="1.0"/--><!--
           <GradientStop Color="#FF57FFE6" Offset="0"/>
           <GradientStop Color="#FF008EE7" Offset="0.7"/>
           <GradientStop Color="#FF2C0072" Offset="1"/>
         </Gradient>
-      </RadialGradient>
+      </RadialGradient>-->
       <LinearGradient GradientType="LinearVerticalGradient">
         <Gradient>
           <GradientStop Color="#FFFFFFFF" Offset="0"/>
-          <GradientStop Color="#22FFFFFF" Offset="0.48"/>
+          <GradientStop Color="#22FFFFFF" Offset="0.4"/>
           <GradientStop Color="#00000000" Offset="0.5"/>
           <GradientStop Color="#00000000" Offset="1.0"/>              
         </Gradient>

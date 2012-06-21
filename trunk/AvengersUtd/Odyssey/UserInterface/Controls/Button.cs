@@ -67,13 +67,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected override void OnTextDescriptionChanged(EventArgs e)
         {
             base.OnTextDescriptionChanged(e);
-            label.TextDescription = TextDescription;
+            if (label != null)
+                label.TextDescription = TextDescription;
         }
 
         protected override void OnParentChanged(EventArgs e)
         {
             base.OnParentChanged(e);
-            label.Depth = Style.Depth.AsChildOf(Depth);
+            if (label != null)
+                label.Depth = Style.Depth.AsChildOf(Depth);
         } 
         #endregion
 
@@ -109,7 +111,12 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         bool ISpriteObject.Inited
         {
-            get { return label.Inited; }
+            get
+            {
+                if (label == null)
+                    return false; 
+                return label.Inited;
+            }
         }
 
 
@@ -124,6 +131,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                 IsSubComponent = true,
                 Parent = this,
                 TextDescriptionClass = TextDescriptionClass,
+                IsDynamic = true
             };
             label.CreateResource();
         }
