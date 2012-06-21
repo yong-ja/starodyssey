@@ -216,7 +216,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         public void AddToScene(Renderer renderer, SceneManager scene)
         {
-            TextMaterial textMaterial = new TextMaterial();
             UIMaterial uiMaterial = new UIMaterial();
 
             RenderableNode rNode = new RenderableNode(InterfaceMesh);

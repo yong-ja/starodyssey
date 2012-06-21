@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using AvengersUtd.Odyssey.Graphics.Materials;
+using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -73,7 +74,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddRenderCommand(IMaterial material, RenderableCollection rNodeCollection)
         {
-
             Type renderCommandType = rNodeCollection.Description.PreferredRenderCommandType;
             RenderCommand rCommand = (RenderCommand)Activator.CreateInstance(renderCommandType, new object[] {material, rNodeCollection});
             rCommand.Init();
@@ -82,11 +82,21 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         public void AddRenderCommand(IRenderCommand rCommand)
         {
-            Type renderCommandType = rCommand.GetType();
-
-
             rCommand.Init();
             commandList.AddLast(rCommand);
+        }
+
+        public ICommand FindByMaterial(IMaterial material)
+        {
+
+            return commandList.OfType<IRenderCommand>().First(rCommand => rCommand.Material.TechniqueName == material.TechniqueName);
+        }
+
+        public void AddNewRenderableObject(RenderableNode rNode)
+        {
+            IRenderCommand relatedCommand = (IRenderCommand)FindByMaterial(rNode.RenderableObject.Material);
+            if (!relatedCommand.Items.Contains(rNode))
+                relatedCommand.Items.Add(rNode);
         }
 
         public void RunCommand(ICommand command, bool waitRender=false)

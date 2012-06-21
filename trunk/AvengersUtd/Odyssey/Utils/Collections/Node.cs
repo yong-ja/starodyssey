@@ -27,6 +27,13 @@ namespace AvengersUtd.Odyssey.Utils.Collections
             this.node = node;
         }
 
+        /// <summary>
+        ///   Gets or sets the label for this node
+        /// </summary>
+        /// <value>
+        ///   A <see cref = "string" /> that contains the label of the node.
+        /// </value>
+
         public int Index
         {
             get { return index; }
@@ -130,6 +137,8 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         #endregion
 
         #region Properties
+
+        public string Label { get; set; }
 
         public IEnumerable<INode> ChildrenIterator
         {

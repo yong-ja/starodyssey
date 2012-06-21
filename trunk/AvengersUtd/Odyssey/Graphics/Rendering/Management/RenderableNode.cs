@@ -58,6 +58,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             tParent.Update();
             Matrix objectMatrix = Matrix.Identity;
             bool multiply = false;
+
+            if (RenderableObject.ScalingValues != new Vector3(1f,1f,1f))
+            {
+                objectMatrix *= RenderableObject.Scaling;
+                multiply = true;
+            }
+
             if (RenderableObject.CurrentRotation != Quaternion.Identity)
             {
                 objectMatrix *= RenderableObject.Rotation;

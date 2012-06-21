@@ -59,12 +59,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private readonly EventHandlerList eventHandlerList;
         private readonly List<ShaderResourceView> shaderResources;
         private readonly List<string> behaviours;
-        Dictionary<string, IBehaviour> inputBehaviours;
+        readonly Dictionary<string, IBehaviour> inputBehaviours;
 
 
         private Quaternion qRotation;
         private Vector3 rotationAngles;
         private Vector3 vPosition;
+        private Vector3 vScale;
 
         #region Events
 
@@ -236,6 +237,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 handler(this, e);
         }
 
+        public event EventHandler<ScaleEventArgs> ScaleChanged;
+
+        protected virtual void OnScaleChanged(ScaleEventArgs e)
+        {
+            Scaling = Matrix.Scaling(e.NewValue);
+            if (ScaleChanged != null)
+                ScaleChanged(this, e);
+        }
+
         public event EventHandler<EventArgs> Disposing
         {
             add { eventHandlerList.AddHandler(EventDisposing, value); }
@@ -288,7 +298,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public Matrix World { get; set; }
         public Matrix Translation { get; private set; }
         public Matrix Rotation { get; private set; }
-        public Vector3 ScalingValues { get; set; }
+        public Matrix Scaling { get; private set; }
+
         public Vector4 PositionV4
         {
             get { return vPosition.ToVector4(); }
@@ -324,23 +335,40 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             get { return rotationAngles; }
             set { rotationAngles = value; }
         }
+
         public Quaternion CurrentRotation
         {
             get { return qRotation; }
             set
             {
                 if (qRotation == value) return;
-                RotationEventArgs e = new RotationEventArgs(qRotation, rotationAngles);
+                RotationEventArgs e = new RotationEventArgs(value, rotationAngles, qRotation);
+                //OnRotationChanging
 
-                if (!e.CancelEvent && qRotation != value)
-                {
-                    qRotation = value;
-                    OnRotationChanged(e);
-                }
+                if (e.CancelEvent || qRotation == value) return;
+
+                qRotation = value;
+                OnRotationChanged(e);
             }
         }
 
-        public IColorMaterial Material { get; set; }
+
+        public Vector3 ScalingValues
+        {
+            get { return vScale; }
+            set {
+                if (vScale == value) return;
+                ScaleEventArgs e = new ScaleEventArgs(value, vScale);
+                //OnScaleChangin
+                if (e.CancelEvent || vScale == value) return;
+
+                vScale = value;
+                OnScaleChanged(e);
+
+            }
+        }
+
+        public IMaterial Material { get; set; }
 
 
         #endregion
@@ -362,7 +390,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         protected BaseMesh(VertexDescription vertexDescription)
         {
-            Name = GetType().Name.ToString();
+            Name = GetType().Name;
             eventHandlerList = new EventHandlerList();
             CastsShadows = false;
             IsCollidable = false;
@@ -378,6 +406,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
             World = Matrix.Identity;
             CurrentRotation = Quaternion.Identity;
+            ScalingValues = new Vector3(1f, 1f, 1f);
         }
 
         #endregion
@@ -385,6 +414,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #region IRenderable Members
 
         public RenderableNode ParentNode { get; set; }
+
 
         public virtual void Init()
         {

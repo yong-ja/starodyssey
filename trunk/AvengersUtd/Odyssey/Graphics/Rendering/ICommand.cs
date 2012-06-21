@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using AvengersUtd.Odyssey.Graphics.Materials;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering
@@ -29,6 +30,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         void Init();
         void PerformRender();
         void UpdateItems();
+        IMaterial Material { get; }
+        RenderableCollection Items { get; }
     }
 
 }

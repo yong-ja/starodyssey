@@ -26,6 +26,8 @@ namespace AvengersUtd.Odyssey.UserInterface
             target.TouchMove += ProcessTouchMove;
 
             target.MouseDown += WpfProcessMouseDown;
+            target.MouseUp += WpfProcessMouseUp;
+            target.MouseMove += WpfProcessMouseMove;
             Global.Window = target;
 
         }
@@ -33,6 +35,16 @@ namespace AvengersUtd.Odyssey.UserInterface
         static void WpfProcessMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ProcessMouseInputPress(sender, (MouseEventArgs)e);
+        }
+
+        static void WpfProcessMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ProcessMouseInputRelease(sender, (MouseEventArgs) e);
+        }
+
+        static void WpfProcessMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            MouseMovementHandler(sender, (MouseEventArgs) e);
         }
 
         static void ProcessKeyDown(object sender, System.Windows.Input.KeyEventArgs e)

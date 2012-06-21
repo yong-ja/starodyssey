@@ -72,19 +72,44 @@ namespace AvengersUtd.Odyssey.Graphics
             get;
             set;
         }
-        public Vector3 RotationDelta
+        public Vector3 NewDelta
         {
             get;
             private set;
         }
 
-        public Quaternion CurrentRotation
+        public Quaternion NewRotation
         { get; private set; }
 
-        public RotationEventArgs(Quaternion currentRotation, Vector3 rotationDelta)
+        public Quaternion OldRotation
         {
-            CurrentRotation = currentRotation;
-            RotationDelta = rotationDelta;
+            get;
+            private set;
+        }
+
+        public RotationEventArgs(Quaternion currentRotation, Vector3 rotationDelta, Quaternion oldRotation)
+        {
+            NewRotation = currentRotation;
+            NewDelta = rotationDelta;
+            OldRotation = oldRotation;
+        }
+    }
+
+    public class ScaleEventArgs : EventArgs
+    {
+        public bool CancelEvent
+        {
+            get;
+            set;
+        }
+
+        public Vector3 NewValue { get; private set; }
+        public Vector3 OldValue { get; private set; }
+
+        public ScaleEventArgs(Vector3 newValue, Vector3 oldValue)
+        {
+            NewValue = newValue;
+            OldValue = oldValue;
         }
     }
 }

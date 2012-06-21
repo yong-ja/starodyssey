@@ -61,6 +61,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
                 e.Delta);
         }
 
+        public static explicit operator MouseEventArgs(System.Windows.Input.MouseEventArgs e)
+        {
+            return new MouseEventArgs(Mouse.CursorLocationWpf, MouseButton.None, 0);
+        }
+
         public static explicit operator MouseEventArgs(System.Windows.Input.MouseButtonEventArgs e)
         {
             

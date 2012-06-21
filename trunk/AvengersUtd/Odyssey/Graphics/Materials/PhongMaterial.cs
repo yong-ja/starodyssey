@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AvengersUtd.Odyssey.Geometry;
-using AvengersUtd.Odyssey.Graphics.Effects;
+﻿using AvengersUtd.Odyssey.Graphics.Effects;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
@@ -35,10 +30,12 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
 
         }
 
-        //public override void ApplyStaticParameters()
+        //protected override void OnStaticParametersInit()
         //{
-        //    //EffectDescription.SetStaticParameter(SceneVariable.LightPosition);
+        //    base.OnStaticParametersInit();
+        //    EffectDescription.SetStaticParameter(SceneVariable.LightPosition);
         //}
+
 
         protected override void OnDynamicParametersInit()
         {

@@ -17,13 +17,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         #region Properties
 
-        /// <summary>
-        ///   Gets or sets the label for this node
-        /// </summary>
-        /// <value>
-        ///   A <see cref = "string" /> that contains the label of the node.
-        /// </value>
-        public string Label { get; set; }
+
 
         public SceneNodeType NodeType { get; private set; }
 
@@ -169,7 +163,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         {
             SceneNode result = null;
 
-            foreach (SceneNode node in ChildrenIterator.Cast<SceneNode>().Where(node => node.Label == label))
+            foreach (SceneNode node in ChildrenIterator.Where(node => node.Label == label))
             {
                 result = node;
             }

@@ -10,7 +10,6 @@ namespace AvengersUtd.Odyssey.Utils.Collections
         #region Private fields
 
         T value;
-        bool isLeaf;
         int index;
         int level;
         INode<T> parent;
@@ -23,10 +22,9 @@ namespace AvengersUtd.Odyssey.Utils.Collections
 
         #region Properties
 
-        public bool IsLeaf
-        {
-            get { return isLeaf; }
-        }
+        public string Label { get; set; }
+
+        public bool IsLeaf { get; private set; }
 
         public bool HasChildNodes
         {

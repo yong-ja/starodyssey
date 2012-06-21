@@ -6,6 +6,7 @@ using AvengersUtd.Odyssey.Graphics.Rendering;
 using SlimDX;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.Graphics.Meshes;
+using System.Diagnostics.Contracts;
 
 
 namespace AvengersUtd.Odyssey.Graphics.Effects
@@ -43,6 +44,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         public SharedParameter(string name, SceneVariable type, Effect effect, dynamic variableRef, UpdateSharedParameter updateMethod)
             : base(name, effect)
         {
+            Contract.Requires(updateMethod != null);
             Type = type;
             effectVariable = variableRef;
             update = updateMethod;
@@ -64,6 +66,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         /// to correctly set and update this value into the shader.</returns>
         public static SharedParameter Create(SceneVariable type, Effect effect)
         {
+            Contract.Requires(effect != null);
             string varName = string.Empty;
             dynamic eV = null;
             UpdateSharedParameter update = null;
@@ -86,6 +89,11 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
                 //        fxParam.ownerEffect.SetValue(eH,mWorld * mLightVP);
                 //    };
                 //    break;
+
+                //case SceneVariable.LightPosition:
+                //    varName = ParamHandles.Vectors.LightPosition;
+                //    eV = effect.GetVariableByName(varName).AsVector();
+                //    update = ((fxParam,renderer) => Vector3Update(fxParam.EffectVariable, renderer.l)
 
                 case SceneVariable.EyePosition:
                     varName = ParamHandles.Vectors.EyePosition;
