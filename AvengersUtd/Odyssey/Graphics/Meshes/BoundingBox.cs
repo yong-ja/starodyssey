@@ -51,18 +51,18 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Vector3[] vertices = new Vector3[] { topLeftFront, bottomLeftFront, topRightFront, bottomRightFront,
                 topLeftBack, topRightBack, bottomLeftBack, bottomRightBack };
 
-            Objects[0] = new Box(Midpoint(topLeftFront, topRightFront), topRightFront.X - topLeftFront.X, DefaultThickness, DefaultThickness);
-            Objects[1] = new Box(Midpoint(topRightFront, topRightBack), DefaultThickness, DefaultThickness, topRightBack.Z - topRightFront.Z + DefaultThickness);
-            Objects[2] = new Box(Midpoint(topRightBack, topLeftBack), topRightBack.X - topLeftBack.X, DefaultThickness, DefaultThickness);
-            Objects[3] = new Box(Midpoint(topLeftFront, topLeftBack), DefaultThickness, DefaultThickness, topLeftBack.Z - topLeftFront.Z + DefaultThickness);
-            Objects[4] = new Box(Midpoint(topRightBack, bottomRightBack), DefaultThickness, topRightBack.Y - bottomRightBack.Y, DefaultThickness);
-            Objects[5] = new Box(Midpoint(topLeftBack, bottomLeftBack), DefaultThickness, topLeftBack.Y - bottomLeftBack.Y, DefaultThickness);
-            Objects[6] = new Box(Midpoint(topRightFront, bottomRightFront), DefaultThickness, topRightFront.Y - bottomRightFront.Y, DefaultThickness);
-            Objects[7] = new Box(Midpoint(topLeftFront, bottomLeftFront), DefaultThickness, topLeftFront.Y - bottomLeftFront.Y, DefaultThickness);
-            Objects[8] = new Box(Midpoint(bottomLeftFront, bottomRightFront), bottomRightFront.X - bottomLeftFront.X, DefaultThickness, DefaultThickness);
-            Objects[9] = new Box(Midpoint(bottomRightFront, bottomRightBack), DefaultThickness, DefaultThickness, bottomRightBack.Z - bottomRightFront.Z + DefaultThickness);
-            Objects[10] = new Box(Midpoint(bottomRightBack, bottomLeftBack), bottomRightBack.X - bottomLeftBack.X, DefaultThickness, DefaultThickness);
-            Objects[11] = new Box(Midpoint(bottomLeftFront, bottomLeftBack), DefaultThickness, DefaultThickness, bottomLeftBack.Z - bottomLeftFront.Z + DefaultThickness);
+            Objects[0] = new Box(topRightFront.X - topLeftFront.X, DefaultThickness, DefaultThickness) { PositionV3 = Midpoint(topLeftFront, topRightFront) };
+            Objects[1] = new Box(DefaultThickness, DefaultThickness, topRightBack.Z - topRightFront.Z + DefaultThickness) { PositionV3 = Midpoint(topRightFront, topRightBack) };
+            Objects[2] = new Box(topRightBack.X - topLeftBack.X, DefaultThickness, DefaultThickness) { PositionV3 = Midpoint(topRightBack, topLeftBack) };
+            Objects[3] = new Box(DefaultThickness, DefaultThickness, topLeftBack.Z - topLeftFront.Z + DefaultThickness) { PositionV3 = Midpoint(topLeftFront, topLeftBack) };
+            Objects[4] = new Box(DefaultThickness, topRightBack.Y - bottomRightBack.Y, DefaultThickness) { PositionV3 = Midpoint(topRightBack, bottomRightBack) };
+            Objects[5] = new Box(DefaultThickness, topLeftBack.Y - bottomLeftBack.Y, DefaultThickness) { PositionV3 = Midpoint(topLeftBack, bottomLeftBack) };
+            Objects[6] = new Box(DefaultThickness, topRightFront.Y - bottomRightFront.Y, DefaultThickness) { PositionV3 = Midpoint(topRightFront, bottomRightFront) };
+            Objects[7] = new Box(DefaultThickness, topLeftFront.Y - bottomLeftFront.Y, DefaultThickness) { PositionV3 = Midpoint(topLeftFront, bottomLeftFront) };
+            Objects[8] = new Box(bottomRightFront.X - bottomLeftFront.X, DefaultThickness, DefaultThickness) { PositionV3 = Midpoint(bottomLeftFront, bottomRightFront) };
+            Objects[9] = new Box(DefaultThickness, DefaultThickness, bottomRightBack.Z - bottomRightFront.Z + DefaultThickness) { PositionV3 = Midpoint(bottomRightFront, bottomRightBack) };
+            Objects[10] = new Box(bottomRightBack.X - bottomLeftBack.X, DefaultThickness, DefaultThickness) { PositionV3 = Midpoint(bottomRightBack, bottomLeftBack) };
+            Objects[11] = new Box(DefaultThickness, DefaultThickness, bottomLeftBack.Z - bottomLeftFront.Z + DefaultThickness) { PositionV3 = Midpoint(bottomLeftFront, bottomLeftBack) };
 
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
  

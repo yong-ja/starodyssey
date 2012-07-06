@@ -27,6 +27,7 @@ namespace AvengersUtd.Odyssey
         private readonly EventHandlerList eventHandlerList;
         private readonly DeviceContext immediate;
         private bool disposed;
+        private SwapChain swapChain;
 
         #region Events
 
@@ -137,7 +138,7 @@ namespace AvengersUtd.Odyssey
             //                                                 new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight,
             //                                                                     new Rational(120, 1), Settings.Format),
             //                                             IsWindowed = true,
-            //                                             OutputHandle = handle,
+            //                                             OutputHandle =(new System.Windows.Interop.WindowInteropHelper(Global.Window)).Handle,
             //                                             SampleDescription = Settings.SampleDescription,
             //                                             SwapEffect = SwapEffect.Discard,
             //                                             Usage = Usage.RenderTargetOutput,
@@ -146,6 +147,9 @@ namespace AvengersUtd.Odyssey
             //LogEvent.Engine.Log(Resources.INFO_OE_DeviceCreating);
             //Device.CreateWithSwapChain(DriverType.Hardware, Settings.CreationFlags, swapChainDesc, out device, out swapChain);
             device = new Device(DriverType.Hardware, Settings.CreationFlags, FeatureLevel.Level_11_0);
+
+            //if (!Settings.IsWindowed)
+
 
             immediate = device.ImmediateContext;
 

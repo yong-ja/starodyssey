@@ -144,7 +144,7 @@ namespace AvengersUtd.Odyssey.Graphics.Effects
         {
             foreach (InstanceParameter p in instanceParameters.Values)
             {
-                VerboseEvent.InstanceParameterSetting.Log(rObject.Name, p.Type.ToString());
+                //VerboseEvent.InstanceParameterSetting.Log(rObject.Name, p.Type.ToString());
                 p.Apply(rObject);
             }
         }

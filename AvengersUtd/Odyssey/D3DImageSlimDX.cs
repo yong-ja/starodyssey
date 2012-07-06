@@ -7,6 +7,7 @@ using SlimDX.Direct3D9;
 using System.Windows.Interop;
 using System.Windows;
 using SlimDX.Direct3D11;
+using AvengersUtd.Odyssey.Settings;
 
 namespace AvengersUtd.Odyssey
 {
@@ -19,10 +20,12 @@ namespace AvengersUtd.Odyssey
         static Direct3DEx D3DContext;
         static DeviceEx D3DDevice;
 
+        DeviceSettings settings;
         Texture SharedTexture;
 
-        public D3DImageSlimDX()
+        public D3DImageSlimDX(DeviceSettings settings)
         {
+            this.settings = settings;
             InitD3D9();
             NumActiveImages++;
         }
@@ -70,7 +73,7 @@ namespace AvengersUtd.Odyssey
             }
             else if (IsShareable(Texture))
             {
-                Format format = TranslateFormat(Texture);
+                Format format = TranslateFormat(Texture.Description.Format);
                 if (format == Format.Unknown)
                     throw new ArgumentException("Texture format is not compatible with OpenSharedResource");
 
@@ -97,12 +100,34 @@ namespace AvengersUtd.Odyssey
                 D3DContext = new Direct3DEx();
 
                 PresentParameters presentparams = new PresentParameters();
-                presentparams.Windowed = true;
+                presentparams.Windowed = settings.IsWindowed;
                 presentparams.SwapEffect = SwapEffect.Discard;
                 presentparams.DeviceWindowHandle = GetDesktopWindow();
                 presentparams.PresentationInterval = PresentInterval.Immediate;
 
-                D3DDevice = new DeviceEx(D3DContext, 0, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
+
+                if (!settings.IsWindowed)
+                {
+                    presentparams.FullScreenRefreshRateInHertz = 120;
+                    presentparams.BackBufferHeight = settings.ScreenHeight;
+                    presentparams.BackBufferWidth = settings.ScreenWidth;
+                    presentparams.BackBufferFormat = TranslateFormat(settings.Format);
+                    DisplayModeEx fullScreen = new DisplayModeEx()
+                    {
+                        Format = TranslateFormat(settings.Format),
+                        Width = settings.ScreenWidth,
+                        Height = settings.ScreenHeight,
+                        RefreshRate = 120
+                    };
+                    D3DDevice = new DeviceEx(D3DContext,
+                        0, DeviceType.Hardware, IntPtr.Zero,
+                        CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve,
+                        presentparams, fullScreen);
+                }
+                else
+                    D3DDevice = new DeviceEx(D3DContext, 0, DeviceType.Hardware, IntPtr.Zero,
+                        CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve,
+                        presentparams);
             }
         }
 
@@ -140,9 +165,9 @@ namespace AvengersUtd.Odyssey
             return result;
         }
 
-        Format TranslateFormat(Texture2D Texture)
+        Format TranslateFormat(SlimDX.DXGI.Format format)
         {
-            switch (Texture.Description.Format)
+            switch (format)
             {
                 case SlimDX.DXGI.Format.R10G10B10A2_UNorm:
                     return SlimDX.Direct3D9.Format.A2B10G10R10;
@@ -150,6 +175,7 @@ namespace AvengersUtd.Odyssey
                 case SlimDX.DXGI.Format.R16G16B16A16_Float:
                     return SlimDX.Direct3D9.Format.A16B16G16R16F;
 
+                case SlimDX.DXGI.Format.R8G8B8A8_UNorm:
                 case SlimDX.DXGI.Format.B8G8R8A8_UNorm:
                     return SlimDX.Direct3D9.Format.A8R8G8B8;
 

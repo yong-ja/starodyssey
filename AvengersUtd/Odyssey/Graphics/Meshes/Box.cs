@@ -20,14 +20,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public static Box FromSphere(ISphere sphere)
         {
-            return new Box(sphere.AbsolutePosition, 2*sphere.Radius);
+            return new Box(2 * sphere.Radius);
         }
 
 
-        public Box(Vector3 position, float width, float height, float depth)
+        public Box(float width, float height, float depth)
             : base(MeshVertex.Description)
         {
-            PositionV3 = position;
             Width = width;
             Height = height;
             Depth = depth;
@@ -35,7 +34,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             ushort[] indices;
             Vertices = PolyMesh.CreateBox(PositionV4, Width, Height, Depth, out indices);
             Vector3 pMin, pMax;
-            
 
             FindMinMax(Vertices.Cast<IPositionVertex>(), out pMin, out pMax);
             Min = pMin;
@@ -50,7 +48,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         /// </summary>
         /// <param name="position">A vector representing its center.</param>
         /// <param name="side">The length of the side.</param>
-        public Box(Vector3 position, float side) : this (position, side, side, side)
+        public Box(float side) : this (side, side, side)
         {
         }
 

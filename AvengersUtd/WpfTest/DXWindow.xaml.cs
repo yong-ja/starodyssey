@@ -20,25 +20,28 @@ using System.ComponentModel;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.StarOdyssey.Scenes;
+using AvengersUtd.Odyssey.Graphics.Rendering;
 
 namespace WpfTest
 {
     /// <summary>
     /// Interaction logic for SurfaceWindow1.xaml
     /// </summary>
-    public partial class SurfaceWindow1 : SurfaceWindow
+    public partial class DXWindow : SurfaceWindow
     {
-        TestRenderer scene;
+        Renderer scene;
         Image slimDXimage;
         D3DImageSlimDX d3dImage;
 
-        static SurfaceWindow1()
+        static DXWindow()
         {
-            Game.InitWPF();
         }
 
-        public SurfaceWindow1()
+        public DXWindow()
         {
+            OdysseyUI.SetupHooksWpf(this);
+            Game.InitWPF();
+
             InitializeComponent();
 
             // Add handlers for window availability events
@@ -116,7 +119,7 @@ namespace WpfTest
 
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            OdysseyUI.SetupHooksWpf(this);
+
             slimDXimage = new Image();
 
             slimDXimage.Width = Game.Context.Settings.ScreenWidth;
@@ -124,12 +127,12 @@ namespace WpfTest
             slimDXimage.FocusVisualStyle = null;
             Content = slimDXimage;
 
-            d3dImage = new D3DImageSlimDX();
+            d3dImage = new D3DImageSlimDX(Game.Context.Settings);
             d3dImage.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             slimDXimage.Source = d3dImage;
             d3dImage.SetBackBufferSlimDX(Game.Context.GetBackBuffer());
 
-            scene = new TestRenderer(Game.Context);
+            scene = new BoxRenderer(Game.Context);
             Game.ChangeRenderer(scene);
             BeginRenderingScene();
 
