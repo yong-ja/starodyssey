@@ -1,6 +1,6 @@
-﻿<s:SurfaceWindow x:Class="WpfTest.SurfaceWindow1"
+﻿<s:SurfaceWindow x:Class="WpfTest.DXWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="http://schemas.microsoft.com/surface/2008"
-    Title="WpfTest" IsManipulationEnabled="True">
+    Title="WpfTest">
 </s:SurfaceWindow>

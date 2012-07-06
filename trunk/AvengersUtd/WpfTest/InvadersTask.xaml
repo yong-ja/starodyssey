@@ -1,0 +1,13 @@
+﻿<s:SurfaceWindow x:Class="WpfTest.InvadersTask"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="http://schemas.microsoft.com/surface/2008"
+        xmlns:local="clr-namespace:WpfTest"
+        Title="InvadersTask" Height="1080" Width="1920" WindowStyle="None" WindowState="Maximized">
+    <Canvas Name ="Canvas" Background="DarkGray">
+        <local:Target x:Name="Invader1" Canvas.Left="10" Canvas.Top="10"
+               Source="pack://application:,,,/WpfTest;component/Resources/Textures/invader1.png" Width="128" Height="128"/>
+        <local:Target x:Name="Invader2" Source="pack://application:,,,/WpfTest;component/Resources/Textures/invaders2.png" Width="128" Height="128"/>
+        <local:Target x:Name="Invader3" Source="pack://application:,,,/WpfTest;component/Resources/Textures/invaders3.png" Width="128" Height="128"/>
+    </Canvas>
+</s:SurfaceWindow>

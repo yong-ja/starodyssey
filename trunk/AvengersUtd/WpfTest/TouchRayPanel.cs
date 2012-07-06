@@ -13,6 +13,7 @@ using AvengersUtd.Odyssey.Utils.Logging;
 using System.Windows;
 using System.Windows.Input;
 using AvengersUtd.Odyssey.UserInterface;
+using System.Diagnostics.Contracts;
 
 namespace WpfTest
 {
@@ -24,9 +25,7 @@ namespace WpfTest
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
         RenderableNode rNode;
         TrackerWrapper tracker;
-
         TexturedIcon crosshair;
-
 
         RenderableNode RNode
         {
@@ -66,7 +65,7 @@ namespace WpfTest
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchDown(e);
-            window.CaptureTouch(e.TouchDevice);
+            //window.CaptureTouch(e.TouchDevice);
 
             TexturedIcon crosshair = new TexturedIcon
             {
@@ -77,10 +76,12 @@ namespace WpfTest
             };
             crosshairs.Add(e.TouchDevice, crosshair);
             bool result;
-            points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
+            //points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
             OdysseyUI.CurrentHud.BeginDesign();
             Add(crosshair);
             OdysseyUI.CurrentHud.EndDesign();
+
+                        LogEvent.UserInterface.Write("TouchDown");
 
         }
 
@@ -108,13 +109,14 @@ namespace WpfTest
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchUp(e);
-            window.ReleaseTouchCapture(e.TouchDevice);
+            //window.ReleaseTouchCapture(e.TouchDevice);
             OdysseyUI.CurrentHud.BeginDesign();
             Remove(crosshairs[e.TouchDevice]);
             OdysseyUI.CurrentHud.EndDesign();
             
             crosshairs.Remove(e.TouchDevice);
-            points.Remove(e.TouchDevice);
+            //points.Remove(e.TouchDevice);
+            LogEvent.UserInterface.Write("TouchUp");
 
         }
 
@@ -123,20 +125,31 @@ namespace WpfTest
             base.OnTouchMove(e);
 
             bool result;
-
+            crosshairs[e.TouchDevice].Position = e.Location;
             Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
 
             if (result)
             {
                 points[e.TouchDevice] = pIntersection;
-                Vector3[] vPoints = points.Values.ToArray();
-                Vector3 vLeft=vPoints[0];
-                Vector3 vRight = vPoints.Length < 2 ? defaultRight : vPoints[1];
+                //points[e.TouchDevice] = pIntersection;
+                Vector3 p1, p2;
+                if (crosshairs.Count== 1)
+                {
+                    p1 = points[e.TouchDevice];
+                    p2 = defaultRight;
+                }
+                else if (crosshairs.Count == 2)
+                {
+                }
 
-                RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
-                RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
-                RNode.RenderableObject.ScalingValues);
+
+
+                //RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
+                //RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
+                //RNode.RenderableObject.ScalingValues);
             }
+            else 
+                LogEvent.UserInterface.Write("Intersection result false");
 
         }
 
@@ -202,12 +215,23 @@ namespace WpfTest
         Vector3 FindScalingValues(Vector3 p1, Vector3 p2)
         {
             float scalingX, scalingZ;
-            if (p1.Z < 0 && p2.Z < 0)
+            if (p1.Z > 0 && p2.Z > 0)
+                scalingZ = Math.Max(p1.Z, p2.Z) - Math.Min(p1.Z, p2.Z);
+            else if (p1.Z < 0 && p2.Z < 0)
                 scalingZ = Math.Abs(Math.Min(p1.Z, p2.Z)) + Math.Max(p1.Z, p2.Z);
-            else
-                scalingZ = Math.Abs(p1.Z) + Math.Abs(p2.Z);
+            else if (p1.Z < 0 && p2.Z > 0)
+                scalingZ = Math.Abs(p1.Z) + p2.Z;
+            else //(p1 positive p2 negative)
+                scalingZ = p1.Z + Math.Abs(p2.Z);
 
-            scalingX = Math.Abs(p1.X) + Math.Abs(p2.X);
+            // left positive right positive
+            if (p1.X > 0 && p2.X > 0)
+                scalingX = p2.X - p1.X;
+            else if (p1.X < 0 && p2.X > 0) //left negative right positive
+                scalingX = Math.Abs(p1.X) + p2.X;
+            else //if (p1.X < 0 && p2.X < 0)
+                scalingX = Math.Abs(p1.X) + p2.X;
+
             
 
             return new Vector3(scalingX, 1f, scalingZ);

@@ -25,6 +25,7 @@ namespace AvengersUtd.Odyssey.Settings
         public Size ScreenSize { get { return new Size(ScreenWidth, ScreenHeight);} }
         public SampleDescription SampleDescription { get; set; }
         public bool IsStereo { get; set; }
+        public bool IsWindowed { get; set; }
 
         static DeviceSettings()
         {

@@ -39,7 +39,7 @@ namespace AvengersUtd.Odyssey
             slimDXimage.FocusVisualStyle = null;
             Content = slimDXimage;
 
-            d3dImage = new D3DImageSlimDX();
+            d3dImage = new D3DImageSlimDX(Game.Context.Settings);
             d3dImage.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             slimDXimage.Source = d3dImage;
             d3dImage.SetBackBufferSlimDX(Game.Context.GetBackBuffer());

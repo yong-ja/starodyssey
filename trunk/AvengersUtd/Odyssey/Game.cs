@@ -68,7 +68,8 @@ namespace AvengersUtd.Odyssey
                                               ScreenHeight = 1080,
                                               SampleDescription = new SampleDescription(1,0),
                                               Format = Format.R8G8B8A8_UNorm,
-                                              IsStereo = true
+                                              IsStereo = false,
+                                              IsWindowed = true
                                           };
 
             RenderForm form = new RenderForm
@@ -96,15 +97,12 @@ namespace AvengersUtd.Odyssey
             DeviceSettings deviceSettings = new DeviceSettings
                                           {
                                               AdapterOrdinal = 0,
-                                              CreationFlags = DeviceCreationFlags.Debug | DeviceCreationFlags.BgraSupport,
+                                              CreationFlags = DeviceCreationFlags.BgraSupport,
                                               ScreenWidth = 1920,
                                               ScreenHeight = 1080,
                                               SampleDescription = new SampleDescription(1,0),
                                               Format = Format.R8G8B8A8_UNorm,
-                                              IsStereo = true
                                           };
-
-            D3DImageSlimDX d3dImage = new D3DImageSlimDX();
 
             Context = new DeviceContextWpf(deviceSettings);
 

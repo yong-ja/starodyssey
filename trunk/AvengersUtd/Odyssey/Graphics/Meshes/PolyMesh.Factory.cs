@@ -350,43 +350,52 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Vector2 textureBottomLeft = new Vector2(0.0f, 1.0f);
             Vector2 textureBottomRight = new Vector2(1.0f, 1.0f);
 
+            Vector4 v0 = new Vector4(-width/2, -height/2, depth/2, 0);
+            Vector4 v1 = new Vector4(-width/2, height/2, depth/2, 0);
+            Vector4 v2 = new Vector4(width/2, -height/2, depth/2, 0);
+            Vector4 v3 = new Vector4(width/2, height/2, depth/2, 0);
+            Vector4 v4 = new Vector4(width/2, -height/2, -depth/2, 0);
+            Vector4 v5 = new Vector4(width/2, height/2, -depth/2, 0);
+            Vector4 v6 = new Vector4(-width/2, -height/2, -depth/2, 0);
+            Vector4 v7 = new Vector4(-width/2, height/2, -depth/2, 0);
+
             MeshVertex[] vertices = new MeshVertex[]
             {
                 // Front Surface
-                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0), frontNormal, textureBottomLeft),
-                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),frontNormal,textureTopLeft), 
-                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),frontNormal,textureBottomRight),
-                new MeshVertex(center + new Vector4(width/2, height/2, depth/2, 0),frontNormal,textureTopRight),  
+                new MeshVertex(center + v0, frontNormal, textureBottomLeft),
+                new MeshVertex(center + v1,frontNormal,textureTopLeft), 
+                new MeshVertex(center + v2,frontNormal,textureBottomRight),
+                new MeshVertex(center + v3,frontNormal,textureTopRight),  
  
                 // Back Surface
-                new MeshVertex(center +new Vector4(width/2, -height/2, -depth/2, 0),backNormal, textureBottomLeft),
-                new MeshVertex(center +new Vector4(width/2, height/2, -depth/2, 0),backNormal, textureTopLeft), 
-                new MeshVertex(center +new Vector4(-width/2, -height/2, -depth/2, 0),backNormal, textureBottomRight),
-                new MeshVertex(center +new Vector4(-width/2, height/2, -depth/2, 0), backNormal, textureTopRight), 
+                new MeshVertex(center + v4,backNormal, textureBottomLeft),
+                new MeshVertex(center +v5,backNormal, textureTopLeft), 
+                new MeshVertex(center +v6,backNormal, textureBottomRight),
+                new MeshVertex(center +v7, backNormal, textureTopRight), 
  
                 // Left Surface
-                new MeshVertex(center + new Vector4(-width/2, -height/2, -depth/2, 0), leftNormal, textureBottomLeft),
-                new MeshVertex(center + new Vector4(-width/2, height/2, -depth/2, 0),leftNormal, textureTopLeft),
-                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0),leftNormal, textureBottomRight),
-                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),leftNormal, textureTopRight),
+                new MeshVertex(center + v6, leftNormal, textureBottomLeft),
+                new MeshVertex(center + v7,leftNormal, textureTopLeft),
+                new MeshVertex(center + v0,leftNormal, textureBottomRight),
+                new MeshVertex(center + v1,leftNormal, textureTopRight),
  
                 // Right Surface
-                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),rightNormal, textureBottomLeft),
-                new MeshVertex(center + new Vector4(width/2, height/2,depth/2, 0),rightNormal, textureTopLeft),
-                new MeshVertex(center + new Vector4(width/2, -height/2, -depth/2, 0),rightNormal, textureBottomRight),
-                new MeshVertex(center + new Vector4(width/2, height/2, -depth/2, 0),rightNormal, textureTopRight),
+                new MeshVertex(center + v2,rightNormal, textureBottomLeft),
+                new MeshVertex(center + v3,rightNormal, textureTopLeft),
+                new MeshVertex(center + v4,rightNormal, textureBottomRight),
+                new MeshVertex(center + v5,rightNormal, textureTopRight),
  
                 // Top Surface
-                new MeshVertex(center + new Vector4(-width/2, height/2, depth/2, 0),topNormal,textureBottomLeft),
-                new MeshVertex(center + new Vector4(-width/2, height/2, -depth/2, 0),topNormal,textureTopLeft),
-                new MeshVertex(center + new Vector4(width/2, height/2, depth/2, 0),topNormal,textureBottomRight),
-                new MeshVertex(center + new Vector4(width/2, height/2, -depth/2, 0),topNormal,textureTopRight),
+                new MeshVertex(center + v1,topNormal,textureBottomLeft),
+                new MeshVertex(center + v7,topNormal,textureTopLeft),
+                new MeshVertex(center + v3,topNormal,textureBottomRight),
+                new MeshVertex(center + v5,topNormal,textureTopRight),
  
                 // Bottom Surface
-                new MeshVertex(center + new Vector4(-width/2, -height/2, -depth/2, 0), bottomNormal,textureBottomLeft),
-                new MeshVertex(center + new Vector4(-width/2, -height/2, depth/2, 0),bottomNormal,textureTopLeft),
-                new MeshVertex(center + new Vector4(width/2, -height/2, -depth/2, 0),bottomNormal,textureBottomRight),
-                new MeshVertex(center + new Vector4(width/2, -height/2, depth/2, 0),bottomNormal,textureTopRight),
+                new MeshVertex(center + v6, bottomNormal,textureBottomLeft),
+                new MeshVertex(center + v0,bottomNormal,textureTopLeft),
+                new MeshVertex(center + v4,bottomNormal,textureBottomRight),
+                new MeshVertex(center + v2,bottomNormal,textureTopRight),
             };
 
            
@@ -401,6 +410,75 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
             return vertices;
 
+        }
+
+        #endregion
+
+        #region Pyramid
+
+        public static MeshVertex[] CreatePyramid(Vector4 center, float width, float height, float depth,
+                                                out ushort[] indices)
+        {
+            float halfWidth = width/2;
+            float halfHeight = height/2;
+            float halfDepth = depth/2;
+
+            Vector4 v0 = new Vector4(0, halfHeight/2, 0, 0);
+            Vector4 v1 = new Vector4(halfWidth, -halfHeight, halfDepth,0);
+            Vector4 v2 = new Vector4(-halfWidth, -halfHeight, halfDepth,0);
+            Vector4 v3 = new Vector4(halfWidth, -halfHeight, -halfDepth,0);
+            Vector4 v4 = new Vector4(-halfWidth, -halfHeight, -halfDepth,0);
+            Vector3 n0 = Normal(v0, v2, v4);
+            Vector3 n1 = Normal(v0, v4, v3);
+            Vector3 n2 = Normal(v0, v3, v1);
+            Vector3 n3 = Normal(v0, v1, v2);
+            Vector3 n4 = -Vector3.UnitY;
+
+            Vector2 tV = new Vector2(0.5f, 0f); // Top Vertex
+            Vector2 tF0 = new Vector2(0f, 1f); // Face Bottom Left
+            Vector2 tF1 = new Vector2(1f, 1f); // Face Bottom Right
+            Vector2 tB0 = new Vector2(0f,0f); // Base top left
+            Vector2 tB1 = new Vector2(1f, 0f); // Base top Right
+
+           MeshVertex[] vertices = new MeshVertex[]
+            {
+                // Left face
+                new MeshVertex(center + v2, n0, tF0),
+                new MeshVertex(center + v0, n0, tV),
+                new MeshVertex(center + v4, n0, tF1),
+
+                // Front face
+                new MeshVertex(center + v4, n1, tF0),
+                new MeshVertex(center + v0, n1, tV),
+                new MeshVertex(center + v3, n1, tF1),
+
+                // Right Face
+                new MeshVertex(center + v3, n2, tF0),
+                new MeshVertex(center + v0, n2, tV),
+                new MeshVertex(center + v1, n2, tF1),
+
+                // Back Face
+                new MeshVertex(center + v1, n3, tF0),
+                new MeshVertex(center + v0, n3, tV),
+                new MeshVertex(center + v2, n3, tF1),
+
+                // Bottom Face
+                new MeshVertex(center + v1, n4, tF0),
+                new MeshVertex(center + v3, n4, tB0),
+                new MeshVertex(center + v4, n4, tB1),
+                new MeshVertex(center + v2, n4, tF1),
+            };
+
+            indices = new ushort[] { 
+                2, 1, 0,
+                5, 4, 3,
+                8, 7, 6,
+                11, 10, 9,
+                12, 13, 14,
+                14, 15, 12
+                };
+
+            return vertices;
         }
 
         #endregion
@@ -506,5 +584,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
 
         #endregion
+
+        
     }
 }

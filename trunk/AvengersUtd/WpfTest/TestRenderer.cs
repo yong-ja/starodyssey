@@ -22,8 +22,6 @@ namespace AvengersUtd.StarOdyssey.Scenes
     public class TestRenderer : Renderer
     {
 
-        public Texture2D SharedTexture { get; set; }
-
         public TrackerWrapper tracker { get; private set; }
        
         public TestRenderer(AvengersUtd.Odyssey.IDeviceContext deviceContext) : base(deviceContext)
@@ -55,7 +53,9 @@ namespace AvengersUtd.StarOdyssey.Scenes
             FixedNode fNodeGrid = new FixedNode {Label = "fGrid", Position = grid.PositionV3 };
 
             //Box box2 = new Box(new Vector3(0.25f, 0.25f, 0.25f), 1, 1, 1);
-            Box box2 = new Box(Vector3.Zero, 1, 1, 1);
+            Box box2 = new Box(1, 1, 1);
+
+            box.PositionV3 = new Vector3(0, 5, 0);
             RenderableNode rNodeBox2 = new RenderableNode(box2) { Label="RBox"};
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeSphere);
