@@ -88,8 +88,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected override void OnDispose()
         {
-            genericUpdateThread.Abort();
-            WarningEvent.ThreadAborted.Log(GetType().Name);
             EventHandle.Dispose();
         } 
         #endregion

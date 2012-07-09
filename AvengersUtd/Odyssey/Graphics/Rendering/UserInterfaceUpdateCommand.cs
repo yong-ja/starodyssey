@@ -85,7 +85,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected override void OnDispose()
         {
-            uiUpdateThread.Abort();
             EventHandle.Dispose();
         }
     }

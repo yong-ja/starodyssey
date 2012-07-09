@@ -119,6 +119,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         #region IDisposable members
         public void Dispose()
         {
+            Hud.IsEnabled = false;
             Dispose(true);
             GC.SuppressFinalize(this);
         }
