@@ -79,14 +79,14 @@ namespace WpfTest
                 Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
             };
             crosshairs.Add(e.TouchDevice, crosshair);
-            e.TouchDevice.Capture(window);
-            bool result;
+            window.CaptureTouch(e.TouchDevice);
+            //e.TouchDevice.Capture(window);
             //points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
             OdysseyUI.CurrentHud.BeginDesign();
             Add(crosshair);
             OdysseyUI.CurrentHud.EndDesign();
-
-                        LogEvent.UserInterface.Write("TouchDown");
+                        LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id);
+            
 
         }
 
@@ -116,13 +116,13 @@ namespace WpfTest
             base.OnTouchUp(e);
             //window.ReleaseTouchCapture(e.TouchDevice);
             OdysseyUI.CurrentHud.BeginDesign();
-            Remove(crosshairs[e.TouchDevice]);
+            //Remove(crosshairs[e.TouchDevice]);
             OdysseyUI.CurrentHud.EndDesign();
             
-            crosshairs.Remove(e.TouchDevice);
+            //crosshairs.Remove(e.TouchDevice);
             //points.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
-            LogEvent.UserInterface.Write("TouchUp");
+            LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
 
         }
 
