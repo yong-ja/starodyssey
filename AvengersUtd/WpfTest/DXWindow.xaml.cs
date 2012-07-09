@@ -19,7 +19,6 @@ using AvengersUtd.Odyssey;
 using System.ComponentModel;
 using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey.UserInterface;
-using AvengersUtd.StarOdyssey.Scenes;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 
 namespace WpfTest
