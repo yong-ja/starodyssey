@@ -23,30 +23,30 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public static BoundingBox FromSphere(ISphere sphere)
         {
-            return new BoundingBox(sphere.AbsolutePosition, 2 * sphere.Radius);
+            return new BoundingBox(2 * sphere.Radius);
         }
 
-        public BoundingBox(Vector3 position, float side)
-            : this(position, side, side, side)
+        public BoundingBox(float side)
+            : this(side, side, side)
         { }
 
-        public BoundingBox(Vector3 position, float width, float height, float depth)
+        public BoundingBox(float width, float height, float depth)
             : base(12)
         {
-            PositionV3 = position;
+            Vector3 center = Vector3.Zero;
             Width = width;
             Height = height;
             Depth = depth;
 
             //ushort[] indices;
-            Vector3 topLeftFront = PositionV3 + new Vector3(-width / 2, height / 2, -depth / 2);
-            Vector3 bottomLeftFront = PositionV3 + new Vector3(-width / 2, -height / 2, -depth / 2);
-            Vector3 topRightFront = PositionV3 + new Vector3(width / 2, height / 2, -depth / 2);
-            Vector3 bottomRightFront = PositionV3 + new Vector3(width / 2, -height / 2, -depth / 2);
-            Vector3 topLeftBack = PositionV3 + new Vector3(-width / 2, height / 2, depth / 2);
-            Vector3 topRightBack = PositionV3 + new Vector3(width / 2, height / 2, depth / 2);
-            Vector3 bottomLeftBack = PositionV3 + new Vector3(-width / 2, -height / 2, depth / 2);
-            Vector3 bottomRightBack = PositionV3 + new Vector3(width / 2, -height / 2, depth / 2);
+            Vector3 topLeftFront = center + new Vector3(-width / 2, height / 2, -depth / 2);
+            Vector3 bottomLeftFront = center + new Vector3(-width / 2, -height / 2, -depth / 2);
+            Vector3 topRightFront = center + new Vector3(width / 2, height / 2, -depth / 2);
+            Vector3 bottomRightFront = center + new Vector3(width / 2, -height / 2, -depth / 2);
+            Vector3 topLeftBack = center + new Vector3(-width / 2, height / 2, depth / 2);
+            Vector3 topRightBack = center + new Vector3(width / 2, height / 2, depth / 2);
+            Vector3 bottomLeftBack = center + new Vector3(-width / 2, -height / 2, depth / 2);
+            Vector3 bottomRightBack = center + new Vector3(width / 2, -height / 2, depth / 2);
 
             Vector3[] vertices = new Vector3[] { topLeftFront, bottomLeftFront, topRightFront, bottomRightFront,
                 topLeftBack, topRightBack, bottomLeftBack, bottomRightBack };

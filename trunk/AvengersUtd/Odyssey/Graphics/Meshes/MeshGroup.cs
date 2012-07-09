@@ -321,6 +321,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             IsCollidable = false;
             IsVisible = true;
 
+            ScalingValues = new Vector3(1f, 1f, 1f);
             World = Matrix.Identity;
             CurrentRotation = Quaternion.Identity;
             Objects = new IRenderable[size];
@@ -424,6 +425,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public void Rotate(float distance, Vector3 axis)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<RenderableNode> ToNodes()
+        {
+            RenderableNode[] nodes = new RenderableNode[Objects.Length];
+            for (int i = 0; i < Objects.Length; i++)
+                nodes[i] = new RenderableNode(Objects[i]);
+
+            return nodes;
         }
     }
 }

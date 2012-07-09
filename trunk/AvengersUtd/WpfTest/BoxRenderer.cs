@@ -13,7 +13,7 @@ using AvengersUtd.Odyssey.UserInterface;
 
 namespace WpfTest
 {
-    public class BoxRenderer :Renderer
+    public class BoxRenderer : Renderer
     {
 
         public BoxRenderer(IDeviceContext deviceContext)
@@ -23,23 +23,37 @@ namespace WpfTest
         public override void Init()
         {
 
-            Camera.LookAt(Vector3.Zero, new Vector3(0, 5, -10f));
+            Camera.LookAt(Vector3.Zero, new Vector3(0, 0, -10f));
 
-            AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
+            //AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
             //grid.PositionV3 = new Vector3(-5, 5, 0);
             //Box plane = new Box(Vector3.Zero, 50, 1, 50);
-            //Box box = new Box(1, 1, 1);
-            Pyramid box = new Pyramid(1, 2, 1);
+            Box box = new Box(1, 1, 1);
+            //Pyramid pyramid = new Pyramid(1, 2, 1);
+            Sphere sphere = new Sphere(1, 16);
+            Arrow arrow = new Arrow(1, 1, 3, 0.5f) { PositionV3 = new Vector3(-2.5f, 0, 0) };
+            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(4);
+            //pyramid.PositionV3 = new Vector3(0, 5, 0);
+            sphere.PositionV3 = new Vector3(0f, 3f, 0);
 
-            RenderableNode rNodeGrid = new RenderableNode(grid);
+            //RenderableNode rNodeGrid = new RenderableNode(grid);
+            //RenderableNode rNodePyramid = new RenderableNode(pyramid) { Label = "Pyramid" };
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = grid.PositionV3 };
+            RenderableNode rNodeSPhere = new RenderableNode(sphere);
+            //RenderableNode rNodeArrow = new RenderableNode(arrow);
+            RenderableNode rNodeBBox = new RenderableNode(bbox);
+            FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
 
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
-            fNodeGrid.AppendChild(rNodeGrid);
-            fNodeGrid.AppendChild(rNodeBox);
+            //fNodeGrid.AppendChild(rNodeGrid);
+            //fNodeGrid.AppendChild(rNodeBox);
+            //fNodeGrid.AppendChild(rNodePyramid);
+            fNodeGrid.AppendChild(rNodeSPhere);
+            fNodeGrid.AppendChildren(arrow.ToNodes());
+            fNodeGrid.AppendChildren(bbox.ToNodes());
+            //fNodeGrid.AppendChild(rNodeBBox);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
@@ -82,11 +96,11 @@ namespace WpfTest
             //bTracking.MouseClick += (sender, e) => { tracker.StartTracking(); };
 
 
-            TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, Camera = this.Camera };
-            Hud.Add(rp);
+            //TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, Camera = this.Camera };
+            //Hud.Add(rp);
 
-            rp.Add(bConnect);
-            rp.Add(bTracking);
+            //rp.Add(bConnect);
+            //rp.Add(bTracking);
             //rp.SetTracker(tracker);
 
             Game.Logger.Activate();
