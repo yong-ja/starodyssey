@@ -24,30 +24,37 @@ namespace AvengersUtd.StarOdyssey
         public override void Init()
         {
 
-            Camera.LookAt(Vector3.Zero, new Vector3(0, -5, -10f));
+            Camera.LookAt(Vector3.Zero, new Vector3(0, 0, -10f));
 
             //AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
             //grid.PositionV3 = new Vector3(-5, 5, 0);
             //Box plane = new Box(Vector3.Zero, 50, 1, 50);
             Box box = new Box(1, 1, 1);
-            Pyramid pyramid = new Pyramid(1, 2, 1);
+            //Pyramid pyramid = new Pyramid(1, 2, 1);
             Sphere sphere = new Sphere(1, 16);
-            pyramid.PositionV3 = new Vector3(0, 5, 0);
-            sphere.PositionV3= new Vector3(10, 0, 0);
+            Arrow arrow = new Arrow(1, 1, 3, 0.5f) { PositionV3 = new Vector3(-2.5f, 0, 0) };
+            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(4);
+            //pyramid.PositionV3 = new Vector3(0, 5, 0);
+            sphere.PositionV3= new Vector3(0f, 3f, 0);
 
             //RenderableNode rNodeGrid = new RenderableNode(grid);
-            RenderableNode rNodePyramid = new RenderableNode(pyramid) { Label = "Pyramid" };
+            //RenderableNode rNodePyramid = new RenderableNode(pyramid) { Label = "Pyramid" };
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
             RenderableNode rNodeSPhere = new RenderableNode(sphere);
+            //RenderableNode rNodeArrow = new RenderableNode(arrow);
+            RenderableNode rNodeBBox = new RenderableNode(bbox);
             FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
 
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
             //fNodeGrid.AppendChild(rNodeGrid);
-            fNodeGrid.AppendChild(rNodeBox);
-            fNodeGrid.AppendChild(rNodePyramid);
+            //fNodeGrid.AppendChild(rNodeBox);
+            //fNodeGrid.AppendChild(rNodePyramid);
             fNodeGrid.AppendChild(rNodeSPhere);
+            fNodeGrid.AppendChildren(arrow.ToNodes());
+            fNodeGrid.AppendChildren(bbox.ToNodes());
+            //fNodeGrid.AppendChild(rNodeBBox);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 

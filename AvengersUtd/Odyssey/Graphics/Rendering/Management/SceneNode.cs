@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using AvengersUtd.Odyssey.Utils;
 using AvengersUtd.Odyssey.Utils.Collections;
+using System.Collections.Generic;
 
 #endregion
 
@@ -100,6 +101,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         #endregion
 
         #region Base Node Methods
+
+        public void AppendChildren(IEnumerable<SceneNode> newChildren)
+        {
+            foreach (SceneNode node in newChildren)
+                AppendChild(node);
+        }
 
         public void AppendChild(SceneNode newChild)
         {
