@@ -429,7 +429,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Vector4 v3 = new Vector4(halfWidth, -halfHeight, -halfDepth,0);
             Vector4 v4 = new Vector4(-halfWidth, -halfHeight, -halfDepth,0);
             Vector3 n0 = Normal(v0, v4, v2);
-            Vector3 n1 = Normal(v0, v4, v3);
+            Vector3 n1 = Normal(v0, v3, v4);
             Vector3 n2 = Normal(v0, v1, v3);
             Vector3 n3 = Normal(v0, v1, v2);
             Vector3 n4 = -Vector3.UnitY;

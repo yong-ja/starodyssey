@@ -1,6 +1,6 @@
 // Common light properties
 float fLightRadius = 100;
-float3 vLightPosition = float3(0,10,0);
+float3 vLightPosition = float3(0,5,-5);
 float4 cLightDiffuse = float4(1,1,1,1);
 float4 cLightAmbient = float4(0.15,0.15,0.15,1);
 float4 cLightSpecular = float4(1,1,1,1);

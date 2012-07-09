@@ -209,6 +209,7 @@
     <Compile Include="InvadersTask.xaml.cs">
       <DependentUpon>InvadersTask.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScalingWidget.cs" />
     <Compile Include="Target.cs" />
     <None Include="TestRenderer.cs" />
     <Compile Include="TouchRayPanel.cs" />

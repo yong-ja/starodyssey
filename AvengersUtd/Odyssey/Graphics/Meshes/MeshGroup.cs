@@ -427,7 +427,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RenderableNode> ToNodes()
+        public virtual IEnumerable<RenderableNode> ToNodes()
         {
             RenderableNode[] nodes = new RenderableNode[Objects.Length];
             for (int i = 0; i < Objects.Length; i++)

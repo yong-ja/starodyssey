@@ -23,7 +23,7 @@ namespace WpfTest
         public override void Init()
         {
 
-            Camera.LookAt(Vector3.Zero, new Vector3(0, 0, -10f));
+            Camera.LookAt(Vector3.Zero, new Vector3(0, 5, -10f));
 
             //AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
             //grid.PositionV3 = new Vector3(-5, 5, 0);
@@ -31,7 +31,8 @@ namespace WpfTest
             Box box = new Box(1, 1, 1);
             //Pyramid pyramid = new Pyramid(1, 2, 1);
             Sphere sphere = new Sphere(1, 16);
-            Arrow arrow = new Arrow(1, 1, 3, 0.5f) { PositionV3 = new Vector3(-2.5f, 0, 0) };
+            //Arrow arrow = new Arrow(1, 1, 3, 0.5f) { PositionV3 = new Vector3(-2.5f, 0, 0) };
+            ScalingWidget sWidget = new ScalingWidget(box);
             AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(4);
             //pyramid.PositionV3 = new Vector3(0, 5, 0);
             sphere.PositionV3 = new Vector3(0f, 3f, 0);
@@ -48,12 +49,13 @@ namespace WpfTest
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
             //fNodeGrid.AppendChild(rNodeGrid);
-            //fNodeGrid.AppendChild(rNodeBox);
+            fNodeGrid.AppendChild(rNodeBox);
             //fNodeGrid.AppendChild(rNodePyramid);
             fNodeGrid.AppendChild(rNodeSPhere);
-            fNodeGrid.AppendChildren(arrow.ToNodes());
-            fNodeGrid.AppendChildren(bbox.ToNodes());
+            //fNodeGrid.AppendChildren(arrow.ToNodes());
+            //fNodeGrid.AppendChildren(bbox.ToNodes());
             //fNodeGrid.AppendChild(rNodeBBox);
+            fNodeGrid.AppendChildren(sWidget.ToNodes());
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
