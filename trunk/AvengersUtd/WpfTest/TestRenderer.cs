@@ -22,7 +22,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
     public class TestRenderer : Renderer
     {
 
-        public TrackerWrapper tracker { get; private set; }
+        //public TrackerWrapper tracker { get; private set; }
        
         public TestRenderer(AvengersUtd.Odyssey.IDeviceContext deviceContext) : base(deviceContext)
         {

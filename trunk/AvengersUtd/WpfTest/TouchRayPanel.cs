@@ -24,7 +24,7 @@ namespace WpfTest
         readonly Dictionary<TouchDevice, Vector3> points;
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
         RenderableNode rNode;
-        TrackerWrapper tracker;
+        //TrackerWrapper tracker;
         TexturedIcon crosshair;
 
         RenderableNode RNode
@@ -56,11 +56,11 @@ namespace WpfTest
             Add(crosshair);
         }
 
-        public void SetTracker(TrackerWrapper tracker)
-        {
-            this.tracker = tracker;
-            tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
-        }
+        //public void SetTracker(TrackerWrapper tracker)
+        //{
+        //    this.tracker = tracker;
+        //    tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
+        //}
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
@@ -157,16 +157,16 @@ namespace WpfTest
         {
             base.OnMouseClick(e);
 
-            Vector3 scaling = RNode.RenderableObject.ScalingValues;
-            bool result;
-            Vector3 pIntersection =GetIntersection(tracker.GazePoint, Vector3.UnitZ, out result);
-            Vector3 pPosition = RNode.RenderableObject.PositionV3;
-            float y = Math.Max(0, pIntersection.Y);
-            if (result)
-            {
-                RNode.RenderableObject.ScalingValues = new Vector3(scaling.X, y, scaling.Z);
-                RNode.RenderableObject.PositionV3 = new Vector3(pPosition.X, RNode.RenderableObject.ScalingValues.Y/2, pPosition.Z);
-            }
+            //Vector3 scaling = RNode.RenderableObject.ScalingValues;
+            //bool result;
+            //Vector3 pIntersection =GetIntersection(tracker.GazePoint, Vector3.UnitZ, out result);
+            //Vector3 pPosition = RNode.RenderableObject.PositionV3;
+            //float y = Math.Max(0, pIntersection.Y);
+            //if (result)
+            //{
+            //    RNode.RenderableObject.ScalingValues = new Vector3(scaling.X, y, scaling.Z);
+            //    RNode.RenderableObject.PositionV3 = new Vector3(pPosition.X, RNode.RenderableObject.ScalingValues.Y/2, pPosition.Z);
+            //}
             //rNode.Update();
         }
 
