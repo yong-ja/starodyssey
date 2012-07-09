@@ -22,5 +22,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             foreach (IRenderable rObject in Objects)
                 rObject.Material = Material;
         }
+
+        protected override void OnPositionChanged(PositionEventArgs e)
+        {
+            base.OnPositionChanged(e);
+            Objects[0].PositionV3 += e.NewValue;
+            Objects[1].PositionV3 += e.NewValue;
+        }
     }
 }

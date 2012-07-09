@@ -20,7 +20,7 @@ namespace WpfTest
     public class TouchRayPanel : RayPickingPanel
     {
         readonly Window window;
-        readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
+        readonly Dictionary<int, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
         RenderableNode rNode;
@@ -41,7 +41,7 @@ namespace WpfTest
 
         public TouchRayPanel()
         {
-            crosshairs = new Dictionary<TouchDevice, TexturedIcon>();
+            crosshairs = new Dictionary<int, TexturedIcon>();
             points = new Dictionary<TouchDevice, Vector3>();
             window = Global.Window;
 
@@ -65,7 +65,7 @@ namespace WpfTest
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchDown(e);
-            //window.CaptureTouch(e.TouchDevice);
+            window.CaptureTouch(e.TouchDevice);
 
             TexturedIcon crosshair = new TexturedIcon
             {
@@ -74,7 +74,7 @@ namespace WpfTest
                 Size = new System.Drawing.Size(64, 64),
                 Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
             };
-            crosshairs.Add(e.TouchDevice, crosshair);
+            crosshairs.Add(e.TouchDevice.Id, crosshair);
             bool result;
             //points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
             OdysseyUI.CurrentHud.BeginDesign();
@@ -109,12 +109,12 @@ namespace WpfTest
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchUp(e);
-            //window.ReleaseTouchCapture(e.TouchDevice);
+            window.ReleaseTouchCapture(e.TouchDevice);
             OdysseyUI.CurrentHud.BeginDesign();
-            Remove(crosshairs[e.TouchDevice]);
+            Remove(crosshairs[e.TouchDevice.Id]);
             OdysseyUI.CurrentHud.EndDesign();
             
-            crosshairs.Remove(e.TouchDevice);
+            crosshairs.Remove(e.TouchDevice.Id);
             //points.Remove(e.TouchDevice);
             LogEvent.UserInterface.Write("TouchUp");
 
@@ -125,8 +125,10 @@ namespace WpfTest
             base.OnTouchMove(e);
 
             bool result;
-            crosshairs[e.TouchDevice].Position = e.Location;
-            Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
+            if (!crosshairs.ContainsKey(e.TouchDevice.Id))
+                return;
+            crosshairs[e.TouchDevice.Id].Position = e.Location - new Vector2(crosshair.Width/2);
+            //Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
 
             //if (result)
             //{
