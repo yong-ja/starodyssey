@@ -25,11 +25,17 @@ namespace AvengersUtd.Odyssey.UserInterface
             target.TouchUp += ProcessTouchUp;
             target.TouchMove += ProcessTouchMove;
 
-            target.MouseDown += WpfProcessMouseDown;
-            target.MouseUp += WpfProcessMouseUp;
-            target.MouseMove += WpfProcessMouseMove;
+            //target.MouseDown += WpfProcessMouseDown;
+            //target.MouseUp += WpfProcessMouseUp;
+            //target.MouseMove += WpfProcessMouseMove;
+            target.LostTouchCapture += new EventHandler<System.Windows.Input.TouchEventArgs>(target_LostTouchCapture);
             Global.Window = target;
 
+        }
+
+        static void target_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+            Global.Window.ReleaseTouchCapture(e.TouchDevice);
         }
 
         static void WpfProcessMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
