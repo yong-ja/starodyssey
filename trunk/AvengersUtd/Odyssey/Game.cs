@@ -37,7 +37,7 @@ namespace AvengersUtd.Odyssey
         public static double FrameTime { get; private set; }
         public static bool IsInputEnabled { get; internal set; }
 
-        public static bool IsRunning { get; private set; }
+        public static bool IsRunning { get; internal set; }
 
         static Game()
         {

@@ -128,28 +128,28 @@ namespace WpfTest
             crosshairs[e.TouchDevice].Position = e.Location;
             Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
 
-            if (result)
-            {
-                points[e.TouchDevice] = pIntersection;
-                //points[e.TouchDevice] = pIntersection;
-                Vector3 p1, p2;
-                if (crosshairs.Count== 1)
-                {
-                    p1 = points[e.TouchDevice];
-                    p2 = defaultRight;
-                }
-                else if (crosshairs.Count == 2)
-                {
-                }
+            //if (result)
+            //{
+            //    points[e.TouchDevice] = pIntersection;
+            //    //points[e.TouchDevice] = pIntersection;
+            //    Vector3 p1, p2;
+            //    if (crosshairs.Count== 1)
+            //    {
+            //        p1 = points[e.TouchDevice];
+            //        p2 = defaultRight;
+            //    }
+            //    else if (crosshairs.Count == 2)
+            //    {
+            //    }
 
 
 
-                //RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
-                //RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
-                //RNode.RenderableObject.ScalingValues);
-            }
-            else 
-                LogEvent.UserInterface.Write("Intersection result false");
+            //    //RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
+            //    //RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
+            //    //RNode.RenderableObject.ScalingValues);
+            //}
+            //else 
+            //    LogEvent.UserInterface.Write("Intersection result false");
 
         }
 
