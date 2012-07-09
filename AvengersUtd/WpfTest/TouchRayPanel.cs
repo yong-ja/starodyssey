@@ -17,8 +17,9 @@ using System.Diagnostics.Contracts;
 
 namespace WpfTest
 {
-    public class TouchRayPanel : RayPickingPanel
+    public class TouchRayPanel : Panel
     {
+        const string ControlTag = "TouchRayPanel";
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
@@ -26,6 +27,7 @@ namespace WpfTest
         RenderableNode rNode;
         //TrackerWrapper tracker;
         TexturedIcon crosshair;
+        static int count;
 
         RenderableNode RNode
         {
@@ -39,7 +41,7 @@ namespace WpfTest
         }
 
 
-        public TouchRayPanel()
+        public TouchRayPanel() : base(ControlTag + ++count, "Empty")
         {
             crosshairs = new Dictionary<TouchDevice, TexturedIcon>();
             points = new Dictionary<TouchDevice, Vector3>();
@@ -66,8 +68,8 @@ namespace WpfTest
         {
             base.OnTouchDown(e);
 
-            if (crosshairs.Count >= 2)
-                return;
+            //if (crosshairs.Count >= 2)
+            //    return;
 
             TexturedIcon crosshair = new TexturedIcon
             {
@@ -119,6 +121,7 @@ namespace WpfTest
             
             crosshairs.Remove(e.TouchDevice);
             //points.Remove(e.TouchDevice);
+            window.ReleaseTouchCapture(e.TouchDevice);
             LogEvent.UserInterface.Write("TouchUp");
 
         }
@@ -159,64 +162,65 @@ namespace WpfTest
 
         }
 
-        protected override void OnMouseClick(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
-        {
-            base.OnMouseClick(e);
+        //protected override void OnMouseClick(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
+        //{
+        //    base.OnMouseClick(e);
 
-            //Vector3 scaling = RNode.RenderableObject.ScalingValues;
-            //bool result;
-            //Vector3 pIntersection =GetIntersection(tracker.GazePoint, Vector3.UnitZ, out result);
-            //Vector3 pPosition = RNode.RenderableObject.PositionV3;
-            //float y = Math.Max(0, pIntersection.Y);
-            //if (result)
-            //{
-            //    RNode.RenderableObject.ScalingValues = new Vector3(scaling.X, y, scaling.Z);
-            //    RNode.RenderableObject.PositionV3 = new Vector3(pPosition.X, RNode.RenderableObject.ScalingValues.Y/2, pPosition.Z);
-            //}
-            //rNode.Update();
-        }
+        //    //Vector3 scaling = RNode.RenderableObject.ScalingValues;
+        //    //bool result;
+        //    //Vector3 pIntersection =GetIntersection(tracker.GazePoint, Vector3.UnitZ, out result);
+        //    //Vector3 pPosition = RNode.RenderableObject.PositionV3;
+        //    //float y = Math.Max(0, pIntersection.Y);
+        //    //if (result)
+        //    //{
+        //    //    RNode.RenderableObject.ScalingValues = new Vector3(scaling.X, y, scaling.Z);
+        //    //    RNode.RenderableObject.PositionV3 = new Vector3(pPosition.X, RNode.RenderableObject.ScalingValues.Y/2, pPosition.Z);
+        //    //}
+        //    //rNode.Update();
+        //}
 
-        protected override void OnMouseMove(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            return;
-            QuaternionCam camera = Game.CurrentRenderer.Camera;
-            RenderableNode rNode = (RenderableNode)Game.CurrentRenderer.Scene.Tree.FindNode("RBox");
+        //protected override void OnMouseMove(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
+        //{
+        //    base.OnMouseMove(e);
+        //    return;
+
+        //    //QuaternionCam camera = Game.CurrentRenderer.Camera;
+        //    //RenderableNode rNode = (RenderableNode)Game.CurrentRenderer.Scene.Tree.FindNode("RBox");
 
 
-            Viewport viewport = camera.Viewport;
+        //    //Viewport viewport = camera.Viewport;
 
-            Vector2 pNewPosition2 = new Vector2(e.Location.X, e.Location.Y);
-            Vector3 pNear = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
-                              camera.WorldViewProjection);
-            Vector3 pFar = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
-                              camera.WorldViewProjection);
-            Ray r = new Ray(pNear, pFar - pNear);
-            Plane p = new Plane(rNode.RenderableObject.AbsolutePosition, Vector3.UnitY);
+        //    //Vector2 pNewPosition2 = new Vector2(e.Location.X, e.Location.Y);
+        //    //Vector3 pNear = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+        //    //                  camera.WorldViewProjection);
+        //    //Vector3 pFar = Vector3.Unproject(new Vector3(pNewPosition2.X, pNewPosition2.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+        //    //                  camera.WorldViewProjection);
+        //    //Ray r = new Ray(pNear, pFar - pNear);
+        //    //Plane p = new Plane(rNode.RenderableObject.AbsolutePosition, Vector3.UnitY);
 
-            float distance;
-            bool result2 = Ray.Intersects(r, p, out distance);
-            Vector3 pIntersection = r.Position + distance * Vector3.Normalize(r.Direction);
+        //    //float distance;
+        //    //bool result2 = Ray.Intersects(r, p, out distance);
+        //    //Vector3 pIntersection = r.Position + distance * Vector3.Normalize(r.Direction);
 
-            if (result2)
-            {
-                //Height
-                //rNode.RenderableObject.ScalingValues = new Vector3(1f, pIntersection.Y, 1f);
-                //rNode.RenderableObject.PositionV3 = new Vector3(0f, 0.25f*rNode.RenderableObject.ScalingValues.Y, 0f);
+        //    //if (result2)
+        //    //{
+        //    //    //Height
+        //    //    //rNode.RenderableObject.ScalingValues = new Vector3(1f, pIntersection.Y, 1f);
+        //    //    //rNode.RenderableObject.PositionV3 = new Vector3(0f, 0.25f*rNode.RenderableObject.ScalingValues.Y, 0f);
 
-                //Width
-                //rNode.RenderableObject.ScalingValues = new Vector3(pIntersection.X, 1f, 1f);
-                //rNode.RenderableObject.PositionV3 = new Vector3(0.25f*rNode.RenderableObject.ScalingValues.X, 0f, 0f);
-                //Depth
-                //rNode.RenderableObject.ScalingValues = new Vector3(1f, 1f, pIntersection.Z);
-                //rNode.RenderableObject.PositionV3 = new Vector3(0.25f, 0.25f, 0.25f * rNode.RenderableObject.ScalingValues.Z);
+        //    //    //Width
+        //    //    //rNode.RenderableObject.ScalingValues = new Vector3(pIntersection.X, 1f, 1f);
+        //    //    //rNode.RenderableObject.PositionV3 = new Vector3(0.25f*rNode.RenderableObject.ScalingValues.X, 0f, 0f);
+        //    //    //Depth
+        //    //    //rNode.RenderableObject.ScalingValues = new Vector3(1f, 1f, pIntersection.Z);
+        //    //    //rNode.RenderableObject.PositionV3 = new Vector3(0.25f, 0.25f, 0.25f * rNode.RenderableObject.ScalingValues.Z);
 
-                rNode.RenderableObject.ScalingValues = FindScalingValues(pIntersection, new Vector3(2.5f, 0f, -2.5f));
-                rNode.RenderableObject.PositionV3 = FindPosition(pIntersection, new Vector3(2.5f, 0f, -2.5f),
-                    rNode.RenderableObject.ScalingValues);
-            }
+        //    //    rNode.RenderableObject.ScalingValues = FindScalingValues(pIntersection, new Vector3(2.5f, 0f, -2.5f));
+        //    //    rNode.RenderableObject.PositionV3 = FindPosition(pIntersection, new Vector3(2.5f, 0f, -2.5f),
+        //    //        rNode.RenderableObject.ScalingValues);
+        //    //}
 
-        }
+        //}
 
         Vector3 FindScalingValues(Vector3 p1, Vector3 p2)
         {
