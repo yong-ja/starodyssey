@@ -110,20 +110,20 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void MoveLeft()
         {
-            RenderableObject.Move(-Speed, Vector3.UnitX);
+            RenderableObject.Move(-Speed, Vector3.UnitX, (float)Game.FrameTime);
         }
         void MoveRight()
         {
-            RenderableObject.Move(Speed, Vector3.UnitX);
+            RenderableObject.Move(Speed, Vector3.UnitX, (float)Game.FrameTime);
         }
 
         void MoveForward()
         {
-            RenderableObject.Move(Speed, Vector3.UnitZ);
+            RenderableObject.Move(Speed, Vector3.UnitZ, (float)Game.FrameTime);
         }
         void MoveBackard()
         {
-            RenderableObject.Move(-Speed, Vector3.UnitZ);
+            RenderableObject.Move(-Speed, Vector3.UnitZ, (float)Game.FrameTime);
         }
     }
 }

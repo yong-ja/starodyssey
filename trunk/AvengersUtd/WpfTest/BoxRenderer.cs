@@ -55,7 +55,8 @@ namespace WpfTest
             //fNodeGrid.AppendChildren(arrow.ToNodes());
             //fNodeGrid.AppendChildren(bbox.ToNodes());
             //fNodeGrid.AppendChild(rNodeBBox);
-            fNodeGrid.AppendChildren(sWidget.ToNodes());
+            FixedNode nWidget = sWidget.ToBranch();
+            fNodeGrid.AppendChild(nWidget);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 

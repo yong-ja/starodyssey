@@ -40,6 +40,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         bool IsVisible { get; }
         bool CastsShadows { get; }
         bool Disposed { get; }
+        bool IsMeshGroup { get; }
         bool IsInViewFrustum();
 
         Matrix World { get; set; }
@@ -66,13 +67,15 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         void Render();
         void Render(int indexCount, int vertexOffset=0, int indexOffet=0, int startIndex=0, int baseVertex=0);
 
-        void Move(float distance, Vector3 direction);
-        void Rotate(float distance, Vector3 axis);
+        void Move(float distance, Vector3 direction, float frameTime);
+        void Rotate(float angle, Vector3 axis, float frameTime);
 
         void SetBehaviour<T>(T inputBehaviour) where T : class, IBehaviour;
         bool RemoveBehaviour<T>(T inputBehaviour) where T : class,IBehaviour;
         bool HasBehaviour(string behaviourName);
         T GetBehaviour<T>() where T : class,IBehaviour;
+
+        FixedNode ToBranch();
 
         void ProcessMouseEvent(MouseEventType type, MouseEventArgs e);
 
