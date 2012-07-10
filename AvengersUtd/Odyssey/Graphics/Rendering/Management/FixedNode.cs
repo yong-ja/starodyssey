@@ -1,6 +1,7 @@
 ﻿using AvengersUtd.Odyssey.Utils;
 using AvengersUtd.Odyssey.Utils.Collections;
 using SlimDX;
+using System;
 
 namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 {
@@ -14,28 +15,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         {}
         #endregion
 
-        public override void Init()
-        {
-            base.Init();
-            UpdateLocalWorldMatrix();
-        }
-
         public override void UpdateLocalWorldMatrix()
         {
-            float yaw = Rotation.X;
-            float pitch = Rotation.Y;
-            float roll = Rotation.Z;
-
-            Matrix mRotation = Matrix.RotationYawPitchRoll(yaw, pitch, roll);
+            Matrix mRotationCenter = Matrix.Translation(RotationCenter);
+            Matrix mRotation = Matrix.RotationQuaternion(Rotation);
             Matrix mTranslation = Matrix.Translation(Position);
             Matrix mScaling = Matrix.Scaling(Scaling);
-            LocalWorldMatrix = mRotation*mTranslation*mScaling;
-        }
 
-        protected override void OnParentChanged(object sender, NodeEventArgs e)
-        {
-            base.OnParentChanged(sender, e);
-            UpdateAbsoluteWorldMatrix();
+            LocalWorldMatrix = mScaling*mRotationCenter* mRotation*mTranslation
         }
 
     }

@@ -17,6 +17,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
     {
         protected IRenderable[] Objects {get; private set;}
         Vector3 vPosition;
+        Vector3 vRotationCenter;
         private Quaternion qRotation;
         private Vector3 rotationAngles;
         private Vector3 vScale;
@@ -37,8 +38,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private static readonly object EventKeyPress;
         private static readonly object EventKeyDown;
         private static readonly object EventKeyUp;
-        
-
 
         public event EventHandler<CollisionEventArgs> Collision
         {
@@ -64,6 +63,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         {
             Translation = Matrix.Translation(vPosition);
 
+       
             EventHandler<PositionEventArgs> handler =
                 (EventHandler<PositionEventArgs>)eventHandlerList[EventPositionChanged];
             if (handler != null)
@@ -93,6 +93,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         protected virtual void OnRotationChanged(RotationEventArgs e)
         {
             Rotation = Matrix.RotationQuaternion(CurrentRotation);
+
+            if (Objects!= null && Objects.Length>0)
+                Objects.ToList().ForEach(rObj => rObj.CurrentRotation = e.NewRotation);
 
             EventHandler<RotationEventArgs> handler =
                 (EventHandler<RotationEventArgs>)eventHandlerList[EventRotationChanged];
@@ -225,6 +228,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public bool IsVisible { get; private set; }
         public bool CastsShadows { get; private set; }
         public bool Disposed { get; private set; }
+        bool IRenderable.IsMeshGroup { get { return true; } }
         public Matrix World { get; set; }
         public Matrix Translation { get; private set; }
         public Matrix Rotation { get; private set; }
@@ -249,6 +253,12 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public Vector4 PositionV4
         {
             get { return vPosition.ToVector4(); }
+        }
+
+        public Vector3 RotationCenter
+        {
+            get { return vRotationCenter; }
+            set { vRotationCenter = value; }
         }
 
         /// <summary>
@@ -310,6 +320,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             EventPositionChanged = new object();
             EventRotationChanged = new object();
             EventDisposing = new object();
+            EventMouseDown = new object();
+            EventMouseUp = new object();
+            EventMouseClick = new object();
+            EventMouseMove = new object();
         }
 
         protected MeshGroup(int size)
@@ -417,14 +431,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         }
 
 
-        public void Move(float distance, Vector3 direction)
+        public void Move(float distance, Vector3 direction, float frameTime=1)
         {
-            throw new NotImplementedException();
+            Objects.ToList().ForEach(rObj => rObj.Move(distance, direction, frameTime));
         }
 
-        public void Rotate(float distance, Vector3 axis)
+        public void Rotate(float angle, Vector3 axis, float frameTime=1)
         {
-            throw new NotImplementedException();
+            Objects.ToList().ForEach(rObj => rObj.Rotate(angle, axis,frameTime));
         }
 
         public virtual IEnumerable<RenderableNode> ToNodes()
@@ -434,6 +448,25 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 nodes[i] = new RenderableNode(Objects[i]);
 
             return nodes;
+        }
+
+        public FixedNode ToBranch()
+        {
+            FixedNode fNode = new FixedNode() { Position = PositionV3,
+            Rotation = CurrentRotation, RotationCenter = RotationCenter};
+            PositionV3 = Vector3.Zero;
+            foreach (IRenderable rObject in Objects)
+            {
+                if (rObject.IsMeshGroup)
+                    fNode.AppendChild(rObject.ToBranch());
+                else
+                {
+                    //rObject.PositionV3 = Vector3.Zero;
+                    fNode.AppendChild(new RenderableNode(rObject));
+                }
+            }
+            return fNode;
+
         }
     }
 }

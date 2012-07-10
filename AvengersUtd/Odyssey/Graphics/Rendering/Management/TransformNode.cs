@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using SlimDX;
 using AvengersUtd.Odyssey.Utils.Collections;
 
@@ -12,7 +13,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         Matrix localWorldMatrix;
         Quaternion qRotation;
         private Vector3 position;
-        private Vector3 rotation;
+        private Vector3 rotationCenter;
+        private Quaternion rotation;
         private Vector3 scaling;
 
         #region Events
@@ -34,6 +36,16 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
                 handler(this, e);
         }
 
+        protected override void OnParentChanged(object sender, NodeEventArgs e)
+        {
+            base.OnParentChanged(sender, e);
+            foreach (TransformNode tNode in Node.PreOrderVisit(this).OfType<TransformNode>())
+            {
+                tNode.UpdateLocalWorldMatrix();
+                tNode.UpdateAbsoluteWorldMatrix();
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -53,7 +65,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             }
         }
 
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
             get { return rotation; }
             set
@@ -61,6 +73,19 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
                 if (rotation != value)
                 {
                     rotation = value;
+                    UpdateLocalWorldMatrix();
+                }
+            }
+        }
+
+        public Vector3 RotationCenter
+        {
+            get { return rotationCenter; }
+            set
+            {
+                if (rotationCenter != value)
+                {
+                    rotationCenter = value;
                     UpdateLocalWorldMatrix();
                 }
             }
@@ -120,7 +145,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         public override void Init()
         {
             base.Init();
-            UpdateLocalWorldMatrix();
+            
         }
 
         public override void Update()
@@ -134,7 +159,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             TransformNode tNode = TransformNodeParent;
 
             AbsoluteWorldMatrix = (tNode == null) ? localWorldMatrix : localWorldMatrix * tNode.AbsoluteWorldMatrix;
-            Position = new Vector3(AbsoluteWorldMatrix.M41, AbsoluteWorldMatrix.M42, AbsoluteWorldMatrix.M43);
         }
 
         public abstract void UpdateLocalWorldMatrix();

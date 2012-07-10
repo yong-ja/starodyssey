@@ -65,6 +65,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         private Quaternion qRotation;
         private Vector3 rotationAngles;
         private Vector3 vPosition;
+        private Vector3 vRotationCenter;
         private Vector3 vScale;
 
         #region Events
@@ -293,6 +294,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         public bool CastsShadows { get; private set; }
         public bool Disposed { get; private set; }
 
+        bool IRenderable.IsMeshGroup { get { return false; } }
+
         public VertexDescription VertexDescription { get; internal set; }
 
         public Matrix World { get; set; }
@@ -321,6 +324,13 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             }
         }
 
+        public Vector3 RotationCenter
+        {
+            get { return vRotationCenter; }
+            set { vRotationCenter = value; }
+        }
+
+       
         public Vector3 AbsolutePosition
         {
             get { return new Vector3(World[3, 0], World[3, 1], World[3, 2]); }
@@ -463,20 +473,16 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Init();
         }
 
-        /// <summary>
-        /// Renders the mesh
-        /// </summary>
-
-        public void Move(float distance, Vector3 direction)
+        
+        
+        public void Move(float distance, Vector3 direction, float time=1)
         {
-            PositionV3 += direction * distance * (float)Game.FrameTime;
-            //Vector3 vPos = direction * distance * (float)Game.FrameTime;
-            //((TransformNode)(ParentNode.Parent)).Position += vPos;
+            PositionV3 += direction * distance * time;
         }
 
-        public void Rotate(float angle, Vector3 axis)
+        public void Rotate(float angle, Vector3 axis, float time =1)
         {
-            qRotation *= Quaternion.RotationAxis(axis, angle * (float)Game.FrameTime);
+            CurrentRotation *= Quaternion.RotationAxis(axis, angle * time);
         }
 
         public virtual void Render()
@@ -484,6 +490,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Render(IndexCount);
         }
 
+        /// <summary>
+        /// Renders the mesh
+        /// </summary>
+        /// 
         public virtual void Render(int indexCount, int vertexOffset=0, int indexOffset=0, int startIndex=0, int baseVertex=0)
         {
             Game.Context.Device.ImmediateContext.InputAssembler.SetVertexBuffers(
@@ -588,6 +598,16 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             else
                 return default(T);
         }
+
+        public FixedNode ToBranch()
+        {
+            FixedNode fNode = new FixedNode() { Position = PositionV3, Rotation = CurrentRotation};
+            PositionV3 = Vector3.Zero;
+            CurrentRotation = Quaternion.Identity;
+            fNode.AppendChild(new RenderableNode(this));
+            return fNode;
+        }
+
 
 
     }
