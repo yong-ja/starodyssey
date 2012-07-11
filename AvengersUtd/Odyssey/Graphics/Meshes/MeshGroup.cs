@@ -15,7 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public abstract class MeshGroup : IRenderable
     {
-        protected IRenderable[] Objects {get; private set;}
+        public IRenderable[] Objects {get; private set;}
         Vector3 vPosition;
         Vector3 vRotationCenter;
         private Quaternion qRotation;

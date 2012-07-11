@@ -11,8 +11,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public class Arrow : MeshGroup, ISphere
     {
-        float arrowRadius;
-        Vector3 arrowPointerCenter;
+        readonly float arrowRadius;
+        readonly Vector3 arrowPointerCenter;
 
         public Arrow(float baseWidth, float arrowHeight, float lineLength, float lineWidth) : base(2)
         {

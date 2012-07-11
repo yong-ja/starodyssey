@@ -25,6 +25,7 @@ namespace WpfTest
         readonly Dictionary<TouchDevice, Vector3> points;
         readonly Dictionary<TouchDevice, IRenderable> arrows;
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
+        private IRenderable box;
         RenderableNode rNode;
         //TrackerWrapper tracker;
         TexturedIcon crosshair;
@@ -177,38 +178,98 @@ namespace WpfTest
             if (result)
                 arrow.PositionV3 = new Vector3(0, pIntersection.Y, 0);
 
+        }
 
-            //if (!crosshairs.ContainsKey(e.TouchDevice))
-            //    return;
-
-            //crosshairs[e.TouchDevice].Position = e.Location - new Vector2(crosshair.Width/2);
-            ////Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
-
-            //if (result)
-            //{
-            //    points[e.TouchDevice] = pIntersection;
-            //    //points[e.TouchDevice] = pIntersection;
-            //    Vector3 p1, p2;
-            //    if (crosshairs.Count== 1)
-            //    {
-            //        p1 = points[e.TouchDevice];
-            //        p2 = defaultRight;
-            //    }
-            //    else if (crosshairs.Count == 2)
-            //    {
-            //    }
+        private IRenderable tempArrow;
 
 
+        protected override void OnMouseDown(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            IRenderable result;
+            bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
-            //    //RNode.RenderableObject.ScalingValues = FindScalingValues(vLeft, vRight);
-            //    //RNode.RenderableObject.PositionV3 = FindPosition(vLeft, vRight,
-            //    //RNode.RenderableObject.ScalingValues);
-            //}
-            //else 
-            //    LogEvent.UserInterface.Write("Intersection result false");
+            if (test)
+            {
+                tempArrow = result;
+                LogEvent.UserInterface.Write("MouseDown [" + result.Name + "]");
+            }
+            else
+                LogEvent.UserInterface.Write("MouseDown [No Intersection]");
+        }
+
+        protected override void OnMouseMove(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (tempArrow == null)
+                return;
+            IRenderable arrowHead = ((MeshGroup) tempArrow).Objects[0];
+            bool test;
+            Vector3 pIntersection;
+            FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
+            const float minSize = 0.25f;            
+            switch (tempArrow.Name)
+            {
+                case "YArrow":
+                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    if (test)
+                    {
+                        float delta = pIntersection.Y - fNode.Position.Y;
+                        
+                        
+                        box.ScalingValues += new Vector3(0, delta, 0);
+                        if (box.ScalingValues.Y < minSize)
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+                        else
+                            fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
+
+                        box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
+                    }
+                    break;
+
+                case "XArrow":
+                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    if (test)
+                    {
+                        float delta = pIntersection.X - fNode.Position.X;
+                        delta = Math.Min(minSize, delta);
+                        
+                        box.ScalingValues += new Vector3(delta, 0 , 0);
+                        if (box.ScalingValues.X < minSize)
+                            box.ScalingValues = new Vector3(minSize,box.ScalingValues.Y, box.ScalingValues.Z);
+                        else
+                            fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
+                        box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
+                    }
+                    break;
+
+                case "ZArrow":
+                    pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
+                    if (test) {
+                        float delta = pIntersection.Z - fNode.Position.Z;
+                        delta = Math.Min(minSize, delta);
+                        
+                        box.ScalingValues += new Vector3(0, 0, delta);
+                        if (box.ScalingValues.Z < minSize)
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+                        else
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
+                        box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
+                        }
+                    break;
+            }
+
+
 
         }
 
+        protected override void OnMouseUp(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            tempArrow = null;
+        }
+
+        /*
         //protected override void OnMouseClick(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
         //{
         //    base.OnMouseClick(e);
@@ -321,11 +382,16 @@ namespace WpfTest
             //return new Vector3(scalingValues.X/4f);
 
             return new Vector3(tX, 0f, tZ);
-        }
+        }*/
 
         public void SetScalingWidget(ScalingWidget sWidget)
         {
             this.sWidget = sWidget;
+        }
+
+        public void SetBox(IRenderable box)
+        {
+            this.box = box;
         }
 
     }
