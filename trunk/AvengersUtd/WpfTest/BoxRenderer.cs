@@ -101,6 +101,7 @@ namespace WpfTest
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
+            rp.SetBox(box);
             Hud.Add(rp);
 
             //rp.Add(bConnect);
