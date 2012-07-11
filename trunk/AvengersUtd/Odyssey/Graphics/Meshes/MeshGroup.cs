@@ -222,7 +222,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         #endregion
 
         #region Properties
-        public string Name {get; private set;}
+        public string Name {get; set;}
         public bool Inited { get; private set; }
         public bool IsCollidable { get; private set; }
         public bool IsVisible { get; private set; }
@@ -402,7 +402,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public Vector3 AbsolutePosition
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotImplementedException(); } 
         }
 
         public void SetBehaviour<T>(T inputBehaviour) where T : class,UserInterface.Controls.IBehaviour
@@ -452,9 +452,14 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public FixedNode ToBranch()
         {
-            FixedNode fNode = new FixedNode() { Position = PositionV3,
-            Rotation = CurrentRotation, RotationCenter = RotationCenter};
+            FixedNode fNode = new FixedNode()
+            {
+                Position = PositionV3,
+                Rotation = CurrentRotation,
+            };
             PositionV3 = Vector3.Zero;
+            CurrentRotation = Quaternion.Identity;
+            RotationCenter = Vector3.Zero;
             foreach (IRenderable rObject in Objects)
             {
                 if (rObject.IsMeshGroup)

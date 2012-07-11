@@ -23,10 +23,12 @@ namespace WpfTest
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
+        readonly Dictionary<TouchDevice, IRenderable> arrows;
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
         RenderableNode rNode;
         //TrackerWrapper tracker;
         TexturedIcon crosshair;
+        ScalingWidget sWidget;
         static int count;
 
         RenderableNode RNode
@@ -45,6 +47,7 @@ namespace WpfTest
         {
             crosshairs = new Dictionary<TouchDevice, TexturedIcon>();
             points = new Dictionary<TouchDevice, Vector3>();
+            arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
 
             crosshair = new TexturedIcon
@@ -71,26 +74,53 @@ namespace WpfTest
             //if (crosshairs.Count >= 2)
             //    return;
 
-            TexturedIcon crosshair = new TexturedIcon
-            {
-                CanRaiseEvents = false,
-                Position = e.Location,
-                Size = new System.Drawing.Size(64, 64),
-                Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
-            };
-            crosshairs.Add(e.TouchDevice, crosshair);
+            //TexturedIcon crosshair = new TexturedIcon
+            //{
+            //    CanRaiseEvents = false,
+            //    Position = e.Location,
+            //    Size = new System.Drawing.Size(64, 64),
+            //    Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
+            //};
+            //crosshairs.Add(e.TouchDevice, crosshair);
             window.CaptureTouch(e.TouchDevice);
-            //e.TouchDevice.Capture(window);
+
+            IRenderable result;
+            bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
+
+            if (test)
+            {
+                arrows.Add(e.TouchDevice, result);
+                LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
+            }
+            else
+                LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " No intersection");
+
+
             //points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
-            OdysseyUI.CurrentHud.BeginDesign();
-            Add(crosshair);
-            OdysseyUI.CurrentHud.EndDesign();
-                        LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id);
+            //OdysseyUI.CurrentHud.BeginDesign();
+            //Add(crosshair);
+            //OdysseyUI.CurrentHud.EndDesign();
+            
             
 
         }
 
-        Vector3 GetIntersection(Vector2 location, Vector3 axis, out bool result)
+        static Ray GetRay(Vector2 location)
+        {
+            QuaternionCam camera = Game.CurrentRenderer.Camera;
+
+
+            Viewport viewport = camera.Viewport;
+
+            Vector3 pNear = Vector3.Unproject(new Vector3(location.X, location.Y, 0), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+                              camera.WorldViewProjection);
+            Vector3 pFar = Vector3.Unproject(new Vector3(location.X, location.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
+                              camera.WorldViewProjection);
+            Ray r = new Ray(pNear, pFar - pNear);
+            return r;
+        }
+
+        Vector3 GetIntersection(Vector2 location, Vector3 axis, IRenderable reference, out bool result)
         {
             QuaternionCam camera = Game.CurrentRenderer.Camera;
            
@@ -102,7 +132,7 @@ namespace WpfTest
             Vector3 pFar = Vector3.Unproject(new Vector3(location.X, location.Y, 1), viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ,
                               camera.WorldViewProjection);
             Ray r = new Ray(pNear, pFar - pNear);
-            Plane p = new Plane(RNode.RenderableObject.AbsolutePosition, axis);
+            Plane p = new Plane(reference.AbsolutePosition, axis);
 
             float distance;
             result = Ray.Intersects(r, p, out distance);
@@ -111,16 +141,26 @@ namespace WpfTest
             return pIntersection;
         }
 
+        bool IntersectsArrow(ScalingWidget sWidget, Ray r, out IRenderable result)
+        {
+            result = sWidget.FindIntersection(r);
+            if (result == null)
+                return false;
+            else 
+                return true;
+
+        }
+
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchUp(e);
-            //window.ReleaseTouchCapture(e.TouchDevice);
-            OdysseyUI.CurrentHud.BeginDesign();
-            //Remove(crosshairs[e.TouchDevice]);
-            OdysseyUI.CurrentHud.EndDesign();
+            //OdysseyUI.CurrentHud.BeginDesign();
+            ////Remove(crosshairs[e.TouchDevice]);
+            //OdysseyUI.CurrentHud.EndDesign();
             
             //crosshairs.Remove(e.TouchDevice);
             //points.Remove(e.TouchDevice);
+            arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
             LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
 
@@ -130,12 +170,19 @@ namespace WpfTest
         {
             base.OnTouchMove(e);
 
+            IRenderable arrow = arrows[e.TouchDevice];
             bool result;
-            if (!crosshairs.ContainsKey(e.TouchDevice))
-                return;
+            Vector3 pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrow, out result);
 
-            crosshairs[e.TouchDevice].Position = e.Location - new Vector2(crosshair.Width/2);
-            //Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
+            if (result)
+                arrow.PositionV3 = new Vector3(0, pIntersection.Y, 0);
+
+
+            //if (!crosshairs.ContainsKey(e.TouchDevice))
+            //    return;
+
+            //crosshairs[e.TouchDevice].Position = e.Location - new Vector2(crosshair.Width/2);
+            ////Vector3 pIntersection = GetIntersection(e.Location, Vector3.UnitY, out result);
 
             //if (result)
             //{
@@ -274,6 +321,11 @@ namespace WpfTest
             //return new Vector3(scalingValues.X/4f);
 
             return new Vector3(tX, 0f, tZ);
+        }
+
+        public void SetScalingWidget(ScalingWidget sWidget)
+        {
+            this.sWidget = sWidget;
         }
 
     }

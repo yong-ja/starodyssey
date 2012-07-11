@@ -23,7 +23,7 @@ namespace WpfTest
         public override void Init()
         {
 
-            Camera.LookAt(Vector3.Zero, new Vector3(0, 5, -10f));
+            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-2.5f, 2.5f, -2.5f));
 
             //AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
             //grid.PositionV3 = new Vector3(-5, 5, 0);
@@ -100,6 +100,7 @@ namespace WpfTest
 
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
+            rp.SetScalingWidget(sWidget);
             Hud.Add(rp);
 
             //rp.Add(bConnect);

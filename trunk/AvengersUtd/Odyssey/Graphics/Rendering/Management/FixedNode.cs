@@ -17,12 +17,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
 
         public override void UpdateLocalWorldMatrix()
         {
-            Matrix mRotationCenter = Matrix.Translation(RotationCenter);
             Matrix mRotation = Matrix.RotationQuaternion(Rotation);
             Matrix mTranslation = Matrix.Translation(Position);
             Matrix mScaling = Matrix.Scaling(Scaling);
 
-            LocalWorldMatrix = mScaling*mRotationCenter* mRotation*mTranslation
+            LocalWorldMatrix = mScaling * mRotation * mTranslation;
         }
 
     }
