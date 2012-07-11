@@ -13,7 +13,6 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
         Matrix localWorldMatrix;
         Quaternion qRotation;
         private Vector3 position;
-        private Vector3 rotationCenter;
         private Quaternion rotation;
         private Vector3 scaling;
 
@@ -78,20 +77,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
             }
         }
 
-        public Vector3 RotationCenter
-        {
-            get { return rotationCenter; }
-            set
-            {
-                if (rotationCenter != value)
-                {
-                    rotationCenter = value;
-                    UpdateLocalWorldMatrix();
-                }
-            }
-        }
-
-        public Vector3 Scaling
+       public Vector3 Scaling
         {
             get { return scaling; }
             set

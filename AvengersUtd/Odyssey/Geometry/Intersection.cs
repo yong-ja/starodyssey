@@ -327,6 +327,27 @@ namespace AvengersUtd.Odyssey.Geometry
 
         }
 
+        public static bool RaySphereTest(Ray r, ISphere s)
+        {
+            float det, b;
+            Vector3 p = r.Position - s.AbsolutePosition;
+            Vector3 d = Vector3.Normalize(r.Direction);
+            b = -Vector3.Dot(p, d);
+            det = b * b - Vector3.Dot(p,p) + s.Radius * s.Radius;
+            if (det < 0)
+            {
+                return false;
+            }
+            det = (float)Math.Sqrt(det);
+            float i1 = b - det;
+            float i2 = b + det;
+            // intersecting with ray?
+            if (i2 < 0) return false;
+            if (i1 < 0) i1 = 0;
+            return true;
+        }
+
+
     
     }
 }

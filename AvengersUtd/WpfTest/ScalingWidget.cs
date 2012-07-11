@@ -14,34 +14,41 @@ namespace WpfTest
     public class ScalingWidget : MeshGroup
     {
         const float ArrowUnit = 1f;
-        const float ArrowBase = ArrowUnit/4;
+        const float ArrowBase = ArrowUnit/6;
         const float ArrowLength = ArrowUnit/4;
-        const float ArrowLineLength = ArrowUnit/2;
-        const float ArrowLineWidth = ArrowUnit/8;
+        const float ArrowLineLength = ArrowUnit/4;
+        const float ArrowLineWidth = ArrowUnit/16;
         IRenderable target;
         Arrow YArrow;
         Arrow XArrow;
+        Arrow ZArrow;
 
         public ScalingWidget(IRenderable targetObject)
-            : base(2)
+            : base(3)
         {
             target = targetObject;
             IBox box = targetObject as IBox;
-            YArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth) { PositionV3 = new Vector3(0, box.Height, 0) };
+            YArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
+            {
+                PositionV3 = new Vector3(-box.Width/2, box.Height/2 + ArrowLineLength , -box.Depth/2),
+                Name = "YArrow"
+            };
             XArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth) {
-                //PositionV3 = new Vector3(box.Width, 0, 0),
-                CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI/4f),//Quaternion.RotationAxis(-Vector3.UnitZ, (float)(Math.PI / 4f)),
-                RotationCenter = new Vector3(0, 1, 0)
+                PositionV3 = new Vector3(box.Width / 2 + ArrowLineLength, -box.Height / 2, -box.Depth / 2),
+                CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI/2f),
+                Name = "XArrow"
+            };
+            ZArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
+            {
+                PositionV3 = new Vector3(-box.Width/2, -box.Height/2, box.Depth/2 + ArrowLineLength),
+                CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0),
+                Name = "ZArrow"
             };  
-               // PositionV3 = new Vector3(box.Width, 0, 0),
-               //CurrentRotation = Quaternion.RotationAxis(Vector3.UnitZ, (float)Math.PI/2)
-                ;
-            //YArrow.Move(box.Height, Vector3.UnitY);
-            //XArrow.Move(box.Width, Vector3.UnitX);
-            //XArrow.Rotate(-(float)(Math.PI / 2), new Vector3(0, 1, 0));
+
             
             Objects[0] = YArrow;
             Objects[1] = XArrow;
+            Objects[2] = ZArrow;
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
         }
 
@@ -52,6 +59,18 @@ namespace WpfTest
                 nodes.AddRange(((MeshGroup)rObject).ToNodes());
 
             return nodes;
+        }
+
+        public IRenderable FindIntersection(Ray r)
+        {
+            foreach (IRenderable rObject in Objects)
+            {
+                ISphere s = rObject as ISphere;
+                bool result = Intersection.RaySphereTest(r, s);
+                if (result)
+                    return rObject;
+            }
+            return null;
         }
 
 

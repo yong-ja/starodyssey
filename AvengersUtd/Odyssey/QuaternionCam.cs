@@ -32,7 +32,7 @@ namespace AvengersUtd.Odyssey
         private Matrix mStereoLeftProjection;
         private Matrix mStereoRightProjection;
 
-        public const float DefaultSpeed = 20f;
+        public const float DefaultSpeed = 10f;
         public const float DefaultRotationSpeed = 1f;
         public const float DefaultSlerpSpeed = 0.01f;
         public const float DefaultZoomSpeed = 200f;
