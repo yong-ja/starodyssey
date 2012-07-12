@@ -171,12 +171,66 @@ namespace WpfTest
         {
             base.OnTouchMove(e);
 
-            IRenderable arrow = arrows[e.TouchDevice];
-            bool result;
-            Vector3 pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrow, out result);
+            if (!arrows.ContainsKey(e.TouchDevice))
+                return;
 
-            if (result)
-                arrow.PositionV3 = new Vector3(0, pIntersection.Y, 0);
+            IRenderable arrow = arrows[e.TouchDevice];
+            IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
+            bool test;
+            Vector3 pIntersection;
+            FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
+            const float minSize = 0.25f;
+            switch (arrow.Name)
+            {
+                case "YArrow":
+                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    if (test)
+                    {
+                        float delta = pIntersection.Y - fNode.Position.Y;
+
+
+                        box.ScalingValues += new Vector3(0, delta, 0);
+                        if (box.ScalingValues.Y < minSize)
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+                        else
+                            fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
+
+                        box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
+                    }
+                    break;
+
+                case "XArrow":
+                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    if (test)
+                    {
+                        float delta = pIntersection.X - fNode.Position.X;
+                        delta = Math.Min(minSize, delta);
+
+                        box.ScalingValues += new Vector3(delta, 0, 0);
+                        if (box.ScalingValues.X < minSize)
+                            box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
+                        else
+                            fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
+                        box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
+                    }
+                    break;
+
+                case "ZArrow":
+                    pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
+                    if (test)
+                    {
+                        float delta = pIntersection.Z - fNode.Position.Z;
+                        delta = Math.Min(minSize, delta);
+
+                        box.ScalingValues += new Vector3(0, 0, delta);
+                        if (box.ScalingValues.Z < minSize)
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+                        else
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
+                        box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
+                    }
+                    break;
+            }
 
         }
 
