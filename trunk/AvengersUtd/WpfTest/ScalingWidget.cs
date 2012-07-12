@@ -30,17 +30,17 @@ namespace WpfTest
             IBox box = targetObject as IBox;
             YArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
             {
-                PositionV3 = new Vector3(-box.Width/2, box.Height/2 , -box.Depth/2),
+                PositionV3 = new Vector3(-box.Width/2 - ArrowLineWidth/2, box.Height/2 , -box.Depth/2 - ArrowLineWidth/2),
                 Name = "YArrow"
             };
             XArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth) {
-                PositionV3 = new Vector3(box.Width / 2, -box.Height / 2, -box.Depth / 2),
+                PositionV3 = new Vector3(box.Width / 2 + ArrowLineWidth/2, -box.Height / 2 + ArrowLineWidth/2, -box.Depth / 2 - ArrowLineWidth/2),
                 CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI/2f),
                 Name = "XArrow"
             };
             ZArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
             {
-                PositionV3 = new Vector3(-box.Width/2, -box.Height/2, box.Depth/2),
+                PositionV3 = new Vector3(-box.Width/2 - ArrowLineWidth/2, -box.Height/2 + ArrowLineWidth/2, box.Depth/2 + ArrowLineWidth/2),
                 CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0),
                 Name = "ZArrow"
             };  
