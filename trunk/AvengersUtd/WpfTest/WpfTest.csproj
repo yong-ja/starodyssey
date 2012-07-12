@@ -189,6 +189,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tobii.Eyetracking.Sdk">
+      <HintPath>..\..\..\Tobii\Net\Binaries\Tobii.Eyetracking.Sdk.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -213,7 +216,7 @@
     <Compile Include="Target.cs" />
     <None Include="TestRenderer.cs" />
     <Compile Include="TouchRayPanel.cs" />
-    <None Include="TrackerWrapper.cs" />
+    <Compile Include="TrackerWrapper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

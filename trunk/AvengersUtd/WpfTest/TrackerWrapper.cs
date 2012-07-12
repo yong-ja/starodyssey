@@ -142,7 +142,6 @@ namespace WpfTest
                 LogEvent.UserInterface.Write("Could not connect to eyetracker.");
                 DisconnectTracker();
             }
-
         }
 
         private void tracker_GazeDataReceived(object sender, GazeDataEventArgs e)

@@ -23,25 +23,17 @@ namespace WpfTest
         public override void Init()
         {
 
+            TrackerWrapper tracker = new TrackerWrapper();                 
+
             Camera.LookAt(new Vector3(1,0, 1), new Vector3(-2.5f, 2.5f, -2.5f));
 
-            //AvengersUtd.Odyssey.Graphics.Meshes.Grid grid = new AvengersUtd.Odyssey.Graphics.Meshes.Grid(50, 50, 8, 8);
-            //grid.PositionV3 = new Vector3(-5, 5, 0);
-            //Box plane = new Box(Vector3.Zero, 50, 1, 50);
             Box box = new Box(1, 1, 1);
-            //Pyramid pyramid = new Pyramid(1, 2, 1);
             Sphere sphere = new Sphere(1, 16);
-            //Arrow arrow = new Arrow(1, 1, 3, 0.5f) { PositionV3 = new Vector3(-2.5f, 0, 0) };
             ScalingWidget sWidget = new ScalingWidget(box);
             AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(4);
-            //pyramid.PositionV3 = new Vector3(0, 5, 0);
             sphere.PositionV3 = new Vector3(0f, 3f, 0);
 
-            //RenderableNode rNodeGrid = new RenderableNode(grid);
-            //RenderableNode rNodePyramid = new RenderableNode(pyramid) { Label = "Pyramid" };
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            //RenderableNode rNodeSPhere = new RenderableNode(sphere);
-            //RenderableNode rNodeArrow = new RenderableNode(arrow);
             RenderableNode rNodeBBox = new RenderableNode(bbox);
             FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
 
@@ -50,7 +42,6 @@ namespace WpfTest
             Scene.Tree.RootNode.AppendChild(coNode);
             fNodeGrid.AppendChild(rNodeBox);
 
-            //fNodeGrid.AppendChild(rNodeSPhere);
 
             FixedNode nWidget = sWidget.ToBranch();
             fNodeGrid.AppendChild(nWidget);
@@ -80,26 +71,21 @@ namespace WpfTest
             Button bConnect = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
-                Content = "Start",
+                Content = "Connect",
                 Position = new Vector2(1800, 0)
             };
 
-            //Label label = new Label()
-            //{
-            //    Content = "Start"
-            //};
 
             Button bTracking = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
-                //Content = "Start",
+                Content = "Start",
                 Position = new Vector2(1800, 40)
             };
 
 
-            //bConnect.MouseClick += (sender, e) => { tracker.Connect(); };
-            //bTracking.MouseClick += (sender, e) => { tracker.StartTracking(); };
-
+            bConnect.MouseClick += (sender, e) => { tracker.Connect(); };
+            bTracking.MouseClick += (sender, e) => { tracker.StartTracking(); };
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
@@ -107,9 +93,8 @@ namespace WpfTest
             Hud.Add(rp);
 
             rp.Add(bConnect);
-            //rp.Add(label);
-            //rp.Add(bTracking);
-            //rp.SetTracker(tracker);
+            rp.Add(bTracking);
+            rp.SetTracker(tracker);
 
             Game.Logger.Activate();
             Hud.Init();
@@ -118,7 +103,7 @@ namespace WpfTest
             Scene.BuildRenderScene();
             Hud.AddToScene(this, Scene);
             IsInited = true;
-            //tracker.StartBrowsing();
+            tracker.StartBrowsing();
         }
 
         public override void Render()

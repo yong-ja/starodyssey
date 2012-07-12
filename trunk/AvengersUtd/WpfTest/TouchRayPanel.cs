@@ -27,7 +27,7 @@ namespace WpfTest
         Vector3 defaultRight = new Vector3(3f, 0f, -3f);
         private IRenderable box;
         RenderableNode rNode;
-        //TrackerWrapper tracker;
+        TrackerWrapper tracker;
         TexturedIcon crosshair;
         ScalingWidget sWidget;
         static int count;
@@ -62,11 +62,11 @@ namespace WpfTest
             Add(crosshair);
         }
 
-        //public void SetTracker(TrackerWrapper tracker)
-        //{
-        //    this.tracker = tracker;
-        //    tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
-        //}
+        public void SetTracker(TrackerWrapper tracker)
+        {
+            this.tracker = tracker;
+            tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
+        }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
