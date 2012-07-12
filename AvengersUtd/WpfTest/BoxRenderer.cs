@@ -15,7 +15,7 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
-
+TrackerWrapper tracker = new TrackerWrapper();  
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
         { }
@@ -23,7 +23,7 @@ namespace WpfTest
         public override void Init()
         {
 
-            TrackerWrapper tracker = new TrackerWrapper();                 
+                           
 
             Camera.LookAt(new Vector3(1,0, 1), new Vector3(-2.5f, 2.5f, -2.5f));
 
@@ -121,7 +121,7 @@ namespace WpfTest
         protected override void OnDisposing(object sender, System.EventArgs e)
         {
             base.OnDisposing(sender, e);
-            //tracker.DisconnectTracker();
+            tracker.DisconnectTracker();
         }
     }
 }
