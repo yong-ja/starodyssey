@@ -38,7 +38,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         float ISphere.Radius
         {
-            get { return arrowRadius; }
+            get { return arrowRadius*3; }
         }
     }
 }

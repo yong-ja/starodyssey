@@ -75,15 +75,15 @@ namespace WpfTest
                         return;
                 }
 
-                const float maxR = 128 * 128;
+                const float maxR = 128*128;
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
                 if (delta < maxR)
                 {
                     MoveArrow(e.GazePoint, eyeArrow);
-                    LogEvent.Engine.Write(string.Format("delta: {0:2f}", delta));
                 }
                 else
                 {
+                    LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
                     eyeArrow = null;
                 }
                      

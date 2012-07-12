@@ -189,8 +189,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Tobii.Eyetracking.Sdk">
-      <HintPath>..\..\..\Tobii\Net\Binaries\Tobii.Eyetracking.Sdk.dll</HintPath>
+    <Reference Include="Tobii.Eyetracking.Sdk, Version=3.0.2.0, Culture=neutral, PublicKeyToken=8f83ae3e0f6e46ef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tobii.Eyetracking.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
