@@ -194,7 +194,9 @@ namespace WpfTest
         {
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 0.25f;
-            const float maxSize = 2.75f;
+            const float maxSizeY = 2.75f;
+            const float maxSizeZ = 5f;
+            const float maxSizeX = 5f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             float delta;
@@ -212,9 +214,9 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                         }
-                        else if (box.ScalingValues.Y > maxSize)
+                        else if (box.ScalingValues.Y > maxSizeY)
                         {
-                            box.ScalingValues = new Vector3(box.ScalingValues.X, maxSize, box.ScalingValues.Z);
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, maxSizeY, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                         }
                         else
@@ -237,9 +239,9 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
-                        else if (box.ScalingValues.X> maxSize)
+                        else if (box.ScalingValues.X> maxSizeX)
                         {
-                            box.ScalingValues = new Vector3(maxSize, box.ScalingValues.Y, box.ScalingValues.Z);
+                            box.ScalingValues = new Vector3(maxSizeX, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
                         else
@@ -261,9 +263,9 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                         }
-                        else if (box.ScalingValues.Z > maxSize)
+                        else if (box.ScalingValues.Z > maxSizeZ)
                         {
-                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, maxSize);
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, maxSizeZ);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                         }
                         else
