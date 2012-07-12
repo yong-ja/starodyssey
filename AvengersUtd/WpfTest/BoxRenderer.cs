@@ -80,14 +80,14 @@ namespace WpfTest
             Button bConnect = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
-                //Content = "Start",
+                Content = "Start",
                 Position = new Vector2(1800, 0)
             };
 
-            Label label = new Label()
-            {
-                Content = "Start"
-            };
+            //Label label = new Label()
+            //{
+            //    Content = "Start"
+            //};
 
             Button bTracking = new Button()
             {
@@ -106,8 +106,8 @@ namespace WpfTest
             rp.SetBox(box);
             Hud.Add(rp);
 
-            //rp.Add(bConnect);
-            rp.Add(label);
+            rp.Add(bConnect);
+            //rp.Add(label);
             //rp.Add(bTracking);
             //rp.SetTracker(tracker);
 

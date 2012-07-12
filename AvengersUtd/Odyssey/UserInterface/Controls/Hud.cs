@@ -489,12 +489,11 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             foreach (ISpriteObject spriteControl in spriteControls.Where(sCtl => !sCtl.Inited))
             {
                 spriteControl.CreateResource();
-                spriteControl.ComputeAbsolutePosition();
                 spriteControl.CreateShape();
+                spriteControl.ComputeAbsolutePosition();
             }
 
             SpriteControls = spriteControls.ToArray();
-            CheckDisposed();
         }
 
         void CheckDisposed()

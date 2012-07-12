@@ -70,6 +70,14 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public Button() : base(ControlTag + (++count), ControlTag)
         {
             IsFocusable = false;
+            label = new Label()
+            {
+                Id = ControlTag + TextLiteral.ControlTag,
+                Content = Id,
+                IsSubComponent = true,
+                Parent = this,
+                TextDescriptionClass = TextDescriptionClass,
+            };
         }
        
         #endregion
@@ -103,6 +111,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         protected override void UpdateSizeDependantParameters()
         {
             label.Position = TextManager.ComputeTextPosition(this, label.TextLiteral);
+            label.ContentAreaSize = ContentAreaSize;
             label.ComputeAbsolutePosition();
         }
 
@@ -133,27 +142,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         void ISpriteObject.CreateResource()
         {
-            if (label != null)
+            if (label == null)
                 return;
 
-            label = new Label()
-            {
-                Id = ControlTag + TextLiteral.ControlTag,
-                Content = Id,
-                IsSubComponent = true,
-                Parent = this,
-                TextDescriptionClass = TextDescriptionClass,
-            };
             ((ISpriteObject)label).CreateResource();
         }
 
         void ISpriteObject.CreateShape()
         {
             label.CreateShape();
+            label.ContentAreaSize = ContentAreaSize;
         }
 
-        void ISpriteObject.ComputeAbsolutePosition()
+        public override void ComputeAbsolutePosition()
         {
+            base.ComputeAbsolutePosition();
             label.ComputeAbsolutePosition();
         } 
         #endregion

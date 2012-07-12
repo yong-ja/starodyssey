@@ -158,14 +158,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             TextLiteral.CreateResource();
         }
 
-        void ISpriteObject.CreateShape()
+        public override void CreateShape()
         {
-
+            if (TextLiteral == null)
+                return;
             TextLiteral.CreateShape();
         }
 
-        void ISpriteObject.ComputeAbsolutePosition()
+        public override void ComputeAbsolutePosition()
         {
+            base.ComputeAbsolutePosition();
             if (TextLiteral == null)
                 return;
             TextLiteral.Position = TextManager.ComputeTextPosition(this, TextLiteral);
