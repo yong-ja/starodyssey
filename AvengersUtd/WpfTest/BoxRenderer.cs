@@ -84,8 +84,8 @@ namespace WpfTest
             };
 
 
-            bConnect.MouseClick += (sender, e) => { tracker.Connect(); };
-            bTracking.MouseClick += (sender, e) => { tracker.StartTracking(); };
+            bConnect.TouchUp += (sender, e) => { tracker.Connect(); };
+            bTracking.TouchUp += (sender, e) => { tracker.StartTracking(); };
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
