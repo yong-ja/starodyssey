@@ -251,6 +251,7 @@
     <Resource Include="Resources\Textures\invader1.png" />
     <Resource Include="Resources\Textures\invaders2.png" />
     <Resource Include="Resources\Textures\invaders3.png" />
+    <Content Include="Tobii.Eyetracking.Sdk.dll" />
     <Content Include="tobiisdk.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
