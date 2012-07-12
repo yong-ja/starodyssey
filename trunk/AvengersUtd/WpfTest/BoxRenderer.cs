@@ -40,7 +40,7 @@ namespace WpfTest
             //RenderableNode rNodeGrid = new RenderableNode(grid);
             //RenderableNode rNodePyramid = new RenderableNode(pyramid) { Label = "Pyramid" };
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            RenderableNode rNodeSPhere = new RenderableNode(sphere);
+            //RenderableNode rNodeSPhere = new RenderableNode(sphere);
             //RenderableNode rNodeArrow = new RenderableNode(arrow);
             RenderableNode rNodeBBox = new RenderableNode(bbox);
             FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
@@ -48,13 +48,10 @@ namespace WpfTest
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
-            //fNodeGrid.AppendChild(rNodeGrid);
             fNodeGrid.AppendChild(rNodeBox);
-            //fNodeGrid.AppendChild(rNodePyramid);
-            fNodeGrid.AppendChild(rNodeSPhere);
-            //fNodeGrid.AppendChildren(arrow.ToNodes());
-            //fNodeGrid.AppendChildren(bbox.ToNodes());
-            //fNodeGrid.AppendChild(rNodeBBox);
+
+            //fNodeGrid.AppendChild(rNodeSPhere);
+
             FixedNode nWidget = sWidget.ToBranch();
             fNodeGrid.AppendChild(nWidget);
 
@@ -87,6 +84,11 @@ namespace WpfTest
                 Position = new Vector2(1800, 0)
             };
 
+            Label label = new Label()
+            {
+                Content = "Start"
+            };
+
             Button bTracking = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
@@ -105,6 +107,7 @@ namespace WpfTest
             Hud.Add(rp);
 
             //rp.Add(bConnect);
+            rp.Add(label);
             //rp.Add(bTracking);
             //rp.SetTracker(tracker);
 

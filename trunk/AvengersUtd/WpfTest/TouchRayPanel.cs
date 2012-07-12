@@ -180,18 +180,20 @@ namespace WpfTest
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             const float minSize = 0.25f;
+            float delta;
             switch (arrow.Name)
             {
                 case "YArrow":
                     pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        float delta = pIntersection.Y - fNode.Position.Y;
-
-
+                        delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
                         box.ScalingValues += new Vector3(0, delta, 0);
                         if (box.ScalingValues.Y < minSize)
+                        {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
+                        }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
 
@@ -203,12 +205,15 @@ namespace WpfTest
                     pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        float delta = pIntersection.X - fNode.Position.X;
+                        delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
                         delta = Math.Min(minSize, delta);
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         if (box.ScalingValues.X < minSize)
+                        {
                             box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
+                            fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
+                        }
                         else
                             fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
                         box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
@@ -219,12 +224,15 @@ namespace WpfTest
                     pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
                     if (test)
                     {
-                        float delta = pIntersection.Z - fNode.Position.Z;
+                        delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
                         delta = Math.Min(minSize, delta);
 
                         box.ScalingValues += new Vector3(0, 0, delta);
                         if (box.ScalingValues.Z < minSize)
+                        {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
+                        }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
                         box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
@@ -261,19 +269,21 @@ namespace WpfTest
             bool test;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
-            const float minSize = 0.25f;            
+            const float minSize = 0.25f;
+            float delta;
             switch (tempArrow.Name)
             {
                 case "YArrow":
                     pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        float delta = pIntersection.Y - fNode.Position.Y;
-                        
-                        
+                        delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
                         box.ScalingValues += new Vector3(0, delta, 0);
                         if (box.ScalingValues.Y < minSize)
+                        {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
+                        }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
 
@@ -285,12 +295,15 @@ namespace WpfTest
                     pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        float delta = pIntersection.X - fNode.Position.X;
+                        delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
                         delta = Math.Min(minSize, delta);
-                        
-                        box.ScalingValues += new Vector3(delta, 0 , 0);
+
+                        box.ScalingValues += new Vector3(delta, 0, 0);
                         if (box.ScalingValues.X < minSize)
-                            box.ScalingValues = new Vector3(minSize,box.ScalingValues.Y, box.ScalingValues.Z);
+                        {
+                            box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
+                            fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
+                        }
                         else
                             fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
                         box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
@@ -299,21 +312,23 @@ namespace WpfTest
 
                 case "ZArrow":
                     pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
-                    if (test) {
-                        float delta = pIntersection.Z - fNode.Position.Z;
+                    if (test)
+                    {
+                        delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
                         delta = Math.Min(minSize, delta);
-                        
+
                         box.ScalingValues += new Vector3(0, 0, delta);
                         if (box.ScalingValues.Z < minSize)
+                        {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
+                        }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
                         box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
-                        }
+                    }
                     break;
             }
-
-
 
         }
 
