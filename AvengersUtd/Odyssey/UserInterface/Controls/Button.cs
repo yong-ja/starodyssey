@@ -35,10 +35,21 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         public const string ControlTag = "Button";
         static int count;
 
-        private TextLiteral label;
+        private Label label;
+        private string content;
+        //private TextLiteral label;
 
         #region Properties
-        public string Content { get { return label.Content; } set { label.Content = value; } }
+        public string Content
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                if (label != null)
+                    label.Content = content;
+            }
+        }
 
         public override bool DesignMode
         {
@@ -91,7 +102,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         protected override void UpdateSizeDependantParameters()
         {
-            label.Position = TextManager.ComputeTextPosition(this, label);
+            label.Position = TextManager.ComputeTextPosition(this, label.TextLiteral);
             label.ComputeAbsolutePosition();
         }
 
@@ -106,16 +117,16 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
         IRenderable ISpriteObject.RenderableObject
         {
-            get { return label.RenderableObject; }
+            get { return label.TextLiteral.RenderableObject; }
         }
 
         bool ISpriteObject.Inited
         {
             get
             {
-                if (label == null)
+                if (label.TextLiteral == null)
                     return false; 
-                return label.Inited;
+                return label.TextLiteral.Inited;
             }
         }
 
@@ -124,29 +135,26 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
         {
             if (label != null)
                 return;
-            label = new TextLiteral
+
+            label = new Label()
             {
                 Id = ControlTag + TextLiteral.ControlTag,
                 Content = Id,
                 IsSubComponent = true,
                 Parent = this,
                 TextDescriptionClass = TextDescriptionClass,
-                IsDynamic = true
             };
-            label.CreateResource();
+            ((ISpriteObject)label).CreateResource();
         }
 
         void ISpriteObject.CreateShape()
         {
-            label.Position = TextManager.ComputeTextPosition(this, label);
             label.CreateShape();
         }
 
         void ISpriteObject.ComputeAbsolutePosition()
         {
-            label.Position = TextManager.ComputeTextPosition(this, label);
             label.ComputeAbsolutePosition();
-            
         } 
         #endregion
     }
