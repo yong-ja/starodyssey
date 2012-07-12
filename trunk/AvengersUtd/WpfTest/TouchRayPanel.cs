@@ -80,7 +80,13 @@ namespace WpfTest
                 if (delta < maxR)
                 {
                     MoveArrow(e.GazePoint, eyeArrow);
+                    LogEvent.Engine.Write(string.Format("delta: {0:2f}", delta));
                 }
+                else
+                {
+                    eyeArrow = null;
+                }
+                     
                 prevEyeLocation = e.GazePoint;
             };
         }
