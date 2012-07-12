@@ -15,7 +15,7 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
-TrackerWrapper tracker = new TrackerWrapper();  
+        readonly TrackerWrapper tracker = new TrackerWrapper();  
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
         { }
@@ -30,17 +30,18 @@ TrackerWrapper tracker = new TrackerWrapper();
             Box box = new Box(1, 1, 1);
             Sphere sphere = new Sphere(1, 16);
             ScalingWidget sWidget = new ScalingWidget(box);
-            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(4);
+            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(2.5f);
+            bbox.PositionV3 = new Vector3(bbox.Width / 2 - box.Width/2, bbox.Height/2 - box.Height/2, bbox.Depth/2 - box.Depth/2);
             sphere.PositionV3 = new Vector3(0f, 3f, 0);
 
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            RenderableNode rNodeBBox = new RenderableNode(bbox);
             FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
 
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeGrid);
             Scene.Tree.RootNode.AppendChild(coNode);
             fNodeGrid.AppendChild(rNodeBox);
+            fNodeGrid.AppendChild(bbox.ToBranch());
 
 
             FixedNode nWidget = sWidget.ToBranch();

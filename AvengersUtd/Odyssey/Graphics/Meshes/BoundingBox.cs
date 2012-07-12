@@ -64,8 +64,9 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
             Objects[10] = new Box(bottomRightBack.X - bottomLeftBack.X, DefaultThickness, DefaultThickness) { PositionV3 = Midpoint(bottomRightBack, bottomLeftBack) };
             Objects[11] = new Box(DefaultThickness, DefaultThickness, bottomLeftBack.Z - bottomLeftFront.Z + DefaultThickness) { PositionV3 = Midpoint(bottomLeftFront, bottomLeftBack) };
 
-            Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
- 
+            Material = new PhongMaterial() { DiffuseColor = Color.DarkGreen, AmbientCoefficient=1f};
+            foreach (IRenderable rObject in Objects)
+                rObject.Material = Material;
         }
 
      
