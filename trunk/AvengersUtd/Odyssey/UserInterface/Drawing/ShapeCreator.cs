@@ -56,7 +56,6 @@ namespace AvengersUtd.Odyssey.UserInterface.Drawing
             
             d.Position = control.AbsoluteOrthoPosition;
 
-
             foreach (BorderShader borderShader in desc.BorderShaders)
             {
 

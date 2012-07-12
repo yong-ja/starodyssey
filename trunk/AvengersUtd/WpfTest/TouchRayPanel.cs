@@ -24,8 +24,9 @@ namespace WpfTest
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
         readonly Dictionary<TouchDevice, IRenderable> arrows;
-        Vector3 defaultRight = new Vector3(3f, 0f, -3f);
+        Vector2 prevEyeLocation;
         private IRenderable box;
+        private IRenderable eyeArrow;
         RenderableNode rNode;
         TrackerWrapper tracker;
         TexturedIcon crosshair;
@@ -65,7 +66,23 @@ namespace WpfTest
         public void SetTracker(TrackerWrapper tracker)
         {
             this.tracker = tracker;
-            tracker.GazeDataReceived += (sender, e) => { crosshair.Position = e.GazePoint; };
+            tracker.GazeDataReceived += (sender, e) => { 
+                crosshair.Position = e.GazePoint;
+                if (eyeArrow == null)
+                {
+                    eyeArrow = sWidget.FindIntersection(GetRay(e.GazePoint));
+                    if (eyeArrow == null)
+                        return;
+                }
+
+                const float maxR = 128 * 128;
+                float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
+                if (delta < maxR)
+                {
+                    MoveArrow(e.GazePoint, eyeArrow);
+                }
+                prevEyeLocation = e.GazePoint;
+            };
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -167,24 +184,18 @@ namespace WpfTest
 
         }
 
-        protected override void OnTouchMove(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
+        void MoveArrow(Vector2 location, IRenderable arrow)
         {
-            base.OnTouchMove(e);
-
-            if (!arrows.ContainsKey(e.TouchDevice))
-                return;
-
-            IRenderable arrow = arrows[e.TouchDevice];
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
-            bool test;
+            const float minSize = 0.25f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
-            const float minSize = 0.25f;
             float delta;
+            bool test;
             switch (arrow.Name)
             {
                 case "YArrow":
-                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
                         delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
@@ -202,7 +213,7 @@ namespace WpfTest
                     break;
 
                 case "XArrow":
-                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+                    pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
                         delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
@@ -221,7 +232,7 @@ namespace WpfTest
                     break;
 
                 case "ZArrow":
-                    pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
+                    pIntersection = GetIntersection(location, Vector3.UnitY, arrowHead, out test);
                     if (test)
                     {
                         delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
@@ -239,6 +250,80 @@ namespace WpfTest
                     }
                     break;
             }
+        }
+
+        protected override void OnTouchMove(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
+        {
+            base.OnTouchMove(e);
+
+            if (!arrows.ContainsKey(e.TouchDevice))
+                return;
+
+            IRenderable arrow = arrows[e.TouchDevice];
+            MoveArrow(e.Location, arrow);
+            //bool test;
+            //Vector3 pIntersection;
+            //FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
+            //const float minSize = 0.25f;
+            //float delta;
+            //switch (arrow.Name)
+            //{
+            //    case "YArrow":
+            //        pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+            //        if (test)
+            //        {
+            //            delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
+            //            box.ScalingValues += new Vector3(0, delta, 0);
+            //            if (box.ScalingValues.Y < minSize)
+            //            {
+            //                box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+            //                fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
+            //            }
+            //            else
+            //                fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
+
+            //            box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
+            //        }
+            //        break;
+
+            //    case "XArrow":
+            //        pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
+            //        if (test)
+            //        {
+            //            delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
+            //            delta = Math.Min(minSize, delta);
+
+            //            box.ScalingValues += new Vector3(delta, 0, 0);
+            //            if (box.ScalingValues.X < minSize)
+            //            {
+            //                box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
+            //                fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
+            //            }
+            //            else
+            //                fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
+            //            box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
+            //        }
+            //        break;
+
+            //    case "ZArrow":
+            //        pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
+            //        if (test)
+            //        {
+            //            delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
+            //            delta = Math.Min(minSize, delta);
+
+            //            box.ScalingValues += new Vector3(0, 0, delta);
+            //            if (box.ScalingValues.Z < minSize)
+            //            {
+            //                box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+            //                fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
+            //            }
+            //            else
+            //                fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
+            //            box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
+            //        }
+            //        break;
+            //}
 
         }
 
