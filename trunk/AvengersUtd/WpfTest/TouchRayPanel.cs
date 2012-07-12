@@ -194,6 +194,7 @@ namespace WpfTest
         {
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 0.25f;
+            const float maxSize = 2.75f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             float delta;
@@ -209,6 +210,11 @@ namespace WpfTest
                         if (box.ScalingValues.Y < minSize)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
+                        }
+                        else if (box.ScalingValues.Y > maxSize)
+                        {
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, maxSize, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                         }
                         else
@@ -231,6 +237,11 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
+                        else if (box.ScalingValues.X> maxSize)
+                        {
+                            box.ScalingValues = new Vector3(maxSize, box.ScalingValues.Y, box.ScalingValues.Z);
+                            fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
+                        }
                         else
                             fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
                         box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
@@ -248,6 +259,11 @@ namespace WpfTest
                         if (box.ScalingValues.Z < minSize)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
+                        }
+                        else if (box.ScalingValues.Z > maxSize)
+                        {
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, maxSize);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                         }
                         else
@@ -357,70 +373,7 @@ namespace WpfTest
             if (tempArrow == null)
                 return;
             IRenderable arrowHead = ((MeshGroup) tempArrow).Objects[0];
-            bool test;
-            Vector3 pIntersection;
-            FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
-            const float minSize = 0.25f;
-            float delta;
-            switch (tempArrow.Name)
-            {
-                case "YArrow":
-                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
-                    if (test)
-                    {
-                        delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
-                        box.ScalingValues += new Vector3(0, delta, 0);
-                        if (box.ScalingValues.Y < minSize)
-                        {
-                            box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
-                            fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
-                        }
-                        else
-                            fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
-
-                        box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
-                    }
-                    break;
-
-                case "XArrow":
-                    pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
-                    if (test)
-                    {
-                        delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
-                        delta = Math.Min(minSize, delta);
-
-                        box.ScalingValues += new Vector3(delta, 0, 0);
-                        if (box.ScalingValues.X < minSize)
-                        {
-                            box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
-                            fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
-                        }
-                        else
-                            fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
-                        box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
-                    }
-                    break;
-
-                case "ZArrow":
-                    pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
-                    if (test)
-                    {
-                        delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
-                        delta = Math.Min(minSize, delta);
-
-                        box.ScalingValues += new Vector3(0, 0, delta);
-                        if (box.ScalingValues.Z < minSize)
-                        {
-                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
-                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
-                        }
-                        else
-                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
-                        box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
-                    }
-                    break;
-            }
-
+            MoveArrow(e.Location, tempArrow);
         }
 
         protected override void OnMouseUp(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)
