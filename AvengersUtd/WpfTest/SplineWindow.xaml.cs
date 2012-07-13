@@ -46,7 +46,7 @@ namespace WpfTest
         {
             gazeRadius = (int)CrossHair.Width / 2;
             tracker = new TrackerWrapper();
-            tracker.StartBrowsing();
+            
             knotPoints = new Dictionary<TouchDevice, Dot>();
             dots = new List<Dot>();
             InitializeComponent();
@@ -92,6 +92,8 @@ namespace WpfTest
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Maximized;
+            tracker.SetWindow(this);
+            tracker.StartBrowsing();
         }
 
 

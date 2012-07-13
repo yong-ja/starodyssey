@@ -17,6 +17,7 @@ namespace WpfTest
     {
         private readonly EyetrackerBrowser trackerBrowser;
         private readonly Clock clock;
+        Window window;
         IEyetracker tracker;
         EyetrackerInfo trackerInfo;
         private string connectionName;
@@ -42,6 +43,11 @@ namespace WpfTest
             trackerBrowser.EyetrackerFound += EyetrackerFound;
             trackerBrowser.EyetrackerUpdated += EyetrackerUpdated;
             trackerBrowser.EyetrackerRemoved += EyetrackerRemoved;
+        }
+
+        public void SetWindow(Window window)
+        {
+            this.window = window;
         }
 
         public void StartBrowsing()
@@ -154,9 +160,14 @@ namespace WpfTest
             Point2D leftGaze = e.GazeDataItem.LeftGazePoint2D;
             Point2D rightGaze = e.GazeDataItem.RightGazePoint2D;
 
+            if (leftGaze.X == -1)
+                leftGaze = rightGaze;
+            if (rightGaze.X == -1)
+                rightGaze = leftGaze;
+
             Point gazePoint = new Point((leftGaze.X + rightGaze.X) / 2, (leftGaze.Y + rightGaze.Y) / 2);
             Point screenPoint = new Point(gazePoint.X * SystemParameters.PrimaryScreenWidth, gazePoint.Y * SystemParameters.PrimaryScreenHeight);
-            Point clientPoint = Global.Window.PointFromScreen(screenPoint);
+            Point clientPoint = window.PointFromScreen(screenPoint);
 
             GazePoint = new Vector2((float)clientPoint.X, (float)clientPoint.Y);
 
