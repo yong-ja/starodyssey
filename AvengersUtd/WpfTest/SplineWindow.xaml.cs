@@ -26,8 +26,9 @@ namespace WpfTest
         Dictionary<TouchDevice, Dot> knotPoints;
         List<Dot> dots;
         Point startPoint, endPoint;
-        Ellipse ellipseRadius;
         const int radiusSize = 4 * Dot.Radius;
+
+        TrackerWrapper tracker;
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -42,6 +43,7 @@ namespace WpfTest
 
         void Init()
         {
+            tracker = new TrackerWrapper();
             knotPoints = new Dictionary<TouchDevice, Dot>();
             dots = new List<Dot>();
             InitializeComponent();
@@ -62,14 +64,16 @@ namespace WpfTest
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
 
+            bConnect.TouchUp += (sender, e) => { tracker.Connect(); };
+            bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
+
             Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
             {
                 Width = 2 * radiusSize,
                 Height = 2 * radiusSize,
                 Stroke = Brushes.Black,
-                RenderTransform = new TranslateTransform(8, 8)
+                RenderTransform = new TranslateTransform(8, 1070)
             };
-
             Canvas.Children.Add(ellipseRadius);
         }
 
@@ -228,6 +232,11 @@ namespace WpfTest
         private void OnWindowUnavailable(object sender, EventArgs e)
         {
             //TODO: disable audio, animations here
+        }
+
+        private void SurfaceButton_TouchUp(object sender, TouchEventArgs e)
+        {
+
         }
     }
 }

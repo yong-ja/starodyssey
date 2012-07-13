@@ -56,7 +56,7 @@ namespace WpfTest
 
         public void StartTracking()
         {
-            LogEvent.UserInterface.Write("Tracking started");
+            //LogEvent.UserInterface.Write("Tracking started");
             tracker.StartTracking();
             IsTracking = true;
         }
@@ -120,7 +120,7 @@ namespace WpfTest
 
                 tracker.GazeDataReceived += tracker_GazeDataReceived;
                 tracker.FramerateChanged += tracker_FramerateChanged;
-                LogEvent.UserInterface.Write(string.Format("Connected to {0}.", info.Model));
+                //LogEvent.UserInterface.Write(string.Format("Connected to {0}.", info.Model));
             }
             catch (EyetrackerException ee)
             {
