@@ -81,6 +81,7 @@ namespace WpfTest
             Canvas.Children.Add(ellipseRadius);
         }
 
+        int index;
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
             TranslateTransform transform = (TranslateTransform)CrossHair.RenderTransform;
@@ -89,9 +90,12 @@ namespace WpfTest
 
             if (knotPoints.Count < 2)
                 return;
+            if (e.GazePoint.X < 0 || e.GazePoint.X > 1920 || e.GazePoint.Y < 0 || e.GazePoint.Y > 1080)
+                return;
             List<int> indices = new List<int>(){ 1, 2, 3 };
-            foreach (int i in indices)
+            foreach (Dot d in knotPoints.Values)
             {
+                int i = (int)d.Tag;
                 if (indices.Contains(i))
                     indices.Remove(i);
             }
@@ -99,8 +103,10 @@ namespace WpfTest
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
             dots[eyeIndex - 1].Center = newLocation;
-            UserCurve.Points[eyeIndex] = newLocation;
-
+            //UserCurve.Points[eyeIndex] = newLocation;
+            index++;
+            SynchronizeDotsWithPoints();
+            
         }
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
@@ -130,29 +136,29 @@ namespace WpfTest
             Point newCenter = new Point(newLocation.X - Dot.Radius, newLocation.Y - Dot.Radius);
             dot.Center = newCenter;
 
-            UserCurve.Points[(int)dot.Tag] = newCenter;
+            //UserCurve.Points[(int)dot.Tag] = newCenter;
 
-            //SynchronizeDotsWithPoints();
+            SynchronizeDotsWithPoints();
 
             //Status.Text = string.Format("TouchMove P[{0},{1}]", newLocation.X, newLocation.Y);
         }
 
-        //void SynchronizeDotsWithPoints()
-        //{
-        //    PointCollection points = UserCurve.Points;
-        //    UserCurve.Points = null;
-        //    points.Clear();
-        //    points.Add(startPoint);
-        //    foreach (UIElement child in Canvas.Children)
-        //    {
-        //        Dot dot = child as Dot;
-        //        if (dot != null)
-        //            points.Add(dot.Center);
-        //    }
-        //    points.Add(endPoint);
+        void SynchronizeDotsWithPoints()
+        {
+            PointCollection points = UserCurve.Points;
+            UserCurve.Points = null;
+            points.Clear();
+            points.Add(startPoint);
+            foreach (UIElement child in Canvas.Children)
+            {
+                Dot dot = child as Dot;
+                if (dot != null)
+                    points.Add(dot.Center);
+            }
+            points.Add(endPoint);
 
-        //    UserCurve.Points = points;
-        //}
+            UserCurve.Points = points;
+        }
 
 
         void ellipse_TouchDown(object sender, TouchEventArgs e)
