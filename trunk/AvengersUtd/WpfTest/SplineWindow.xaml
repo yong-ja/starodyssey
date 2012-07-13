@@ -17,6 +17,11 @@
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
             <spline:CanonicalSpline x:Name="UserCurve"  Stroke="Red" StrokeThickness="6" Points="50 75 300 500 400 200 600 500 750 75" Tension="1"/>
+            <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="4" Y="4"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>

@@ -27,6 +27,7 @@ namespace WpfTest
         List<Dot> dots;
         Point startPoint, endPoint;
         const int radiusSize = 4 * Dot.Radius;
+        int gazeRadius;
 
         TrackerWrapper tracker;
         /// <summary>
@@ -43,6 +44,7 @@ namespace WpfTest
 
         void Init()
         {
+            gazeRadius = (int)CrossHair.Width / 2;
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
             knotPoints = new Dictionary<TouchDevice, Dot>();
@@ -65,10 +67,9 @@ namespace WpfTest
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
 
-            bConnect.TouchUp += (sender, e) => {
-                tracker.Connect();
-            };
+            bConnect.TouchUp += (sender, e) => {tracker.Connect();};
             bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
 
             Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
             {
@@ -78,6 +79,14 @@ namespace WpfTest
                 RenderTransform = new TranslateTransform(8, 1070)
             };
             Canvas.Children.Add(ellipseRadius);
+        }
+
+        void tracker_GazeDataReceived(object sender, GazeEventArgs e)
+        {
+            
+            TranslateTransform transform = (TranslateTransform)CrossHair.RenderTransform;
+            transform.X = e.GazePoint.X - gazeRadius;
+            transform.Y = e.GazePoint.Y - gazeRadius;
         }
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
@@ -112,22 +121,22 @@ namespace WpfTest
             //Status.Text = string.Format("TouchMove P[{0},{1}]", newLocation.X, newLocation.Y);
         }
 
-        void SynchronizeDotsWithPoints()
-        {
-            PointCollection points = UserCurve.Points;
-            UserCurve.Points = null;
-            points.Clear();
-            points.Add(startPoint);
-            foreach (UIElement child in Canvas.Children)
-            {
-                Dot dot = child as Dot;
-                if (dot != null)
-                    points.Add(dot.Center);
-            }
-            points.Add(endPoint);
+        //void SynchronizeDotsWithPoints()
+        //{
+        //    PointCollection points = UserCurve.Points;
+        //    UserCurve.Points = null;
+        //    points.Clear();
+        //    points.Add(startPoint);
+        //    foreach (UIElement child in Canvas.Children)
+        //    {
+        //        Dot dot = child as Dot;
+        //        if (dot != null)
+        //            points.Add(dot.Center);
+        //    }
+        //    points.Add(endPoint);
 
-            UserCurve.Points = points;
-        }
+        //    UserCurve.Points = points;
+        //}
 
 
         void ellipse_TouchDown(object sender, TouchEventArgs e)
@@ -181,6 +190,7 @@ namespace WpfTest
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
+            tracker.DisconnectTracker();
         }
 
         /// <summary>
