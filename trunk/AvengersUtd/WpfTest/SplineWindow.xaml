@@ -9,10 +9,10 @@
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
         </StatusBar>
         <Canvas  x:Name="Canvas">
-            <s:SurfaceButton x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
+            <Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-            <s:SurfaceButton x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
+            <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 

@@ -46,17 +46,19 @@ namespace WpfTest
 
         public void StartBrowsing()
         {
+            LogEvent.Engine.Write("Tracker: Start Browsing");
             trackerBrowser.Start();
         }
 
         public void StopBrowsing()
         {
+            LogEvent.Engine.Write("Tracker: Stop Browsing");
             trackerBrowser.Stop();
         }
 
         public void StartTracking()
         {
-            //LogEvent.UserInterface.Write("Tracking started");
+            LogEvent.Engine.Write("Tracker: Tracking Started");
             tracker.StartTracking();
             IsTracking = true;
         }
@@ -112,6 +114,7 @@ namespace WpfTest
         {
             try
             {
+                LogEvent.Engine.Write("Tracker: Connecting to " + info.Model);
                 tracker = EyetrackerFactory.CreateEyetracker(info);
                 tracker.ConnectionError += HandleConnectionError;
                 connectionName = info.ProductId;
@@ -120,26 +123,26 @@ namespace WpfTest
 
                 tracker.GazeDataReceived += tracker_GazeDataReceived;
                 tracker.FramerateChanged += tracker_FramerateChanged;
-                //LogEvent.UserInterface.Write(string.Format("Connected to {0}.", info.Model));
+                LogEvent.Engine.Write(string.Format("Connected to {0}.", info.Model));
             }
             catch (EyetrackerException ee)
             {
                 if (ee.ErrorCode == 0x20000402)
                 {
-                    LogEvent.UserInterface.Write("Failed to upgrade protocol. " +
+                    LogEvent.Engine.Write("Failed to upgrade protocol. " +
                         "This probably means that the firmware needs" +
                         " to be upgraded to a version that supports the new sdk.");
                 }
                 else
                 {
-                    LogEvent.UserInterface.Write("Eyetracker responded with error " + ee);
+                    LogEvent.Engine.Write("Eyetracker responded with error " + ee);
                 }
 
                 DisconnectTracker();
             }
             catch (Exception)
             {
-                LogEvent.UserInterface.Write("Could not connect to eyetracker.");
+                LogEvent.Engine.Write("Could not connect to eyetracker.");
                 DisconnectTracker();
             }
         }
