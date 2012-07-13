@@ -4,6 +4,6 @@
         xmlns:spline="clr-namespace:WpfTest"
         Title="SplineTask" Height="600" Width="800">
     <Canvas Background="DarkGray" x:Name="Canvas">
-        <spline:CanonicalSpline x:Name="UserCurve"  Stroke="Red" StrokeThickness="6" Points="100 75 150 25 200 150 250 25 300 75" Tension="1"/>
+        <spline:CanonicalSpline x:Name="UserCurve"  Stroke="Red" StrokeThickness="6" Points="100 75 200 25 300 150 400 25 500 75" Tension="1"/>
     </Canvas>
 </Window>
