@@ -10,7 +10,6 @@ namespace AvengersUtd.Odyssey.Utils.Logging
     {
         private const string LogTag = "[{0:HH:mm:ss.fff]}:\t{1}({2})";
 
-
         public ConsoleTraceListener(string name) : base(name)
         {
         }
@@ -24,7 +23,6 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         {
             string logEntry = string.Format(LogTag, DateTime.Now, eventType != TraceEventType.Information ? eventType.ToString() : string.Empty, source);
             WriteLine(string.Format("{0} {1}", logEntry, message,id));
-            
         }
 
         /// <summary>
@@ -44,7 +42,6 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         {
             Console.WriteLine(message);
         }
-
         
         static string GetCode(TraceEventType eventType, int eventCode)
         {
