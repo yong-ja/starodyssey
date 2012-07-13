@@ -83,10 +83,24 @@ namespace WpfTest
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
-            
             TranslateTransform transform = (TranslateTransform)CrossHair.RenderTransform;
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
+
+            if (knotPoints.Count < 2)
+                return;
+            List<int> indices = new List<int>(){ 1, 2, 3 };
+            foreach (int i in indices)
+            {
+                if (indices.Contains(i))
+                    indices.Remove(i);
+            }
+            int eyeIndex = indices[0];
+
+            Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
+            dots[eyeIndex - 1].Center = newLocation;
+            UserCurve.Points[eyeIndex] = newLocation;
+
         }
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
