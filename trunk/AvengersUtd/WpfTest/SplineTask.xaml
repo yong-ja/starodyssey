@@ -1,9 +1,0 @@
-﻿<Window x:Class="WpfTest.SplineTask"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:spline="clr-namespace:WpfTest"
-        Title="SplineTask" Height="600" Width="800">
-    <Canvas Background="DarkGray" x:Name="Canvas">
-        <spline:CanonicalSpline x:Name="UserCurve"  Stroke="Red" StrokeThickness="6" Points="100 75 200 25 300 150 400 25 500 75" Tension="1"/>
-    </Canvas>
-</Window>

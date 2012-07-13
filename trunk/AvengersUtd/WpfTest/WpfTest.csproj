@@ -201,6 +201,9 @@
     <Compile Include="BoxRenderer.cs" />
     <Compile Include="CanonicalSpline.cs" />
     <Compile Include="CanonicalSplineHelper.cs" />
+    <Compile Include="Dot.xaml.cs">
+      <DependentUpon>Dot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GazeEventArgs.cs" />
     <Compile Include="DXWindow.xaml.cs">
       <DependentUpon>DXWindow.xaml</DependentUpon>
@@ -209,8 +212,8 @@
       <DependentUpon>InvadersTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScalingWidget.cs" />
-    <Compile Include="SplineTask.xaml.cs">
-      <DependentUpon>SplineTask.xaml</DependentUpon>
+    <Compile Include="SplineWindow.xaml.cs">
+      <DependentUpon>SplineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Target.cs" />
     <None Include="TestRenderer.cs" />
@@ -224,6 +227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DXWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,7 +239,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SplineTask.xaml">
+    <Page Include="SplineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
