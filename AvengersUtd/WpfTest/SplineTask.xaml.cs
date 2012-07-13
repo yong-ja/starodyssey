@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AvengersUtd.Odyssey.Utils.Logging;
+using AvengersUtd.Odyssey.Geometry;
+using Ellipse = System.Windows.Shapes.Ellipse;
 
 namespace WpfTest
 {
@@ -19,21 +21,30 @@ namespace WpfTest
     /// </summary>
     public partial class SplineTask : Window
     {
+        const int radius = 16;
         Dictionary<TouchDevice, Ellipse> knotPoints;
+        List<Ellipse> ellipses;
 
         public SplineTask()
         {
             knotPoints = new Dictionary<TouchDevice, Ellipse>();
+            ellipses = new List<Ellipse>();
             InitializeComponent();
 
             Canvas.Children.Add(BuildEndPoint(UserCurve.Points[0]));
             for (int i=1; i < UserCurve.Points.Count-1; i++)
             {
                 Point p = UserCurve.Points[i];
-                Canvas.Children.Add(BuildKnotPoint(p));
+                Ellipse knotPoint = BuildKnotPoint(p);
+                knotPoint.Tag = i;
+                Canvas.Children.Add(knotPoint);
+                ellipses.Add(knotPoint);
             }
             Canvas.Children.Add(BuildEndPoint(UserCurve.Points[4]));
             Loaded += new RoutedEventHandler(SplineTask_Loaded);
+            TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
+            TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
+            LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
         }
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
@@ -41,22 +52,7 @@ namespace WpfTest
             WindowState = WindowState.Maximized;
         }
 
-        Ellipse BuildKnotPoint(Point location)
-        {
-            const int radius = 16;
-            Ellipse ellipse = new Ellipse
-            {
-                RenderTransform = new TranslateTransform(location.X - radius/2, location.Y-radius/2),
-                Fill = Brushes.DarkBlue,
-                Width = radius,
-                Height = radius
-            };
-            ellipse.TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
-            ellipse.TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
-            ellipse.LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
 
-            return ellipse;
-        }
 
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
@@ -65,18 +61,40 @@ namespace WpfTest
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
         {
+            if (!knotPoints.ContainsKey(e.TouchDevice))
+                return;
             Ellipse ellipse = knotPoints[e.TouchDevice];
             Point newLocation = e.GetTouchPoint(this).Position;
-            ellipse.RenderTransform = new TranslateTransform(newLocation.X, newLocation.Y);
+            int index = (int)ellipse.Tag;
+            UserCurve.Points[index] = newLocation;
+            ellipse.RenderTransform = new TranslateTransform(newLocation.X-radius/2, newLocation.Y-radius/2);
+
         }
 
         void ellipse_TouchDown(object sender, TouchEventArgs e)
         {
             TouchDevice touchDevice = e.TouchDevice;
-            Ellipse ellipse = (Ellipse)sender;
+            Point location = e.GetTouchPoint(this).Position;
+            Ellipse ellipse = FindKnotPoint(location);
+            if (ellipse == null)
+                return;
             
             touchDevice.Capture(ellipse);
             knotPoints.Add(touchDevice, ellipse);
+        }
+
+        Ellipse FindKnotPoint(Point location)
+        {
+            foreach (Ellipse e in ellipses)
+            {
+                TranslateTransform transform = (TranslateTransform)e.RenderTransform;
+                Vector2D ellipseCenter = new Vector2D(transform.X, transform.Y);
+                Circle c = new Circle(ellipseCenter, 2*(int)radius);
+                bool test = Intersection.CirclePointTest(c, new Vector2D(location.X, location.Y));
+                if (test)
+                    return e;
+            }
+            return null;
         }
 
         Rectangle BuildEndPoint(Point location)
@@ -90,6 +108,19 @@ namespace WpfTest
                 Height = width
             };
             return rectangle;
+        }
+
+        Ellipse BuildKnotPoint(Point location)
+        {
+
+            Ellipse ellipse = new Ellipse
+            {
+                RenderTransform = new TranslateTransform(location.X - radius / 2, location.Y - radius / 2),
+                Fill = Brushes.DarkBlue,
+                Width = radius,
+                Height = radius
+            };
+            return ellipse;
         }
 
 
