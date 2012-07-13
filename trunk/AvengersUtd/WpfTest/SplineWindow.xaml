@@ -9,6 +9,13 @@
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
         </StatusBar>
         <Canvas  x:Name="Canvas">
+            <s:SurfaceButton x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
+                             Width="128" Height="32" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+            <s:SurfaceButton x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
+                             Width="128" Height="32" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
             <spline:CanonicalSpline x:Name="UserCurve"  Stroke="Red" StrokeThickness="6" Points="50 75 300 500 400 200 600 500 750 75" Tension="1"/>
         </Canvas>
     </DockPanel>
