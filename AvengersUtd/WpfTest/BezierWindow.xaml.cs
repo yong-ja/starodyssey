@@ -170,6 +170,7 @@ namespace WpfTest
             Status.Text = string.Format("TouchMove P[{0},{1}]", newLocation.X, newLocation.Y);
         }
 
+
         //void SynchronizeDotsWithPoints()
         //{
         //    PointCollection points = UserCurve.Points;
