@@ -138,12 +138,13 @@ namespace WpfTest
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
         {
+            WpfTextTraceListener.SetTextOutput(Status);
             WindowState = WindowState.Maximized;
             tracker = new TrackerWrapper();
             tracker.SetWindow(this);
             tracker.StartBrowsing();
             tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
-            WpfTextTraceListener.SetTextOutput(Status);
+            
         }
 
 

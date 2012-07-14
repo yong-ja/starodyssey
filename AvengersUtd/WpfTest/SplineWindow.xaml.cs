@@ -104,14 +104,16 @@ namespace WpfTest
             int eyeIndex = GetEyeIndex(knotPoints.Values);
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
-            prevEyeLocation = newLocation;
+           
 
             Vector delta = Point.Subtract(newLocation, prevEyeLocation);
             if (delta.LengthSquared < 16 * 16)
             {
-                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Too close", e.GazePoint.X, e.GazePoint.Y));
+                prevEyeLocation = newLocation;
+                //LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Too close", e.GazePoint.X, e.GazePoint.Y));
                 return;
             }
+            prevEyeLocation = newLocation;
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
             dots[eyeIndex - 1].Center = newLocation;
 
