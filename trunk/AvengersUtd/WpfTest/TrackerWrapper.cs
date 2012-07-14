@@ -129,7 +129,7 @@ namespace WpfTest
 
                 tracker.GazeDataReceived += tracker_GazeDataReceived;
                 tracker.FramerateChanged += tracker_FramerateChanged;
-                LogEvent.Engine.Write(string.Format("Connected to {0}.", info.Model));
+                LogEvent.Engine.Write(string.Format("Connected to {0} FrameRate {1}.", info.Model, tracker.GetFramerate()));
             }
             catch (EyetrackerException ee)
             {

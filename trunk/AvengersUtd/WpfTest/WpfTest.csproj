@@ -195,12 +195,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BezierTask.xaml.cs">
-      <DependentUpon>BezierTask.xaml</DependentUpon>
+    <Compile Include="BezierCurve.xaml.cs">
+      <DependentUpon>BezierCurve.xaml</DependentUpon>
     </Compile>
     <Compile Include="BoxRenderer.cs" />
     <Compile Include="CanonicalSpline.cs" />
     <Compile Include="CanonicalSplineHelper.cs" />
+    <Compile Include="BezierWindow.xaml.cs">
+      <DependentUpon>BezierWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dot.xaml.cs">
       <DependentUpon>Dot.xaml</DependentUpon>
     </Compile>
@@ -223,9 +226,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="BezierTask.xaml">
+    <Page Include="BezierCurve.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BezierWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dot.xaml">
       <Generator>MSBuild:Compile</Generator>
