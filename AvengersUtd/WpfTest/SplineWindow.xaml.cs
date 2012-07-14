@@ -97,8 +97,23 @@ namespace WpfTest
                 return;
             }
 
-            List<int> indices = new List<int>(){ 1, 2, 3 };
-            foreach (Dot d in knotPoints.Values)
+            if (knotPoints.Count < 2)
+                return;
+
+            int eyeIndex = GetEyeIndex(knotPoints.Values);
+
+            Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
+            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
+            //dots[eyeIndex - 1].Center = newLocation;
+
+            //UserCurve.Points[eyeIndex] = newLocation;
+
+        }
+
+        static int GetEyeIndex(IEnumerable<Dot> dots)
+        {
+            List<int> indices = new List<int>() { 1, 2, 3 };
+            foreach (Dot d in dots)
             {
                 int index = (int)d.Tag;
                 if (indices.Contains(index))
@@ -107,16 +122,9 @@ namespace WpfTest
             if (indices.Count != 1)
             {
                 LogEvent.Engine.Write("Error: indices exclusion failed");
-                return;
+                return -1;
             }
-            int eyeIndex = indices[0];
-
-            Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
-            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
-            //dots[eyeIndex - 1].Center = newLocation;
-
-            //UserCurve.Points[eyeIndex] = newLocation;
-
+            return indices[0];
         }
 
         void SplineTask_Loaded(object sender, RoutedEventArgs e)
