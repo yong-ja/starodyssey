@@ -88,8 +88,8 @@ namespace WpfTest
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
 
-            if (knotPoints.Count < 2)
-                return;
+            //if (knotPoints.Count < 2)
+            //    return;
             List<int> indices = new List<int>(){ 1, 2, 3 };
             foreach (Dot d in knotPoints.Values)
             {
@@ -101,7 +101,7 @@ namespace WpfTest
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
-            dots[eyeIndex - 1].Center = newLocation;
+            //dots[eyeIndex - 1].Center = newLocation;
 
             //UserCurve.Points[eyeIndex] = newLocation;
 
