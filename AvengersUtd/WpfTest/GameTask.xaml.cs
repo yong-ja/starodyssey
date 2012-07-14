@@ -48,9 +48,9 @@ namespace WpfTest
             Loaded += new RoutedEventHandler(GameTask_Loaded);
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
-            Canvas.LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
-            bConnect.TouchUp += (sender, e) => { tracker.Connect(); };
-            bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
+            bConnect.Click += (sender, e) => { tracker.Connect(); };
+            bStart.Click += (sender, e) => { tracker.StartTracking(); };
 
 
             //Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
