@@ -61,6 +61,18 @@ namespace WpfTest
             //    RenderTransform = new TranslateTransform(8, 1070)
             //};
             //Canvas.Children.Add(ellipseRadius);
+            DistributeTargets();
+        }
+
+        void DistributeTargets()
+        {
+            Random rand = new Random();
+            foreach (Target t in targets)
+            {
+                double x = rand.NextDouble();
+                double y = rand.NextDouble();
+                t.Center = new Point(x * 1920, y * 1080);
+            }
         }
 
         void Canvas_LostTouchCapture(object sender, TouchEventArgs e)
@@ -145,6 +157,7 @@ namespace WpfTest
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
+            tracker.DisconnectTracker();
         }
 
         /// <summary>
