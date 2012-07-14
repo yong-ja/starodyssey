@@ -104,6 +104,11 @@ namespace WpfTest
                 if (indices.Contains(index))
                     indices.Remove(index);
             }
+            if (indices.Count != 1)
+            {
+                LogEvent.Engine.Write("Error: indices exclusion failed");
+                return;
+            }
             int eyeIndex = indices[0];
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
