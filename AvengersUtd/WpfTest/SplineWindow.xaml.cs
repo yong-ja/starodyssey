@@ -91,10 +91,11 @@ namespace WpfTest
             if (knotPoints.Count < 2)
                 return;
             List<int> indices = new List<int>(){ 1, 2, 3 };
-            foreach (int i in indices)
+            foreach (Dot d in knotPoints.Values)
             {
-                if (indices.Contains(i))
-                    indices.Remove(i);
+                int index = (int)d.Tag;
+                if (indices.Contains(index))
+                    indices.Remove(index);
             }
             int eyeIndex = indices[0];
 
@@ -119,7 +120,7 @@ namespace WpfTest
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
             knotPoints.Remove(e.TouchDevice);
-            LogEvent.Engine.Write(string.Format("TouchDown [{0}]", e.TouchDevice));
+            LogEvent.Engine.Write(string.Format("TouchDown [{0}]", e.TouchDevice.Id));
         }
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
@@ -164,7 +165,7 @@ namespace WpfTest
             TouchDevice touchDevice = e.TouchDevice;
             Point location = e.GetTouchPoint(this).Position;
             Dot dot = FindKnotPoint(location);
-            LogEvent.Engine.Write(string.Format("TouchDown [{0}] {1}", e.TouchDevice,
+            LogEvent.Engine.Write(string.Format("TouchDown [{0}] {1}", e.TouchDevice.Id,
                 dot == null ? "No intersection" : "Found dot #" + (int)dot.Tag));
 
             if (dot == null)
