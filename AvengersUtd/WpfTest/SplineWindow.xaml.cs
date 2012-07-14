@@ -15,6 +15,7 @@ using Microsoft.Surface;
 using Microsoft.Surface.Presentation;
 using Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation.Input;
+using AvengersUtd.Odyssey.Utils.Logging;
 
 namespace WpfTest
 {
@@ -98,7 +99,9 @@ namespace WpfTest
             int eyeIndex = indices[0];
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
+            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
             dots[eyeIndex - 1].Center = newLocation;
+
             //UserCurve.Points[eyeIndex] = newLocation;
 
         }
@@ -108,6 +111,7 @@ namespace WpfTest
             WindowState = WindowState.Maximized;
             tracker.SetWindow(this);
             tracker.StartBrowsing();
+            WpfTextTraceListener.SetTextOutput(Status);
         }
 
 
@@ -115,14 +119,14 @@ namespace WpfTest
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
             knotPoints.Remove(e.TouchDevice);
-            Status.Text = string.Format("TouchDown [{0}]", e.TouchDevice);
+            LogEvent.Engine.Write(string.Format("TouchDown [{0}]", e.TouchDevice));
         }
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
         {
             if (!knotPoints.ContainsKey(e.TouchDevice))
             {
-                Status.Text = "TouchMove - No itnersection";
+                LogEvent.Engine.Write("TouchMove - No intersection");
                 return;
             }
             Dot dot = knotPoints[e.TouchDevice];
@@ -160,8 +164,8 @@ namespace WpfTest
             TouchDevice touchDevice = e.TouchDevice;
             Point location = e.GetTouchPoint(this).Position;
             Dot dot = FindKnotPoint(location);
-            Status.Text = string.Format("TouchDown [{0}] {1}", e.TouchDevice,
-                dot == null ? "No intersection" : "Found dot #" + (int)dot.Tag);
+            LogEvent.Engine.Write(string.Format("TouchDown [{0}] {1}", e.TouchDevice,
+                dot == null ? "No intersection" : "Found dot #" + (int)dot.Tag));
 
             if (dot == null)
                 return;

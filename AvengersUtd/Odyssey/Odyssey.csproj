@@ -266,6 +266,7 @@
     <Compile Include="UserInterface\Input\MouseEventArgs.cs" />
     <Compile Include="UserInterface\Input\TouchEventArgs.cs" />
     <Compile Include="UserInterface\OdysseyUI.Wpf.cs" />
+    <Compile Include="Utils\Logging\WpfTextTraceListener.cs" />
     <Compile Include="WpfWindow.cs" />
     <None Include="App.config">
       <SubType>Designer</SubType>
