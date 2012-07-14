@@ -115,7 +115,7 @@ namespace WpfTest
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
             dots[eyeIndex - 1].Center = newLocation;
 
-            //UserCurve.Points[eyeIndex] = newLocation;
+            UserCurve.SetPoint(newLocation, eyeIndex);
 
         }
 

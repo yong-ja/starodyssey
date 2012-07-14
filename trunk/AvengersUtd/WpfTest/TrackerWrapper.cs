@@ -130,6 +130,7 @@ namespace WpfTest
                 tracker.GazeDataReceived += tracker_GazeDataReceived;
                 tracker.FramerateChanged += tracker_FramerateChanged;
                 LogEvent.Engine.Write(string.Format("Connected to {0} FrameRate {1}.", info.Model, tracker.GetFramerate()));
+                tracker.SetFramerate(60);
                 ListFramerates();
             }
             catch (EyetrackerException ee)
@@ -160,7 +161,7 @@ namespace WpfTest
             for (int i=0; i<framerates.Count; i++)
             {
                 float f = framerates[i];
-                Console.Write(string.Format("Framerate #[{0}] = {1:f2}", i, f));
+                Console.WriteLine(string.Format("Framerate #[{0}] = {1:f2}", i, f));
             }
         }
 
