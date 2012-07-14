@@ -1,0 +1,27 @@
+﻿<s:SurfaceWindow x:Class="WpfTest.BezierWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+                 xmlns:spline="clr-namespace:WpfTest"
+        Title="SplineTask" Height="600" Width="800">
+<DockPanel Background="DarkGray" LastChildFill="True">
+        <StatusBar Height="32" DockPanel.Dock="Bottom" Padding="2">
+            <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
+        </StatusBar>
+        <Canvas  x:Name="Canvas">
+            <Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
+                             Width="128" Height="32" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+            <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
+                             Width="128" Height="32" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+            <spline:BezierCurve x:Name="UserCurve" StartPoint="8 8" ControlPoint1="200 600" ControlPoint2="400 50" EndPoint="800 800"/>
+            <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="4" Y="4"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Canvas>
+    </DockPanel>
+</s:SurfaceWindow>
