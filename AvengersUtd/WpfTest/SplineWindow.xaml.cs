@@ -28,6 +28,7 @@ namespace WpfTest
         List<Dot> dots;
         Point startPoint, endPoint;
         const int radiusSize = 4 * Dot.Radius;
+        Point prevEyeLocation;
         int gazeRadius;
 
         TrackerWrapper tracker;
@@ -93,7 +94,7 @@ namespace WpfTest
 
             if (e.GazePoint.X < 0 || e.GazePoint.X > 1920 || e.GazePoint.Y < 0 || e.GazePoint.Y > 1080)
             {
-                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
+                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Outside screen bounds", e.GazePoint.X, e.GazePoint.Y));
                 return;
             }
 
@@ -103,6 +104,14 @@ namespace WpfTest
             int eyeIndex = GetEyeIndex(knotPoints.Values);
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
+            prevEyeLocation = newLocation;
+
+            Vector delta = Point.Subtract(newLocation, prevEyeLocation);
+            if (delta.LengthSquared < 16 * 16)
+            {
+                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Too close", e.GazePoint.X, e.GazePoint.Y));
+                return;
+            }
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
             dots[eyeIndex - 1].Center = newLocation;
 
