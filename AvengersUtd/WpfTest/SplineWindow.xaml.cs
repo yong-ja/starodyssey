@@ -90,6 +90,13 @@ namespace WpfTest
 
             //if (knotPoints.Count < 2)
             //    return;
+
+            if (e.GazePoint.X < 0 || e.GazePoint.X > 1920 || e.GazePoint.Y < 0 || e.GazePoint.Y > 1080)
+            {
+                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
+                return;
+            }
+
             List<int> indices = new List<int>(){ 1, 2, 3 };
             foreach (Dot d in knotPoints.Values)
             {
