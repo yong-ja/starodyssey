@@ -10,7 +10,6 @@ namespace WpfTest
 {
     public class Target : Image
     {
-
         public System.Windows.Point Location
         {
             get
@@ -38,6 +37,25 @@ namespace WpfTest
         {
             Rect rect = new Rect(Location.X, Location.Y, Width, Height);
             return rect.Contains(location);
+        }
+
+        public static readonly DependencyProperty CenterProperty =
+            DependencyProperty.Register("CenterProperty", typeof(Point), typeof(Target), new PropertyMetadata(OnCenterChanged));
+
+        public Point Center
+        {
+            set { SetValue(CenterProperty, value); }
+            get { return (Point)GetValue(CenterProperty); }
+        }
+
+        private static void OnCenterChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Target target = sender as Target;
+            if (target == null)
+                return;
+
+            Point newCenter = (Point)e.NewValue;
+            target.RenderTransform = new TranslateTransform(newCenter.X, newCenter.Y);
         }
     }
 }
