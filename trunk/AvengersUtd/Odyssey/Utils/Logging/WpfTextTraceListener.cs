@@ -13,6 +13,11 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         private const string LogTag = "[{0:HH:mm:ss.fff]}:\t{1}({2})";
         private static TextBlock output;
 
+        public WpfTextTraceListener(string name)
+            : base(name)
+        {
+        }
+
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id)
         {
             TraceEvent(eventCache, source, eventType, id, "No additional information."); 
