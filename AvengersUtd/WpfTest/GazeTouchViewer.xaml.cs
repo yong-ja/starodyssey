@@ -25,7 +25,13 @@ namespace WpfTest
     public partial class GazeTouchViewer : SurfaceWindow
     {
         int gazeRadius;
+        bool gazeOnly;
+        Brush touchBrush;
+        Brush eyeBrush;
+
+        Point lastGazePoint;
         TrackerWrapper tracker;
+        Dictionary<TouchDevice, Brush> points;
 
         /// <summary>
         /// Default constructor.
@@ -42,17 +48,59 @@ namespace WpfTest
         void Init()
         {
             gazeRadius = (int)CrossHair.Width / 2;
+            points = new Dictionary<TouchDevice, Brush>();
             Loaded += new RoutedEventHandler(GazeTouchViewer_Loaded);
-            //TouchMove += new EventHandler<TouchEventArgs>(GazeTouchViewer_TouchMove);
+
             
             bConnect.TouchUp += (sender, e) => { tracker.Connect(); };
-            bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            bStart.TouchUp += (sender, e) => { gazeOnly = true; tracker.StartTracking();  };
+            bTouch.TouchUp += (sender, e) =>
+            {
+                gazeOnly = false;
+                tracker.StartTracking();
+                TouchDown += new EventHandler<TouchEventArgs>(GazeTouchViewer_TouchDown);
+                TouchMove += new EventHandler<TouchEventArgs>(GazeTouchViewer_TouchMove);
+            };
         }
 
-        //void GazeTouchViewer_TouchMove(object sender, TouchEventArgs e)
-        //{
-            
-        //}
+        void GazeTouchViewer_TouchDown(object sender, TouchEventArgs e)
+        {
+            if (points.ContainsKey(e.TouchDevice))
+            {
+                touchBrush = Brushes.Black;
+                return;
+            }
+
+            if (points.Count == 0)
+                points.Add(e.TouchDevice, Brushes.Blue);
+            else
+                points.Add(e.TouchDevice, Brushes.Purple);
+        }
+
+        void GazeTouchViewer_TouchMove(object sender, TouchEventArgs e)
+        {
+            if (!points.ContainsKey(e.TouchDevice))
+                touchBrush = Brushes.Black;
+            else
+                touchBrush = points[e.TouchDevice];
+
+            HitTestResult result = VisualTreeHelper.HitTest(Canvas, new Point(lastGazePoint.X, lastGazePoint.Y));
+
+            if (result != null)
+                return;
+
+            Ellipse gazePoint = new Ellipse()
+            {
+                Width = gazeRadius,
+                Height = gazeRadius,
+                Fill = touchBrush,
+                Stroke = eyeBrush,
+                StrokeThickness = 2
+
+            };
+            gazePoint.RenderTransform = new TranslateTransform(lastGazePoint.X - gazeRadius/2, lastGazePoint.Y - gazeRadius/2);
+            Canvas.Children.Add(gazePoint);
+        }
 
         void GazeTouchViewer_Loaded(object sender, RoutedEventArgs e)
         {
@@ -73,18 +121,20 @@ namespace WpfTest
 
             bool leftValid = e.LeftValid == 4;
             bool rightValid = e.RightValid == 4;
-            Brush fillColor;
             if (leftValid && rightValid)
-                fillColor = Brushes.Green;
+                eyeBrush = Brushes.Green;
             else if (leftValid && !rightValid)
-                fillColor = Brushes.Yellow;
+                eyeBrush = Brushes.Yellow;
             else if (rightValid && !leftValid)
-                fillColor = Brushes.Orange;
+                eyeBrush = Brushes.Orange;
             else
             { 
-                fillColor = Brushes.Red;
+                eyeBrush = Brushes.Red;
                 //return; 
             }
+
+            if (!gazeOnly)
+                return;
 
             HitTestResult result = VisualTreeHelper.HitTest(Canvas, new Point(e.GazePoint.X, e.GazePoint.Y));
 
@@ -95,8 +145,9 @@ namespace WpfTest
             {
                 Width = gazeRadius,
                 Height = gazeRadius,
-                Fill = fillColor
+                Fill = eyeBrush
             };
+            lastGazePoint = new Point(e.GazePoint.X, e.GazePoint.Y);
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2} L:{2} R:{3}", e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid));
             gazePoint.RenderTransform = new TranslateTransform(transform.X, transform.Y);
             Canvas.Children.Add(gazePoint);
