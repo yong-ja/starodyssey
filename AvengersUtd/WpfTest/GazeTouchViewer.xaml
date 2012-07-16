@@ -22,10 +22,10 @@
                 </local:CustomGrid.DashStyle>
             </local:CustomGrid>
             <Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
-                             Width="128" Height="32"  IsHitTestVisible="False"
+                             Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
             <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
-                             Width="128" Height="32" IsHitTestVisible="False"
+                             Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64">
                 <Ellipse.RenderTransform>

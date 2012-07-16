@@ -186,10 +186,10 @@ namespace WpfTest
 
             Point smoothedPoint = smoother.Smooth(clientPoint);
             GazePoint = new Vector2((float)smoothedPoint.X, (float)smoothedPoint.Y);
-            bool leftValid = e.GazeDataItem.LeftValidity == 1 ? true : false;
-            bool rightValid = e.GazeDataItem.RightValidity == 1 ? true : false;
+            //bool leftValid = e.GazeDataItem.LeftValidity == 1 ? true : false;
+            //bool rightValid = e.GazeDataItem.RightValidity == 1 ? true : false;
 
-            OnGazeDataReceived(this, new GazeEventArgs(GazePoint, leftValid, rightValid));
+            OnGazeDataReceived(this, new GazeEventArgs(GazePoint, e.GazeDataItem.LeftValidity, e.GazeDataItem.RightValidity));
         }
 
         private void tracker_FramerateChanged(object sender, FramerateChangedEventArgs e)
