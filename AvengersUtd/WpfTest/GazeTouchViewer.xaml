@@ -30,7 +30,7 @@
             <Button x:Name="bTouch" Canvas.Left="1792" Canvas.Top="104" Content="Start w/Touch" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64">
+            <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64" IsHitTestVisible="false">
                 <Ellipse.RenderTransform>
                     <TranslateTransform X="4" Y="4"/>
                 </Ellipse.RenderTransform>
