@@ -48,11 +48,9 @@ namespace WpfTest
         void Init()
         {
             gazeRadius = (int)CrossHair.Width / 2;
-            
-            
+
             knotPoints = new Dictionary<TouchDevice, Dot>();
             dots = new List<Dot>();
-            InitializeComponent();
             startPoint = UserCurve.StartPoint;
             Canvas.Children.Add(BuildEndPoint(UserCurve.StartPoint));
             Dot cp1=  BuildControlPoint(UserCurve.ControlPoint1, 1);

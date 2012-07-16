@@ -204,6 +204,7 @@
     <Compile Include="BezierWindow.xaml.cs">
       <DependentUpon>BezierWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomGrid.cs" />
     <Compile Include="Dot.xaml.cs">
       <DependentUpon>Dot.xaml</DependentUpon>
     </Compile>
@@ -213,6 +214,9 @@
     <Compile Include="GazeEventArgs.cs" />
     <Compile Include="DXWindow.xaml.cs">
       <DependentUpon>DXWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GazeTouchViewer.xaml.cs">
+      <DependentUpon>GazeTouchViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="InvadersTask.xaml.cs">
       <DependentUpon>InvadersTask.xaml</DependentUpon>
@@ -247,6 +251,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GazeTouchViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
