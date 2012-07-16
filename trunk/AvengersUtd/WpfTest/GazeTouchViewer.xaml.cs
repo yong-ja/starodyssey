@@ -71,8 +71,8 @@ namespace WpfTest
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
 
-            bool leftValid = e.LeftValid;
-            bool rightValid = e.RightValid;
+            bool leftValid = true; //e.LeftValid;
+            bool rightValid = true;  //e.RightValid;
             Brush fillColor;
             if (leftValid && rightValid)
                 fillColor = Brushes.Green;
@@ -81,7 +81,10 @@ namespace WpfTest
             else if (rightValid && !leftValid)
                 fillColor = Brushes.Orange;
             else
-            { fillColor = Brushes.Red; return; }
+            { 
+                fillColor = Brushes.Red;
+                //return; 
+            }
 
             HitTestResult result = VisualTreeHelper.HitTest(Canvas, new Point(e.GazePoint.X, e.GazePoint.Y));
 
@@ -94,7 +97,7 @@ namespace WpfTest
                 Height = gazeRadius,
                 Fill = fillColor
             };
-
+            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2} L:{2} R:{3}", e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid));
             gazePoint.RenderTransform = new TranslateTransform(transform.X, transform.Y);
             Canvas.Children.Add(gazePoint);
         }
@@ -111,6 +114,7 @@ namespace WpfTest
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
+            tracker.DisconnectTracker();
         }
 
         #region Surface handlers
