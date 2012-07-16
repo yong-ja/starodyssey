@@ -22,6 +22,7 @@ namespace WpfTest
         EyetrackerInfo trackerInfo;
         private string connectionName;
         private SyncManager syncManager;
+        AverageWindow smoother;
         public bool IsTracking { get; private set;}
 
         public Vector2 GazePoint { get; private set; }
@@ -43,6 +44,7 @@ namespace WpfTest
             trackerBrowser.EyetrackerFound += EyetrackerFound;
             trackerBrowser.EyetrackerUpdated += EyetrackerUpdated;
             trackerBrowser.EyetrackerRemoved += EyetrackerRemoved;
+            smoother = new AverageWindow(10);
         }
 
         public void SetWindow(Window window)
@@ -182,7 +184,9 @@ namespace WpfTest
             Point screenPoint = new Point(gazePoint.X * SystemParameters.PrimaryScreenWidth, gazePoint.Y * SystemParameters.PrimaryScreenHeight);
             Point clientPoint = window.PointFromScreen(screenPoint);
 
-            GazePoint = new Vector2((float)clientPoint.X, (float)clientPoint.Y);
+            Point smoothedPoint = smoother.Smooth(clientPoint);
+
+            GazePoint = new Vector2((float)smoothedPoint.X, (float)smoothedPoint.Y);
 
             OnGazeDataReceived(this, new GazeEventArgs(GazePoint));
         }
