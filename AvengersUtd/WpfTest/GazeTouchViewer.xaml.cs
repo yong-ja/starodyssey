@@ -32,6 +32,7 @@ namespace WpfTest
         Point lastGazePoint;
         TrackerWrapper tracker;
         Dictionary<TouchDevice, Brush> points;
+        List<FrameworkElement> hitTestResults;
 
         /// <summary>
         /// Default constructor.
@@ -49,6 +50,7 @@ namespace WpfTest
         {
             gazeRadius = (int)CrossHair.Width / 2;
             points = new Dictionary<TouchDevice, Brush>();
+            hitTestResults = new List<FrameworkElement>();
             Loaded += new RoutedEventHandler(GazeTouchViewer_Loaded);
 
             
@@ -84,9 +86,15 @@ namespace WpfTest
             else
                 touchBrush = points[e.TouchDevice];
 
-            HitTestResult result = VisualTreeHelper.HitTest(Canvas, new Point(lastGazePoint.X, lastGazePoint.Y));
+            // Clear the contents of the list used for hit test results.
+            List<HitTestResult> hitResultsList = new List<HitTestResult>();
 
-            if (result != null && (result.VisualHit as CustomGrid ) == null)
+            // Set up a callback to receive the hit test result enumeration.
+            VisualTreeHelper.HitTest(Canvas, null,
+                new HitTestResultCallback(PerformHitTest),
+                new PointHitTestParameters(e.GetTouchPoint(Canvas).Position));
+
+            if (hitResultsList.Count > 0)
                 return;
 
             Ellipse gazePoint = new Ellipse()
@@ -100,6 +108,19 @@ namespace WpfTest
             };
             gazePoint.RenderTransform = new TranslateTransform(lastGazePoint.X - gazeRadius/2, lastGazePoint.Y - gazeRadius/2);
             Canvas.Children.Add(gazePoint);
+        }
+
+        // Return the result of the hit test to the callback.
+        public HitTestResultBehavior PerformHitTest(HitTestResult result)
+        {
+            FrameworkElement visual = (FrameworkElement)result.VisualHit;
+            // Add the hit test result to the list that will be processed after the enumeration.
+            if (visual.IsHitTestVisible)
+                hitTestResults.Add(visual);
+            else
+                return HitTestResultBehavior.Stop;
+            // Set the behavior to return visuals at all z-order levels.
+            return HitTestResultBehavior.Continue;
         }
 
         void GazeTouchViewer_Loaded(object sender, RoutedEventArgs e)
