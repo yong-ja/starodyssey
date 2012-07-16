@@ -71,8 +71,8 @@ namespace WpfTest
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
 
-            bool leftValid = true; //e.LeftValid;
-            bool rightValid = true;  //e.RightValid;
+            bool leftValid = e.LeftValid == 4;
+            bool rightValid = e.RightValid == 4;
             Brush fillColor;
             if (leftValid && rightValid)
                 fillColor = Brushes.Green;
