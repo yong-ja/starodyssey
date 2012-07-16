@@ -86,7 +86,7 @@ namespace WpfTest
 
             HitTestResult result = VisualTreeHelper.HitTest(Canvas, new Point(lastGazePoint.X, lastGazePoint.Y));
 
-            if (result != null)
+            if (result != null && (result.VisualHit as CustomGrid ) == null)
                 return;
 
             Ellipse gazePoint = new Ellipse()
@@ -119,8 +119,8 @@ namespace WpfTest
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
 
-            bool leftValid = e.LeftValid == 4;
-            bool rightValid = e.RightValid == 4;
+            bool leftValid = e.LeftValid == 0;
+            bool rightValid = e.RightValid == 0;
             if (leftValid && rightValid)
                 eyeBrush = Brushes.Green;
             else if (leftValid && !rightValid)
