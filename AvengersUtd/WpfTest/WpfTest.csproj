@@ -218,6 +218,7 @@
       <DependentUpon>InvadersTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScalingWidget.cs" />
+    <Compile Include="Smoother.cs" />
     <Compile Include="SplineWindow.xaml.cs">
       <DependentUpon>SplineWindow.xaml</DependentUpon>
     </Compile>
