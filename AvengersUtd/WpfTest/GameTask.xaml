@@ -4,8 +4,7 @@
     xmlns:s="http://schemas.microsoft.com/surface/2008"
                  xmlns:local="clr-namespace:WpfTest"
                   Height="600" Width="800"
-    Title="WpfTest"
-    >
+    Title="WpfTest">
     <DockPanel LastChildFill="True">
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>

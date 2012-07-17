@@ -15,7 +15,8 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
-        readonly TrackerWrapper tracker = new TrackerWrapper();  
+        TrackerWrapper tracker;  
+
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
         { }
@@ -85,8 +86,7 @@ namespace WpfTest
             };
 
 
-            bConnect.TouchUp += (sender, e) => { tracker.Connect(); };
-            bTracking.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
@@ -95,7 +95,16 @@ namespace WpfTest
 
             rp.Add(bConnect);
             rp.Add(bTracking);
-            rp.SetTracker(tracker);
+
+            bConnect.TouchUp += (sender, e) =>
+            {
+                tracker = new TrackerWrapper();
+                rp.SetTracker(tracker);
+                tracker.StartBrowsing();
+                tracker.Connect();
+            };
+            bTracking.TouchUp += (sender, e) => { tracker.StartTracking(); };
+
 
             Game.Logger.Activate();
             Hud.Init();
@@ -104,8 +113,7 @@ namespace WpfTest
             Scene.BuildRenderScene();
             Hud.AddToScene(this, Scene);
             IsInited = true;
-            tracker.SetWindow(Global.Window);
-            tracker.StartBrowsing();
+            
         }
 
         public override void Render()
