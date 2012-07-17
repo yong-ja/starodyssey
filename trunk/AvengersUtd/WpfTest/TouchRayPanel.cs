@@ -75,16 +75,18 @@ namespace WpfTest
         {
             {
                 crosshair.Position = e.GazePoint;
-                if (eyeArrow == null)
+                IRenderable tempArrow = sWidget.FindIntersection2D(e.GazePoint);
+                if (eyeArrow != tempArrow)
                 {
-                    eyeArrow = sWidget.FindIntersection2D(e.GazePoint);
                     sWidget.ResetColors();
-                    if (eyeArrow == null)
-                        return;
-                    else
-                        foreach (IRenderable rObject in ((MeshGroup)eyeArrow).Objects)
-                            ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
+                    eyeArrow = tempArrow;
                 }
+                
+                if (eyeArrow == null)
+                        return;
+                else
+                    foreach (IRenderable rObject in ((MeshGroup)eyeArrow).Objects)
+                        ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
 
                 const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius) / 2;
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
