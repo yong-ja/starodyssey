@@ -78,25 +78,20 @@ namespace WpfTest
                 if (eyeArrow == null)
                 {
                     eyeArrow = sWidget.FindIntersection2D(e.GazePoint);
+                    sWidget.ResetColors();
                     if (eyeArrow == null)
-                    {
-                        sWidget.ResetColors();
-                        LogEvent.UserInterface.Write("No arrow found");
                         return;
-                    }
                     else
-                    {
                         foreach (IRenderable rObject in ((MeshGroup)eyeArrow).Objects)
                             ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
-                    }
-
                 }
 
-                const float maxR = ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius;
+                const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius) / 2;
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
                 if (delta < maxR)
                 {
-                    MoveArrow(e.GazePoint, eyeArrow);
+                   MoveArrow(e.GazePoint, eyeArrow);
+                    //LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
                 }
                 else
                 {
