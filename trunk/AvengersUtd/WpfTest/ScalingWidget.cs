@@ -84,7 +84,7 @@ namespace WpfTest
                 Vector3 screenSpace = Vector3.Project(absolutePosition, 0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
                     Game.CurrentRenderer.Camera.NearClip, Game.CurrentRenderer.Camera.FarClip, Game.CurrentRenderer.Camera.WorldViewProjection);
 
-                Circle c = new Circle(new Vector2D(absolutePosition.X, absolutePosition.Y), ArrowIntersectionRadius);
+                Circle c = new Circle(new Vector2D(screenSpace.X, screenSpace.Y), ArrowIntersectionRadius);
                 bool result = Intersection.CirclePointTest(c, new Vector2D(p.X, p.Y));
                 if (result)
                     return rObject;
