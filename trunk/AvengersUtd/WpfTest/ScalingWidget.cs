@@ -8,6 +8,7 @@ using SlimDX;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using System.Drawing;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
+using AvengersUtd.Odyssey;
 
 namespace WpfTest
 {
@@ -67,6 +68,22 @@ namespace WpfTest
             {
                 ISphere s = rObject as ISphere;
                 bool result = Intersection.RaySphereTest(r, s);
+                if (result)
+                    return rObject;
+            }
+            return null;
+        }
+
+        public IRenderable FindIntersection2D(Vector2 p)
+        {
+            foreach (IRenderable rObject in Objects)
+            {
+                Vector3 absolutePosition = ((MeshGroup)rObject).Objects[0].AbsolutePosition;
+                Vector3 screenSpace = Vector3.Project(absolutePosition, 0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
+                    Game.CurrentRenderer.Camera.NearClip, Game.CurrentRenderer.Camera.FarClip, Game.CurrentRenderer.Camera.WorldViewProjection);
+
+                Circle c = new Circle(new Vector2D(absolutePosition.X, absolutePosition.Y), 128);
+                bool result = Intersection.CirclePointTest(c, new Vector2D(p.X, p.Y));
                 if (result)
                     return rObject;
             }

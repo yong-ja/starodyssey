@@ -66,16 +66,21 @@ namespace WpfTest
         public void SetTracker(TrackerWrapper tracker)
         {
             this.tracker = tracker;
-            tracker.GazeDataReceived += (sender, e) => { 
+            tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
+        }
+
+        void tracker_GazeDataReceived(object sender, GazeEventArgs e)
+        {
+            {
                 crosshair.Position = e.GazePoint;
                 if (eyeArrow == null)
                 {
-                    eyeArrow = sWidget.FindIntersection(GetRay(e.GazePoint));
+                    eyeArrow = sWidget.FindIntersection2D(e.GazePoint);
                     if (eyeArrow == null)
                         return;
                 }
 
-                const float maxR = 128*128;
+                const float maxR = 128 * 128;
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
                 if (delta < maxR)
                 {
@@ -86,9 +91,9 @@ namespace WpfTest
                     LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
                     eyeArrow = null;
                 }
-                     
+
                 prevEyeLocation = e.GazePoint;
-            };
+            }
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -124,9 +129,14 @@ namespace WpfTest
             //OdysseyUI.CurrentHud.BeginDesign();
             //Add(crosshair);
             //OdysseyUI.CurrentHud.EndDesign();
-            
-            
+        }
 
+        static Vector2 GetPosition(Vector3 position)
+        {
+            Vector3 screenSpace = Vector3.Project(position, 0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
+                Game.CurrentRenderer.Camera.NearClip, Game.CurrentRenderer.Camera.FarClip, Game.CurrentRenderer.Camera.WorldViewProjection);
+
+            return new Vector2(screenSpace.X, screenSpace.Y);
         }
 
         static Ray GetRay(Vector2 location)
@@ -285,70 +295,6 @@ namespace WpfTest
 
             IRenderable arrow = arrows[e.TouchDevice];
             MoveArrow(e.Location, arrow);
-            //bool test;
-            //Vector3 pIntersection;
-            //FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
-            //const float minSize = 0.25f;
-            //float delta;
-            //switch (arrow.Name)
-            //{
-            //    case "YArrow":
-            //        pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
-            //        if (test)
-            //        {
-            //            delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
-            //            box.ScalingValues += new Vector3(0, delta, 0);
-            //            if (box.ScalingValues.Y < minSize)
-            //            {
-            //                box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
-            //                fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
-            //            }
-            //            else
-            //                fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
-
-            //            box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
-            //        }
-            //        break;
-
-            //    case "XArrow":
-            //        pIntersection = GetIntersection(e.Location, -Vector3.UnitZ, arrowHead, out test);
-            //        if (test)
-            //        {
-            //            delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
-            //            delta = Math.Min(minSize, delta);
-
-            //            box.ScalingValues += new Vector3(delta, 0, 0);
-            //            if (box.ScalingValues.X < minSize)
-            //            {
-            //                box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
-            //                fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
-            //            }
-            //            else
-            //                fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
-            //            box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
-            //        }
-            //        break;
-
-            //    case "ZArrow":
-            //        pIntersection = GetIntersection(e.Location, Vector3.UnitY, arrowHead, out test);
-            //        if (test)
-            //        {
-            //            delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
-            //            delta = Math.Min(minSize, delta);
-
-            //            box.ScalingValues += new Vector3(0, 0, delta);
-            //            if (box.ScalingValues.Z < minSize)
-            //            {
-            //                box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
-            //                fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
-            //            }
-            //            else
-            //                fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
-            //            box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
-            //        }
-            //        break;
-            //}
-
         }
 
         private IRenderable tempArrow;
@@ -363,6 +309,9 @@ namespace WpfTest
             if (test)
             {
                 tempArrow = result;
+                IRenderable arrowHead = ((MeshGroup)result).Objects[0];
+                Vector2 p = GetPosition(arrowHead.AbsolutePosition);
+                LogEvent.UserInterface.Write(string.Format("Projected P({0:f2},{1:f2})", p.X, p.Y));
                 LogEvent.UserInterface.Write("MouseDown [" + result.Name + "]");
             }
             else
