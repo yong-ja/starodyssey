@@ -14,6 +14,8 @@ using System.Windows;
 using System.Windows.Input;
 using AvengersUtd.Odyssey.UserInterface;
 using System.Diagnostics.Contracts;
+using AvengersUtd.Odyssey.Graphics.Materials;
+using System.Drawing;
 
 namespace WpfTest
 {
@@ -77,10 +79,20 @@ namespace WpfTest
                 {
                     eyeArrow = sWidget.FindIntersection2D(e.GazePoint);
                     if (eyeArrow == null)
+                    {
+                        sWidget.ResetColors();
+                        LogEvent.UserInterface.Write("No arrow found");
                         return;
+                    }
+                    else
+                    {
+                        foreach (IRenderable rObject in ((MeshGroup)eyeArrow).Objects)
+                            ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
+                    }
+
                 }
 
-                const float maxR = 128 * 128;
+                const float maxR = ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius;
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
                 if (delta < maxR)
                 {

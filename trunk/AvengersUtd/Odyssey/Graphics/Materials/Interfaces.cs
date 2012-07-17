@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.Graphics.Materials
     public interface IColorMaterial : IMaterial
     {
         Color4 AmbientColor { get;  }
-        Color4 DiffuseColor { get; }
+        Color4 DiffuseColor { get; set; }
         Color4 SpecularColor { get; }
         float AmbientCoefficient { get; }
         float SpecularCoefficient { get; }
