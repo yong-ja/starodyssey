@@ -14,6 +14,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         readonly float arrowRadius;
         readonly Vector3 arrowPointerCenter;
 
+        public bool IsSelected { get; set; }
+
         public Arrow(float baseWidth, float arrowHeight, float lineLength, float lineWidth) : base(2)
         {
             this.arrowRadius = arrowHeight/2;
