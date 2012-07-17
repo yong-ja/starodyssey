@@ -24,6 +24,7 @@ namespace WpfTest
     /// </summary>
     public partial class GazeTouchViewer : SurfaceWindow
     {
+        const int sessionId=0;
         int gazeRadius;
         bool gazeOnly;
         Brush touchBrush;
@@ -62,7 +63,15 @@ namespace WpfTest
                 tracker.StartTracking();
                 TouchDown += new EventHandler<TouchEventArgs>(GazeTouchViewer_TouchDown);
                 TouchMove += new EventHandler<TouchEventArgs>(GazeTouchViewer_TouchMove);
+                LostTouchCapture += new EventHandler<TouchEventArgs>(GazeTouchViewer_LostTouchCapture);
             };
+        }
+
+        void GazeTouchViewer_LostTouchCapture(object sender, TouchEventArgs e)
+        {
+            points.Remove(e.TouchDevice);
+            Point p = e.GetTouchPoint(this).Position;
+            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "LostTouch");
         }
 
         void GazeTouchViewer_TouchDown(object sender, TouchEventArgs e)
@@ -77,6 +86,10 @@ namespace WpfTest
                 points.Add(e.TouchDevice, Brushes.Blue);
             else
                 points.Add(e.TouchDevice, Brushes.Purple);
+
+            Point p = e.GetTouchPoint(this).Position;
+            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "TouchDown");
+
         }
 
         void GazeTouchViewer_TouchMove(object sender, TouchEventArgs e)
@@ -108,6 +121,9 @@ namespace WpfTest
             };
             gazePoint.RenderTransform = new TranslateTransform(lastGazePoint.X - gazeRadius/2, lastGazePoint.Y - gazeRadius/2);
             Canvas.Children.Add(gazePoint);
+
+            Point p = e.GetTouchPoint(this).Position;
+            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "TouchUp");
         }
 
         // Return the result of the hit test to the callback.
@@ -169,7 +185,7 @@ namespace WpfTest
                 Fill = eyeBrush
             };
             lastGazePoint = new Point(e.GazePoint.X, e.GazePoint.Y);
-            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2} L:{2} R:{3}", e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid));
+            TrackerEvent.Gaze.Log(sessionId.ToString(),e.GazePoint.X.ToString(), e.GazePoint.Y.ToString(), e.LeftValid.ToString(), e.RightValid.ToString());
             gazePoint.RenderTransform = new TranslateTransform(transform.X, transform.Y);
             Canvas.Children.Add(gazePoint);
         }
