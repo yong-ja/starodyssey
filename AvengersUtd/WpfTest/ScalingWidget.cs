@@ -97,12 +97,11 @@ namespace WpfTest
         {
             foreach (IRenderable rObject in Objects)
             {
-                foreach (IRenderable rArrow in ((MeshGroup)rObject).Objects)
-                    ((IColorMaterial)rArrow.Material).DiffuseColor = Color.Yellow;
+                if (!((Arrow)rObject).IsSelected)
+                    foreach (IRenderable rArrow in ((MeshGroup)rObject).Objects)
+                        ((IColorMaterial)rArrow.Material).DiffuseColor = Color.Yellow;
             }
         }
-
-
 
         Arrow SelectByName(string name)
         {
@@ -131,7 +130,7 @@ namespace WpfTest
             Arrow arrow = SelectByName(name);
             if (arrow != null)
                 foreach (IRenderable rObject in arrow.Objects)
-                    ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
+                    ((IColorMaterial)rObject.Material).DiffuseColor = color;
         }
 
         

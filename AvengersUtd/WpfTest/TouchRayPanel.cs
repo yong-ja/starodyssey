@@ -192,6 +192,7 @@ namespace WpfTest
             if (test)
             {
                 ((Arrow)result).IsSelected = false;
+                sWidget.Select(result.Name, Color.Yellow);
                 LogEvent.UserInterface.Write("Deselected " + result.Name);
             }
             LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
@@ -202,7 +203,7 @@ namespace WpfTest
         {
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 0.25f;
-            const float maxSizeY = 2.75f;
+            const float maxSizeY = 2.5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
             Vector3 pIntersection;
