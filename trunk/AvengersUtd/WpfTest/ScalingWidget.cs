@@ -20,7 +20,7 @@ namespace WpfTest
         const float ArrowLineLength = ArrowUnit/4;
         const float ArrowLineWidth = ArrowUnit/16;
 
-        public const float ArrowIntersectionRadius = 256;
+        public const float ArrowIntersectionRadius = 128;
         IRenderable target;
         Arrow YArrow;
         Arrow XArrow;
@@ -52,6 +52,7 @@ namespace WpfTest
             Objects[0] = YArrow;
             Objects[1] = XArrow;
             Objects[2] = ZArrow;
+
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
         }
 
@@ -102,5 +103,38 @@ namespace WpfTest
         }
 
 
+
+        Arrow SelectByName(string name)
+        {
+            Arrow arrow;
+            switch (name)
+            {
+                case "XArrow":
+                    arrow = XArrow;
+                    break;
+                case "YArrow":
+                    arrow = YArrow;
+                    break;
+                case "ZArrow":
+                    arrow = ZArrow;
+                    break;
+                default:
+                    arrow = null;
+                    break;
+            }
+
+            return arrow;
+        }
+
+        public void Select(string name, Color color)
+        {
+            Arrow arrow = SelectByName(name);
+            if (arrow != null)
+                foreach (IRenderable rObject in arrow.Objects)
+                    ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
+        }
+
+        
     }
+
 }

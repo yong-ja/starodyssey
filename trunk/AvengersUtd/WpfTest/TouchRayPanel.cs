@@ -81,14 +81,15 @@ namespace WpfTest
                     sWidget.ResetColors();
                     eyeArrow = tempArrow;
                 }
-                
-                if (eyeArrow == null)
-                        return;
-                else
-                    foreach (IRenderable rObject in ((MeshGroup)eyeArrow).Objects)
-                        ((IColorMaterial)rObject.Material).DiffuseColor = Color.Red;
 
-                const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius) / 2;
+                if (eyeArrow == null)
+                    return;
+                else if (((Arrow)eyeArrow).IsSelected)
+                    return;
+                else 
+                    sWidget.Select(eyeArrow.Name, Color.Red);
+
+                const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
                 float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
                 if (delta < maxR)
                 {
@@ -108,18 +109,6 @@ namespace WpfTest
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchDown(e);
-
-            //if (crosshairs.Count >= 2)
-            //    return;
-
-            //TexturedIcon crosshair = new TexturedIcon
-            //{
-            //    CanRaiseEvents = false,
-            //    Position = e.Location,
-            //    Size = new System.Drawing.Size(64, 64),
-            //    Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
-            //};
-            //crosshairs.Add(e.TouchDevice, crosshair);
             window.CaptureTouch(e.TouchDevice);
 
             IRenderable result;
@@ -128,16 +117,14 @@ namespace WpfTest
             if (test)
             {
                 arrows.Add(e.TouchDevice, result);
+                sWidget.Select(result.Name, Color.Cyan);
+                Arrow arrow = (Arrow)result;
+                arrow.IsSelected = true;
                 LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
             }
             else
                 LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " No intersection");
 
-
-            //points.Add(e.TouchDevice, GetIntersection(e.Location, Vector3.UnitY, out result));
-            //OdysseyUI.CurrentHud.BeginDesign();
-            //Add(crosshair);
-            //OdysseyUI.CurrentHud.EndDesign();
         }
 
         static Vector2 GetPosition(Vector3 position)
@@ -197,14 +184,16 @@ namespace WpfTest
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchUp(e);
-            //OdysseyUI.CurrentHud.BeginDesign();
-            ////Remove(crosshairs[e.TouchDevice]);
-            //OdysseyUI.CurrentHud.EndDesign();
-            
-            //crosshairs.Remove(e.TouchDevice);
-            //points.Remove(e.TouchDevice);
             arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
+            IRenderable result;
+            bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
+
+            if (test)
+            {
+                ((Arrow)result).IsSelected = false;
+                LogEvent.UserInterface.Write("Deselected " + result.Name);
+            }
             LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
 
         }
