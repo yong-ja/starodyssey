@@ -16,6 +16,8 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 
         public bool IsSelected { get; set; }
 
+        public bool IsDwelling { get; set; }
+
         public Arrow(float baseWidth, float arrowHeight, float lineLength, float lineWidth) : base(2)
         {
             this.arrowRadius = arrowHeight/2;

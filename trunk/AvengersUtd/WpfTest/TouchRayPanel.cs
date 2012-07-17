@@ -16,12 +16,15 @@ using AvengersUtd.Odyssey.UserInterface;
 using System.Diagnostics.Contracts;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using System.Drawing;
+using System.Threading;
 
 namespace WpfTest
 {
     public class TouchRayPanel : Panel
     {
         const string ControlTag = "TouchRayPanel";
+        const int dwellInterval = 200;
+        const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
@@ -33,6 +36,12 @@ namespace WpfTest
         TrackerWrapper tracker;
         TexturedIcon crosshair;
         ScalingWidget sWidget;
+        
+        EventWaitHandle dwellTime;
+        Thread dwellThread;
+
+        DateTime dwellStart;
+        
         static int count;
 
         RenderableNode RNode
@@ -54,6 +63,8 @@ namespace WpfTest
             arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
 
+            dwellTime = new EventWaitHandle(false, EventResetMode.ManualReset);
+
             crosshair = new TexturedIcon
             {
                 CanRaiseEvents = false,
@@ -61,8 +72,14 @@ namespace WpfTest
                 Size = new System.Drawing.Size(64, 64),
                 Texture = Texture2D.FromFile(Game.Context.Device, "Resources/Textures/crosshair.png")
             };
-
+            
             Add(crosshair);
+        }
+
+        void DwellLoop()
+        {
+            Thread.Sleep(200);
+            dwellTime.Set();
         }
 
         public void SetTracker(TrackerWrapper tracker)
@@ -73,37 +90,68 @@ namespace WpfTest
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
+            
+            crosshair.Position = e.GazePoint;
+
+            if (eyeArrow == null)
             {
-                crosshair.Position = e.GazePoint;
-                IRenderable tempArrow = sWidget.FindIntersection2D(e.GazePoint);
-                if (eyeArrow != tempArrow)
-                {
-                    sWidget.ResetColors();
-                    eyeArrow = tempArrow;
-                }
-
-                if (eyeArrow == null)
+                IRenderable tempArrow= sWidget.FindIntersection2D(e.GazePoint);
+                if (tempArrow == null)
                     return;
-                else if (((Arrow)eyeArrow).IsSelected)
-                    return;
-                else 
-                    sWidget.Select(eyeArrow.Name, Color.Red);
-
-                const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
-                float delta = Vector2.Subtract(e.GazePoint, prevEyeLocation).LengthSquared();
-                if (delta < maxR)
-                {
-                   MoveArrow(e.GazePoint, eyeArrow);
-                    //LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
-                }
                 else
                 {
-                    LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
-                    eyeArrow = null;
+                    Arrow gazeArrow = (Arrow)tempArrow;
+                    gazeArrow.IsDwelling = true;
+                    sWidget.ResetColors();
+                    sWidget.Select(gazeArrow.Name, Color.Orange);
+                    dwellStart = DateTime.Now;
+                    eyeArrow = gazeArrow;
                 }
-
-                prevEyeLocation = e.GazePoint;
             }
+            else {
+                TimeSpan delta = DateTime.Now.Subtract(dwellStart);
+                if (delta.TotalMilliseconds < dwellInterval)
+                    return;
+                IRenderable dwellCheckArrow= sWidget.FindIntersection2D(e.GazePoint);
+
+                if (dwellCheckArrow == eyeArrow) {
+                    EyeMoveArrow(e.GazePoint);
+                    sWidget.Select(dwellCheckArrow.Name, Color.Red);
+                }
+                else {
+                    sWidget.ResetColors();
+                    ((Arrow)eyeArrow).IsDwelling = false;
+                }
+            }
+
+
+            
+            // we are looking at one of the arrows 
+            // inititate dwell time check
+                
+
+            //dwellThread = new Thread(DwellLoop) { Name = "DwellThread" };
+            //dwellThread.Start();
+            //dwellTime.WaitOne(250);
+            
+
+        }
+
+        void EyeMoveArrow(Vector2 gazePoint)
+        {
+            float delta = Vector2.Subtract(gazePoint, prevEyeLocation).LengthSquared();
+            if (delta < maxR)
+            {
+                MoveArrow(gazePoint, eyeArrow);
+                //LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
+            }
+            else
+            {
+                LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
+                eyeArrow = null;
+            }
+
+            prevEyeLocation = gazePoint;
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
