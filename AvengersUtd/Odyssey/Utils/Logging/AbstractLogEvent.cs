@@ -72,7 +72,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         /// Writes formatted text by passing the relevant arguments.
         /// </summary>
         /// <param name="args"></param>
-        public void Log(params string[] args)
+        public void Log(params object[] args)
         {
             TraceSource.TraceEvent(EventType, Id, string.Format(Format, args));
         }

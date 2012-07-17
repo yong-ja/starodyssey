@@ -104,6 +104,7 @@ namespace WpfTest
             Scene.BuildRenderScene();
             Hud.AddToScene(this, Scene);
             IsInited = true;
+            tracker.SetWindow(Global.Window);
             tracker.StartBrowsing();
         }
 
