@@ -31,7 +31,7 @@ namespace WpfTest
             Box box = new Box(1, 1, 1);
             Sphere sphere = new Sphere(1, 16);
             ScalingWidget sWidget = new ScalingWidget(box);
-            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(2.5f);
+            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(2.25f);
             bbox.PositionV3 = new Vector3(bbox.Width / 2 - box.Width/2, bbox.Height/2 - box.Height/2, bbox.Depth/2 - box.Depth/2);
             sphere.PositionV3 = new Vector3(0f, 3f, 0);
 
