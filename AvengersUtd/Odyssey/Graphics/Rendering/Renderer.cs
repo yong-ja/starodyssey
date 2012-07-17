@@ -85,8 +85,9 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             LogEvent.Engine.Log("List of registered buffers:");
             foreach (SlimDX.Direct3D11.Buffer buffer in buffers)
             {
-                if (!buffer.Disposed)
-                LogEvent.BufferDisposed.Log((string)buffer.Tag, buffer.Disposed.ToString());
+                //TODO
+                //if (!buffer.Disposed)
+                //LogEvent.BufferDisposed.Log((string)buffer.Tag, buffer.Disposed.ToString());
             }
         }
 
@@ -131,7 +132,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 if (disposing)
                 {
                     OnDisposing(this, EventArgs.Empty);
-                    LogEvent.ObjectDisposed.Log(GetType().Name);
+                    // TODO
+                    //LogEvent.ObjectDisposed.Log(GetType().Name);
                 }
             }
             disposed = true;
