@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
@@ -19,7 +20,17 @@ namespace AvengersUtd.Odyssey.Utils.Logging
             // Pass in the path of the logfile (ie. C:\Logs\MyAppLog.log)
             // The logfile will actually be created with a yyyymmdd format appended to the filename
             fileName = fileNamePrefix;
-            traceWriter = new StreamWriter(generateFilename(), true);
+            traceWriter = new StreamWriter(GenerateFilename(), true);
+        }
+
+        public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id)
+        {
+            TraceEvent(eventCache, source, eventType, id, "No additional information.");
+        }
+
+        public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
+        {
+            WriteLine(string.Format("{0:HH:mm:ss.fff}{1}", DateTime.Now, message, id));
         }
 
         public override void Write(string value)
@@ -32,7 +43,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
             traceWriter.WriteLine(value);
         }
 
-        private string generateFilename()
+        private string GenerateFilename()
         {
             timeStamp = System.DateTime.Today;
 

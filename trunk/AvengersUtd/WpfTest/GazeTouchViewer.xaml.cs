@@ -71,7 +71,7 @@ namespace WpfTest
         {
             points.Remove(e.TouchDevice);
             Point p = e.GetTouchPoint(this).Position;
-            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "LostTouch");
+            TrackerEvent.Touch.Log(sessionId, p.X, p.Y, e.TouchDevice.Id, "LostTouch");
         }
 
         void GazeTouchViewer_TouchDown(object sender, TouchEventArgs e)
@@ -88,7 +88,7 @@ namespace WpfTest
                 points.Add(e.TouchDevice, Brushes.Purple);
 
             Point p = e.GetTouchPoint(this).Position;
-            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "TouchDown");
+            TrackerEvent.Touch.Log(sessionId, p.X, p.Y, e.TouchDevice.Id, "TouchDown");
 
         }
 
@@ -119,11 +119,11 @@ namespace WpfTest
                 StrokeThickness = 2
 
             };
-            gazePoint.RenderTransform = new TranslateTransform(lastGazePoint.X - gazeRadius/2, lastGazePoint.Y - gazeRadius/2);
+            Point p = e.GetTouchPoint(this).Position;
+            gazePoint.RenderTransform = new TranslateTransform(p.X - gazeRadius/2, p.Y - gazeRadius/2);
             Canvas.Children.Add(gazePoint);
 
-            Point p = e.GetTouchPoint(this).Position;
-            TrackerEvent.Touch.Log(sessionId.ToString(), p.X.ToString(), p.Y.ToString(), e.TouchDevice.Id.ToString(), "TouchUp");
+            TrackerEvent.Touch.Log(sessionId, p.X, p.Y, e.TouchDevice.Id, "TouchMove");
         }
 
         // Return the result of the hit test to the callback.
@@ -185,7 +185,7 @@ namespace WpfTest
                 Fill = eyeBrush
             };
             lastGazePoint = new Point(e.GazePoint.X, e.GazePoint.Y);
-            TrackerEvent.Gaze.Log(sessionId.ToString(),e.GazePoint.X.ToString(), e.GazePoint.Y.ToString(), e.LeftValid.ToString(), e.RightValid.ToString());
+            TrackerEvent.Gaze.Log(sessionId,e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid);
             gazePoint.RenderTransform = new TranslateTransform(transform.X, transform.Y);
             Canvas.Children.Add(gazePoint);
         }

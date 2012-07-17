@@ -9,9 +9,9 @@ namespace WpfTest
     public class TrackerEvent : LogEvent
     {
         // Session Id, gpX, gpY, valL, valR
-        public static TrackerEvent Gaze = new TrackerEvent("Tracker", "{1},{2:f2},{3:f2},{4},{5})");
+        public static TrackerEvent Gaze = new TrackerEvent("Tracker", "{0},{1:f2},{2:f2},{3},{4})");
         // Session Id, tpX, tpY, tdId, eventType
-        public static TrackerEvent Touch = new TrackerEvent("Tracker", "{1},{2:f2},{3:f2},{4},{5})");
+        public static TrackerEvent Touch = new TrackerEvent("Tracker", "{0},{1:f2},{2:f2},{3},{4})");
 
         protected TrackerEvent(string source, string format)
             : base(source, format)
