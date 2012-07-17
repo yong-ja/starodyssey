@@ -23,7 +23,7 @@ namespace WpfTest
     public class TouchRayPanel : Panel
     {
         const string ControlTag = "TouchRayPanel";
-        const int dwellInterval = 200;
+        const int dwellInterval = 1000;
         const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
