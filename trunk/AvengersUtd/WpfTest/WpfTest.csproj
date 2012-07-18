@@ -226,6 +226,9 @@
     <Compile Include="SplineWindow.xaml.cs">
       <DependentUpon>SplineWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Start.xaml.cs">
+      <DependentUpon>Start.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Target.cs" />
     <None Include="TestRenderer.cs" />
     <Compile Include="TouchRayPanel.cs" />
@@ -264,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SplineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Start.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
