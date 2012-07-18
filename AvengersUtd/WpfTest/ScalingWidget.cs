@@ -22,6 +22,7 @@ namespace WpfTest
 
         public const float ArrowIntersectionRadius = 128;
         IBox box;
+        IBox frame;
         Arrow YArrow;
         Arrow XArrow;
         Arrow ZArrow;
@@ -29,6 +30,11 @@ namespace WpfTest
         public bool XInverted { get; private set; }
 
         public int Configuration { get; private set; }
+
+        public void SetFrame(IBox frame)
+        {
+            this.frame = frame;
+        }
 
         public ScalingWidget(IBox targetObject)
             : base(3)
@@ -55,7 +61,7 @@ namespace WpfTest
 
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
 
-            ChooseArrangement(1);
+            ChooseArrangement(0);
         }
 
         void ChooseArrangement(int configuration)
@@ -172,7 +178,7 @@ namespace WpfTest
         }
 
 
-        public Vector3 GetBoxOffset(float frameSide = 2.5f)
+        public Vector3 GetBoxOffset()
         {
             switch (Configuration)
             {
@@ -180,10 +186,11 @@ namespace WpfTest
                     return Vector3.Zero;
 
                 case 0:
-                    return new Vector3(-frameSide / 2 + box.Width/2, box.Width / 2, -frameSide / 2 + box.Width / 2);
+                    return new Vector3(-frame.Width / 2 + box.Width / 2, box.Height / 2, -frame.Depth / 2 + box.Depth / 2);
                     
                 case 1:
-                    return new Vector3(frameSide / 2 - box.Width / 2, box.Width / 2, -frameSide / 2 + box.Width / 2);
+                    return new Vector3(frame.Width / 2 - box.Width / 2, box.Height / 2, -frame.Depth / 2 + box.Depth / 2);
+
 
             }
         }
