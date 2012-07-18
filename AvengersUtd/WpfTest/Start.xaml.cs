@@ -39,7 +39,7 @@ namespace WpfTest
 
         private void GameTask_Click(object sender, RoutedEventArgs e)
         {
-            BezierWindow window = new BezierWindow();
+            GameTask window = new GameTask();
             window.Show();
             this.Close();
         }

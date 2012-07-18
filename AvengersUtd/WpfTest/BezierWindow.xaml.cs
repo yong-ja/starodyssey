@@ -63,7 +63,7 @@ namespace WpfTest
             dots.AddRange(new List<Dot>{cp1, cp2, cp3});
 
             endPoint = cp3.Center;
-            Loaded += new RoutedEventHandler(SplineTask_Loaded);
+            //Loaded += new RoutedEventHandler(SplineTask_Loaded);
             TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
