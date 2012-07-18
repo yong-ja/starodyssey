@@ -32,21 +32,31 @@ namespace WpfTest
             Sphere sphere = new Sphere(1, 16);
             ScalingWidget sWidget = new ScalingWidget(box);
             AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(2.5f);
-            bbox.PositionV3 = new Vector3(bbox.Width / 2 - box.Width/2, bbox.Height/2 - box.Height/2, bbox.Depth/2 - box.Depth/2);
+            //bbox.PositionV3 = new Vector3(bbox.Width / 2 - box.Width/2, bbox.Height/2 - box.Height/2, bbox.Depth/2 - box.Depth/2);
+            bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox.DefaultThickness,  0);
+
             sphere.PositionV3 = new Vector3(0f, 3f, 0);
 
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            FixedNode fNodeGrid = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
+            FixedNode fNodeFrame = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
+
+            FixedNode fNodeBox = new FixedNode
+            {
+                Label = "fBox",
+                Position = sWidget.GetBoxOffset(bbox.Width)
+            };
+
 
             CameraAnchorNode coNode = new CameraAnchorNode();
-            Scene.Tree.RootNode.AppendChild(fNodeGrid);
+            Scene.Tree.RootNode.AppendChild(fNodeFrame);
             Scene.Tree.RootNode.AppendChild(coNode);
-            fNodeGrid.AppendChild(rNodeBox);
-            fNodeGrid.AppendChild(bbox.ToBranch());
+            fNodeBox.AppendChild(rNodeBox);
+            fNodeFrame.AppendChild(bbox.ToBranch());
+            fNodeFrame.AppendChild(fNodeBox);
 
 
             FixedNode nWidget = sWidget.ToBranch();
-            fNodeGrid.AppendChild(nWidget);
+            fNodeBox.AppendChild(nWidget);
 
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
@@ -95,12 +105,11 @@ namespace WpfTest
 
             rp.Add(bConnect);
             rp.Add(bTracking);
-            tracker = new TrackerWrapper();
-            tracker.StartBrowsing();
-            tracker.SetWindow(Global.Window);
+            //tracker = new TrackerWrapper();
+            //tracker.StartBrowsing();
+            //tracker.SetWindow(Global.Window);
             bConnect.TouchUp += (sender, e) =>
             {
-                
                 rp.SetTracker(tracker);
                 tracker.Connect();
             };

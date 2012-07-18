@@ -21,30 +21,30 @@ namespace WpfTest
         const float ArrowLineWidth = ArrowUnit/16;
 
         public const float ArrowIntersectionRadius = 128;
-        IRenderable target;
+        IBox box;
         Arrow YArrow;
         Arrow XArrow;
         Arrow ZArrow;
 
-        public ScalingWidget(IRenderable targetObject)
+        public bool XInverted { get; private set; }
+
+        public int Configuration { get; private set; }
+
+        public ScalingWidget(IBox targetObject)
             : base(3)
         {
-            target = targetObject;
-            IBox box = targetObject as IBox;
+            box = targetObject;
+           
             YArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
             {
-                PositionV3 = new Vector3(-box.Width/2 - ArrowLineWidth/2, box.Height/2 , -box.Depth/2 - ArrowLineWidth/2),
                 Name = "YArrow"
             };
             XArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth) {
-                PositionV3 = new Vector3(box.Width / 2 + ArrowLineWidth/2, -box.Height / 2 + ArrowLineWidth/2, -box.Depth / 2 - ArrowLineWidth/2),
-                CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI/2f),
+                
                 Name = "XArrow"
             };
             ZArrow = new Arrow(ArrowBase, ArrowLength, ArrowLineLength, ArrowLineWidth)
             {
-                PositionV3 = new Vector3(-box.Width/2 - ArrowLineWidth/2, -box.Height/2 + ArrowLineWidth/2, box.Depth/2 + ArrowLineWidth/2),
-                CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0),
                 Name = "ZArrow"
             };  
 
@@ -54,7 +54,45 @@ namespace WpfTest
             Objects[2] = ZArrow;
 
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
+
+            ChooseArrangement(1);
         }
+
+        void ChooseArrangement(int configuration)
+        {
+            Configuration = configuration;
+            switch (Configuration)
+            {
+                    // Tangent to the closest edge
+                case 0:
+                    YArrow.PositionV3 = new Vector3(-box.Width/2 - ArrowLineWidth/2, box.Height/2 , -box.Depth/2 - ArrowLineWidth/2);
+                    XArrow.PositionV3 = new Vector3(box.Width / 2 + ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    XArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI/2f);
+                    ZArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, box.Depth / 2 + ArrowLineWidth / 2);
+                    ZArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0);
+                break;
+
+                case 1:
+                    YArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, box.Height / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    XArrow.PositionV3 = new Vector3(-box.Width / 2 + ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    XArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, (float)Math.PI / 2f);
+                    ZArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, box.Depth / 2 + ArrowLineWidth / 2);
+                    ZArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0);
+                    XInverted = true;
+                    break;
+            }
+        }
+
+        //public Vector3 GetAxis(int axis)
+        //{
+        //    switch (Configuration)
+        //    {
+        //            // YAxis:
+        //        case 0:
+
+        //    }
+        //}
+
 
         public override IEnumerable<RenderableNode> ToNodes()
         {
@@ -103,7 +141,7 @@ namespace WpfTest
             }
         }
 
-        Arrow SelectByName(string name)
+        public Arrow SelectByName(string name)
         {
             Arrow arrow;
             switch (name)
@@ -132,6 +170,37 @@ namespace WpfTest
                 foreach (IRenderable rObject in arrow.Objects)
                     ((IColorMaterial)rObject.Material).DiffuseColor = color;
         }
+
+
+        public Vector3 GetBoxOffset(float frameSide = 2.5f)
+        {
+            switch (Configuration)
+            {
+                default:
+                    return Vector3.Zero;
+
+                case 0:
+                    return new Vector3(-frameSide / 2 + box.Width/2, box.Width / 2, -frameSide / 2 + box.Width / 2);
+                    
+                case 1:
+                    return new Vector3(frameSide / 2 - box.Width / 2, box.Width / 2, -frameSide / 2 + box.Width / 2);
+
+            }
+        }
+
+        //public Vector3 GetAxisOffset(float frameSide, int axis)
+        //{
+        //    switch (Configuration)
+        //    {
+        //        case 0:
+        //            switch (axis)
+        //            {
+        //                    // X
+        //                case 0:
+        //                    return 
+        //            }
+        //    }
+        //}
 
         
     }
