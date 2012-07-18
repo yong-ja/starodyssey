@@ -23,8 +23,8 @@ namespace WpfTest
     public class TouchRayPanel : Panel
     {
         const string ControlTag = "TouchRayPanel";
-        const int dwellInterval = 1000;
-        const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
+        const int dwellInterval = 500;
+        const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius)/2;
         readonly Window window;
         readonly Dictionary<TouchDevice, TexturedIcon> crosshairs;
         readonly Dictionary<TouchDevice, Vector3> points;
@@ -114,13 +114,15 @@ namespace WpfTest
                     return;
                 IRenderable dwellCheckArrow= sWidget.FindIntersection2D(e.GazePoint);
 
-                if (dwellCheckArrow == eyeArrow) {
-                    EyeMoveArrow(e.GazePoint);
-                    sWidget.Select(dwellCheckArrow.Name, Color.Red);
-                }
+                if (dwellCheckArrow == eyeArrow && !((Arrow)dwellCheckArrow).IsSelected)
+                    {
+                        EyeMoveArrow(e.GazePoint);
+                        sWidget.Select(dwellCheckArrow.Name, Color.Red);
+                    }
                 else {
                     sWidget.ResetColors();
                     ((Arrow)eyeArrow).IsDwelling = false;
+                    eyeArrow = null;
                 }
             }
 
