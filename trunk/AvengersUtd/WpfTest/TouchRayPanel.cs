@@ -243,7 +243,7 @@ namespace WpfTest
                 sWidget.Select(result.Name, Color.Yellow);
                 LogEvent.UserInterface.Write("Deselected " + result.Name);
             }
-            LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
+            //LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
 
         }
 

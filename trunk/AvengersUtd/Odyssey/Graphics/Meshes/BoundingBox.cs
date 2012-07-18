@@ -10,7 +10,7 @@ using System.Diagnostics.Contracts;
 
 namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
-    public class BoundingBox : MeshGroup
+    public class BoundingBox : MeshGroup, IBox
     {
         public const float DefaultThickness = 0.05f;
 

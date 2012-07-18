@@ -10,42 +10,51 @@ using SlimDX.Direct3D11;
 using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface;
+using BoundingBox = AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox;
 
 namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
-        TrackerWrapper tracker;  
+        TrackerWrapper tracker;
+        FixedNode fNodeBox;
+        BoundingBox bbox;
+        ScalingWidget sWidget;
+        Random rand;
 
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
         { }
 
+        void NewSession()
+        {
+            float width = (float)rand.NextDouble() + 1.5f;
+            float height = (float)rand.NextDouble() + 1.5f;
+            float depth = (float)rand.NextDouble() + 1.5f;
+            bbox = new BoundingBox(width, height, depth);
+            //bbox = new BoundingBox(2.5f);
+            bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
+            sWidget.SetFrame(bbox);
+            fNodeBox.Position = sWidget.GetBoxOffset();
+        }
+
         public override void Init()
         {
-
-                           
-
+            rand = new Random();
             Camera.LookAt(new Vector3(1,0, 1), new Vector3(-2.5f, 2.5f, -2.5f));
 
             Box box = new Box(1, 1, 1);
-            Sphere sphere = new Sphere(1, 16);
-            ScalingWidget sWidget = new ScalingWidget(box);
-            AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox bbox = new AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox(2.5f);
-            //bbox.PositionV3 = new Vector3(bbox.Width / 2 - box.Width/2, bbox.Height/2 - box.Height/2, bbox.Depth/2 - box.Depth/2);
-            bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox.DefaultThickness,  0);
-
-            sphere.PositionV3 = new Vector3(0f, 3f, 0);
-
+             sWidget = new ScalingWidget(box);
+           
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
             FixedNode fNodeFrame = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
 
-            FixedNode fNodeBox = new FixedNode
+            fNodeBox = new FixedNode
             {
                 Label = "fBox",
-                Position = sWidget.GetBoxOffset(bbox.Width)
             };
 
+            NewSession();
 
             CameraAnchorNode coNode = new CameraAnchorNode();
             Scene.Tree.RootNode.AppendChild(fNodeFrame);
