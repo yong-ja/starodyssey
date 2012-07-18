@@ -168,7 +168,7 @@ namespace WpfTest
                 sWidget.Select(result.Name, Color.Cyan);
                 Arrow arrow = (Arrow)result;
                 arrow.IsSelected = true;
-                LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
+                //LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
             }
             else
                 LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " No intersection");
@@ -264,8 +264,9 @@ namespace WpfTest
                     pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        delta = pIntersection.Y - (box.PositionV3.Y + box.ScalingValues.Y / 2);
+                        delta = pIntersection.Y - (box.AbsolutePosition.Y + box.ScalingValues.Y / 2);
                         box.ScalingValues += new Vector3(0, delta, 0);
+                        float axisOffset = sWidget.GetBoxOffset().Y;
                         if (box.ScalingValues.Y < minSize)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, minSize, box.ScalingValues.Z);
@@ -277,9 +278,9 @@ namespace WpfTest
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                         }
                         else
-                            fNode.Position = new Vector3(fNode.Position.X, pIntersection.Y, fNode.Position.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, -axisOffset + pIntersection.Y, fNode.Position.Z);
 
-                        box.PositionV3 = new Vector3(box.PositionV3.X, box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
+                        box.PositionV3 = new Vector3(box.PositionV3.X,box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
                     }
                     break;
 
@@ -287,23 +288,36 @@ namespace WpfTest
                     pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
                     if (test)
                     {
-                        delta = pIntersection.X - (box.PositionV3.X + box.ScalingValues.X / 2);
+                        delta = sWidget.XInverted ? - pIntersection.X + (box.AbsolutePosition.X - box.ScalingValues.X/2) :
+                            pIntersection.X - (box.AbsolutePosition.X + box.ScalingValues.X / 2);
                         delta = Math.Min(minSize, delta);
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
+                        float axisOffset = sWidget.GetBoxOffset().X;
                         if (box.ScalingValues.X < minSize)
                         {
                             box.ScalingValues = new Vector3(minSize, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
-                        else if (box.ScalingValues.X> maxSizeX)
+                        else if (box.ScalingValues.X > maxSizeX)
                         {
                             box.ScalingValues = new Vector3(maxSizeX, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
                         else
-                            fNode.Position = new Vector3(pIntersection.X, fNode.Position.Y, fNode.Position.Z);
-                        box.PositionV3 = new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
+                        {
+                            fNode.Position = new Vector3(pIntersection.X - axisOffset, fNode.Position.Y, fNode.Position.Z);
+                            if (sWidget.XInverted)
+                            {
+                                FixedNode fNodeZ = (FixedNode)sWidget.SelectByName("ZArrow").Objects[0].ParentNode.Parent;
+                                FixedNode fNodeY = (FixedNode)sWidget.SelectByName("YArrow").Objects[0].ParentNode.Parent;
+                                fNodeZ.Position = new Vector3(fNode.Position.X, fNodeZ.Position.Y, fNodeZ.Position.Z);
+                                fNodeY.Position = new Vector3(fNode.Position.X, fNodeY.Position.Y, fNodeY.Position.Z);
+                            }
+                        }
+                        box.PositionV3 = sWidget.XInverted ?
+                            new Vector3(-(box.ScalingValues.X / 2 - 0.5f), box.PositionV3.Y, box.PositionV3.Z) :
+                            new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
                     }
                     break;
 
@@ -311,10 +325,11 @@ namespace WpfTest
                     pIntersection = GetIntersection(location, Vector3.UnitY, arrowHead, out test);
                     if (test)
                     {
-                        delta = pIntersection.Z - (box.PositionV3.Z + box.ScalingValues.Z / 2);
+                        delta = pIntersection.Z - (box.AbsolutePosition.Z + box.ScalingValues.Z / 2);
                         delta = Math.Min(minSize, delta);
 
                         box.ScalingValues += new Vector3(0, 0, delta);
+                        float axisOffset = sWidget.GetBoxOffset().Z;
                         if (box.ScalingValues.Z < minSize)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, minSize);
@@ -326,7 +341,7 @@ namespace WpfTest
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                         }
                         else
-                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z - axisOffset);
                         box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
                     }
                     break;

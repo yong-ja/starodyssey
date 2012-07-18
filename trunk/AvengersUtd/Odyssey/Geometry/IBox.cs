@@ -8,7 +8,7 @@ namespace AvengersUtd.Odyssey.Geometry
 {
     public interface IBox
     {
-        Vector3 PositionV3 { get; }
+        Vector3 PositionV3 { get; set; }
         Vector3 Min { get; }
         Vector3 Max { get; }
         float Width { get; }
