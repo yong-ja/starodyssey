@@ -45,7 +45,7 @@ namespace WpfTest
             gazeRadius = (int)CrossHair.Width / 2;
             targets = new List<Target>() { Invader1, Invader2, Invader3 };
             touchPoints = new Dictionary<TouchDevice, Point>();
-            Loaded += new RoutedEventHandler(GameTask_Loaded);
+            //Loaded += new RoutedEventHandler(GameTask_Loaded);
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);

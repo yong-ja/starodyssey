@@ -61,7 +61,7 @@ namespace WpfTest
 
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
 
-            ChooseArrangement(0);
+            ChooseArrangement(2);
         }
 
         void ChooseArrangement(int configuration)
@@ -78,6 +78,7 @@ namespace WpfTest
                     ZArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0);
                 break;
 
+                    // Tangent to the rightmost edge
                 case 1:
                     YArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, box.Height / 2, -box.Depth / 2 - ArrowLineWidth / 2);
                     XArrow.PositionV3 = new Vector3(-box.Width / 2 + ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, -box.Depth / 2 - ArrowLineWidth / 2);
@@ -85,6 +86,15 @@ namespace WpfTest
                     ZArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, box.Depth / 2 + ArrowLineWidth / 2);
                     ZArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0,(float)Math.PI / 2f, 0);
                     XInverted = true;
+                    break;
+
+                    // Tangent to the leftmost edge
+                case 2:
+                    YArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, box.Height / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    XArrow.PositionV3 = new Vector3(box.Width / 2 + ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    XArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0, 0, -(float)Math.PI / 2f);
+                    ZArrow.PositionV3 = new Vector3(-box.Width / 2 - ArrowLineWidth / 2, -box.Height / 2 + ArrowLineWidth / 2, -box.Depth / 2 - ArrowLineWidth / 2);
+                    ZArrow.CurrentRotation = Quaternion.RotationYawPitchRoll(0, -(float)Math.PI / 2f, 0);
                     break;
             }
         }
@@ -190,6 +200,9 @@ namespace WpfTest
                     
                 case 1:
                     return new Vector3(frame.Width / 2 - box.Width / 2, box.Height / 2, -frame.Depth / 2 + box.Depth / 2);
+
+                case 2:
+                    return new Vector3(-frame.Width / 2 + box.Width / 2, box.Height / 2, frame.Depth / 2 - box.Depth / 2);
 
 
             }

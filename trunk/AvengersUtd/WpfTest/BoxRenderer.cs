@@ -104,9 +104,6 @@ namespace WpfTest
                 Position = new Vector2(1800, 40)
             };
 
-
-            
-
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
@@ -114,9 +111,9 @@ namespace WpfTest
 
             rp.Add(bConnect);
             rp.Add(bTracking);
-            tracker = new TrackerWrapper();
-            tracker.StartBrowsing();
-            tracker.SetWindow(Global.Window);
+            //tracker = new TrackerWrapper();
+            //tracker.StartBrowsing();
+            //tracker.SetWindow(Global.Window);
             bConnect.TouchUp += (sender, e) =>
             {
                 rp.SetTracker(tracker);
