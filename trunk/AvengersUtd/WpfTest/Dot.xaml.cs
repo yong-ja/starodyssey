@@ -2,17 +2,24 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using AvengersUtd.Odyssey.Geometry;
 
 namespace WpfTest
 {
     public partial class Dot : UserControl, IDot
     {
-        public const int Radius = 8;
+        public const double DefaultRadius = 8;
         public static readonly DependencyProperty CenterProperty =
             DependencyProperty.Register("Center",
                 typeof(Point),
                 typeof(Dot),
                 new PropertyMetadata(new Point(), OnCenterChanged));
+
+        public static readonly DependencyProperty RadiusProperty =
+            DependencyProperty.Register("Radius",
+                typeof(double),
+                typeof(Dot),
+                new PropertyMetadata(DefaultRadius, OnRadiusChanged));
 
         public Dot()
         {
@@ -25,10 +32,26 @@ namespace WpfTest
             get { return (Point)GetValue(CenterProperty); }
         }
 
+        public double Radius
+        {
+            set { SetValue(RadiusProperty, value); }
+            get { return (double)GetValue(RadiusProperty); }
+        }
+
+
         static void OnCenterChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             (obj as Dot).ellipseGeo.Center = (Point)args.NewValue;
         }
+
+        static void OnRadiusChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            Dot dot = (Dot)obj;
+            dot.ellipseGeo.RadiusX = (double)args.NewValue;
+            dot.ellipseGeo.RadiusY = (double)args.NewValue;
+        }
+
+
 
         public static readonly DependencyProperty FillProperty =
             DependencyProperty.Register("Fill", typeof(Brush), typeof(Dot),
@@ -48,6 +71,11 @@ namespace WpfTest
                 return;
 
             dot.Path.Fill = (Brush)e.NewValue;
+        }
+
+        public bool IntersectsWith(Point p)
+        {
+            return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), (float)Radius, new Vector2D(p.X, p.Y));
         }
     }
 

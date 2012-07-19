@@ -16,21 +16,19 @@
         <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <local:Target x:Name="Invader1" Center="32 32"
-               Source="pack://application:,,,/WpfTest;component/Resources/Textures/invader1.png" Width="128" Height="128"/>
-        <local:Target x:Name="Invader2" Source="pack://application:,,,/WpfTest;component/Resources/Textures/invaders2.png" Width="128" Height="128"/>
-        <local:Target x:Name="Invader3" Source="pack://application:,,,/WpfTest;component/Resources/Textures/invaders3.png" Width="128" Height="128"/>
-            <Ellipse x:Name="CrossHair" Stroke="Green" StrokeThickness="6" Width="64" Height="64">
-                <Ellipse.RenderTransform>
-                    <TranslateTransform X="4" Y="4"/>
-                </Ellipse.RenderTransform>
-            </Ellipse>
+            <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="104" Content="New session" 
+                             Width="128" Height="32" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64">
+            <Ellipse.RenderTransform>
+                <TranslateTransform X="4" Y="4"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
             <Ellipse x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64">
             <Ellipse.RenderTransform>
                 <TranslateTransform X="4" Y="4"/>
             </Ellipse.RenderTransform>
         </Ellipse>
-
-    </Canvas>
+        </Canvas>
     </DockPanel>
 </s:SurfaceWindow>

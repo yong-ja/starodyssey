@@ -1,0 +1,186 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using AvengersUtd.Odyssey.Geometry;
+using System.Windows;
+using AvengersUtd.Odyssey.Utils.Logging;
+
+namespace WpfTest
+{
+    public static class GeoHelper
+    {
+
+        static Random rand = new Random();
+        static int x;
+        static int y;
+        static Ellipse outerEllipse = new Ellipse(new Vector2D(960, 1208), 960, 1080);
+        static Circle innerCircle= new Circle(new Vector2D(960, 1080), 256);
+
+        public static Point ChooseRandomPointOnCircle(Point center, int radius)
+        {
+            bool test = false;
+            double x = 0, y = 0;
+            while (!test)
+            {
+                double t = rand.NextDouble() * 2;
+                x = center.X + (radius * Math.Cos(t * Math.PI));
+                y = center.Y + (radius * Math.Sin(t * Math.PI));
+                Vector2D p = new Vector2D(x, y);
+                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+                test = inOuterCircle && !inInnerCircle;
+            }
+
+            return new Point(x, y);
+        }
+
+        public static Point ChooseRandomPointInsideCircle(Point center, int radius)
+        {
+            bool test = false;
+            double x = 0, y = 0;
+            while (!test)
+            {
+                double t = rand.NextDouble() * 2;
+                double randomRadius = radius / 2 + rand.Next(radius / 2);
+                x = center.X + (radius * Math.Cos(t * Math.PI));
+                y = center.Y + (radius * Math.Sin(t * Math.PI));
+                Vector2D p = new Vector2D(x, y);
+                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+                test = inOuterCircle && !inInnerCircle;
+            }
+
+            return new Point(x, y);
+        }
+
+        public static Point ChoosePointOnCircle(Point center, int radius, double angleRad)
+        {
+            bool test = false;
+            double x = 0, y = 0;
+            double t = angleRad;
+            x = center.X + (radius * Math.Cos(t));
+            y = center.Y + (radius * Math.Sin(t));
+            Vector2D p = new Vector2D(x, y);
+            bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+            bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+            test = inOuterCircle && !inInnerCircle;
+            if (!test)
+                return new Point(-1, -1);
+            return new Point(x, y);
+        }
+
+        public static Point ChooseRandomPoint()
+        {
+            Vector2D p = new Vector2D();
+
+            bool test = false;
+            int index = 0;
+            while (!test)
+            {
+                x = rand.Next(1920);
+                y = rand.Next(1080);
+
+                p = new Vector2D(x, y);
+
+                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+                test = inOuterCircle && !inInnerCircle;
+                index++;
+
+                if (index > 100)
+                {
+                    LogEvent.Engine.Write("More than 100 attempts!");
+                    break;
+                }
+            }
+
+            return new Point(p.X, p.Y);
+
+        }
+
+        public static Point[] ChooseTrianglePoints(Point center, int radius, int circleRadius)
+        {
+            Point[] points = new Point[3];
+            points[0] = ChooseRandomPointInsideCircle(center, radius);
+            bool test = false;
+            while (!test)
+            {
+                points[1] = ChooseRandomPointInsideCircle(center, radius);
+                if (CircleTest(points[0], points[1], (double)circleRadius, (double)circleRadius))
+                    continue;
+                test = true;
+            }
+            test = false;
+            while (!test)
+            {
+                points[2] = ChooseRandomPointInsideCircle(center, radius);
+                if (CircleTest(points[0], points[2], (double)circleRadius, (double)circleRadius) ||
+                    CircleTest(points[1], points[2], (double)circleRadius, (double)circleRadius))
+                    continue;
+                test = true;
+            }
+            return points;
+        }
+
+        private static bool CircleTest(Point c1, Point c2, double radius1, double radius2)
+        {
+            // Find the distance between the centers.
+            double dx = c1.X - c2.X;
+            double dy = c1.Y - c2.Y;
+            double dist = Math.Sqrt(dx * dx + dy * dy);
+
+            // See how manhym solutions there are.
+            if (dist > radius1 + radius2)
+            {
+                // No solutions, the circles are too far apart.
+                //intersection1 = new PointF(float.NaN, float.NaN);
+                //intersection2 = new PointF(float.NaN, float.NaN);
+                return false;
+            }
+            else if (dist < Math.Abs(radius1 - radius2))
+            {
+                // No solutions, one circle contains the other.
+                //intersection1 = new PointF(float.NaN, float.NaN);
+                //intersection2 = new PointF(float.NaN, float.NaN);
+                return false;
+            }
+            else if ((dist == 0) && (radius1 == radius2))
+            {
+                // No solutions, the circles coincide.
+                //intersection1 = new PointF(float.NaN, float.NaN);
+                //intersection2 = new PointF(float.NaN, float.NaN);
+                return false;
+            }
+            else
+            {
+                // Find a and h.
+                //double a = (radius0 * radius0 -
+                //    radius1 * radius1 + dist * dist) / (2 * dist);
+                //double h = Math.Sqrt(radius0 * radius0 - a * a);
+
+                //// Find P2.
+                //double cx2 = cx0 + a * (cx1 - cx0) / dist;
+                //double cy2 = cy0 + a * (cy1 - cy0) / dist;
+
+                //// Get the points P3.
+                //intersection1 = new PointF(
+                //    (float)(cx2 + h * (cy1 - cy0) / dist),
+                //    (float)(cy2 - h * (cx1 - cx0) / dist));
+                //intersection2 = new PointF(
+                //    (float)(cx2 - h * (cy1 - cy0) / dist),
+                //    (float)(cy2 + h * (cx1 - cx0) / dist));
+
+                // See if we have 1 or 2 solutions.
+                //if (dist == radius0 + radius1) return 1;
+                //return 2;
+
+                return true;
+            }
+        }
+    }
+}

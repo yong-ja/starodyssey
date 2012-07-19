@@ -27,7 +27,7 @@ namespace WpfTest
         Dictionary<TouchDevice, Dot> knotPoints;
         List<Dot> dots;
         Point startPoint, endPoint;
-        const int radiusSize = 4 * Dot.Radius;
+        const double radiusSize = 4 * Dot.DefaultRadius;
         Point prevEyeLocation;
         int gazeRadius;
 
@@ -163,7 +163,7 @@ namespace WpfTest
             }
             Dot dot = knotPoints[e.TouchDevice];
             Point newLocation = e.GetTouchPoint(this).Position;
-            Point newCenter = new Point(newLocation.X - Dot.Radius, newLocation.Y - Dot.Radius);
+            Point newCenter = new Point(newLocation.X - Dot.DefaultRadius, newLocation.Y - Dot.DefaultRadius);
             dot.Center = newCenter;
 
             UserCurve.Points[(int)dot.Tag] = newCenter;
