@@ -61,7 +61,7 @@ namespace WpfTest
 
             Material = new PhongMaterial() { DiffuseColor = Color.Yellow, AmbientCoefficient=1f};
 
-            ChooseArrangement(2);
+            ChooseArrangement(0);
         }
 
         void ChooseArrangement(int configuration)

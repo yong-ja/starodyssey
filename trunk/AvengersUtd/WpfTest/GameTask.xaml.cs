@@ -45,7 +45,7 @@ namespace WpfTest
             gazeRadius = (int)CrossHair.Width / 2;
            
             touchPoints = new Dictionary<TouchDevice, Point>();
-            //Loaded += new RoutedEventHandler(GameTask_Loaded);
+            Loaded += new RoutedEventHandler(GameTask_Loaded);
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
@@ -60,6 +60,7 @@ namespace WpfTest
         {
             int radius = 32;
             int maxDistance = 256;
+            Indicator.Fill = Brushes.Red;
 
             if (targets != null && targets.Count > 0)
             {
