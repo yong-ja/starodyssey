@@ -26,7 +26,7 @@ namespace WpfTest
     {
         int gazeRadius;
         Dictionary<TouchDevice, Point> touchPoints;
-        List<Target> targets;
+        List<Dot> targets;
         TrackerWrapper tracker;
         /// <summary>
         /// Default constructor.
@@ -43,7 +43,7 @@ namespace WpfTest
         void Init()
         {
             gazeRadius = (int)CrossHair.Width / 2;
-            targets = new List<Target>() { Invader1, Invader2, Invader3 };
+           
             touchPoints = new Dictionary<TouchDevice, Point>();
             //Loaded += new RoutedEventHandler(GameTask_Loaded);
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
@@ -51,28 +51,33 @@ namespace WpfTest
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
             bConnect.Click += (sender, e) => { tracker.Connect(); };
             bStart.Click += (sender, e) => { tracker.StartTracking(); };
+            bNew.Click += (sender, e) => { NewSession(); };
 
-
-            //Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
-            //{
-            //    Width = 2 * radiusSize,
-            //    Height = 2 * radiusSize,
-            //    Stroke = Brushes.Black,
-            //    RenderTransform = new TranslateTransform(8, 1070)
-            //};
-            //Canvas.Children.Add(ellipseRadius);
-            DistributeTargets();
+            NewSession();
         }
 
-        void DistributeTargets()
+        void NewSession()
         {
-            Random rand = new Random();
-            foreach (Target t in targets)
+            int radius = 32;
+            int maxDistance = 256;
+
+            if (targets != null && targets.Count > 0)
             {
-                double x = rand.NextDouble();
-                double y = rand.NextDouble();
-                t.Center = new Point(x * 1920, y * 1080);
+                foreach (Dot d in targets)
+                    Canvas.Children.Remove(d);
+                targets.Clear();
             }
+
+            Point center = GeoHelper.ChooseRandomPointOnCircle(new Point(960, 540), 256);
+            Point[] points = GeoHelper.ChooseTrianglePoints(center, maxDistance, radius);
+            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center=points[0]};
+            Dot target2 = new Dot() { Fill = Brushes.Blue, Radius = radius, Center = points[1]};
+            Dot target3 = new Dot() { Fill = Brushes.Green, Radius = radius, Center =points[2]};
+
+            targets = new List<Dot>() { target1, target2, target3 };
+            Canvas.Children.Add(target1);
+            Canvas.Children.Add(target2);
+            Canvas.Children.Add(target3);
         }
 
         void Canvas_LostTouchCapture(object sender, TouchEventArgs e)
@@ -125,24 +130,15 @@ namespace WpfTest
             Point gazeLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 
             bool result = false;
-            foreach (Target t in targets)
+            foreach (Dot d in targets)
             {
                 Point[] pointArray = touchPoints.Values.ToArray();
-                result = t.IntersectsWith(pointArray[0]) || t.IntersectsWith(pointArray[1]) || t.IntersectsWith(gazeLocation);
+                result = d.IntersectsWith(pointArray[0]) || d.IntersectsWith(pointArray[1]) || d.IntersectsWith(gazeLocation);
                 if (!result)
                     return;
             }
 
             Indicator.Fill = Brushes.Green;
-
-            //prevEyeLocation = newLocation;
-
-            //Vector delta = Point.Subtract(newLocation, prevEyeLocation);
-            //if (delta.LengthSquared < 16 * 16)
-            //{
-            //    LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Too close", e.GazePoint.X, e.GazePoint.Y));
-            //    return;
-            //}
             LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
 
         }

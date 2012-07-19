@@ -30,7 +30,7 @@ namespace WpfTest
         List<IDot> userDots;
         List<IDot> refDots;
         
-        const int radiusSize = 4 * Dot.Radius;
+        const double radiusSize = 4 * Dot.DefaultRadius;
         Point prevEyeLocation;
         int gazeRadius;
         int session;
@@ -73,81 +73,31 @@ namespace WpfTest
                 Canvas.Children.Remove(this.endPoint);
 
             int radius = 512;
-            Point startPoint = ChooseRandomPoint();
-            Point endPoint = ChoosePointOnCircle(startPoint, radius);
+            Point startPoint = GeoHelper.ChooseRandomPoint();
+            Point endPoint = GeoHelper.ChooseRandomPointOnCircle(startPoint, radius);
             Point middlePoint1 = new Point(Math.Abs((startPoint.X + endPoint.X)/2), 
                 Math.Abs((startPoint.Y +endPoint.Y)/2));
 
             RefCurve.StartPoint = startPoint;
             RefCurve.EndPoint = endPoint;
-            RefCurve.ControlPoint1 = ChoosePointOnCircle(middlePoint1, radius);
-            RefCurve.ControlPoint2 = ChoosePointOnCircle(middlePoint1, radius);
+            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(middlePoint1, radius);
+            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(middlePoint1, radius);
 
             UserCurve.StartPoint = startPoint;
-            UserCurve.EndPoint = ChoosePointOnCircle(startPoint, radius);
+            UserCurve.EndPoint = GeoHelper.ChooseRandomPointOnCircle(startPoint, radius);
             Point middlePoint2 = new Point(Math.Abs((startPoint.X + endPoint.X) / 2),
                 Math.Abs((startPoint.Y + endPoint.Y) / 2));
-            UserCurve.ControlPoint1 = ChoosePointOnCircle(middlePoint2, radius);
-            UserCurve.ControlPoint2 = ChoosePointOnCircle(middlePoint2, radius);
+            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(middlePoint2, radius);
+            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(middlePoint2, radius);
 
             ShowUserDots();
 
         }
 
-        Point ChoosePointOnCircle(Point center, int radius)
-        {
-            bool test = false;
-            double x = 0, y = 0;
-            while (!test)
-            {
-                double t = rand.NextDouble() * 2;
-                x =center.X+ (radius * Math.Cos(t * Math.PI));
-                y =center.Y + (radius * Math.Sin(t * Math.PI));
-                Vector2D p = new Vector2D(x, y); 
-                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-                test = inOuterCircle && !inInnerCircle;
-            }
-
-            return new Point(x, y);
-        }
-
-        Point ChooseRandomPoint()
-        {
-            Vector2D p = new Vector2D();
-
-            bool test = false;
-            int index = 0;
-            while (!test)
-            {
-                x = rand.Next(1920);
-                y = rand.Next(1080);
-
-                p = new Vector2D(x, y);
-
-                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-                test = inOuterCircle && !inInnerCircle;
-                index++;
-
-                if (index > 100)
-                {
-                    LogEvent.Engine.Write("More than 100 attempts!");
-                    break;
-                }
-            }
-
-            return new Point(p.X, p.Y);
-
-        }
+        
 
         void Init()
         {
-            rand = new Random();
-            outerEllipse = new Ellipse(new Vector2D(960, 1208), 960, 1080);
-            innerCircle = new Circle(new Vector2D(960, 1080), 256);
             gazeRadius =(int)( CrossHair.Width / 2);
 
             bool test = Intersection.CirclePointTest(innerCircle, new Vector2D(960, 820));

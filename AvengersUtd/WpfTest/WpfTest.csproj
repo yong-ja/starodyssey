@@ -204,6 +204,7 @@
     <Compile Include="BezierWindow.xaml.cs">
       <DependentUpon>BezierWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GeoHelper.cs" />
     <Compile Include="Marker.xaml.cs">
       <DependentUpon>Marker.xaml</DependentUpon>
     </Compile>
