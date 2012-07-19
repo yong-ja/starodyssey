@@ -29,13 +29,13 @@ namespace WpfTest
         Dictionary<TouchDevice, IDot> knotPoints;
         List<IDot> userDots;
         List<IDot> refDots;
-        Point startPoint, endPoint;
+        
         const int radiusSize = 4 * Dot.Radius;
         Point prevEyeLocation;
         int gazeRadius;
         int session;
         bool gazeUpdate;
-
+        Marker endPoint;
         TrackerWrapper tracker;
         Random rand;
         int x, y;
@@ -59,6 +59,19 @@ namespace WpfTest
 
         void NewSession()
         {
+            foreach (IDot dot in userDots)
+                if (Canvas.Children.Contains((UIElement)dot))
+                    Canvas.Children.Remove((UIElement)dot);
+            userDots.Clear();
+
+            foreach (IDot dot in refDots)
+                if (Canvas.Children.Contains((UIElement)dot))
+                    Canvas.Children.Remove((UIElement)dot);
+            refDots.Clear();
+
+            if (this.endPoint != null)
+                Canvas.Children.Remove(this.endPoint);
+
             int radius = 512;
             Point startPoint = ChooseRandomPoint();
             Point endPoint = ChoosePointOnCircle(startPoint, radius);
@@ -135,13 +148,14 @@ namespace WpfTest
             rand = new Random();
             outerEllipse = new Ellipse(new Vector2D(960, 1208), 960, 1080);
             innerCircle = new Circle(new Vector2D(960, 1080), 256);
+            gazeRadius =(int)( CrossHair.Width / 2);
 
             bool test = Intersection.CirclePointTest(innerCircle, new Vector2D(960, 820));
 
             knotPoints = new Dictionary<TouchDevice, IDot>();
             userDots = new List<IDot>();
             refDots = new List<IDot>();
-            //Loaded += new RoutedEventHandler(SplineTask_Loaded);
+            Loaded += new RoutedEventHandler(SplineTask_Loaded);
             TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
@@ -171,10 +185,10 @@ namespace WpfTest
             Canvas.Children.Add(cp2);
             Canvas.Children.Add(cp3);
 
+            endPoint = BuildEndPoint(UserCurve.StartPoint, Brushes.Black);
             userDots.AddRange(new List<IDot> { cp1, cp2, cp3 });
 
-            Canvas.Children.Add(BuildEndPoint(UserCurve.StartPoint, Brushes.Black));
-            endPoint = cp3.Center;
+            Canvas.Children.Add(endPoint);
         }
 
         private void ShowRefDots()
@@ -234,7 +248,7 @@ namespace WpfTest
         static int GetEyeIndex(IEnumerable<IDot> dots)
         {
             List<int> indices = new List<int>() { 1, 2, 3 };
-            foreach (Dot d in dots)
+            foreach (IDot d in dots)
             {
                 int index = (int)d.Tag;
                 if (indices.Contains(index))
