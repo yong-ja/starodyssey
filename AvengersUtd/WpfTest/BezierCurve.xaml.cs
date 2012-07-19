@@ -53,6 +53,10 @@ namespace WpfTest
     DependencyProperty.Register("EndPoint", typeof(Point), typeof(BezierCurve),
 new PropertyMetadata(OnEndPointChanged));
 
+        public static readonly DependencyProperty StrokeProperty =
+            DependencyProperty.Register("Stroke", typeof(Brush), typeof(BezierCurve),
+new PropertyMetadata(OnStrokeChanged));
+
         public Point StartPoint
         {
             set { SetValue(StartPointProperty, value); }
@@ -74,6 +78,13 @@ new PropertyMetadata(OnEndPointChanged));
         {
             set { SetValue(EndPointProperty, value); }
             get { return (Point)GetValue(EndPointProperty); }
+        }
+
+        public Brush Stroke
+        {
+            set { SetValue(StrokeProperty, value); }
+            get { return (Brush)GetValue(StrokeProperty); }
+                
         }
 
         private static void OnStartPointChanged(object sender, DependencyPropertyChangedEventArgs e) 
@@ -111,5 +122,14 @@ new PropertyMetadata(OnEndPointChanged));
 
             curve.Segment.Point3 = (Point)e.NewValue;
         }
+
+        private static void OnStrokeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            BezierCurve curve = sender as BezierCurve;
+            if (curve == null)
+                return;
+
+            curve.Path.Stroke = (Brush)e.NewValue;
+            }
     }
 }

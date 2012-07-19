@@ -190,7 +190,15 @@ namespace AvengersUtd.Odyssey.Geometry
             double a = ellipse.RadiusX;
             double b = ellipse.RadiusY;
 
-            return (x*x)/(a*a) + (y*y)/(b*b) <= 1;
+            double xComponent = (Math.Pow(point.X - ellipse.Center.X, 2) / Math.Pow(ellipse.RadiusX, 2));
+            double yComponent = (Math.Pow(point.Y - ellipse.Center.Y, 2) / Math.Pow(ellipse.RadiusY, 2));
+
+            double value = xComponent + yComponent;
+
+            if (value < 1)
+                return true;
+
+            return false; 
         }
 
         public static bool EllipseContainsRectangle(Ellipse ellipse, OrthoRectangle rectangle)
