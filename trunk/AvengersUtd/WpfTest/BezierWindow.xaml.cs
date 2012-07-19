@@ -16,6 +16,8 @@ using Microsoft.Surface.Presentation;
 using Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation.Input;
 using AvengersUtd.Odyssey.Utils.Logging;
+using AvengersUtd.Odyssey.Geometry;
+using Ellipse = AvengersUtd.Odyssey.Geometry.Ellipse;
 
 namespace WpfTest
 {
@@ -24,15 +26,22 @@ namespace WpfTest
     /// </summary>
     public partial class BezierWindow : SurfaceWindow
     {
-        Dictionary<TouchDevice, Dot> knotPoints;
-        List<Dot> dots;
+        Dictionary<TouchDevice, IDot> knotPoints;
+        List<IDot> userDots;
+        List<IDot> refDots;
         Point startPoint, endPoint;
         const int radiusSize = 4 * Dot.Radius;
         Point prevEyeLocation;
         int gazeRadius;
+        int session;
         bool gazeUpdate;
 
         TrackerWrapper tracker;
+        Random rand;
+        int x, y;
+        AvengersUtd.Odyssey.Geometry.Ellipse outerEllipse;
+        Circle innerCircle;
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -43,26 +52,95 @@ namespace WpfTest
             // Add handlers for window availability events
             AddWindowAvailabilityHandlers();
             Init();
+            NewSession();
+            
+        }
+
+
+        void NewSession()
+        {
+            int radius = 512;
+            Point startPoint = ChooseRandomPoint();
+            Point endPoint = ChoosePointOnCircle(startPoint, radius);
+            Point middlePoint1 = new Point(Math.Abs((startPoint.X + endPoint.X)/2), 
+                Math.Abs((startPoint.Y +endPoint.Y)/2));
+
+            RefCurve.StartPoint = startPoint;
+            RefCurve.EndPoint = endPoint;
+            RefCurve.ControlPoint1 = ChoosePointOnCircle(middlePoint1, radius);
+            RefCurve.ControlPoint2 = ChoosePointOnCircle(middlePoint1, radius);
+
+            UserCurve.StartPoint = startPoint;
+            UserCurve.EndPoint = ChoosePointOnCircle(startPoint, radius);
+            Point middlePoint2 = new Point(Math.Abs((startPoint.X + endPoint.X) / 2),
+                Math.Abs((startPoint.Y + endPoint.Y) / 2));
+            UserCurve.ControlPoint1 = ChoosePointOnCircle(middlePoint2, radius);
+            UserCurve.ControlPoint2 = ChoosePointOnCircle(middlePoint2, radius);
+
+            ShowUserDots();
+
+        }
+
+        Point ChoosePointOnCircle(Point center, int radius)
+        {
+            bool test = false;
+            double x = 0, y = 0;
+            while (!test)
+            {
+                double t = rand.NextDouble() * 2;
+                x =center.X+ (radius * Math.Cos(t * Math.PI));
+                y =center.Y + (radius * Math.Sin(t * Math.PI));
+                Vector2D p = new Vector2D(x, y); 
+                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+                test = inOuterCircle && !inInnerCircle;
+            }
+
+            return new Point(x, y);
+        }
+
+        Point ChooseRandomPoint()
+        {
+            Vector2D p = new Vector2D();
+
+            bool test = false;
+            int index = 0;
+            while (!test)
+            {
+                x = rand.Next(1920);
+                y = rand.Next(1080);
+
+                p = new Vector2D(x, y);
+
+                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
+                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
+
+                test = inOuterCircle && !inInnerCircle;
+                index++;
+
+                if (index > 100)
+                {
+                    LogEvent.Engine.Write("More than 100 attempts!");
+                    break;
+                }
+            }
+
+            return new Point(p.X, p.Y);
+
         }
 
         void Init()
         {
-            gazeRadius = (int)CrossHair.Width / 2;
+            rand = new Random();
+            outerEllipse = new Ellipse(new Vector2D(960, 1208), 960, 1080);
+            innerCircle = new Circle(new Vector2D(960, 1080), 256);
 
-            knotPoints = new Dictionary<TouchDevice, Dot>();
-            dots = new List<Dot>();
-            startPoint = UserCurve.StartPoint;
-            Canvas.Children.Add(BuildEndPoint(UserCurve.StartPoint));
-            Dot cp1=  BuildControlPoint(UserCurve.ControlPoint1, 1);
-            Dot cp2 = BuildControlPoint(UserCurve.ControlPoint2, 2);
-            Dot cp3 = BuildControlPoint(UserCurve.EndPoint, 3);
-            Canvas.Children.Add(cp1);
-            Canvas.Children.Add(cp2);
-            Canvas.Children.Add(cp3);
+            bool test = Intersection.CirclePointTest(innerCircle, new Vector2D(960, 820));
 
-            dots.AddRange(new List<Dot>{cp1, cp2, cp3});
-
-            endPoint = cp3.Center;
+            knotPoints = new Dictionary<TouchDevice, IDot>();
+            userDots = new List<IDot>();
+            refDots = new List<IDot>();
             //Loaded += new RoutedEventHandler(SplineTask_Loaded);
             TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
@@ -70,16 +148,46 @@ namespace WpfTest
 
             bConnect.TouchUp += (sender, e) => {tracker.Connect();};
             bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            bNew.TouchUp += (sender, e) => { NewSession(); };
+            bDots.TouchUp += (sender, e) => { ShowRefDots(); };
             
 
-            Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
-            {
-                Width = 2 * radiusSize,
-                Height = 2 * radiusSize,
-                Stroke = Brushes.Black,
-                RenderTransform = new TranslateTransform(8, 1070)
-            };
-            Canvas.Children.Add(ellipseRadius);
+            //Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
+            //{
+            //    Width = 2 * radiusSize,
+            //    Height = 2 * radiusSize,
+            //    Stroke = Brushes.Black,
+            //    RenderTransform = new TranslateTransform(8, 1070)
+            //};
+            //Canvas.Children.Add(ellipseRadius);
+        }
+
+        private void ShowUserDots()
+        {
+            Dot cp1 = BuildControlPoint(UserCurve.ControlPoint1, 1, Brushes.Blue);
+            Dot cp2 = BuildControlPoint(UserCurve.ControlPoint2, 2, Brushes.Red);
+            Marker cp3 = BuildEndPoint(UserCurve.EndPoint, Brushes.Yellow);
+            Canvas.Children.Add(cp1);
+            Canvas.Children.Add(cp2);
+            Canvas.Children.Add(cp3);
+
+            userDots.AddRange(new List<IDot> { cp1, cp2, cp3 });
+
+            Canvas.Children.Add(BuildEndPoint(UserCurve.StartPoint, Brushes.Black));
+            endPoint = cp3.Center;
+        }
+
+        private void ShowRefDots()
+        {
+            Dot cp1 = BuildControlPoint(RefCurve.ControlPoint1, 1, Brushes.Cyan);
+            Dot cp2 = BuildControlPoint(RefCurve.ControlPoint2, 2, Brushes.Purple);
+            Marker cp3 = BuildEndPoint(RefCurve.EndPoint, Brushes.Orange);
+            Canvas.Children.Add(cp1);
+            Canvas.Children.Add(cp2);
+            Canvas.Children.Add(cp3);
+
+            refDots.AddRange(new List<IDot> { cp1, cp2, cp3 });
+
         }
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
@@ -116,14 +224,14 @@ namespace WpfTest
             //if (!gazeUpdate)
             //{
                 LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
-                dots[eyeIndex - 1].Center = newLocation;
+                userDots[eyeIndex - 1].Center = newLocation;
                 UserCurve.SetPoint(newLocation, eyeIndex);
                 gazeUpdate = true;
             //}
 
         }
 
-        static int GetEyeIndex(IEnumerable<Dot> dots)
+        static int GetEyeIndex(IEnumerable<IDot> dots)
         {
             List<int> indices = new List<int>() { 1, 2, 3 };
             foreach (Dot d in dots)
@@ -166,9 +274,9 @@ namespace WpfTest
                 LogEvent.Engine.Write("TouchMove - No intersection");
                 return;
             }
-            Dot dot = knotPoints[e.TouchDevice];
+            IDot dot = knotPoints[e.TouchDevice];
             Point newLocation = e.GetTouchPoint(this).Position;
-            Point newCenter = new Point(newLocation.X - Dot.Radius, newLocation.Y - Dot.Radius);
+            Point newCenter = new Point(newLocation.X , newLocation.Y );
             dot.Center = newCenter;
 
             UserCurve.SetPoint(newLocation, (int)dot.Tag);
@@ -198,7 +306,7 @@ namespace WpfTest
         {
             TouchDevice touchDevice = e.TouchDevice;
             Point location = e.GetTouchPoint(this).Position;
-            Dot dot = FindKnotPoint(location);
+            IDot dot = FindKnotPoint(location);
             LogEvent.Engine.Write(string.Format("TouchDown [{0}] {1}", e.TouchDevice.Id,
                 dot == null ? "No intersection" : "Found dot #" + (int)dot.Tag));
 
@@ -209,9 +317,9 @@ namespace WpfTest
             knotPoints.Add(touchDevice, dot);
         }
 
-        Dot FindKnotPoint(Point location)
+        IDot FindKnotPoint(Point location)
         {
-            foreach (Dot d in dots)
+            foreach (IDot d in userDots)
             {
                 AvengersUtd.Odyssey.Geometry.Vector2D ellipseCenter = new AvengersUtd.Odyssey.Geometry.Vector2D(d.Center.X, d.Center.Y);
                 AvengersUtd.Odyssey.Geometry.Circle c = new AvengersUtd.Odyssey.Geometry.Circle(ellipseCenter, radiusSize);
@@ -222,22 +330,24 @@ namespace WpfTest
             return null;
         }
 
-        Rectangle BuildEndPoint(Point location)
+        Marker BuildEndPoint(Point location, Brush color)
         {
             const int width = 16;
-            Rectangle rectangle = new Rectangle()
+            Marker marker = new Marker()
             {
+                Center = location,
                 RenderTransform = new TranslateTransform(location.X - width / 2, location.Y - width / 2),
-                Fill = Brushes.Black,
+                Fill = color,
                 Width = width,
-                Height = width
+                Height = width,
+                Tag = 3
             };
-            return rectangle;
+            return marker;
         }
 
-        Dot BuildControlPoint(Point location, int index)
+        Dot BuildControlPoint(Point location, int index, Brush color)
         {
-            Dot knotPoint = new Dot() { Center = location };
+            Dot knotPoint = new Dot() { Center = location, Fill = color};
             knotPoint.Tag = index;
             return knotPoint;
         }

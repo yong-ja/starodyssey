@@ -204,6 +204,9 @@
     <Compile Include="BezierWindow.xaml.cs">
       <DependentUpon>BezierWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Marker.xaml.cs">
+      <DependentUpon>Marker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomGrid.cs" />
     <Compile Include="Dot.xaml.cs">
       <DependentUpon>Dot.xaml</DependentUpon>
@@ -243,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BezierWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Marker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -5,16 +5,16 @@ using System.Windows.Media;
 
 namespace WpfTest
 {
-    public partial class Dot : UserControl, IDot
+    public partial class Marker : UserControl,IDot
     {
         public const int Radius = 8;
         public static readonly DependencyProperty CenterProperty =
             DependencyProperty.Register("Center",
                 typeof(Point),
-                typeof(Dot),
+                typeof(Marker),
                 new PropertyMetadata(new Point(), OnCenterChanged));
 
-        public Dot()
+        public Marker()
         {
             InitializeComponent();
         }
@@ -27,11 +27,12 @@ namespace WpfTest
 
         static void OnCenterChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            (obj as Dot).ellipseGeo.Center = (Point)args.NewValue;
+            Point p = (Point)args.NewValue;
+            Marker marker = (Marker)obj;
+            marker.RenderTransform = new TranslateTransform(p.X - marker.Width/2, p.Y - marker.Height / 2);
         }
-
         public static readonly DependencyProperty FillProperty =
-            DependencyProperty.Register("Fill", typeof(Brush), typeof(Dot),
+            DependencyProperty.Register("Fill", typeof(Brush), typeof(Marker),
         new PropertyMetadata(OnFillChanged));
 
         public Brush Fill
@@ -43,18 +44,12 @@ namespace WpfTest
 
         private static void OnFillChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Dot dot = sender as Dot;
-            if (dot == null)
+            Marker marker = sender as Marker;
+            if (marker == null)
                 return;
 
-            dot.Path.Fill = (Brush)e.NewValue;
+            marker.Rectangle.Fill = (Brush)e.NewValue;
         }
-    }
 
-
-    public interface IDot
-    {
-        Point Center { get; set; }
-        object Tag { get; set; }
     }
 }
