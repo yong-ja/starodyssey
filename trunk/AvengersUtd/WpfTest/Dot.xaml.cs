@@ -73,6 +73,26 @@ namespace WpfTest
             dot.Path.Fill = (Brush)e.NewValue;
         }
 
+        public static readonly DependencyProperty StrokeProperty =
+            DependencyProperty.Register("Stroke", typeof(Brush), typeof(Dot),
+        new PropertyMetadata(OnStrokeChanged));
+
+        public Brush Stroke
+        {
+            set { SetValue(StrokeProperty, value); }
+            get { return (Brush)GetValue(StrokeProperty); }
+
+        }
+
+        private static void OnStrokeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Dot dot = sender as Dot;
+            if (dot == null)
+                return;
+
+            dot.Path.Stroke = (Brush)e.NewValue;
+        }
+
         public bool IntersectsWith(Point p)
         {
             return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), (float)Radius, new Vector2D(p.X, p.Y));

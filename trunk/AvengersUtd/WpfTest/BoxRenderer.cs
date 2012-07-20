@@ -41,7 +41,7 @@ namespace WpfTest
         public override void Init()
         {
             rand = new Random();
-            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-2.5f, 2.5f, -2.5f));
+            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-3.5f, 2.5f, -3.5f));
 
             Box box = new Box(1, 1, 1);
              sWidget = new ScalingWidget(box);

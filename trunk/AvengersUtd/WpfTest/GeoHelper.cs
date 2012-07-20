@@ -15,7 +15,16 @@ namespace WpfTest
         static int x;
         static int y;
         static Ellipse outerEllipse = new Ellipse(new Vector2D(960, 1208), 960, 1080);
-        static Circle innerCircle= new Circle(new Vector2D(960, 1080), 256);
+        static int bottomOffset = 256;
+        //static Circle innerCircle= new Circle(new Vector2D(960, 1080), 256);
+
+        public static Point ChooseRandomPointWithinBounds(int xBound, int yBound)
+        {
+            double x = rand.NextDouble() * xBound;
+            double y = rand.NextDouble() * yBound;
+            return new Point(x, y);
+        }
+
 
         public static Point ChooseRandomPointOnCircle(Point center, int radius)
         {
@@ -27,16 +36,13 @@ namespace WpfTest
                 x = center.X + (radius * Math.Cos(t * Math.PI));
                 y = center.Y + (radius * Math.Sin(t * Math.PI));
                 Vector2D p = new Vector2D(x, y);
-                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-                test = inOuterCircle && !inInnerCircle;
+                test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
             }
 
             return new Point(x, y);
         }
 
-        public static Point ChooseRandomPointInsideCircle(Point center, int radius)
+        public static Point ChooseRandomPointInsideCircle(Point center, int radius, bool doTest=true)
         {
             bool test = false;
             double x = 0, y = 0;
@@ -44,13 +50,13 @@ namespace WpfTest
             {
                 double t = rand.NextDouble() * 2;
                 double randomRadius = radius / 2 + rand.Next(radius / 2);
-                x = center.X + (radius * Math.Cos(t * Math.PI));
-                y = center.Y + (radius * Math.Sin(t * Math.PI));
+                x = center.X + (randomRadius * Math.Cos(t * Math.PI));
+                y = center.Y + (randomRadius * Math.Sin(t * Math.PI));
                 Vector2D p = new Vector2D(x, y);
-                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-                test = inOuterCircle && !inInnerCircle;
+                if (doTest)
+                    test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
+                else
+                    test = true;
             }
 
             return new Point(x, y);
@@ -64,10 +70,8 @@ namespace WpfTest
             x = center.X + (radius * Math.Cos(t));
             y = center.Y + (radius * Math.Sin(t));
             Vector2D p = new Vector2D(x, y);
-            bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-            bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-            test = inOuterCircle && !inInnerCircle;
+            test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
+            
             if (!test)
                 return new Point(-1, -1);
             return new Point(x, y);
@@ -86,10 +90,7 @@ namespace WpfTest
 
                 p = new Vector2D(x, y);
 
-                bool inOuterCircle = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < 1080;
-                bool inInnerCircle = Intersection.CirclePointTest(innerCircle, p) && p.Y < 1080;
-
-                test = inOuterCircle && !inInnerCircle;
+                test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
                 index++;
 
                 if (index > 100)
