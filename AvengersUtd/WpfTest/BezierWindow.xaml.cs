@@ -72,23 +72,17 @@ namespace WpfTest
             if (this.endPoint != null)
                 Canvas.Children.Remove(this.endPoint);
 
-            int radius = 512;
-            Point startPoint = GeoHelper.ChooseRandomPoint();
-            Point endPoint = GeoHelper.ChooseRandomPointOnCircle(startPoint, radius);
-            Point middlePoint1 = new Point(Math.Abs((startPoint.X + endPoint.X)/2), 
-                Math.Abs((startPoint.Y +endPoint.Y)/2));
+            int radius = 256;
 
-            RefCurve.StartPoint = startPoint;
-            RefCurve.EndPoint = endPoint;
-            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(middlePoint1, radius);
-            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(middlePoint1, radius);
+            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(256, 540);;
+            RefCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(EndDot.Center, radius, false);
+            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(CP1Dot.Center, radius, false);
+            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(CP2Dot.Center, radius,true);
 
-            UserCurve.StartPoint = startPoint;
-            UserCurve.EndPoint = GeoHelper.ChooseRandomPointOnCircle(startPoint, radius);
-            Point middlePoint2 = new Point(Math.Abs((startPoint.X + endPoint.X) / 2),
-                Math.Abs((startPoint.Y + endPoint.Y) / 2));
-            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(middlePoint2, radius);
-            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(middlePoint2, radius);
+            UserCurve.StartPoint = RefCurve.StartPoint;
+            UserCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(EndDot.Center, radius, false);
+            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(CP1Dot.Center, radius, false);
+            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(CP2Dot.Center, radius, true);
 
             ShowUserDots();
 
@@ -112,7 +106,7 @@ namespace WpfTest
 
             bConnect.TouchUp += (sender, e) => {tracker.Connect();};
             bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
-            bNew.TouchUp += (sender, e) => { NewSession(); };
+            bNew.Click += (sender, e) => { NewSession(); };
             bDots.TouchUp += (sender, e) => { ShowRefDots(); };
             
 

@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="http://schemas.microsoft.com/surface/2008"
                  xmlns:local="clr-namespace:WpfTest"
-        Title="SplineTask" Height="1080" Width="1920" WindowStyle ="None">
+        Title="SplineTask" Height="1080" Width="1920" WindowStyle ="None" WindowState="Maximized" ShowActivated="True" ResizeMode="NoResize">
 <DockPanel Background="DarkGray" LastChildFill="True">
         <StatusBar Height="32" DockPanel.Dock="Bottom" Padding="2">
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
@@ -22,15 +22,19 @@
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
-            <local:BezierCurve x:Name="UserCurve" StartPoint="8 8" ControlPoint1="200 600" ControlPoint2="400 50" EndPoint="800 800" Stroke="DarkGreen"/>
+            <local:BezierCurve x:Name="UserCurve" StartPoint="64 64" ControlPoint1="200 600" ControlPoint2="400 50" EndPoint="800 800" Stroke="DarkGreen"/>
             <local:BezierCurve x:Name="RefCurve" StartPoint="64 64" ControlPoint1="512 512" ControlPoint2="768 50" EndPoint="800 800" Stroke="Black" />
             <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64">
                 <Ellipse.RenderTransform>
                     <TranslateTransform X="4" Y="4"/>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="128" Stroke="Purple" StrokeThickness="8"/>
-            <Ellipse Width="512" Height="512" Canvas.Left="704" Canvas.Top="824" Stroke="Purple" StrokeThickness="8"/>
+            <Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>
+            <Rectangle Width="1920" Height="256" Canvas.Left="0" Canvas.Top="824" Stroke="Purple" StrokeThickness="8"/>
+            <local:Dot x:Name="CP1Dot" Center="256,640" Stroke="Black" Fill="Transparent" Radius="256"/>
+            <local:Dot x:Name="CP2Dot" Center="960,448" Stroke="Black" Fill="Transparent" Radius="256"/>
+            <local:Dot x:Name="EndDot" Center="1664,640" Stroke="Black" Fill="Transparent" Radius="256"/>
+
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>
