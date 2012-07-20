@@ -99,7 +99,9 @@ namespace WpfTest
             knotPoints = new Dictionary<TouchDevice, IDot>();
             userDots = new List<IDot>();
             refDots = new List<IDot>();
+#if TRACKER
             Loaded += new RoutedEventHandler(SplineTask_Loaded);
+#endif
             TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
             TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);

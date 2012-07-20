@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="http://schemas.microsoft.com/surface/2008"
                  xmlns:local="clr-namespace:WpfTest"
-                  Height="600" Width="800"
-    Title="WpfTest">
+                  Height="1080" Width="1920"
+    Title="WpfTest" ResizeMode="NoResize" WindowStyle="None">
     <DockPanel LastChildFill="True">
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
@@ -24,11 +24,13 @@
                 <TranslateTransform X="4" Y="4"/>
             </Ellipse.RenderTransform>
         </Ellipse>
-            <Ellipse x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64">
-            <Ellipse.RenderTransform>
+            <Rectangle x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64">
+                <Rectangle.RenderTransform>
                 <TranslateTransform X="4" Y="4"/>
-            </Ellipse.RenderTransform>
-        </Ellipse>
+                </Rectangle.RenderTransform>
+        </Rectangle>
+            <TextBlock x:Name="Score" Canvas.Left="800" Canvas.Top="8" FontSize="64" Text="Score: 0000" Foreground="Black"/>
+            <TextBlock x:Name="Clock" Canvas.Left="1630" Canvas.Top="920" FontSize="64" Text="000.0000" Foreground="Black"/>
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>

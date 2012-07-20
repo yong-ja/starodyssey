@@ -45,7 +45,9 @@ namespace WpfTest
             gazeRadius = (int)CrossHair.Width / 2;
            
             touchPoints = new Dictionary<TouchDevice, Point>();
+#if TRACKER
             Loaded += new RoutedEventHandler(GameTask_Loaded);
+#endif
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
@@ -59,7 +61,7 @@ namespace WpfTest
         void NewSession()
         {
             int radius = 32;
-            int maxDistance = 256;
+            int maxDistance = 512;
             Indicator.Fill = Brushes.Red;
 
             if (targets != null && targets.Count > 0)
@@ -69,8 +71,7 @@ namespace WpfTest
                 targets.Clear();
             }
 
-            Point center = GeoHelper.ChooseRandomPointOnCircle(new Point(960, 540), 256);
-            Point[] points = GeoHelper.ChooseTrianglePoints(center, maxDistance, radius);
+            Point[] points = GeoHelper.ChooseTrianglePoints(new Point(960, 540), maxDistance, radius);
             Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center=points[0]};
             Dot target2 = new Dot() { Fill = Brushes.Blue, Radius = radius, Center = points[1]};
             Dot target3 = new Dot() { Fill = Brushes.Green, Radius = radius, Center =points[2]};

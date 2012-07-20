@@ -120,9 +120,11 @@ namespace WpfTest
             rp.Add(bConnect);
             rp.Add(bTracking);
             rp.Add(bNew);
+#if TRACKER
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
             tracker.SetWindow(Global.Window);
+#endif
             bConnect.TouchUp += (sender, e) =>
             {
                 rp.SetTracker(tracker);
