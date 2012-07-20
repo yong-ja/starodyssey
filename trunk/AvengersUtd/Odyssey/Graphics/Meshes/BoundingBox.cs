@@ -12,7 +12,7 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
 {
     public class BoundingBox : MeshGroup, IBox
     {
-        public const float DefaultThickness = 0.05f;
+        public const float DefaultThickness = 0.01f;
 
         public float Width { get; private set; }
         public float Height { get; private set; }
