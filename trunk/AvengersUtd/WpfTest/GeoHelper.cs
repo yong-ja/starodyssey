@@ -26,7 +26,7 @@ namespace WpfTest
         }
 
 
-        public static Point ChooseRandomPointOnCircle(Point center, int radius)
+        public static Point ChooseRandomPointOnCircle(Point center, int radius, bool doTest=true)
         {
             bool test = false;
             double x = 0, y = 0;
@@ -36,7 +36,9 @@ namespace WpfTest
                 x = center.X + (radius * Math.Cos(t * Math.PI));
                 y = center.Y + (radius * Math.Sin(t * Math.PI));
                 Vector2D p = new Vector2D(x, y);
-                test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
+                if (doTest)
+                    test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
+                else test = true;
             }
 
             return new Point(x, y);
@@ -70,10 +72,10 @@ namespace WpfTest
             x = center.X + (radius * Math.Cos(t));
             y = center.Y + (radius * Math.Sin(t));
             Vector2D p = new Vector2D(x, y);
-            test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
+            //test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
             
-            if (!test)
-                return new Point(-1, -1);
+            //if (!test)
+            //    return new Point(-1, -1);
             return new Point(x, y);
         }
 
@@ -107,26 +109,43 @@ namespace WpfTest
         public static Point[] ChooseTrianglePoints(Point center, int radius, int circleRadius)
         {
             Point[] points = new Point[3];
-            points[0] = ChooseRandomPointInsideCircle(center, radius);
+            points[0] = ChooseRandomPointInsideCircle(center, radius/4);
             bool test = false;
             while (!test)
             {
-                points[1] = ChooseRandomPointInsideCircle(center, radius);
+                points[1] = ChooseRandomPointOnCircle(points[0], radius, false);
                 if (CircleTest(points[0], points[1], (double)circleRadius, (double)circleRadius))
                     continue;
-                test = true;
+                if (points[1].X < points[0].X && points[1].Y >= 256 && points[1].Y <= 840)
+                    test = true;
             }
             test = false;
             while (!test)
             {
-                points[2] = ChooseRandomPointInsideCircle(center, radius);
+                points[2] = ChooseRandomPointOnCircle(points[0], radius, false);
                 if (CircleTest(points[0], points[2], (double)circleRadius, (double)circleRadius) ||
                     CircleTest(points[1], points[2], (double)circleRadius, (double)circleRadius))
                     continue;
-                test = true;
+                if (points[2].X > points[0].X && points[2].Y >= 256 && points[2].Y <= 840)
+                    test = true;
             }
             return points;
         }
+
+        //public static Point[] ChooseTrianglePoints(Point center, int radius, int circleRadius)
+        //{
+        //    Point[] points = new Point[3];
+        //    double initialAngle = rand.NextDouble() * 2 * Math.PI;
+        //    points[0] = ChoosePointOnCircle(center, radius, initialAngle);
+        //    points[1] = ChoosePointOnCircle(center, radius, initialAngle + 2 * Math.PI * 1 / 3);
+        //    points[2] = ChoosePointOnCircle(center, radius, initialAngle + 2 * Math.PI * 2 / 3);
+
+        //    points[0] = ChooseRandomPointOnCircle(points[0], radius/4);
+        //    points[1] = ChooseRandomPointOnCircle(points[1], radius/4);
+        //    points[2] = ChooseRandomPointOnCircle(points[2], radius/4);
+
+        //    return points;
+        //}
 
         private static bool CircleTest(Point c1, Point c2, double radius1, double radius2)
         {
