@@ -95,7 +95,7 @@ namespace WpfTest
 
         public bool IntersectsWith(Point p)
         {
-            return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), (float)Radius, new Vector2D(p.X, p.Y));
+            return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), 2*(float)Radius, new Vector2D(p.X, p.Y));
         }
     }
 

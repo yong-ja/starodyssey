@@ -28,9 +28,9 @@ namespace WpfTest
 
         void NewSession()
         {
-            float width = (float)rand.NextDouble() + 1.5f;
+            float width = (float)rand.NextDouble()*3 + 1.5f;
             float height = (float)rand.NextDouble() + 1.5f;
-            float depth = (float)rand.NextDouble() + 1.5f;
+            float depth = (float)rand.NextDouble()*3 + 1.5f;
             bbox = new BoundingBox(width, height, depth);
             //bbox = new BoundingBox(2.5f);
             bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
@@ -41,7 +41,7 @@ namespace WpfTest
         public override void Init()
         {
             rand = new Random();
-            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-3.5f, 2.5f, -3.5f));
+            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-4.5f, 3f, -4.5f));
 
             Box box = new Box(1, 1, 1);
              sWidget = new ScalingWidget(box);
@@ -104,6 +104,14 @@ namespace WpfTest
                 Position = new Vector2(1800, 40)
             };
 
+            Button bNew = new Button()
+            {
+                Size = new System.Drawing.Size(120, 30),
+                Content = "New Session",
+                Position = new Vector2(1800, 80)
+            };
+
+
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
@@ -111,6 +119,7 @@ namespace WpfTest
 
             rp.Add(bConnect);
             rp.Add(bTracking);
+            rp.Add(bNew);
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
             tracker.SetWindow(Global.Window);
@@ -120,6 +129,7 @@ namespace WpfTest
                 tracker.Connect();
             };
             bTracking.TouchUp += (sender, e) => { tracker.StartTracking(); };
+            bNew.TouchUp += (sender, e) => { Game.ChangeRenderer(new BoxRenderer(Game.Context)); };
 
 
             Game.Logger.Activate();

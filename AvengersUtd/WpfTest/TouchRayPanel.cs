@@ -252,7 +252,7 @@ namespace WpfTest
         void MoveArrow(Vector2 location, IRenderable arrow)
         {
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
-            const float minSize = 0.25f;
+            const float minSize = 1f;
             const float maxSizeY = 2.5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;

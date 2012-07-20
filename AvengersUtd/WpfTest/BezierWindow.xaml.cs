@@ -74,7 +74,7 @@ namespace WpfTest
 
             int radius = 256;
 
-            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(256, 540);;
+            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(1920, 1080);;
             RefCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(EndDot.Center, radius, false);
             RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(CP1Dot.Center, radius, false);
             RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(CP2Dot.Center, radius,true);

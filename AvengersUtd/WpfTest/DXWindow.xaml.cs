@@ -135,6 +135,8 @@ namespace WpfTest
             Game.ChangeRenderer(scene);
             BeginRenderingScene();
 
+            WindowStyle = System.Windows.WindowStyle.None;
+
         }
 
         void Window_Closing(object sender, CancelEventArgs e)
