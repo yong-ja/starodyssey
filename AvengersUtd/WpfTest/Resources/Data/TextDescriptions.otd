@@ -16,4 +16,15 @@
   <TextDescription Name="Error" IsBold="false" IsItalic="false" ApplyShadowing="false" ApplyHighlight="false" Size="20" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
     <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
   </TextDescription>
+  <TextDescription Name="Huge" IsBold="false" IsItalic="false" 
+                   ApplyShadowing="true" ApplyHighlight="false" Size="512" 
+                   FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFFFFFF" />
+  </TextDescription>
+
+  <TextDescription Name="Large" IsBold="false" IsItalic="false"
+                 ApplyShadowing="true" ApplyHighlight="false" Size="92"
+                 FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
+  </TextDescription>
 </ArrayOfTextDescription>

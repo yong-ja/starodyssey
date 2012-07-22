@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,9 +27,28 @@ namespace WpfTest
     public partial class GameTask : SurfaceWindow
     {
         int gazeRadius;
+        private Timer clock;
+        private Stopwatch stopwatch;
+        private TextBlock tComplete;
         Dictionary<TouchDevice, Point> touchPoints;
         List<Dot> targets;
         TrackerWrapper tracker;
+
+        // Radii 8, 64, 128
+        // Distances 256, 512, 768
+
+        private readonly List<float[]> conditions = new List<float[]>
+                                           {
+                                               new[] {8f,   256f},
+                                               new[] {8f,   512f},
+                                               new[] {8f,   768f},
+                                               new[] {64f,  256f},
+                                               new[] {64f,  512f},
+                                               new[] {64f,  768f},
+                                               new[] {128f, 256f},
+                                               new[] {128f, 512f},
+                                               new[] {128f, 768f}
+                                           };
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -40,8 +61,20 @@ namespace WpfTest
             Init();
         }
 
+        private static int index;
+
         void Init()
         {
+            clock = new Timer() {Interval = 100};
+            stopwatch = new Stopwatch();
+            clock.Elapsed += new ElapsedEventHandler(clock_Elapsed);
+            tComplete = new TextBlock
+            {
+                FontSize = 128,
+                Foreground = Brushes.Black,
+                Text = "Session complete!",
+                RenderTransform = new TranslateTransform() { X = 500, Y = 300 }
+            };
             gazeRadius = (int)CrossHair.Width / 2;
            
             touchPoints = new Dictionary<TouchDevice, Point>();
@@ -51,17 +84,69 @@ namespace WpfTest
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
-            bConnect.Click += (sender, e) => { tracker.Connect(); };
-            bStart.Click += (sender, e) => { tracker.StartTracking(); };
-            bNew.Click += (sender, e) => { NewSession(); };
+            bConnect.Click += (sender, e) => tracker.Connect();
+            bStart.Click += (sender, e) => tracker.StartTracking();
+            bNew.Click += delegate
+                          {
+                              CountDownWpf countdownTimer = new CountDownWpf();
+                              countdownTimer.Elapsed += delegate
+                                                        {
+                                                            Dispatcher.BeginInvoke(new Action(delegate
+                                                                                              {
+                                                                                                  ToggleButtons();
+                                                                                                  NewSession();
+                                                                                                  Canvas.Children.Remove(
+                                                                                                      countdownTimer);
+                                                                                                  countdownTimer.Reset();
+                                                                                                  clock.Start();
+                                                                                                  stopwatch.Start();
+                                                                                              }
+                                                                                       ));
+
+                                                        };
+                              Canvas.Children.Add(countdownTimer);
+                              countdownTimer.Start();
+                              if (Canvas.Children.Contains(tComplete))
+                                Canvas.Children.Remove(tComplete);
+
+                          };
+            Indicator.MouseUp += (sender, e) => CompleteSession();
 
             NewSession();
         }
 
+        void CompleteSession()
+        {
+            clock.Stop();
+            stopwatch.Stop();
+            ToggleButtons();
+            stopwatch.Reset();
+            Canvas.Children.Add(tComplete);
+        }
+
+        void clock_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(delegate
+                                              {
+                                                  ClockLabel.Text =
+                                                      string.Format("{0:000}.{1}", stopwatch.ElapsedMilliseconds/1000,
+                                                                    stopwatch.ElapsedMilliseconds%1000);
+                                              }));
+        }
+
+        void ToggleButtons()
+        {
+            bConnect.Visibility = bConnect.IsVisible ? Visibility.Hidden: Visibility.Visible;
+            bStart.Visibility = bStart.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            bNew.Visibility = bNew.IsVisible ? Visibility.Hidden : Visibility.Visible;
+        }
+
         void NewSession()
         {
-            int radius = 32;
-            int maxDistance = 512;
+            if (index == conditions.Count)
+                return;
+            float radius = conditions[index][0];
+            float maxDistance = conditions[index][1];
             Indicator.Fill = Brushes.Red;
 
             if (targets != null && targets.Count > 0)
@@ -80,6 +165,8 @@ namespace WpfTest
             Canvas.Children.Add(target1);
             Canvas.Children.Add(target2);
             Canvas.Children.Add(target3);
+
+            index++;
         }
 
         void Canvas_LostTouchCapture(object sender, TouchEventArgs e)
@@ -155,7 +242,9 @@ namespace WpfTest
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
+#if TRACKER
             tracker.DisconnectTracker();
+#endif
         }
 
         /// <summary>

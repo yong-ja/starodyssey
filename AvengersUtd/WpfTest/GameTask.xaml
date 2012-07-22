@@ -29,8 +29,7 @@
                 <TranslateTransform X="4" Y="4"/>
                 </Rectangle.RenderTransform>
         </Rectangle>
-            <TextBlock x:Name="Score" Canvas.Left="800" Canvas.Top="8" FontSize="64" Text="Score: 0000" Foreground="Black"/>
-            <TextBlock x:Name="Clock" Canvas.Left="1630" Canvas.Top="920" FontSize="64" Text="000.0000" Foreground="Black"/>
+            <TextBlock x:Name="ClockLabel" Canvas.Left="1650" Canvas.Top="920" FontSize="64" Text="000.0" Foreground="Black"/>
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>

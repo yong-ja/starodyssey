@@ -29,11 +29,12 @@
                     <TranslateTransform X="4" Y="4"/>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>
-            <Rectangle Width="1920" Height="256" Canvas.Left="0" Canvas.Top="824" Stroke="Purple" StrokeThickness="8"/>
-            <local:Dot x:Name="CP1Dot" Center="256,640" Stroke="Black" Fill="Transparent" Radius="256"/>
-            <local:Dot x:Name="CP2Dot" Center="960,448" Stroke="Black" Fill="Transparent" Radius="256"/>
-            <local:Dot x:Name="EndDot" Center="1664,640" Stroke="Black" Fill="Transparent" Radius="256"/>
+            <!--<Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>
+            <Rectangle Width="1920" Height="256" Canvas.Left="0" Canvas.Top="824" Stroke="Purple" StrokeThickness="8"/>-->
+            <local:Dot x:Name="LeftDot" Center="256,640" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
+            <local:Dot x:Name="MiddleDot" Center="960,448" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
+            <local:Dot x:Name="RightDot" Center="1664,640" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
+            <Button x:Name="bStop" Canvas.Left="0" Canvas.Top="952" FontSize="32" Content="Stop" Height="128" Width="256"/>
 
         </Canvas>
     </DockPanel>

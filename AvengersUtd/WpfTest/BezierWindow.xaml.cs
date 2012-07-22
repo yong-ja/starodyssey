@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,18 +31,46 @@ namespace WpfTest
         Dictionary<TouchDevice, IDot> knotPoints;
         List<IDot> userDots;
         List<IDot> refDots;
+        private Stopwatch stopwatch;
+        private TextBlock tComplete;
         
         const double radiusSize = 4 * Dot.DefaultRadius;
         Point prevEyeLocation;
         int gazeRadius;
-        int session;
-        bool gazeUpdate;
+        int index;
         Marker endPoint;
         TrackerWrapper tracker;
-        Random rand;
-        int x, y;
-        AvengersUtd.Odyssey.Geometry.Ellipse outerEllipse;
+
         Circle innerCircle;
+
+        private List<int[]> conditions = new List<int[]>
+                                           {
+                                               // minDistance, cpRotation, dotsOnOff
+                                               new[] {128, 0, 0 },
+                                               new[] {128, 1, 0 },
+                                               new[] {128, 2, 0 },
+                                               new[] {128, 3, 0 },
+                                               new[] {128, 4, 0 },
+                                               new[] {128, 5, 0 },
+                                               new[] {128, 0, 1 },
+                                               new[] {128, 1, 1 },
+                                               new[] {128, 2, 1 },
+                                               new[] {128, 3, 1 },
+                                               new[] {128, 4, 1 },
+                                               new[] {128, 5, 1 },
+                                               new[] {256, 0, 0 },
+                                               new[] {256, 1, 0 },
+                                               new[] {256, 2, 0 },
+                                               new[] {256, 3, 0 },
+                                               new[] {256, 4, 0 },
+                                               new[] {256, 5, 0 },
+                                               new[] {256, 0, 1 },
+                                               new[] {256, 1, 1 },
+                                               new[] {256, 2, 1 },
+                                               new[] {256, 3, 1 },
+                                               new[] {256, 4, 1 },
+                                               new[] {256, 5, 1 },
+                                           };
 
         /// <summary>
         /// Default constructor.
@@ -59,6 +89,9 @@ namespace WpfTest
 
         void NewSession()
         {
+            if (index == conditions.Count)
+                return;
+
             foreach (IDot dot in userDots)
                 if (Canvas.Children.Contains((UIElement)dot))
                     Canvas.Children.Remove((UIElement)dot);
@@ -71,27 +104,86 @@ namespace WpfTest
 
             if (this.endPoint != null)
                 Canvas.Children.Remove(this.endPoint);
+            int[] condition = conditions[index];
+            int radius = condition[0];
 
-            int radius = 256;
-
-            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(1920, 1080);;
-            RefCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(EndDot.Center, radius, false);
-            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(CP1Dot.Center, radius, false);
-            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(CP2Dot.Center, radius,true);
-
-            UserCurve.StartPoint = RefCurve.StartPoint;
-            UserCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(EndDot.Center, radius, false);
-            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(CP1Dot.Center, radius, false);
-            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(CP2Dot.Center, radius, true);
+            AssignDots(condition[1], radius);
 
             ShowUserDots();
 
+            if (condition[2] == 0)
+                ShowRefDots();
+
+            index++;
+
         }
 
+
+        void AssignDots(int condition, float radius)
+        {
+            Point cp1= new Point(), cp2= new Point(), cp3= new Point();
+            bool cp1DoTest = false, cp2DoTest = false, cp3DoTest = false;
+            switch (condition)
+            {
+                case 0:
+                    cp1 = LeftDot.Center;
+                    cp2 = MiddleDot.Center;
+                    cp3 = RightDot.Center;
+                    cp2DoTest = true;
+                    break;
+                case 1:
+                    cp1 = LeftDot.Center;
+                    cp2 = RightDot.Center;
+                    cp3 = MiddleDot.Center;
+                    cp3DoTest = true;
+                    break;
+                case 2:
+                    cp1 = MiddleDot.Center;
+                    cp2 = LeftDot.Center;
+                    cp3 = RightDot.Center;
+                    cp1DoTest = true;
+                    break;
+                case 3:
+                    cp1 = MiddleDot.Center;
+                    cp1DoTest = true;
+                    cp2 = RightDot.Center;
+                    cp3 = LeftDot.Center;
+                    break;
+                case 4:
+                    cp1 = RightDot.Center;
+                    cp2 = MiddleDot.Center;
+                    cp3 = LeftDot.Center;
+                    cp2DoTest = true;
+                    break;
+                case 5:
+                    cp1 = RightDot.Center;
+                    cp2 = LeftDot.Center;
+                    cp3 = MiddleDot.Center;
+                    cp3DoTest = true;
+                    break;
+            }
+            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(1920, 952); ;
+            RefCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(cp3, radius, cp3DoTest);
+            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(cp1, radius, cp1DoTest);
+            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(cp2, radius, cp2DoTest);
+
+            UserCurve.StartPoint = RefCurve.StartPoint;
+            UserCurve.EndPoint = GeoHelper.ChooseRandomPointOnCircle(RefCurve.EndPoint, radius, cp3DoTest);
+            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(RefCurve.ControlPoint1, radius, cp1DoTest);
+            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(RefCurve.ControlPoint2, radius, cp2DoTest);
+        }
         
 
         void Init()
         {
+            stopwatch = new Stopwatch();
+            tComplete = new TextBlock
+            {
+                FontSize = 128,
+                Foreground = Brushes.Black,
+                Text = "Session complete!",
+                RenderTransform = new TranslateTransform() { X = 500, Y = 300 }
+            };
             gazeRadius =(int)( CrossHair.Width / 2);
 
             bool test = Intersection.CirclePointTest(innerCircle, new Vector2D(960, 820));
@@ -102,24 +194,60 @@ namespace WpfTest
 #if TRACKER
             Loaded += new RoutedEventHandler(SplineTask_Loaded);
 #endif
-            TouchDown += new EventHandler<TouchEventArgs>(ellipse_TouchDown);
-            TouchMove += new EventHandler<TouchEventArgs>(ellipse_TouchMove);
-            LostTouchCapture += new EventHandler<TouchEventArgs>(ellipse_LostTouchCapture);
+            TouchDown += ellipse_TouchDown;
+            TouchMove += ellipse_TouchMove;
+            LostTouchCapture += ellipse_LostTouchCapture;
 
-            bConnect.TouchUp += (sender, e) => {tracker.Connect();};
-            bStart.TouchUp += (sender, e) => { tracker.StartTracking(); };
-            bNew.Click += (sender, e) => { NewSession(); };
-            bDots.TouchUp += (sender, e) => { ShowRefDots(); };
-            
+            bConnect.TouchUp += (sender, e) => tracker.Connect();
+            bStart.TouchUp += (sender, e) => tracker.StartTracking();
+            bDots.Click += (sender, e) => ShowRefDots();
+            bNew.Click += delegate
+            {
+                CountDownWpf countdownTimer = new CountDownWpf();
+                countdownTimer.Elapsed += delegate
+                {
+                    Dispatcher.BeginInvoke(new Action(delegate
+                    {
+                        ToggleButtons();
+                        NewSession();
+                        Canvas.Children.Remove(
+                            countdownTimer);
+                        countdownTimer.Reset();
+                        stopwatch.Start();
+                    }
+                                               ));
 
-            //Ellipse ellipseRadius = new System.Windows.Shapes.Ellipse()
-            //{
-            //    Width = 2 * radiusSize,
-            //    Height = 2 * radiusSize,
-            //    Stroke = Brushes.Black,
-            //    RenderTransform = new TranslateTransform(8, 1070)
-            //};
-            //Canvas.Children.Add(ellipseRadius);
+                };
+                Canvas.Children.Add(countdownTimer);
+                countdownTimer.Start();
+                if (Canvas.Children.Contains(tComplete))
+                    Canvas.Children.Remove(tComplete);
+
+            };
+
+            //test
+            bStop.Click += delegate
+                           {
+                               if (stopwatch.IsRunning)
+                                   CompleteSession();
+                           };
+
+        }
+
+        void CompleteSession()
+        {
+            stopwatch.Stop();
+            ToggleButtons();
+            stopwatch.Reset();
+            Canvas.Children.Add(tComplete);
+        }
+
+        void ToggleButtons()
+        {
+            bConnect.Visibility = bConnect.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            bStart.Visibility = bStart.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            bNew.Visibility = bNew.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            bDots.Visibility = bDots.IsVisible ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void ShowUserDots()
@@ -173,21 +301,10 @@ namespace WpfTest
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
             prevEyeLocation = newLocation;
 
-            //Vector delta = Point.Subtract(newLocation, prevEyeLocation);
-            //if (delta.LengthSquared < 16 * 16 && gazeUpdate)
-            //{
-            //    LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Too close", e.GazePoint.X, e.GazePoint.Y));
-            //    return;
-            //}
-            //else gazeUpdate = false;
-
-            //if (!gazeUpdate)
-            //{
                 LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
                 userDots[eyeIndex - 1].Center = newLocation;
                 UserCurve.SetPoint(newLocation, eyeIndex);
-                gazeUpdate = true;
-            //}
+
 
         }
 
@@ -322,7 +439,9 @@ namespace WpfTest
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
+#if TRACKER
             tracker.DisconnectTracker();
+#endif
         }
 
         #region Surface Window Logic
