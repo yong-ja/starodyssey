@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Timers;
+using System.Windows.Documents;
 using AvengersUtd.Odyssey.Graphics.Rendering;
 using SlimDX;
 using AvengersUtd.Odyssey.Graphics.Meshes;
@@ -20,7 +23,47 @@ namespace WpfTest
         FixedNode fNodeBox;
         BoundingBox bbox;
         ScalingWidget sWidget;
-        Random rand;
+        private Label lCountDown;
+        private Timer clock;
+        private Stopwatch stopwatch;
+        private static int countdown = 3;
+        static int index;
+        private Button bConnect, bNew, bTracking;
+
+
+        private List<float[]> conditions = new List<float[]>
+                                               {
+                                                   new[] {2f, 2f, 2f},
+                                                   new[] {2f, 2f, 3.5f},
+                                                   new[] {2f, 2f, 5f},
+                                                   new[] {2f, 3.5f, 2f},
+                                                   new[] {2f, 3.5f, 3.5f},
+                                                   new[] {2f, 3.5f, 5f},
+                                                   new[] {2f, 5f, 2f},
+                                                   new[] {2f, 5f, 3.5f,},
+                                                   new[] {2f, 5f, 5f},
+
+                                                   new[] {3.5f, 2f, 2f},
+                                                   new[] {3.5f, 2f, 3.5f},
+                                                   new[] {3.5f, 2f, 5f},
+                                                   new[] {3.5f, 3.5f, 2f},
+                                                   new[] {3.5f, 3.5f, 3.5f},
+                                                   new[] {3.5f, 3.5f, 5f},
+                                                   new[] {3.5f, 5f, 2f},
+                                                   new[] {3.5f, 5f, 3.5f},
+                                                   new[] {3.5f, 5f, 5f},
+
+                                                   new[] {5f, 2f, 2f},
+                                                   new[] {5f, 2f, 3.5f},
+                                                   new[] {5f, 2f, 5f},
+                                                   new[] {5f, 3.5f, 2f},
+                                                   new[] {5f, 3.5f, 3.5f},
+                                                   new[] {5f, 3.5f, 5f},
+                                                   new[] {5f, 5f, 2f},
+                                                   new[] {5f, 5f, 3.5f},
+                                                   new[] {5f, 5f, 5f},
+
+                                               };
 
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
@@ -28,20 +71,63 @@ namespace WpfTest
 
         void NewSession()
         {
-            float width = (float)rand.NextDouble()*3 + 1.5f;
-            float height = (float)rand.NextDouble() + 1.5f;
-            float depth = (float)rand.NextDouble()*3 + 1.5f;
+
+            float[] sizes = conditions[index];
+            float width = sizes[0];
+            float height = sizes[1];
+            float depth = sizes[2];
             bbox = new BoundingBox(width, height, depth);
             //bbox = new BoundingBox(2.5f);
             bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
             sWidget.SetFrame(bbox);
             fNodeBox.Position = sWidget.GetBoxOffset();
+            index++;
         }
+
+
+
+
+        void StartNew()
+        {
+            clock.Stop();
+            
+            
+            Hud.BeginDesign();
+            //Hud.Controls.Remove(lCountDown);
+            bConnect.IsVisible = false;
+            bTracking.IsVisible = false;
+            bNew.IsVisible = false;
+            Hud.EndDesign();
+            stopwatch.Start();
+        }
+
+        private void Stop()
+        {
+            stopwatch.Stop();
+            bConnect.IsVisible = true;
+            bTracking.IsVisible = true;
+            bNew.IsVisible = true;
+            countdown = 3;
+        }
+
 
         public override void Init()
         {
-            rand = new Random();
-            Camera.LookAt(new Vector3(1,0, 1), new Vector3(-4.5f, 3f, -4.5f));
+            clock = new Timer() { Interval = 1000 };
+            stopwatch = new Stopwatch();
+            clock.Elapsed += delegate
+                             {
+
+                                 lCountDown.Content = (--countdown).ToString();
+                                 if (countdown == 0)
+                                 {
+                                     BoxRenderer boxR = new BoxRenderer(Game.Context);
+                                     Game.ChangeRenderer(boxR);
+                                     boxR.StartNew();
+                                     clock.Stop();
+                                 }
+                             };
+            Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
 
             Box box = new Box(1, 1, 1);
              sWidget = new ScalingWidget(box);
@@ -79,17 +165,17 @@ namespace WpfTest
                     multithreaded: true
                     ));
             OdysseyUI.CurrentHud = Hud;
-            Game.Logger.Init();
+            
             Hud.BeginDesign();
 
+            //Game.Logger.Init();
+            //Game.Logger.Log("Prova1");
+            //Game.Logger.Log("Prova2");
+            //Game.Logger.Log("Prova3");
+            //Game.Logger.Log("Prova4");
+            //Game.Logger.Log("Prova5");
 
-            Game.Logger.Log("Prova1");
-            Game.Logger.Log("Prova2");
-            Game.Logger.Log("Prova3");
-            Game.Logger.Log("Prova4");
-            Game.Logger.Log("Prova5");
-
-            Button bConnect = new Button()
+            bConnect = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
                 Content = "Connect",
@@ -97,20 +183,35 @@ namespace WpfTest
             };
 
 
-            Button bTracking = new Button()
+            bTracking = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
                 Content = "Start",
                 Position = new Vector2(1800, 40)
             };
 
-            Button bNew = new Button()
+            bNew = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
                 Content = "New Session",
                 Position = new Vector2(1800, 80)
             };
 
+            Button bStop = new Button()
+                           {
+                               Size = new System.Drawing.Size(256, 128),
+                               Content = "Stop",
+                               Position = new Vector2(0, 952),
+                               TextDescriptionClass="Large"
+                           };
+
+            lCountDown = new Label()
+                         {
+                             Content = "3",
+                             Position = new Vector2(800, 300),
+                             IsVisible = false,
+                             TextDescriptionClass = "Huge"
+                         };
 
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
@@ -120,6 +221,7 @@ namespace WpfTest
             rp.Add(bConnect);
             rp.Add(bTracking);
             rp.Add(bNew);
+            rp.Add(bStop);
 #if TRACKER
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
@@ -130,11 +232,23 @@ namespace WpfTest
                 rp.SetTracker(tracker);
                 tracker.Connect();
             };
-            bTracking.TouchUp += (sender, e) => { tracker.StartTracking(); };
-            bNew.TouchUp += (sender, e) => { Game.ChangeRenderer(new BoxRenderer(Game.Context)); };
+            bTracking.TouchUp += (sender, e) => tracker.StartTracking();
+            bStop.MouseClick += delegate
+                                {
+                                    if (stopwatch.IsRunning) 
+                                        Stop();
+                                };
+            bNew.MouseClick += delegate
+                               {
+                                   Hud.BeginDesign();
+                                   lCountDown.IsVisible = true;
+                                   Hud.Controls.Add(lCountDown);
+                                   Hud.EndDesign();
+                                   clock.Start();
+                               };
 
 
-            Game.Logger.Activate();
+            //Game.Logger.Activate();
             Hud.Init();
             Hud.EndDesign();
 
@@ -146,20 +260,22 @@ namespace WpfTest
 
         public override void Render()
         {
-            Game.Logger.Update();
+            //Game.Logger.Update();
             Scene.Display();
         }
 
         public override void ProcessInput()
         {
-            //Camera.UpdateStates();
-            Hud.ProcessKeyEvents();
+            ////Camera.UpdateStates();
+            //Hud.ProcessKeyEvents();
         }
 
         protected override void OnDisposing(object sender, System.EventArgs e)
         {
             base.OnDisposing(sender, e);
+#if TRACKER
             tracker.DisconnectTracker();
+#endif
         }
     }
 }

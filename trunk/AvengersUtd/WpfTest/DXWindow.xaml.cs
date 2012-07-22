@@ -183,5 +183,21 @@ namespace WpfTest
         {
             CompositionTarget.Rendering -= OnRendering;
         }
+
+        private bool _inStateChange;
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == WindowState.Maximized && !_inStateChange)
+            {
+                _inStateChange = true;
+                WindowState = WindowState.Normal;
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
+                ResizeMode = ResizeMode.NoResize;
+                _inStateChange = false;
+            }
+            base.OnStateChanged(e);
+        }
     }
 }

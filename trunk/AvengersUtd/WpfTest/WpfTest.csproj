@@ -204,6 +204,9 @@
     <Compile Include="BezierWindow.xaml.cs">
       <DependentUpon>BezierWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CountDownWpf.xaml.cs">
+      <DependentUpon>CountDownWpf.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GeoHelper.cs" />
     <Compile Include="Marker.xaml.cs">
       <DependentUpon>Marker.xaml</DependentUpon>
@@ -249,6 +252,10 @@
     <Page Include="BezierWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CountDownWpf.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Marker.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -26,32 +26,35 @@ namespace WpfTest
         }
 
 
-        public static Point ChooseRandomPointOnCircle(Point center, int radius, bool doTest=true)
+        public static Point ChooseRandomPointOnCircle(Point center, float radius, bool doTest=true)
         {
             bool test = false;
             double x = 0, y = 0;
+            Vector2D p = Vector2D.Zero;
+
             while (!test)
             {
-                double t = rand.NextDouble() * 2;
-                x = center.X + (radius * Math.Cos(t * Math.PI));
-                y = center.Y + (radius * Math.Sin(t * Math.PI));
-                Vector2D p = new Vector2D(x, y);
+                double t = rand.NextDouble()*2;
+                x = center.X + (radius*Math.Cos(t*Math.PI));
+                y = center.Y + (radius*Math.Sin(t*Math.PI));
+                p = new Vector2D(x, y);
+
+                test = p.Y < (1080 - bottomOffset) && (p.X > 0 && p.X < 1920);
                 if (doTest)
-                    test = Intersection.EllipsePointTest(outerEllipse, p) && p.Y < (1080 - bottomOffset);
-                else test = true;
+                    test = test && Intersection.EllipsePointTest(outerEllipse, p);
             }
 
             return new Point(x, y);
         }
 
-        public static Point ChooseRandomPointInsideCircle(Point center, int radius, bool doTest=true)
+        public static Point ChooseRandomPointInsideCircle(Point center, float radius, bool doTest=true)
         {
             bool test = false;
             double x = 0, y = 0;
             while (!test)
             {
                 double t = rand.NextDouble() * 2;
-                double randomRadius = radius / 2 + rand.Next(radius / 2);
+                double randomRadius = radius / 2 + rand.Next((int)radius / 2);
                 x = center.X + (randomRadius * Math.Cos(t * Math.PI));
                 y = center.Y + (randomRadius * Math.Sin(t * Math.PI));
                 Vector2D p = new Vector2D(x, y);
@@ -106,7 +109,7 @@ namespace WpfTest
 
         }
 
-        public static Point[] ChooseTrianglePoints(Point center, int radius, int circleRadius)
+        public static Point[] ChooseTrianglePoints(Point center, float radius, float circleRadius)
         {
             Point[] points = new Point[3];
             points[0] = ChooseRandomPointInsideCircle(center, radius/4);
