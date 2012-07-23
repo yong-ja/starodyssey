@@ -25,6 +25,6 @@
   <TextDescription Name="Large" IsBold="false" IsItalic="false"
                  ApplyShadowing="true" ApplyHighlight="false" Size="92"
                  FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Top">
-    <StandardColor Type="Enabled" Name="White" HexValue="FFFF0000" />
+    <StandardColor Type="Enabled" Name="White" HexValue="FFFFFFFF" />
   </TextDescription>
 </ArrayOfTextDescription>

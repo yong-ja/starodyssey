@@ -73,7 +73,7 @@ namespace WpfTest
         {
             Label label = new Label
             {
-                Position = new Vector2(200, 300),
+                Position = new Vector2(400, 300),
                 TextDescriptionClass = "Large",
                 Content = "Session complete"
             };
@@ -127,9 +127,12 @@ namespace WpfTest
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
+                    if (gazeArrow.Lock)
+                        return;
                     gazeArrow.IsDwelling = true;
-                    sWidget.ResetColors();
-                    sWidget.Select(gazeArrow.Name, Color.Orange);
+                    //sWidget.ResetColors();
+                    if (!gazeArrow.IsSelected)
+                        sWidget.Select(gazeArrow.Name, Color.Orange);
                     dwellStart = DateTime.Now;
                     eyeArrow = gazeArrow;
                 }
@@ -140,14 +143,18 @@ namespace WpfTest
                     return;
                 IRenderable dwellCheckArrow= sWidget.FindIntersection2D(e.GazePoint);
 
-                if (dwellCheckArrow == eyeArrow && !((Arrow)dwellCheckArrow).IsSelected)
+                Arrow tempArrow = ((Arrow)dwellCheckArrow);
+                if (dwellCheckArrow == eyeArrow && !tempArrow.IsSelected)
                     {
                         EyeMoveArrow(e.GazePoint);
-                        sWidget.Select(dwellCheckArrow.Name, Color.Red);
+                        if (!tempArrow.Lock)
+                            sWidget.SetColor(tempArrow, Color.Red);
+                        else sWidget.SetColor(tempArrow, Color.Green);
+                   
                     }
                 else {
                     //sWidget.ResetColors();
-                    ((Arrow)eyeArrow).IsDwelling = false;
+                       ((Arrow)eyeArrow).IsDwelling = false;
                     eyeArrow = null;
                 }
             }
@@ -269,11 +276,13 @@ namespace WpfTest
 
             if (test)
             {
-                ((Arrow)result).IsSelected = false;
-                sWidget.Select(result.Name, Color.Yellow);
-                LogEvent.UserInterface.Write("Deselected " + result.Name);
+                Arrow tempArrow = (Arrow)result;
+                tempArrow.IsSelected = false;
+               
+                if (!tempArrow.Lock)
+                    sWidget.SetColor(tempArrow, Color.Yellow);
+                
             }
-            //LogEvent.UserInterface.Write("TouchUp " + e.TouchDevice.Id);
 
         }
 
@@ -301,10 +310,9 @@ namespace WpfTest
                     if (test)
                     {
                         delta = pIntersection.Y - (box.AbsolutePosition.Y + box.ScalingValues.Y / 2);
-                        if (yLock && delta < 2 * snapRange)
+                        if (yLock)
                             return;
 
-                        yLock = false;
                         box.ScalingValues += new Vector3(0, delta, 0);
                         float axisOffset = sWidget.GetBoxOffset().Y;
                         if (box.ScalingValues.Y < minSize)
@@ -322,9 +330,13 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, frame.Height, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                             yLock = true;
-                            sWidget.Select("YArrow", Color.Green);
+                            Arrow yArrow = sWidget.SelectByName("YArrow");
+                            sWidget.SetColor(yArrow, Color.Green);
+                            yArrow.Lock = true;
                             if (eyeMove)
+                            {
                                 eyeArrow = null;
+                            }
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, -axisOffset + pIntersection.Y, fNode.Position.Z);
@@ -341,10 +353,8 @@ namespace WpfTest
                             pIntersection.X - (box.AbsolutePosition.X + box.ScalingValues.X / 2);
                         delta = Math.Min(minSize, delta);
 
-                        if (xLock && delta < 2 * snapRange)
+                        if (xLock)
                             return;
-
-                        xLock = false;
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         float axisOffset = sWidget.GetBoxOffset().X;
@@ -363,11 +373,13 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(frame.Width, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                             xLock = true;
-                            sWidget.Select("XArrow", Color.Green);
-
+                            Arrow xArrow = sWidget.SelectByName("XArrow");
+                            sWidget.SetColor(xArrow, Color.Green);
+                            xArrow.Lock = true;
                             if (eyeMove)
+                            {
                                 eyeArrow = null;
-
+                            }
                         }
                         else
                         {
@@ -393,7 +405,7 @@ namespace WpfTest
                         delta = pIntersection.Z - (box.AbsolutePosition.Z + box.ScalingValues.Z / 2);
                         delta = Math.Min(minSize, delta);
 
-                        if (zLock && delta < 2 * snapRange)
+                        if (zLock)
                             return;
 
                         zLock = false;
@@ -415,10 +427,13 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, frame.Depth);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                             zLock = true;
-                            sWidget.Select("ZArrow", Color.Green);
-
+                            Arrow zArrow = sWidget.SelectByName("ZArrow");
+                            sWidget.SetColor(zArrow, Color.Green);
+                            zArrow.Lock = true;
                             if (eyeMove)
+                            {
                                 eyeArrow = null;
+                            }
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z - axisOffset);

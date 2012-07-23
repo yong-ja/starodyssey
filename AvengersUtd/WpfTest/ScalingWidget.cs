@@ -187,6 +187,13 @@ namespace WpfTest
                     ((IColorMaterial)rObject.Material).DiffuseColor = color;
         }
 
+        public void SetColor(Arrow arrow, Color color)
+        {
+            if (arrow != null)
+                foreach (IRenderable rObject in arrow.Objects)
+                    ((IColorMaterial)rObject.Material).DiffuseColor = color;
+        }
+
 
         public Vector3 GetBoxOffset()
         {
