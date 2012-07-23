@@ -110,7 +110,7 @@ namespace WpfTest
             //Hud.Controls.Remove(lCountDown);
             //bConnect.IsVisible = false;
             //bTracking.IsVisible = false;
-            bNew.IsVisible = false;
+            bNew.Position = new Vector2(1930, 1090);
             Hud.EndDesign();
             rp.SetTracker(tracker);
             rp.Reset();
@@ -126,8 +126,8 @@ namespace WpfTest
             stopwatch.Stop();
             //bConnect.IsVisible = true;
             //bTracking.IsVisible = true;
-            bNew.IsVisible = true;
             countdown = 3;
+            bNew.Position=new Vector2(1760, 0);
             TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
        }
 
