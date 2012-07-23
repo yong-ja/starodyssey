@@ -456,5 +456,12 @@ namespace WpfTest
             this.box = box;
         }
 
+        public void Reset()
+        {
+            eyeArrow = null;
+            xLock = yLock = zLock = false;
+            gazeOn = false;
+        }
+
     }
 }
