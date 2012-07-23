@@ -73,6 +73,7 @@ namespace WpfTest
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
             tracker.SetWindow(Global.Window);
+            tracker.Completed+= (sender, e) => Stop();
 #endif
         }
 
