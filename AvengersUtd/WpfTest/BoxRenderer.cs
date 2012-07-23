@@ -90,9 +90,6 @@ namespace WpfTest
 
         void StartNew()
         {
-            clock.Stop();
-            
-            
             Hud.BeginDesign();
             //Hud.Controls.Remove(lCountDown);
             bConnect.IsVisible = false;
@@ -123,8 +120,8 @@ namespace WpfTest
                                  if (countdown == 0)
                                  {
                                      BoxRenderer boxR = new BoxRenderer(Game.Context);
-                                     Game.ChangeRenderer(boxR);
-                                     boxR.StartNew();
+                                     Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR);boxR.StartNew(); }));
+                                     
                                      clock.Stop();
                                  }
                              };
@@ -230,12 +227,12 @@ namespace WpfTest
             tracker.StartBrowsing();
             tracker.SetWindow(Global.Window);
 #endif
-            bConnect.TouchUp += (sender, e) =>
+            bConnect.MouseClick += (sender, e) =>
             {
                 rp.SetTracker(tracker);
                 tracker.Connect();
             };
-            bTracking.TouchUp += (sender, e) => tracker.StartTracking();
+            bTracking.MouseClick += (sender, e) => tracker.StartTracking();
             bStop.MouseClick += delegate
                                 {
                                     if (stopwatch.IsRunning) 
