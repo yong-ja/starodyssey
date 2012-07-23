@@ -171,7 +171,7 @@ namespace WpfTest
                             sWidget.SetColor(tempArrow, Color.Red);
                             if (!tempArrow.GazeLock)
                             {
-                                TrackerEvent.ArrowMoveStart.Log(eyeArrow.Name);
+                                TrackerEvent.ArrowMoveStart.Log(tempArrow.Name);
                                 tempArrow.GazeLock = true;
                             }
                         }
