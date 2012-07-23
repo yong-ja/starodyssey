@@ -153,7 +153,7 @@ namespace WpfTest
                 TimeSpan delta = DateTime.Now.Subtract(dwellStart);
                 IRenderable dwellCheckArrow = sWidget.FindIntersection2D(e.GazePoint);
                 TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + 
-                    ((dwellCheckArrow != null) ? "Screen" : dwellCheckArrow.Name));
+                    ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
                 if (delta.TotalMilliseconds < dwellInterval)
                     return;
 
