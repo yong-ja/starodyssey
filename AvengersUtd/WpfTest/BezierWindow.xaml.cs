@@ -114,7 +114,10 @@ namespace WpfTest
             if (condition[2] == 0)
                 ShowRefDots();
 
+            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1]);
             index++;
+
+            
 
         }
 
@@ -238,8 +241,10 @@ namespace WpfTest
         {
             stopwatch.Stop();
             ToggleButtons();
+            TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
             Canvas.Children.Add(tComplete);
+
         }
 
         void ToggleButtons()
@@ -341,14 +346,14 @@ namespace WpfTest
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
             knotPoints.Remove(e.TouchDevice);
-            LogEvent.Engine.Write(string.Format("TouchDown [{0}]", e.TouchDevice.Id));
+            TrackerEvent.Touch.Log(index, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
         }
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
         {
+            TrackerEvent.Touch.Log(index, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             if (!knotPoints.ContainsKey(e.TouchDevice))
             {
-                LogEvent.Engine.Write("TouchMove - No intersection");
                 return;
             }
             IDot dot = knotPoints[e.TouchDevice];
@@ -384,8 +389,7 @@ namespace WpfTest
             TouchDevice touchDevice = e.TouchDevice;
             Point location = e.GetTouchPoint(this).Position;
             IDot dot = FindKnotPoint(location);
-            LogEvent.Engine.Write(string.Format("TouchDown [{0}] {1}", e.TouchDevice.Id,
-                dot == null ? "No intersection" : "Found dot #" + (int)dot.Tag));
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
 
             if (dot == null)
                 return;
@@ -436,6 +440,9 @@ namespace WpfTest
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            foreach (TraceListener tl in System.Diagnostics.Trace.Listeners)
+                tl.Dispose();
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();
