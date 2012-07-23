@@ -118,42 +118,57 @@ namespace WpfTest
             if (!gazeOn)
                 return;
 
-
             if (eyeArrow == null)
             {
                 IRenderable tempArrow= sWidget.FindIntersection2D(e.GazePoint);
                 if (tempArrow == null)
+                {
+                    // Session Id, gpX, gpY, valL, valR, GazeOn
+                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeScreen");
                     return;
+                }
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
                     if (gazeArrow.Lock)
+                    {
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeLock"+ gazeArrow.Name);
                         return;
+                    }
                     gazeArrow.IsDwelling = true;
                     //sWidget.ResetColors();
                     if (!gazeArrow.IsSelected)
+                    {
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + gazeArrow.Name);
                         sWidget.Select(gazeArrow.Name, Color.Orange);
+                    }
+                    else
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwellSelected" + gazeArrow.Name);
+
                     dwellStart = DateTime.Now;
                     eyeArrow = gazeArrow;
                 }
             }
             else {
                 TimeSpan delta = DateTime.Now.Subtract(dwellStart);
+                IRenderable dwellCheckArrow = sWidget.FindIntersection2D(e.GazePoint);
+                TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + 
+                    ((dwellCheckArrow != null) ? "Screen" : dwellCheckArrow.Name));
                 if (delta.TotalMilliseconds < dwellInterval)
                     return;
-                IRenderable dwellCheckArrow= sWidget.FindIntersection2D(e.GazePoint);
 
                 Arrow tempArrow = ((Arrow)dwellCheckArrow);
                 if (dwellCheckArrow == eyeArrow && !tempArrow.IsSelected)
                     {
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeMove" + eyeArrow.Name);
                         EyeMoveArrow(e.GazePoint);
                         if (!tempArrow.Lock)
                             sWidget.SetColor(tempArrow, Color.Red);
                         else sWidget.SetColor(tempArrow, Color.Green);
-                   
                     }
                 else {
                     //sWidget.ResetColors();
+                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwellFailed");
                        ((Arrow)eyeArrow).IsDwelling = false;
                     eyeArrow = null;
                 }
@@ -178,11 +193,11 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
-                //LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
+                // Session Id, gpX, gpY, valL, valR, GazeOn
+                
             }
             else
             {
-                LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
                 eyeArrow = null;
             }
 
@@ -196,6 +211,8 @@ namespace WpfTest
 
             IRenderable result;
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
+            // Session Id, tpX, tpY, tdId, eventType
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchDown");
 
             if (test)
             {
@@ -205,10 +222,7 @@ namespace WpfTest
                 arrow.IsSelected = true;
                 if (arrows.Count == 2)
                     gazeOn = true;
-                //LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
             }
-            else
-                LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " No intersection");
 
         }
 
@@ -272,6 +286,7 @@ namespace WpfTest
             arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
             IRenderable result;
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
             if (test)
@@ -335,8 +350,11 @@ namespace WpfTest
                             yArrow.Lock = true;
                             if (eyeMove)
                             {
+                                TrackerEvent.ArrowLock.Log(yArrow.Name, "Gaze");
                                 eyeArrow = null;
                             }
+                            else
+                                TrackerEvent.ArrowLock.Log(yArrow.Name, "Touch");
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, -axisOffset + pIntersection.Y, fNode.Position.Z);
@@ -378,8 +396,11 @@ namespace WpfTest
                             xArrow.Lock = true;
                             if (eyeMove)
                             {
+                                TrackerEvent.ArrowLock.Log(xArrow.Name, "Gaze");
                                 eyeArrow = null;
                             }
+                            else
+                                TrackerEvent.ArrowLock.Log(xArrow.Name, "Touch");
                         }
                         else
                         {
@@ -432,8 +453,11 @@ namespace WpfTest
                             zArrow.Lock = true;
                             if (eyeMove)
                             {
+                                TrackerEvent.ArrowLock.Log(zArrow.Name, "Gaze");
                                 eyeArrow = null;
                             }
+                            else
+                                TrackerEvent.ArrowLock.Log(zArrow.Name, "Touch");
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z - axisOffset);
@@ -459,6 +483,7 @@ namespace WpfTest
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchMove");
             MoveArrow(e.Location, arrow);
         }
 
