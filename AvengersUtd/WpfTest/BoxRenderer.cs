@@ -189,26 +189,26 @@ namespace WpfTest
             //Game.Logger.Log("Prova4");
             //Game.Logger.Log("Prova5");
 
-            bConnect = new Button()
-            {
-                Size = new System.Drawing.Size(120, 30),
-                Content = "Connect",
-                Position = new Vector2(1800, 0)
-            };
+            //bConnect = new Button()
+            //{
+            //    Size = new System.Drawing.Size(120, 30),
+            //    Content = "Connect",
+            //    Position = new Vector2(1800, 0)
+            //};
 
 
-            bTracking = new Button()
-            {
-                Size = new System.Drawing.Size(120, 30),
-                Content = "Start",
-                Position = new Vector2(1800, 40)
-            };
+            //bTracking = new Button()
+            //{
+            //    Size = new System.Drawing.Size(120, 30),
+            //    Content = "Start",
+            //    Position = new Vector2(1800, 40)
+            //};
 
             bNew = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
                 Content = "New Session",
-                Position = new Vector2(1800, 80)
+                Position = new Vector2(1760, 0)
             };
 
             Button bStop = new Button()
