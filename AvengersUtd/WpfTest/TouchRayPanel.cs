@@ -100,10 +100,12 @@ namespace WpfTest
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
+           
+            crosshair.Position = e.GazePoint;
+
             if (!gazeOn)
                 return;
 
-            crosshair.Position = e.GazePoint;
 
             if (eyeArrow == null)
             {
@@ -156,7 +158,7 @@ namespace WpfTest
             float delta = Vector2.Subtract(gazePoint, prevEyeLocation).LengthSquared();
             if (delta < maxR)
             {
-                MoveArrow(gazePoint, eyeArrow);
+                MoveArrow(gazePoint, eyeArrow, true);
                 //LogEvent.UserInterface.Write(string.Format("Delta: {0:f2}", delta));
             }
             else
@@ -384,8 +386,13 @@ namespace WpfTest
                     }
                     break;
 
-                    if (xLock && yLock && zLock)
-                        OnCompleted(this, EventArgs.Empty);
+            }
+
+
+            if (xLock && yLock && zLock)
+            {
+                eyeArrow = null;
+                OnCompleted(this, EventArgs.Empty);
             }
         }
 
