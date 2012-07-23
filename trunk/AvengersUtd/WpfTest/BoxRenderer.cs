@@ -110,6 +110,7 @@ namespace WpfTest
             bNew.IsVisible = false;
             Hud.EndDesign();
             rp.SetTracker(tracker);
+            rp.Reset();
             tracker.Connect();
             tracker.StartTracking();
             stopwatch.Start();
@@ -122,7 +123,7 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             bNew.IsVisible = true;
             countdown = 3;
-            rp.Reset();
+
         }
 
 
