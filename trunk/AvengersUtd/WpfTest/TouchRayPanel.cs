@@ -212,7 +212,7 @@ namespace WpfTest
             IRenderable result;
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
             // Session Id, tpX, tpY, tdId, eventType
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchDown");
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
             if (test)
             {
@@ -286,7 +286,7 @@ namespace WpfTest
             arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
             IRenderable result;
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchUp");
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
             if (test)
@@ -483,7 +483,7 @@ namespace WpfTest
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice, "TouchMove");
+            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
         }
 

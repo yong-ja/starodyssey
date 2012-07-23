@@ -9,7 +9,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 {
     public class FileTraceListener : System.Diagnostics.TraceListener
     {
-        private static string logTag = "{0},{1}";
+        private static string logTag = "{0},{1},";
         string fileName;
         System.DateTime timeStamp;
         System.IO.StreamWriter traceWriter;
