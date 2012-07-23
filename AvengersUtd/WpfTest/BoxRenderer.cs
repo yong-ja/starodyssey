@@ -73,7 +73,7 @@ namespace WpfTest
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
             tracker.SetWindow(Global.Window);
-            tracker.Completed+= (sender, e) => Stop();
+
 #endif
         }
 
@@ -237,6 +237,7 @@ namespace WpfTest
             rp.Add(bTracking);
             rp.Add(bNew);
             rp.Add(bStop);
+            rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 
             //bConnect.TouchUp += (sender, e) =>
             //{
