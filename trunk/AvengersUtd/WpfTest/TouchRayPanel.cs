@@ -337,6 +337,7 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(frame.Width, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                             xLock = true;
+
                         }
                         else
                         {
@@ -391,9 +392,11 @@ namespace WpfTest
 
             if (xLock && yLock && zLock)
             {
-                eyeArrow = null;
                 OnCompleted(this, EventArgs.Empty);
             }
+
+            if (eyeMove)
+                eyeArrow = null;
         }
 
         protected override void OnTouchMove(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
