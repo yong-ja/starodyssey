@@ -304,6 +304,8 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, frame.Height, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                             yLock = true;
+                            if (eyeMove)
+                                eyeArrow = null;
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, -axisOffset + pIntersection.Y, fNode.Position.Z);
@@ -337,6 +339,8 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(frame.Width, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                             xLock = true;
+                            if (eyeMove)
+                                eyeArrow = null;
 
                         }
                         else
@@ -380,6 +384,8 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, frame.Depth);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                             zLock = true;
+                            if (eyeMove)
+                                eyeArrow = null;
                         }
                         else
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z - axisOffset);
@@ -395,8 +401,6 @@ namespace WpfTest
                 OnCompleted(this, EventArgs.Empty);
             }
 
-            if (eyeMove && (xLock || yLock  || zLock))
-                eyeArrow = null;
         }
 
         protected override void OnTouchMove(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
