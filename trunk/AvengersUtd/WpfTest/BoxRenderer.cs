@@ -20,13 +20,15 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
-        TrackerWrapper tracker;
+        static TrackerWrapper tracker;
         FixedNode fNodeBox;
         BoundingBox bbox;
         ScalingWidget sWidget;
         private Label lCountDown;
         private Timer clock;
         private Stopwatch stopwatch;
+
+        TouchRayPanel rp;
         private static int countdown = 3;
         static int index;
         private Button bConnect, bNew, bTracking;
@@ -65,6 +67,15 @@ namespace WpfTest
                                                    new[] {5f, 5f, 5f},
 
                                                };
+        static BoxRenderer()
+        {
+#if TRACKER
+            tracker = new TrackerWrapper();
+            tracker.StartBrowsing();
+            tracker.SetWindow(Global.Window);
+#endif
+        }
+
 
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
@@ -96,6 +107,9 @@ namespace WpfTest
             bTracking.IsVisible = false;
             bNew.IsVisible = false;
             Hud.EndDesign();
+            rp.SetTracker(tracker);
+            tracker.Connect();
+            tracker.StartTracking();
             stopwatch.Start();
         }
 
@@ -212,7 +226,7 @@ namespace WpfTest
                              TextDescriptionClass = "Huge"
                          };
 
-            TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
+            rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
             rp.SetFrame((IBox)bbox);
@@ -222,23 +236,19 @@ namespace WpfTest
             rp.Add(bTracking);
             rp.Add(bNew);
             rp.Add(bStop);
-#if TRACKER
-            tracker = new TrackerWrapper();
-            tracker.StartBrowsing();
-            tracker.SetWindow(Global.Window);
-#endif
-            bConnect.MouseClick += (sender, e) =>
-            {
-                rp.SetTracker(tracker);
-                tracker.Connect();
-            };
-            bTracking.MouseClick += (sender, e) => tracker.StartTracking();
-            bStop.MouseClick += delegate
+
+            //bConnect.TouchUp += (sender, e) =>
+            //{
+            //    rp.SetTracker(tracker);
+            //    tracker.Connect();
+            //};
+            //bTracking.MouseClick += (sender, e) =>
+            bStop.TouchUp += delegate
                                 {
                                     if (stopwatch.IsRunning) 
                                         Stop();
                                 };
-            bNew.MouseClick += delegate
+            bNew.TouchUp += delegate
                                {
                                    Hud.BeginDesign();
                                    lCountDown.IsVisible = true;
