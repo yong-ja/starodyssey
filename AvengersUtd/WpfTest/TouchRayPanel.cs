@@ -34,7 +34,7 @@ namespace WpfTest
         private IRenderable box;
         private IRenderable eyeArrow;
         RenderableNode rNode;
-        TrackerWrapper tracker;
+        static TrackerWrapper tracker;
         TexturedIcon crosshair;
         ScalingWidget sWidget;
         IBox frame;
@@ -89,9 +89,9 @@ namespace WpfTest
             dwellTime.Set();
         }
 
-        public void SetTracker(TrackerWrapper tracker)
+        public void SetTracker(TrackerWrapper newTracker)
         {
-            this.tracker = tracker;
+            tracker = newTracker;
             tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
         }
 
