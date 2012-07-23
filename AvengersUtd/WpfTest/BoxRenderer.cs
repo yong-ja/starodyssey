@@ -218,14 +218,6 @@ namespace WpfTest
                 Position = new Vector2(1760, 0)
             };
 
-            Button bStop = new Button()
-                           {
-                               Size = new System.Drawing.Size(256, 128),
-                               Content = "Stop",
-                               Position = new Vector2(0, 952),
-                               TextDescriptionClass="Large"
-                           };
-
             lCountDown = new Label()
                          {
                              Content = "3",
@@ -243,7 +235,6 @@ namespace WpfTest
             //rp.Add(bConnect);
             //rp.Add(bTracking);
             rp.Add(bNew);
-            rp.Add(bStop);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 
             //bConnect.TouchUp += (sender, e) =>
