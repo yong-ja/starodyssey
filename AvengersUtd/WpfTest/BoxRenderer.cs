@@ -20,6 +20,7 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
+        public static int Session { get { return index; } }
         static TrackerWrapper tracker;
         FixedNode fNodeBox;
         BoundingBox bbox;
@@ -31,7 +32,7 @@ namespace WpfTest
         TouchRayPanel rp;
         private static int countdown = 3;
         static int index;
-        private Button bConnect, bNew, bTracking;
+        private Button bNew;
         bool startingNewSession;
 
 
@@ -95,6 +96,8 @@ namespace WpfTest
             bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
             sWidget.SetFrame(bbox);
             fNodeBox.Position = sWidget.GetBoxOffset();
+
+            TrackerEvent.BoxSessionStart.Log(Session, sizes[0], sizes[1], sizes[2]);
             index++;
         }
 
@@ -114,6 +117,8 @@ namespace WpfTest
             tracker.Connect();
             tracker.StartTracking();
             stopwatch.Start();
+
+           
         }
 
         private void Stop()
@@ -123,9 +128,8 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             bNew.IsVisible = true;
             countdown = 3;
-
-        }
-
+            TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000);
+       }
 
         public override void Init()
         {
@@ -146,7 +150,7 @@ namespace WpfTest
             Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
 
             Box box = new Box(1, 1, 1);
-             sWidget = new ScalingWidget(box);
+            sWidget = new ScalingWidget(box);
 
            
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
