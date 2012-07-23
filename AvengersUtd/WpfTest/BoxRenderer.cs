@@ -128,7 +128,7 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             bNew.IsVisible = true;
             countdown = 3;
-            TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000);
+            TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
        }
 
         public override void Init()
@@ -243,11 +243,7 @@ namespace WpfTest
             //    tracker.Connect();
             //};
             //bTracking.MouseClick += (sender, e) =>
-            bStop.TouchUp += delegate
-                                {
-                                    if (stopwatch.IsRunning) 
-                                        Stop();
-                                };
+
             bNew.TouchUp += delegate
                                {
                                    if (startingNewSession)
