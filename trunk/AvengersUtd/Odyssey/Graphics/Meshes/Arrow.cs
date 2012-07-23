@@ -14,9 +14,10 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
         readonly float arrowRadius;
         readonly Vector3 arrowPointerCenter;
 
-        public bool IsSelected { get; set; }
+        public bool IsTouched { get; set; }
         public bool IsDwelling { get; set; }
-        public bool Lock { get; set; }
+        public bool Snapped { get; set; }
+        public bool GazeLock { get; set; }
 
         public Arrow(float baseWidth, float arrowHeight, float lineLength, float lineWidth) : base(2)
         {

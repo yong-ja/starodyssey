@@ -130,14 +130,14 @@ namespace WpfTest
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
-                    if (gazeArrow.Lock)
+                    if (gazeArrow.Snapped)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeLock"+ gazeArrow.Name);
                         return;
                     }
                     gazeArrow.IsDwelling = true;
                     //sWidget.ResetColors();
-                    if (!gazeArrow.IsSelected)
+                    if (!gazeArrow.IsTouched)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + gazeArrow.Name);
                         TrackerEvent.ArrowDwell.Log(gazeArrow.Name);
@@ -153,19 +153,28 @@ namespace WpfTest
             else {
                 TimeSpan delta = DateTime.Now.Subtract(dwellStart);
                 IRenderable dwellCheckArrow = sWidget.FindIntersection2D(e.GazePoint);
-                TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + 
-                    ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
                 if (delta.TotalMilliseconds < dwellInterval)
+                {
+                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwelling" +
+    ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
                     return;
+                }
 
                 Arrow tempArrow = ((Arrow)dwellCheckArrow);
-                if (dwellCheckArrow == eyeArrow && !tempArrow.IsSelected)
+                if (tempArrow == eyeArrow && !tempArrow.IsTouched)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeMove" + eyeArrow.Name);
-                        TrackerEvent.ArrowMoveStart.Log(eyeArrow.Name);
                         EyeMoveArrow(e.GazePoint);
-                        if (!tempArrow.Lock)
+
+                        if (!tempArrow.Snapped)
+                        {
                             sWidget.SetColor(tempArrow, Color.Red);
+                            if (!tempArrow.GazeLock)
+                            {
+                                TrackerEvent.ArrowMoveStart.Log(eyeArrow.Name);
+                                tempArrow.GazeLock = true;
+                            }
+                        }
                         else sWidget.SetColor(tempArrow, Color.Green);
                     }
                 else {
@@ -223,7 +232,7 @@ namespace WpfTest
                 arrows.Add(e.TouchDevice, result);
                 sWidget.Select(result.Name, Color.Cyan);
                 Arrow arrow = (Arrow)result;
-                arrow.IsSelected = true;
+                arrow.IsTouched = true;
                 if (arrows.Count == 2)
                     gazeOn = true;
             }
@@ -296,10 +305,10 @@ namespace WpfTest
             if (test)
             {
                 Arrow tempArrow = (Arrow)result;
-                tempArrow.IsSelected = false;
+                tempArrow.IsTouched = false;
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
                
-                if (!tempArrow.Lock)
+                if (!tempArrow.Snapped)
                     sWidget.SetColor(tempArrow, Color.Yellow);
                 
             }
@@ -352,7 +361,7 @@ namespace WpfTest
                             yLock = true;
                             Arrow yArrow = sWidget.SelectByName("YArrow");
                             sWidget.SetColor(yArrow, Color.Green);
-                            yArrow.Lock = true;
+                            yArrow.Snapped = true;
                             if (eyeMove)
                             {
                                 TrackerEvent.ArrowLock.Log(yArrow.Name, "Gaze");
@@ -398,7 +407,7 @@ namespace WpfTest
                             xLock = true;
                             Arrow xArrow = sWidget.SelectByName("XArrow");
                             sWidget.SetColor(xArrow, Color.Green);
-                            xArrow.Lock = true;
+                            xArrow.Snapped = true;
                             if (eyeMove)
                             {
                                 TrackerEvent.ArrowLock.Log(xArrow.Name, "Gaze");
@@ -455,7 +464,7 @@ namespace WpfTest
                             zLock = true;
                             Arrow zArrow = sWidget.SelectByName("ZArrow");
                             sWidget.SetColor(zArrow, Color.Green);
-                            zArrow.Lock = true;
+                            zArrow.Snapped = true;
                             if (eyeMove)
                             {
                                 TrackerEvent.ArrowLock.Log(zArrow.Name, "Gaze");

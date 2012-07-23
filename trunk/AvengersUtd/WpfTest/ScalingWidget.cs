@@ -151,7 +151,7 @@ namespace WpfTest
         {
             foreach (IRenderable rObject in Objects)
             {
-                if (!((Arrow)rObject).IsSelected)
+                if (!((Arrow)rObject).IsTouched)
                     foreach (IRenderable rArrow in ((MeshGroup)rObject).Objects)
                         ((IColorMaterial)rArrow.Material).DiffuseColor = Color.Yellow;
             }

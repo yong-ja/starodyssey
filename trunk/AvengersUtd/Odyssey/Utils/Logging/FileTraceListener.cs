@@ -30,7 +30,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
-            WriteLine(string.Format("{0:HH:mm:ss.fff}{1},", DateTime.Now, message, id));
+            WriteLine(string.Format("{0:HH:mm:ss.fff},{1}", DateTime.Now, message, id));
         }
 
         public override void Write(string value)
