@@ -287,6 +287,10 @@ namespace WpfTest
                     if (test)
                     {
                         delta = pIntersection.Y - (box.AbsolutePosition.Y + box.ScalingValues.Y / 2);
+                        if (yLock && delta < 2 * snapRange)
+                            return;
+
+                        yLock = false;
                         box.ScalingValues += new Vector3(0, delta, 0);
                         float axisOffset = sWidget.GetBoxOffset().Y;
                         if (box.ScalingValues.Y < minSize)
@@ -321,6 +325,11 @@ namespace WpfTest
                         delta = sWidget.XInverted ? - pIntersection.X + (box.AbsolutePosition.X - box.ScalingValues.X/2) :
                             pIntersection.X - (box.AbsolutePosition.X + box.ScalingValues.X / 2);
                         delta = Math.Min(minSize, delta);
+
+                        if (xLock && delta < 2 * snapRange)
+                            return;
+
+                        xLock = false;
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         float axisOffset = sWidget.GetBoxOffset().X;
@@ -366,6 +375,11 @@ namespace WpfTest
                     {
                         delta = pIntersection.Z - (box.AbsolutePosition.Z + box.ScalingValues.Z / 2);
                         delta = Math.Min(minSize, delta);
+
+                        if (zLock && delta < 2 * snapRange)
+                            return;
+
+                        zLock = false;
 
                         box.ScalingValues += new Vector3(0, 0, delta);
                         float axisOffset = sWidget.GetBoxOffset().Z;
