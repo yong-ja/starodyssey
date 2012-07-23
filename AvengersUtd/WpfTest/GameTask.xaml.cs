@@ -27,6 +27,7 @@ namespace WpfTest
     public partial class GameTask : SurfaceWindow
     {
         int gazeRadius;
+        bool gazeOn;
         private Timer clock;
         private Stopwatch stopwatch;
         private TextBlock tComplete;
@@ -120,9 +121,11 @@ namespace WpfTest
             clock.Stop();
             stopwatch.Stop();
             ToggleButtons();
-            stopwatch.Reset();
+           
+            gazeOn = false;
             Canvas.Children.Add(tComplete);
             TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+            stopwatch.Reset();
         }
 
         void clock_Elapsed(object sender, ElapsedEventArgs e)
@@ -166,7 +169,8 @@ namespace WpfTest
             Canvas.Children.Add(target1);
             Canvas.Children.Add(target2);
             Canvas.Children.Add(target3);
-            TrackerEvent.PointSessionStart.Log(radius, maxDistance);
+            gazeOn = true;
+            TrackerEvent.PointSessionStart.Log(index,radius, maxDistance);
 
             index++;
         }
@@ -221,6 +225,9 @@ namespace WpfTest
                 return;
             }
 
+            if (!gazeOn)
+                return;
+
             if (touchPoints.Count < 2)
             {
                 TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
@@ -238,13 +245,10 @@ namespace WpfTest
                 
                 bool intersect1= d.IntersectsWith(pointArray[0]);
                 bool intersect2= d.IntersectsWith(pointArray[1]);
-                bool intersect3= d.IntersectsWith(gazeLocation);
+                bool intersect3= d.IntersectsWith(gazeLocation, true);
                 result = intersect1 || intersect2 || intersect3;
                 if (!result)
                     return;
-                else {
-                    TrackerEvent.PointIntersection.Log(d.Tag);
-                }
             }
 
             Indicator.Fill = Brushes.Green;
@@ -259,6 +263,9 @@ namespace WpfTest
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            foreach (TraceListener tl in System.Diagnostics.Trace.Listeners)
+                tl.Dispose();
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();

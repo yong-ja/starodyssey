@@ -23,8 +23,8 @@ namespace WpfTest
         public static TrackerEvent BezierSessionStart = new TrackerEvent("TrackerDesc", "START: BezierSession {0}, Radius:{1:f2}, Rotation:{2:f2}, RefPoints{3}");
         public static TrackerEvent BezierSessionEnd = new TrackerEvent("TrackerDesc", "End:BezierSession {0}, Time:{1:f3}");
         public static TrackerEvent PointSessionStart= new TrackerEvent("TrackerDesc", "Start:PointSession {0}, Size:{1:f2}, Distance:{2:f2}");
-        public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerDesc", "End:BezierSession {0}, Time:{1:f3}");
-        public static TrackerEvent PointIntersection = new TrackerEvent("TrackerDesc", "Point {0} intersected by Gaze");
+        public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerDesc", "End:PointSession {0}, Time:{1:f3}");
+        public static TrackerEvent PointIntersection = new TrackerEvent("TrackerDesc", "Point {0} intersected by {1}");
         
         protected TrackerEvent(string source, string format)
             : base(source, format)
