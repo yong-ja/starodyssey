@@ -14,6 +14,7 @@ using AvengersUtd.Odyssey;
 using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface;
 using BoundingBox = AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox;
+using AvengersUtd.Odyssey.Geometry;
 
 namespace WpfTest
 {
@@ -131,6 +132,7 @@ namespace WpfTest
 
             Box box = new Box(1, 1, 1);
              sWidget = new ScalingWidget(box);
+
            
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
             FixedNode fNodeFrame = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
@@ -216,6 +218,7 @@ namespace WpfTest
             TouchRayPanel rp = new TouchRayPanel { Size = Hud.Size, };//Camera = this.Camera };
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
+            rp.SetFrame((IBox)bbox);
             Hud.Add(rp);
 
             rp.Add(bConnect);

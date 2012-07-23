@@ -17,6 +17,7 @@ using System.Diagnostics.Contracts;
 using AvengersUtd.Odyssey.Graphics.Materials;
 using System.Drawing;
 using System.Threading;
+using AvengersUtd.Odyssey.Geometry;
 
 namespace WpfTest
 {
@@ -36,6 +37,7 @@ namespace WpfTest
         TrackerWrapper tracker;
         TexturedIcon crosshair;
         ScalingWidget sWidget;
+        IBox frame;
         
         EventWaitHandle dwellTime;
         Thread dwellThread;
@@ -74,6 +76,11 @@ namespace WpfTest
             };
             
             Add(crosshair);
+        }
+
+        public void SetFrame(IBox frame)
+        {
+            this.frame = frame;
         }
 
         void DwellLoop()
@@ -256,6 +263,7 @@ namespace WpfTest
             const float maxSizeY = 2.5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
+            const float snapRange = 0.1f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             float delta;
@@ -277,6 +285,11 @@ namespace WpfTest
                         else if (box.ScalingValues.Y > maxSizeY)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, maxSizeY, box.ScalingValues.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
+                        }
+                        else if (Math.Abs(frame.Height - box.ScalingValues.Y) <= snapRange)
+                        {
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, frame.Height, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                         }
                         else
@@ -304,6 +317,11 @@ namespace WpfTest
                         else if (box.ScalingValues.X > maxSizeX)
                         {
                             box.ScalingValues = new Vector3(maxSizeX, box.ScalingValues.Y, box.ScalingValues.Z);
+                            fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
+                        }
+                        else if (Math.Abs(frame.Width - box.ScalingValues.X) <= snapRange)
+                        {
+                            box.ScalingValues = new Vector3(frame.Width, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                         }
                         else
@@ -340,6 +358,11 @@ namespace WpfTest
                         else if (box.ScalingValues.Z > maxSizeZ)
                         {
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, maxSizeZ);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
+                        }
+                        else if (Math.Abs(frame.Depth - box.ScalingValues.Z) <= snapRange)
+                        {
+                            box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, frame.Depth);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                         }
                         else
