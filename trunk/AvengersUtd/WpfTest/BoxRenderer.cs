@@ -32,6 +32,7 @@ namespace WpfTest
         private static int countdown = 3;
         static int index;
         private Button bConnect, bNew, bTracking;
+        bool startingNewSession;
 
 
         private List<float[]> conditions = new List<float[]>
@@ -104,8 +105,8 @@ namespace WpfTest
         {
             Hud.BeginDesign();
             //Hud.Controls.Remove(lCountDown);
-            bConnect.IsVisible = false;
-            bTracking.IsVisible = false;
+            //bConnect.IsVisible = false;
+            //bTracking.IsVisible = false;
             bNew.IsVisible = false;
             Hud.EndDesign();
             rp.SetTracker(tracker);
@@ -117,8 +118,8 @@ namespace WpfTest
         private void Stop()
         {
             stopwatch.Stop();
-            bConnect.IsVisible = true;
-            bTracking.IsVisible = true;
+            //bConnect.IsVisible = true;
+            //bTracking.IsVisible = true;
             bNew.IsVisible = true;
             countdown = 3;
         }
@@ -233,8 +234,8 @@ namespace WpfTest
             rp.SetFrame((IBox)bbox);
             Hud.Add(rp);
 
-            rp.Add(bConnect);
-            rp.Add(bTracking);
+            //rp.Add(bConnect);
+            //rp.Add(bTracking);
             rp.Add(bNew);
             rp.Add(bStop);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
@@ -252,6 +253,9 @@ namespace WpfTest
                                 };
             bNew.TouchUp += delegate
                                {
+                                   if (startingNewSession)
+                                       return;
+                                   startingNewSession = true;
                                    Hud.BeginDesign();
                                    lCountDown.IsVisible = true;
                                    Hud.Controls.Add(lCountDown);
