@@ -38,6 +38,8 @@ namespace WpfTest
         TexturedIcon crosshair;
         ScalingWidget sWidget;
         IBox frame;
+
+        bool gazeOn;
         
         EventWaitHandle dwellTime;
         Thread dwellThread;
@@ -83,6 +85,11 @@ namespace WpfTest
             this.frame = frame;
         }
 
+        public void SetGazeTracking(bool value)
+        {
+            gazeOn = value;
+        }
+
         void DwellLoop()
         {
             Thread.Sleep(200);
@@ -97,7 +104,9 @@ namespace WpfTest
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
-            
+            if (!gazeOn)
+                return;
+
             crosshair.Position = e.GazePoint;
 
             if (eyeArrow == null)
@@ -177,6 +186,8 @@ namespace WpfTest
                 sWidget.Select(result.Name, Color.Cyan);
                 Arrow arrow = (Arrow)result;
                 arrow.IsSelected = true;
+                if (arrows.Count == 2)
+                    gazeOn = true;
                 //LogEvent.UserInterface.Write("TouchDown: " + e.TouchDevice.Id + " [" + result.Name+"]");
             }
             else
