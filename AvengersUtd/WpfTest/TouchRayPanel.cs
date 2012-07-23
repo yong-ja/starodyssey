@@ -395,7 +395,7 @@ namespace WpfTest
                 OnCompleted(this, EventArgs.Empty);
             }
 
-            if (eyeMove)
+            if (eyeMove && (xLock || yLock  || zLock))
                 eyeArrow = null;
         }
 
