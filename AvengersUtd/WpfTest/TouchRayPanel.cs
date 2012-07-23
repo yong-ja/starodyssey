@@ -39,6 +39,7 @@ namespace WpfTest
 
         bool gazeOn;
         bool completed;
+        bool gazeLock;
         bool xLock, yLock, zLock;
         
         EventWaitHandle dwellTime;
@@ -112,7 +113,6 @@ namespace WpfTest
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
-           
             crosshair.Position = e.GazePoint;
 
             if (!gazeOn)
@@ -173,6 +173,7 @@ namespace WpfTest
                             {
                                 TrackerEvent.ArrowMoveStart.Log(tempArrow.Name);
                                 tempArrow.GazeLock = true;
+                                gazeLock = true;
                             }
                         }
                         else sWidget.SetColor(tempArrow, Color.Green);
@@ -184,17 +185,6 @@ namespace WpfTest
                     eyeArrow = null;
                 }
             }
-
-
-            
-            // we are looking at one of the arrows 
-            // inititate dwell time check
-                
-
-            //dwellThread = new Thread(DwellLoop) { Name = "DwellThread" };
-            //dwellThread.Start();
-            //dwellTime.WaitOne(250);
-            
 
         }
 
@@ -317,7 +307,7 @@ namespace WpfTest
 
         void MoveArrow(Vector2 location, IRenderable arrow, bool eyeMove = false)
         {
-            if (completed)
+            if (completed || (!gazeLock && arrows.Count <2))
                 return;
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
