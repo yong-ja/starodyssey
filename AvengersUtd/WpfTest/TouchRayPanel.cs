@@ -211,6 +211,8 @@ namespace WpfTest
 
             IRenderable result;
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
+            if (test)
+                TrackerEvent.ArrowIntersection.Log(e.TouchDevice.Id, result.Name);
             // Session Id, tpX, tpY, tdId, eventType
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
@@ -293,6 +295,7 @@ namespace WpfTest
             {
                 Arrow tempArrow = (Arrow)result;
                 tempArrow.IsSelected = false;
+                TrackerEvent.ArrowDeselection.Log(e.TouchDevice.Id, result.Name);
                
                 if (!tempArrow.Lock)
                     sWidget.SetColor(tempArrow, Color.Yellow);
