@@ -140,6 +140,7 @@ namespace WpfTest
                     if (!gazeArrow.IsSelected)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + gazeArrow.Name);
+                        TrackerEvent.ArrowDwell.Log(gazeArrow.Name);
                         sWidget.Select(gazeArrow.Name, Color.Orange);
                     }
                     else
@@ -161,6 +162,7 @@ namespace WpfTest
                 if (dwellCheckArrow == eyeArrow && !tempArrow.IsSelected)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeMove" + eyeArrow.Name);
+                        TrackerEvent.ArrowMoveStart.Log(eyeArrow.Name);
                         EyeMoveArrow(e.GazePoint);
                         if (!tempArrow.Lock)
                             sWidget.SetColor(tempArrow, Color.Red);
@@ -212,7 +214,7 @@ namespace WpfTest
             IRenderable result;
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
             if (test)
-                TrackerEvent.ArrowIntersection.Log(e.TouchDevice.Id, result.Name);
+                TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
             // Session Id, tpX, tpY, tdId, eventType
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
@@ -295,7 +297,7 @@ namespace WpfTest
             {
                 Arrow tempArrow = (Arrow)result;
                 tempArrow.IsSelected = false;
-                TrackerEvent.ArrowDeselection.Log(e.TouchDevice.Id, result.Name);
+                TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
                
                 if (!tempArrow.Lock)
                     sWidget.SetColor(tempArrow, Color.Yellow);
