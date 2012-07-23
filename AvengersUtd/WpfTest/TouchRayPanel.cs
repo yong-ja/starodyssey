@@ -38,11 +38,10 @@ namespace WpfTest
         IBox frame;
 
         bool gazeOn;
+        bool completed;
         bool xLock, yLock, zLock;
         
         EventWaitHandle dwellTime;
-        Thread dwellThread;
-
         DateTime dwellStart;
         
         static int count;
@@ -78,6 +77,8 @@ namespace WpfTest
                 TextDescriptionClass = "Large",
                 Content = "Session complete"
             };
+
+            completed = true;
 
             OdysseyUI.CurrentHud.BeginDesign();
             OdysseyUI.CurrentHud.Controls.Add(label);
@@ -145,7 +146,7 @@ namespace WpfTest
                         sWidget.Select(dwellCheckArrow.Name, Color.Red);
                     }
                 else {
-                    sWidget.ResetColors();
+                    //sWidget.ResetColors();
                     ((Arrow)eyeArrow).IsDwelling = false;
                     eyeArrow = null;
                 }
@@ -278,6 +279,8 @@ namespace WpfTest
 
         void MoveArrow(Vector2 location, IRenderable arrow, bool eyeMove = false)
         {
+            if (completed)
+                return;
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
             const float maxSizeY = 2.5f;
