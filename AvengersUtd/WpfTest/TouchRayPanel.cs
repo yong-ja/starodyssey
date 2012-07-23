@@ -283,7 +283,7 @@ namespace WpfTest
                 return;
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
-            const float maxSizeY = 2.5f;
+            const float maxSizeY = 5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
             const float touchSnapRange = 0.1f;
