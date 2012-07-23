@@ -135,7 +135,7 @@ namespace WpfTest
                     Arrow gazeArrow = (Arrow)tempArrow;
                     if (gazeArrow.Snapped)
                     {
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "Snapped"+ gazeArrow.Name);
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeSnapped"+ gazeArrow.Name);
                         return;
                     }
                     
