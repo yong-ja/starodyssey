@@ -20,7 +20,7 @@ namespace WpfTest
         const float ArrowLineLength = ArrowUnit/4;
         const float ArrowLineWidth = ArrowUnit/16;
 
-        public const float ArrowIntersectionRadius = 256;
+        public const float ArrowIntersectionRadius = 320;
         IBox box;
         IBox frame;
         Arrow YArrow;
