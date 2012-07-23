@@ -263,18 +263,21 @@ namespace WpfTest
 
         }
 
-        void MoveArrow(Vector2 location, IRenderable arrow)
+        void MoveArrow(Vector2 location, IRenderable arrow, bool eyeMove = false)
         {
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
             const float maxSizeY = 2.5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
-            const float snapRange = 0.1f;
+            const float touchSnapRange = 0.1f;
+            const float eyeSnapRange = 0.25f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             float delta;
             bool test;
+
+            float snapRange = eyeMove ? eyeSnapRange : touchSnapRange;
             switch (arrow.Name)
             {
                 case "YArrow":
@@ -380,6 +383,9 @@ namespace WpfTest
                         box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
                     }
                     break;
+
+                    if (xLock && yLock && zLock)
+                        OnCompleted(this, EventArgs.Empty);
             }
         }
 
