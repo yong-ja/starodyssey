@@ -72,6 +72,17 @@ namespace WpfTest
 
         protected void OnCompleted(object sender, EventArgs e)
         {
+            Label label = new Label
+            {
+                Position = new Vector2(200, 300),
+                TextDescriptionClass = "Large",
+                Content = "Session complete"
+            };
+
+            OdysseyUI.CurrentHud.BeginDesign();
+            OdysseyUI.CurrentHud.Controls.Add(label);
+            OdysseyUI.CurrentHud.EndDesign();
+
             if (Completed != null)
                 Completed(sender, e);
         }
