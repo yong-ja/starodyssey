@@ -122,6 +122,7 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             bNew.IsVisible = true;
             countdown = 3;
+            rp.Reset();
         }
 
 
