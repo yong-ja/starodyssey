@@ -15,7 +15,8 @@ namespace WpfTest
         public static TrackerEvent BoxSessionStart = new TrackerEvent("TrackerDesc", "Starting session {0}, Width:{1:f2} Depth:{2:f2} Height {3:f2}");
         public static TrackerEvent BoxSessionEnd = new TrackerEvent("TrackerDesc", "Ending session {0}, Time:{1:f3}");
         public static TrackerEvent ArrowLock = new TrackerEvent("TrackerDesc", "{0} locked by {1}");
-
+        public static TrackerEvent ArrowIntersection = new TrackerEvent("TrackerDesc", "{0} intersected by {1}");
+        public static TrackerEvent ArrowDeselection = new TrackerEvent("TrackerDesc", "{0} deselected by {1}");
 
         protected TrackerEvent(string source, string format)
             : base(source, format)
