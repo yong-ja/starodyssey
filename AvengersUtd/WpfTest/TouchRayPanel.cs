@@ -308,6 +308,7 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, frame.Height, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                             yLock = true;
+                            sWidget.Select("YArrow", Color.Green);
                             if (eyeMove)
                                 eyeArrow = null;
                         }
@@ -348,6 +349,8 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(frame.Width, box.ScalingValues.Y, box.ScalingValues.Z);
                             fNode.Position = new Vector3((box.PositionV3.X + box.ScalingValues.X / 2), fNode.Position.Y, fNode.Position.Z);
                             xLock = true;
+                            sWidget.Select("XArrow", Color.Green);
+
                             if (eyeMove)
                                 eyeArrow = null;
 
@@ -398,6 +401,8 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, box.ScalingValues.Y, frame.Depth);
                             fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, (box.PositionV3.Z + box.ScalingValues.Z / 2));
                             zLock = true;
+                            sWidget.Select("ZArrow", Color.Green);
+
                             if (eyeMove)
                                 eyeArrow = null;
                         }
