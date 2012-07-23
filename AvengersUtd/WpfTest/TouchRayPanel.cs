@@ -118,6 +118,9 @@ namespace WpfTest
             if (!gazeOn)
                 return;
 
+            if (arrows.Count < 2)
+                return;
+
             if (eyeArrow == null)
             {
                 IRenderable tempArrow= sWidget.FindIntersection2D(e.GazePoint);
@@ -132,22 +135,24 @@ namespace WpfTest
                     Arrow gazeArrow = (Arrow)tempArrow;
                     if (gazeArrow.Snapped)
                     {
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeLock"+ gazeArrow.Name);
+                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "Snapped"+ gazeArrow.Name);
                         return;
                     }
-                    gazeArrow.IsDwelling = true;
+                    
                     //sWidget.ResetColors();
-                    if (!gazeArrow.IsTouched)
+                    if (!gazeArrow.IsTouched && !gazeArrow.GazeLock)
                     {
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + gazeArrow.Name);
                         TrackerEvent.ArrowDwell.Log(gazeArrow.Name);
                         sWidget.Select(gazeArrow.Name, Color.Orange);
+                        gazeArrow.IsDwelling = true;
+                        dwellStart = DateTime.Now;
+                        eyeArrow = gazeArrow;
+
                     }
                     else
                         TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwellSelected" + gazeArrow.Name);
 
-                    dwellStart = DateTime.Now;
-                    eyeArrow = gazeArrow;
                 }
             }
             else {
@@ -156,7 +161,7 @@ namespace WpfTest
                 if (delta.TotalMilliseconds < dwellInterval)
                 {
                     TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwelling" +
-    ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
+                         ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
                     return;
                 }
 
@@ -186,6 +191,8 @@ namespace WpfTest
                 }
             }
 
+            prevEyeLocation = e.GazePoint; 
+
         }
 
         void EyeMoveArrow(Vector2 gazePoint)
@@ -202,7 +209,7 @@ namespace WpfTest
                 eyeArrow = null;
             }
 
-            prevEyeLocation = gazePoint;
+            
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -286,6 +293,8 @@ namespace WpfTest
         protected override void OnTouchUp(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
         {
             base.OnTouchUp(e);
+            if (arrows.ContainsKey(e.TouchDevice))
+                ((Arrow)arrows[e.TouchDevice]).IsTouched = false;
             arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
             IRenderable result;
@@ -295,20 +304,24 @@ namespace WpfTest
             if (test)
             {
                 Arrow tempArrow = (Arrow)result;
-                tempArrow.IsTouched = false;
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
                
                 if (!tempArrow.Snapped)
                     sWidget.SetColor(tempArrow, Color.Yellow);
-                
             }
+
+            
 
         }
 
         void MoveArrow(Vector2 location, IRenderable arrow, bool eyeMove = false)
         {
-            if (completed || (!gazeLock && arrows.Count <2))
+            if (completed) 
                 return;
+
+            if (!(gazeLock && arrows.Count == 2))
+                return;
+
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
             const float maxSizeY = 5f;
@@ -542,6 +555,7 @@ namespace WpfTest
             eyeArrow = null;
             xLock = yLock = zLock = false;
             gazeOn = false;
+            gazeLock = false;
         }
 
     }
