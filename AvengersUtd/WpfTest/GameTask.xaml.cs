@@ -122,6 +122,7 @@ namespace WpfTest
             ToggleButtons();
             stopwatch.Reset();
             Canvas.Children.Add(tComplete);
+            TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
         }
 
         void clock_Elapsed(object sender, ElapsedEventArgs e)
@@ -157,26 +158,32 @@ namespace WpfTest
             }
 
             Point[] points = GeoHelper.ChooseTrianglePoints(new Point(960, 540), maxDistance, radius);
-            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center=points[0]};
-            Dot target2 = new Dot() { Fill = Brushes.Blue, Radius = radius, Center = points[1]};
-            Dot target3 = new Dot() { Fill = Brushes.Green, Radius = radius, Center =points[2]};
+            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center=points[0], Tag=1};
+            Dot target2 = new Dot() { Fill = Brushes.Blue, Radius = radius, Center = points[1], Tag=2};
+            Dot target3 = new Dot() { Fill = Brushes.Green, Radius = radius, Center =points[2], Tag=3};
 
             targets = new List<Dot>() { target1, target2, target3 };
             Canvas.Children.Add(target1);
             Canvas.Children.Add(target2);
             Canvas.Children.Add(target3);
+            TrackerEvent.PointSessionStart.Log(radius, maxDistance);
 
             index++;
         }
 
         void Canvas_LostTouchCapture(object sender, TouchEventArgs e)
         {
+            Point location = e.GetTouchPoint(this).Position;
             touchPoints.Remove(e.TouchDevice);
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchUp");
         }
 
         void Canvas_TouchMove(object sender, TouchEventArgs e)
         {
-            touchPoints[e.TouchDevice] = e.GetTouchPoint(Canvas).Position;
+            Point location = e.GetTouchPoint(this).Position;
+            touchPoints[e.TouchDevice] = location;
+            
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
         }
 
         void Canvas_TouchDown(object sender, TouchEventArgs e)
@@ -186,6 +193,8 @@ namespace WpfTest
             Canvas.CaptureTouch(touchDevice);
             //touchDevice.Capture(Canvas);
             touchPoints.Add(touchDevice, location);
+
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
         }
 
         void GameTask_Loaded(object sender, RoutedEventArgs e)
@@ -209,12 +218,16 @@ namespace WpfTest
 
             if (e.GazePoint.X < 0 || e.GazePoint.X > 1920 || e.GazePoint.Y < 0 || e.GazePoint.Y > 1080)
             {
-                LogEvent.Engine.Write(string.Format("Rejected GP({0:f2},{1:f2} -> Outside screen bounds", e.GazePoint.X, e.GazePoint.Y));
                 return;
             }
 
             if (touchPoints.Count < 2)
+            {
+                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
                 return;
+            }
+            else
+                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
 
             Point gazeLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 
@@ -222,13 +235,20 @@ namespace WpfTest
             foreach (Dot d in targets)
             {
                 Point[] pointArray = touchPoints.Values.ToArray();
-                result = d.IntersectsWith(pointArray[0]) || d.IntersectsWith(pointArray[1]) || d.IntersectsWith(gazeLocation);
+                
+                bool intersect1= d.IntersectsWith(pointArray[0]);
+                bool intersect2= d.IntersectsWith(pointArray[1]);
+                bool intersect3= d.IntersectsWith(gazeLocation);
+                result = intersect1 || intersect2 || intersect3;
                 if (!result)
                     return;
+                else {
+                    TrackerEvent.PointIntersection.Log(d.Tag);
+                }
             }
 
             Indicator.Fill = Brushes.Green;
-            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
+            CompleteSession();
 
         }
 

@@ -327,7 +327,7 @@ namespace WpfTest
             const float maxSizeY = 5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
-            const float touchSnapRange = 0.1f;
+            const float touchSnapRange = 0.15f;
             const float eyeSnapRange = 0.25f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
