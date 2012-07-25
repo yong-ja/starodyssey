@@ -128,6 +128,7 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             countdown = 3;
             bNew.Position=new Vector2(1760, 0);
+            tracker.StopTracking();
             TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
        }
 

@@ -130,6 +130,7 @@ namespace WpfTest
             Canvas.Children.Add(tComplete);
             TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
+            tracker.StopTracking();
         }
 
         void clock_Elapsed(object sender, ElapsedEventArgs e)
@@ -238,7 +239,7 @@ namespace WpfTest
                 return;
             }
             else
-                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
+                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
 
             Point gazeLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 
