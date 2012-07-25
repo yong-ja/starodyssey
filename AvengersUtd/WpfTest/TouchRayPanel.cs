@@ -43,6 +43,7 @@ namespace WpfTest
         bool xLock, yLock, zLock;
         
         EventWaitHandle dwellTime;
+        DateTime lastLog;
         DateTime dwellStart;
         
         static int count;
@@ -115,6 +116,8 @@ namespace WpfTest
         {
             crosshair.Position = e.GazePoint;
 
+            string gazeEvent = string.Empty;
+
             if (!gazeOn)
                 return;
 
@@ -127,22 +130,19 @@ namespace WpfTest
                 if (tempArrow == null)
                 {
                     // Session Id, gpX, gpY, valL, valR, GazeOn
-                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeScreen");
-                    return;
+                    gazeEvent = "GazeScreen";
                 }
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
                     if (gazeArrow.Snapped)
                     {
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeSnapped"+ gazeArrow.Name);
+                        gazeEvent = "GazeSnapped" + tempArrow.Name;
                         return;
                     }
-                    
-                    //sWidget.ResetColors();
-                    if (!gazeArrow.IsTouched && !gazeArrow.GazeLock)
+                    else if (!gazeArrow.IsTouched)
                     {
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwell" + gazeArrow.Name);
+                        gazeEvent = "GazeDwelling" + gazeArrow.Name;
                         TrackerEvent.ArrowDwell.Log(gazeArrow.Name);
                         sWidget.Select(gazeArrow.Name, Color.Orange);
                         gazeArrow.IsDwelling = true;
@@ -151,48 +151,66 @@ namespace WpfTest
 
                     }
                     else
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwellSelected" + gazeArrow.Name);
-
+                        gazeEvent = "GazeDwellSelected" + gazeArrow.Name;
                 }
             }
             else {
                 TimeSpan delta = DateTime.Now.Subtract(dwellStart);
                 IRenderable dwellCheckArrow = sWidget.FindIntersection2D(e.GazePoint);
+                Arrow tempArrow = ((Arrow)dwellCheckArrow);
                 if (delta.TotalMilliseconds < dwellInterval)
                 {
-                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwelling" +
-                         ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name));
-                    return;
+                    gazeEvent = "GazeDwelling" + ((dwellCheckArrow == null) ? "Screen" : dwellCheckArrow.Name);
                 }
+                else if (tempArrow == eyeArrow && !tempArrow.IsTouched)
+                {
+                    gazeEvent = "GazeMove" + eyeArrow.Name;
 
-                Arrow tempArrow = ((Arrow)dwellCheckArrow);
-                if (tempArrow == eyeArrow && !tempArrow.IsTouched)
+                    if (!tempArrow.Snapped)
                     {
-                        TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeMove" + eyeArrow.Name);
+                        sWidget.SetColor(tempArrow, Color.Red);
                         EyeMoveArrow(e.GazePoint);
 
-                        if (!tempArrow.Snapped)
+                        if (!tempArrow.GazeLock)
                         {
-                            sWidget.SetColor(tempArrow, Color.Red);
-                            if (!tempArrow.GazeLock)
-                            {
-                                TrackerEvent.ArrowMoveStart.Log(tempArrow.Name);
-                                tempArrow.GazeLock = true;
-                                gazeLock = true;
-                            }
+                            TrackerEvent.ArrowMoveStart.Log(tempArrow.Name);
+                            tempArrow.GazeLock = true;
+                            gazeLock = true;
                         }
-                        else sWidget.SetColor(tempArrow, Color.Green);
                     }
-                else {
+                    else sWidget.SetColor(tempArrow, Color.Green);
+                }
+                else
+                {
                     //sWidget.ResetColors();
-                    TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeDwellFailed");
-                       ((Arrow)eyeArrow).IsDwelling = false;
+                    gazeEvent = "GazeLost";
+                    DisableArrow(eyeArrow);
                     eyeArrow = null;
                 }
             }
 
-            prevEyeLocation = e.GazePoint; 
+            prevEyeLocation = e.GazePoint;
+            //DateTime now = DateTime.Now;
+            //if ((now - lastLog).TotalMilliseconds > 25)
+            //{
+                TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
+            //    lastLog = now;
+            //}
 
+        }
+
+        void DisableArrow(IRenderable arrow)
+        {
+            Arrow tempArrow = (Arrow)arrow;
+            if (tempArrow != null)
+            {
+                tempArrow.IsDwelling = false;
+                tempArrow.GazeLock = false;
+                sWidget.SetColor(tempArrow, Color.Yellow);
+                gazeLock = false;
+            }
+            else 
+                LogEvent.Engine.Write("OH NO!");
         }
 
         void EyeMoveArrow(Vector2 gazePoint)
@@ -206,6 +224,7 @@ namespace WpfTest
             }
             else
             {
+                DisableArrow(eyeArrow);
                 eyeArrow = null;
             }
 

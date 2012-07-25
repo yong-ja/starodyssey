@@ -261,6 +261,7 @@ namespace WpfTest
             TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
             TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
+            tracker.StopTracking();
             Canvas.Children.Add(tComplete);
             index++;
         }
@@ -315,7 +316,12 @@ namespace WpfTest
             }
 
             if (knotPoints.Count < 2)
+            {
+                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
                 return;
+            }
+            else
+                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
 
             int eyeIndex = GetEyeIndex(knotPoints.Values);
 

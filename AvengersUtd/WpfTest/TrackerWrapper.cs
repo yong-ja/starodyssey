@@ -71,6 +71,13 @@ namespace WpfTest
             IsTracking = true;
         }
 
+        public void StopTracking()
+        {
+            LogEvent.Engine.Write("Tracker: Tracking Stopped");
+            tracker.StopTracking();
+            IsTracking = false;
+        }
+
         private void EyetrackerFound(object sender, EyetrackerInfoEventArgs e)
         {
             // When an eyetracker is found on the network
