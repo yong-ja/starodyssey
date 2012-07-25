@@ -41,9 +41,11 @@ namespace WpfTest
         Marker endPoint;
         TrackerWrapper tracker;
 
-        Circle innerCircle;
+        private Point leftDot = new Point(256, 640);
+        private Point middleDot = new Point(960,448);
+        private Point rightDot = new Point(1664, 640);
 
-        private List<int[]> conditions = new List<int[]>
+        private readonly List<int[]> conditions = new List<int[]>
                                            {
                                                // minDistance, cpRotation, dotsOnOff
                                                new[] {128, 0, 0 },
@@ -114,11 +116,15 @@ namespace WpfTest
             if (condition[2] == 0)
                 ShowRefDots();
 
-            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1]);
-            index++;
-
-            
-
+            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2]);
+            TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
+            TrackerEvent.BezierPoint.Log("RefCP1", RefCurve.ControlPoint1.X, RefCurve.ControlPoint1.Y);
+            TrackerEvent.BezierPoint.Log("RefCP2", RefCurve.ControlPoint2.X, RefCurve.ControlPoint2.Y);
+            TrackerEvent.BezierPoint.Log("RefEnd", RefCurve.EndPoint.X, RefCurve.EndPoint.Y);
+            TrackerEvent.BezierPoint.Log("UserStart", UserCurve.StartPoint.X, UserCurve.StartPoint.Y);
+            TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
+            TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
+            TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
         }
 
 
@@ -129,39 +135,39 @@ namespace WpfTest
             switch (condition)
             {
                 case 0:
-                    cp1 = LeftDot.Center;
-                    cp2 = MiddleDot.Center;
-                    cp3 = RightDot.Center;
+                    cp1 = leftDot;
+                    cp2 = middleDot;
+                    cp3 = rightDot;
                     cp2DoTest = true;
                     break;
                 case 1:
-                    cp1 = LeftDot.Center;
-                    cp2 = RightDot.Center;
-                    cp3 = MiddleDot.Center;
+                    cp1 = leftDot;
+                    cp2 = rightDot;
+                    cp3 = middleDot;
                     cp3DoTest = true;
                     break;
                 case 2:
-                    cp1 = MiddleDot.Center;
-                    cp2 = LeftDot.Center;
-                    cp3 = RightDot.Center;
+                    cp1 = middleDot;
+                    cp2 = leftDot;
+                    cp3 = rightDot;
                     cp1DoTest = true;
                     break;
                 case 3:
-                    cp1 = MiddleDot.Center;
+                    cp1 = middleDot;
                     cp1DoTest = true;
-                    cp2 = RightDot.Center;
-                    cp3 = LeftDot.Center;
+                    cp2 = rightDot;
+                    cp3 = leftDot;
                     break;
                 case 4:
-                    cp1 = RightDot.Center;
-                    cp2 = MiddleDot.Center;
-                    cp3 = LeftDot.Center;
+                    cp1 = rightDot;
+                    cp2 = middleDot;
+                    cp3 = leftDot;
                     cp2DoTest = true;
                     break;
                 case 5:
-                    cp1 = RightDot.Center;
-                    cp2 = LeftDot.Center;
-                    cp3 = MiddleDot.Center;
+                    cp1 = rightDot;
+                    cp2 = leftDot;
+                    cp3 = middleDot;
                     cp3DoTest = true;
                     break;
             }
@@ -188,9 +194,7 @@ namespace WpfTest
                 RenderTransform = new TranslateTransform() { X = 500, Y = 300 }
             };
             gazeRadius =(int)( CrossHair.Width / 2);
-
-            bool test = Intersection.CirclePointTest(innerCircle, new Vector2D(960, 820));
-
+            
             knotPoints = new Dictionary<TouchDevice, IDot>();
             userDots = new List<IDot>();
             refDots = new List<IDot>();
@@ -201,8 +205,8 @@ namespace WpfTest
             TouchMove += ellipse_TouchMove;
             LostTouchCapture += ellipse_LostTouchCapture;
 
-            bConnect.TouchUp += (sender, e) => tracker.Connect();
-            bStart.TouchUp += (sender, e) => tracker.StartTracking();
+            //bConnect.TouchUp += (sender, e) => tracker.Connect();
+            //bStart.TouchUp += (sender, e) => tracker.StartTracking();
             bDots.Click += (sender, e) => ShowRefDots();
             bNew.Click += delegate
             {
@@ -210,7 +214,11 @@ namespace WpfTest
                 countdownTimer.Elapsed += delegate
                 {
                     Dispatcher.BeginInvoke(new Action(delegate
-                    {
+                                                      {
+#if TRACKER
+                                                          tracker.Connect();
+                                                          tracker.StartTracking();
+#endif
                         ToggleButtons();
                         NewSession();
                         Canvas.Children.Remove(
@@ -237,20 +245,28 @@ namespace WpfTest
 
         }
 
+        static float ComputeDistance(Point p1, Point p2)
+        {
+            Vector d = Point.Subtract(p1, p2);
+            return (float)Math.Abs(d.Length);
+        }
+
         void CompleteSession()
         {
             stopwatch.Stop();
             ToggleButtons();
+            TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
+            TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
+            TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
+            TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
             TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
             Canvas.Children.Add(tComplete);
-
+            index++;
         }
 
         void ToggleButtons()
         {
-            bConnect.Visibility = bConnect.IsVisible ? Visibility.Hidden : Visibility.Visible;
-            bStart.Visibility = bStart.IsVisible ? Visibility.Hidden : Visibility.Visible;
             bNew.Visibility = bNew.IsVisible ? Visibility.Hidden : Visibility.Visible;
             bDots.Visibility = bDots.IsVisible ? Visibility.Hidden : Visibility.Visible;
         }
@@ -309,8 +325,6 @@ namespace WpfTest
                 LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
                 userDots[eyeIndex - 1].Center = newLocation;
                 UserCurve.SetPoint(newLocation, eyeIndex);
-
-
         }
 
         static int GetEyeIndex(IEnumerable<IDot> dots)
@@ -345,13 +359,15 @@ namespace WpfTest
 
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
+            Point location = e.GetTouchPoint(this).Position;
             knotPoints.Remove(e.TouchDevice);
-            TrackerEvent.Touch.Log(index, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchUp");
         }
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
         {
-            TrackerEvent.Touch.Log(index, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
+            Point location = e.GetTouchPoint(this).Position;
+            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
             if (!knotPoints.ContainsKey(e.TouchDevice))
             {
                 return;
@@ -366,24 +382,6 @@ namespace WpfTest
         }
 
 
-        //void SynchronizeDotsWithPoints()
-        //{
-        //    PointCollection points = UserCurve.Points;
-        //    UserCurve.Points = null;
-        //    points.Clear();
-        //    points.Add(startPoint);
-        //    foreach (UIElement child in Canvas.Children)
-        //    {
-        //        Dot dot = child as Dot;
-        //        if (dot != null)
-        //            points.Add(dot.Center);
-        //    }
-        //    points.Add(endPoint);
-
-        //    UserCurve.Points = points;
-        //}
-
-
         void ellipse_TouchDown(object sender, TouchEventArgs e)
         {
             TouchDevice touchDevice = e.TouchDevice;
@@ -394,7 +392,6 @@ namespace WpfTest
             if (dot == null)
                 return;
             Canvas.CaptureTouch(touchDevice);
-            //touchDevice.Capture(Canvas);
             knotPoints.Add(touchDevice, dot);
         }
 
@@ -402,16 +399,16 @@ namespace WpfTest
         {
             foreach (IDot d in userDots)
             {
-                AvengersUtd.Odyssey.Geometry.Vector2D ellipseCenter = new AvengersUtd.Odyssey.Geometry.Vector2D(d.Center.X, d.Center.Y);
-                AvengersUtd.Odyssey.Geometry.Circle c = new AvengersUtd.Odyssey.Geometry.Circle(ellipseCenter, radiusSize);
-                bool test = AvengersUtd.Odyssey.Geometry.Intersection.CirclePointTest(c, new AvengersUtd.Odyssey.Geometry.Vector2D(location.X, location.Y));
+                Vector2D ellipseCenter = new Vector2D(d.Center.X, d.Center.Y);
+                Circle c = new Circle(ellipseCenter, radiusSize);
+                bool test = Intersection.CirclePointTest(c, new Vector2D(location.X, location.Y));
                 if (test)
                     return d;
             }
             return null;
         }
 
-        Marker BuildEndPoint(Point location, Brush color)
+        static Marker BuildEndPoint(Point location, Brush color)
         {
             const int width = 16;
             Marker marker = new Marker()
@@ -441,7 +438,7 @@ namespace WpfTest
         {
             base.OnClosed(e);
 
-            foreach (TraceListener tl in System.Diagnostics.Trace.Listeners)
+            foreach (TraceListener tl in Trace.Listeners)
                 tl.Dispose();
 
             // Remove handlers for window availability events

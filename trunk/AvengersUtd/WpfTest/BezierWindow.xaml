@@ -9,16 +9,10 @@
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
         </StatusBar>
         <Canvas  x:Name="Canvas">
-            <Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
-                             Width="128" Height="32" 
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-            <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
+            <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="8" Content="New session" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="104" Content="New session" 
-                             Width="128" Height="32" 
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="bDots" Canvas.Left="1792" Canvas.Top="152" Content="Dots" 
+            <Button x:Name="bDots" Canvas.Left="1792" Canvas.Top="56" Content="Dots" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
@@ -31,9 +25,6 @@
             </Ellipse>
             <!--<Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>
             <Rectangle Width="1920" Height="256" Canvas.Left="0" Canvas.Top="824" Stroke="Purple" StrokeThickness="8"/>-->
-            <local:Dot x:Name="LeftDot" Center="256,640" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
-            <local:Dot x:Name="MiddleDot" Center="960,448" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
-            <local:Dot x:Name="RightDot" Center="1664,640" Stroke="Black" Fill="Transparent" Radius="256" Visibility="Hidden"/>
             <Button x:Name="bStop" Canvas.Left="0" Canvas.Top="952" FontSize="32" Content="Stop" Height="128" Width="256"/>
 
         </Canvas>
