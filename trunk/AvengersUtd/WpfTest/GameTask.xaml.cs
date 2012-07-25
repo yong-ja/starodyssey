@@ -32,7 +32,7 @@ namespace WpfTest
         private Stopwatch stopwatch;
         private TextBlock tComplete;
         Dictionary<TouchDevice, Point> touchPoints;
-        List<Dot> targets;
+        List<IDot> targets;
         TrackerWrapper tracker;
 
         // Radii 8, 64, 128
@@ -85,16 +85,20 @@ namespace WpfTest
             Canvas.TouchDown += new EventHandler<TouchEventArgs>(Canvas_TouchDown);
             Canvas.TouchMove += new EventHandler<TouchEventArgs>(Canvas_TouchMove);
             LostTouchCapture += new EventHandler<TouchEventArgs>(Canvas_LostTouchCapture);
-            bConnect.Click += (sender, e) => tracker.Connect();
-            bStart.Click += (sender, e) => tracker.StartTracking();
+            //bConnect.Click += (sender, e) => tracker.Connect();
+            //bStart.Click += (sender, e) => tracker.StartTracking();
             bNew.Click += delegate
                           {
                               CountDownWpf countdownTimer = new CountDownWpf();
                               countdownTimer.Elapsed += delegate
                                                         {
                                                             Dispatcher.BeginInvoke(new Action(delegate
-                                                                                              {
-                                                                                                  ToggleButtons();
+                                                            {
+#if TRACKER
+                                                          tracker.Connect();
+                                                          tracker.StartTracking();
+#endif
+                                                                ToggleButtons();
                                                                                                   NewSession();
                                                                                                   Canvas.Children.Remove(
                                                                                                       countdownTimer);
@@ -140,8 +144,8 @@ namespace WpfTest
 
         void ToggleButtons()
         {
-            bConnect.Visibility = bConnect.IsVisible ? Visibility.Hidden: Visibility.Visible;
-            bStart.Visibility = bStart.IsVisible ? Visibility.Hidden : Visibility.Visible;
+            //bConnect.Visibility = bConnect.IsVisible ? Visibility.Hidden: Visibility.Visible;
+            //bStart.Visibility = bStart.IsVisible ? Visibility.Hidden : Visibility.Visible;
             bNew.Visibility = bNew.IsVisible ? Visibility.Hidden : Visibility.Visible;
         }
 
@@ -155,17 +159,17 @@ namespace WpfTest
 
             if (targets != null && targets.Count > 0)
             {
-                foreach (Dot d in targets)
+                foreach (UIElement d in targets)
                     Canvas.Children.Remove(d);
                 targets.Clear();
             }
 
             Point[] points = GeoHelper.ChooseTrianglePoints(new Point(960, 540), maxDistance, radius);
-            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center=points[0], Tag=1};
-            Dot target2 = new Dot() { Fill = Brushes.Blue, Radius = radius, Center = points[1], Tag=2};
-            Dot target3 = new Dot() { Fill = Brushes.Green, Radius = radius, Center =points[2], Tag=3};
+            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center = points[0], Tag = 1 };
+            Marker target2 = new Marker() { Fill = Brushes.Blue, Side= radius*2, Center = points[1], Tag = 2 };
+            Marker target3 = new Marker() { Fill = Brushes.Green, Side = radius* 2, Center = points[2], Tag = 3 };
 
-            targets = new List<Dot>() { target1, target2, target3 };
+            targets = new List<IDot>() { target1, target2, target3 };
             Canvas.Children.Add(target1);
             Canvas.Children.Add(target2);
             Canvas.Children.Add(target3);
@@ -239,13 +243,13 @@ namespace WpfTest
             Point gazeLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 
             bool result = false;
-            foreach (Dot d in targets)
+            foreach (IDot d in targets)
             {
                 Point[] pointArray = touchPoints.Values.ToArray();
                 
                 bool intersect1= d.IntersectsWith(pointArray[0]);
                 bool intersect2= d.IntersectsWith(pointArray[1]);
-                bool intersect3= d.IntersectsWith(gazeLocation, true);
+                bool intersect3= d.IntersectsWith(gazeLocation);
                 result = intersect1 || intersect2 || intersect3;
                 if (!result)
                     return;

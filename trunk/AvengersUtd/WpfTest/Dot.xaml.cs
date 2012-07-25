@@ -93,9 +93,9 @@ namespace WpfTest
             dot.Path.Stroke = (Brush)e.NewValue;
         }
 
-        public bool IntersectsWith(Point p, bool eyes = false)
+        public bool IntersectsWith(Point p)
         {
-            double radius = eyes ? Math.Max(64, Radius) : Math.Max(32,Radius);
+            double radius = Math.Max(64, Radius);
             return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), (float)radius, new Vector2D(p.X, p.Y));
         }
     }
@@ -105,5 +105,6 @@ namespace WpfTest
     {
         Point Center { get; set; }
         object Tag { get; set; }
+        bool IntersectsWith(Point p);
     }
 }

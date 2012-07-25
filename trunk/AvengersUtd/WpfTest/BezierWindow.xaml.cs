@@ -237,7 +237,7 @@ namespace WpfTest
             };
 
             //test
-            bStop.Click += delegate
+            bStop.TouchUp += delegate
                            {
                                if (stopwatch.IsRunning)
                                    CompleteSession();
