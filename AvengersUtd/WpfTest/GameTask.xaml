@@ -10,13 +10,13 @@
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
         </StatusBar>
     <Canvas  x:Name="Canvas" Background="DarkGray">
-        <Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
+        <!--<Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         <Button x:Name="bStart" Canvas.Left="1792" Canvas.Top="56" Content="Start" 
                              Width="128" Height="32" 
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="104" Content="New session" 
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>-->
+            <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="8" Content="New session" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64">

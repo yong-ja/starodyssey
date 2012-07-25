@@ -34,8 +34,6 @@ namespace AvengersUtd.Odyssey.Graphics.Meshes
                 rObject.Material = Material;
         }
 
-
-
         Vector3 ISphere.AbsolutePosition
         {
             get { return Objects[0].AbsolutePosition; }
