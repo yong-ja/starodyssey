@@ -108,8 +108,10 @@ namespace WpfTest
 
         public void SetTracker(TrackerWrapper newTracker)
         {
+#if TRACKER
             tracker = newTracker;
             tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
+#endif
         }
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
@@ -346,7 +348,7 @@ namespace WpfTest
             const float maxSizeY = 5f;
             const float maxSizeZ = 5f;
             const float maxSizeX = 5f;
-            const float touchSnapRange = 0.15f;
+            const float touchSnapRange = 0.25f;
             const float eyeSnapRange = 0.25f;
             Vector3 pIntersection;
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;

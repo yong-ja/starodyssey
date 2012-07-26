@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using AvengersUtd.Odyssey.Geometry;
+using SlimDX;
 
 namespace WpfTest
 {
@@ -76,8 +77,15 @@ new PropertyMetadata(OnSideChanged));
 
         public bool IntersectsWith(Point p)
         {
-            double radius = Math.Max(32, Radius);
-            return Intersection.CirclePointTest(new Vector2D(Center.X, Center.Y), (float)radius, new Vector2D(p.X, p.Y));
+            double side = Math.Max(32, Side);
+
+            double xEvent = p.X;
+            double yEvent = p.Y;
+            double xPos = Center.X - side/2;
+            double yPos = Center.Y - side/2;
+
+            return (xEvent >= xPos && xEvent <= xPos + side) &&
+                   (yEvent >= yPos && yEvent <= yPos + side);
         }
     }
 }
