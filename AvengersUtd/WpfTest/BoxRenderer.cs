@@ -31,13 +31,14 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index;
+        static int index=0;
         private Button bNew;
         bool startingNewSession;
 
 
         private List<float[]> conditions = new List<float[]>
                                                {
+                                                   new[] {3f, 3f, 3f},
                                                    new[] {2f, 2f, 2f},
                                                    new[] {2f, 2f, 3.5f},
                                                    new[] {2f, 2f, 5f},
@@ -67,8 +68,14 @@ namespace WpfTest
                                                    new[] {5f, 5f, 2f},
                                                    new[] {5f, 5f, 3.5f},
                                                    new[] {5f, 5f, 5f},
-
                                                };
+
+        private Vector3[] povOffset = new Vector3[] {
+            new Vector3(0, 0.5f, 0f),
+            new Vector3(0f, 0.5f, -1.75f),
+            new Vector3(0f, 0f, -2.5f)
+        };
+
         static BoxRenderer()
         {
 #if TRACKER
@@ -98,24 +105,32 @@ namespace WpfTest
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             TrackerEvent.BoxSessionStart.Log(Session, sizes[0], sizes[1], sizes[2]);
+            Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
+            Camera.PositionV3 += sWidget.GetBoxOffset();
+            Camera.PositionV3 += new Vector3(0, 1.5f, 0);
             index++;
         }
 
+
+        Vector3 PointOnLine(Vector3 start, Vector3 dir, float distance)
+        {
+            return start + distance *(dir);
+        }
 
 
 
         void StartNew()
         {
             Hud.BeginDesign();
-            //Hud.Controls.Remove(lCountDown);
-            //bConnect.IsVisible = false;
-            //bTracking.IsVisible = false;
+
             bNew.Position = new Vector2(1930, 1090);
             Hud.EndDesign();
-            rp.SetTracker(tracker);
             rp.Reset();
+#if TRACKER
+            rp.SetTracker(tracker);
             tracker.Connect();
             tracker.StartTracking();
+#endif
             stopwatch.Start();
 
            
@@ -148,7 +163,7 @@ namespace WpfTest
                                      clock.Stop();
                                  }
                              };
-            Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
+            //Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
 
             Box box = new Box(1, 1, 1);
             sWidget = new ScalingWidget(box);
@@ -219,6 +234,18 @@ namespace WpfTest
                 Position = new Vector2(1760, 0)
             };
 
+            //Button bSession = new Button()
+            //{
+            //    Size = new System.Drawing.Size(120, 30),
+            //    Content = "Next",
+            //    Position = new Vector2(1760, 40)
+            //};
+            //bSession.MouseClick += (sender, e) =>
+            //{
+            //    BoxRenderer boxR = new BoxRenderer(Game.Context);
+            //    Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR); boxR.StartNew(); }));
+            //};
+
             lCountDown = new Label()
                          {
                              Content = "3",
@@ -235,6 +262,7 @@ namespace WpfTest
 
             //rp.Add(bConnect);
             //rp.Add(bTracking);
+            rp.Add(bSession);
             rp.Add(bNew);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 
@@ -277,7 +305,7 @@ namespace WpfTest
         public override void ProcessInput()
         {
             ////Camera.UpdateStates();
-            //Hud.ProcessKeyEvents();
+            Hud.ProcessKeyEvents();
         }
 
         protected override void OnDisposing(object sender, System.EventArgs e)

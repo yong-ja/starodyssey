@@ -19,12 +19,12 @@
             <Button x:Name="bNew" Canvas.Left="1792" Canvas.Top="8" Content="New session" 
                              Width="128" Height="32" 
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64">
+            <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64" Canvas.ZIndex="99">
             <Ellipse.RenderTransform>
                 <TranslateTransform X="4" Y="4"/>
             </Ellipse.RenderTransform>
         </Ellipse>
-            <Rectangle x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64">
+            <Rectangle x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64" Visibility="Hidden">
                 <Rectangle.RenderTransform>
                 <TranslateTransform X="4" Y="4"/>
                 </Rectangle.RenderTransform>

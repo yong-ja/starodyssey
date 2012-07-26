@@ -48,6 +48,10 @@ namespace WpfTest
         private readonly List<int[]> conditions = new List<int[]>
                                            {
                                                // minDistance, cpRotation, dotsOnOff
+                                               new[] {320, 0, 0 },
+                                               // to remove
+                                               new[] {128, 0, 1 },
+
                                                new[] {128, 0, 0 },
                                                new[] {128, 1, 0 },
                                                new[] {128, 2, 0 },
@@ -328,9 +332,9 @@ namespace WpfTest
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
             prevEyeLocation = newLocation;
 
-                LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
-                userDots[eyeIndex - 1].Center = newLocation;
-                UserCurve.SetPoint(newLocation, eyeIndex);
+            LogEvent.Engine.Write(string.Format("GP({0:f2},{1:f2}", e.GazePoint.X, e.GazePoint.Y));
+            userDots[eyeIndex - 1].Center = newLocation;
+            UserCurve.SetPoint(newLocation, eyeIndex);
         }
 
         static int GetEyeIndex(IEnumerable<IDot> dots)
@@ -378,13 +382,15 @@ namespace WpfTest
             {
                 return;
             }
+
+            if (knotPoints.Count < 2) return;
+
             IDot dot = knotPoints[e.TouchDevice];
             Point newLocation = e.GetTouchPoint(this).Position;
-            Point newCenter = new Point(newLocation.X , newLocation.Y );
-            dot.Center = newCenter;
+            dot.Center = newLocation;
 
             UserCurve.SetPoint(newLocation, (int)dot.Tag);
-            Status.Text = string.Format("TouchMove P[{0},{1}]", newLocation.X, newLocation.Y);
+            //Status.Text = string.Format("TouchMove P[{0},{1}]", newLocation.X, newLocation.Y);
         }
 
 
