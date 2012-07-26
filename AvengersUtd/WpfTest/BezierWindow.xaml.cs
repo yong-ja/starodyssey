@@ -40,6 +40,7 @@ namespace WpfTest
         int index;
         Marker endPoint;
         TrackerWrapper tracker;
+        bool gazeOn;
 
         private Point leftDot = new Point(256, 640);
         private Point middleDot = new Point(960,448);
@@ -47,35 +48,36 @@ namespace WpfTest
 
         private readonly List<int[]> conditions = new List<int[]>
                                            {
-                                               // minDistance, cpRotation, dotsOnOff
-                                               new[] {320, 0, 0 },
-                                               // to remove
-                                               new[] {128, 0, 1 },
+                                                new[] {320, 0, 0, 1 },
+                                                  new[] {320, 1, 1, 1 },
+                                                  new[] {320, 2, 0, 1 },
+                                                  new[] {320, 3, 0, 1 },
 
-                                               new[] {128, 0, 0 },
-                                               new[] {128, 1, 0 },
-                                               new[] {128, 2, 0 },
-                                               new[] {128, 3, 0 },
-                                               new[] {128, 4, 0 },
-                                               new[] {128, 5, 0 },
-                                               new[] {128, 0, 1 },
-                                               new[] {128, 1, 1 },
-                                               new[] {128, 2, 1 },
-                                               new[] {128, 3, 1 },
-                                               new[] {128, 4, 1 },
-                                               new[] {128, 5, 1 },
-                                               new[] {256, 0, 0 },
-                                               new[] {256, 1, 0 },
-                                               new[] {256, 2, 0 },
-                                               new[] {256, 3, 0 },
-                                               new[] {256, 4, 0 },
-                                               new[] {256, 5, 0 },
-                                               new[] {256, 0, 1 },
-                                               new[] {256, 1, 1 },
-                                               new[] {256, 2, 1 },
-                                               new[] {256, 3, 1 },
-                                               new[] {256, 4, 1 },
-                                               new[] {256, 5, 1 },
+                                               // minDistance, cpRotation, dotsOnOff
+                                               new[] {128, 0, 0, 0 },
+                                               new[] {128, 1, 0, 0 },
+                                               new[] {128, 2, 0, 0 },
+                                               new[] {128, 3, 0, 0 },
+                                               new[] {128, 4, 0, 0  },
+                                               new[] {128, 5, 0, 0 },
+                                               new[] {128, 0, 1, 0 },
+                                               new[] {128, 1, 1, 0 },
+                                               new[] {128, 2, 1, 0 },
+                                               new[] {128, 3, 1, 0 },
+                                               new[] {128, 4, 1, 0},
+                                               new[] {128, 5, 1, 0},
+                                               new[] {256, 0, 0, 0},
+                                               new[] {256, 1, 0, 0},
+                                               new[] {256, 2, 0, 0},
+                                               new[] {256, 3, 0, 0},
+                                               new[] {256, 4, 0, 0},
+                                               new[] {256, 5, 0, 0},
+                                               new[] {256, 0, 1, 0},
+                                               new[] {256, 1, 1, 0},
+                                               new[] {256, 2, 1, 0},
+                                               new[] {256, 3, 1, 0},
+                                               new[] {256, 4, 1, 0},
+                                               new[] {256, 5, 1, 0},
                                            };
 
         /// <summary>
@@ -120,6 +122,8 @@ namespace WpfTest
             if (condition[2] == 0)
                 ShowRefDots();
 
+            gazeOn = condition[3] == 0 ? true : false;
+
             TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2]);
             TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
             TrackerEvent.BezierPoint.Log("RefCP1", RefCurve.ControlPoint1.X, RefCurve.ControlPoint1.Y);
@@ -129,6 +133,7 @@ namespace WpfTest
             TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
             TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
             TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
+            TrackerEvent.BezierSessionStart.Write("GazeOn: " + gazeOn.ToString() + "\n");
         }
 
 
@@ -220,8 +225,11 @@ namespace WpfTest
                     Dispatcher.BeginInvoke(new Action(delegate
                                                       {
 #if TRACKER
-                                                          tracker.Connect();
-                                                          tracker.StartTracking();
+                                                          if (gazeOn)
+                                                            {
+                                                                tracker.Connect();
+                                                                tracker.StartTracking();
+                                                          }
 #endif
                         ToggleButtons();
                         NewSession();
@@ -265,7 +273,8 @@ namespace WpfTest
             TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
             TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
-            tracker.StopTracking();
+            if (gazeOn)
+                tracker.StopTracking();
             Canvas.Children.Add(tComplete);
             index++;
         }
