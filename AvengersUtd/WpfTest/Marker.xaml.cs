@@ -31,7 +31,7 @@ namespace WpfTest
         {
             Point p = (Point)args.NewValue;
             Marker marker = (Marker)obj;
-            marker.RenderTransform = new TranslateTransform(p.X - marker.Rectangle.Width/2, p.Y - marker.Rectangle.Height / 2);
+            marker.RenderTransform = new TranslateTransform(p.X - marker.Width/2, p.Y - marker.Height / 2);
         }
         public static readonly DependencyProperty FillProperty =
             DependencyProperty.Register("Fill", typeof(Brush), typeof(Marker),
@@ -70,9 +70,9 @@ new PropertyMetadata(OnSideChanged));
             if (marker == null)
                 return;
 
-            marker.Rectangle.Width = marker.Rectangle.Height = ((double)e.NewValue);
-            marker.RenderTransform = new TranslateTransform(marker.Center.X - marker.Rectangle.Width / 2, 
-                marker.Center.Y - marker.Rectangle.Height / 2);
+            marker.Width = marker.Height = marker.Rectangle.Width = marker.Rectangle.Height = ((double)e.NewValue);
+            marker.RenderTransform = new TranslateTransform(marker.Center.X - marker.Width / 2, 
+                marker.Center.Y - marker.Height / 2);
         }
 
         public bool IntersectsWith(Point p)
