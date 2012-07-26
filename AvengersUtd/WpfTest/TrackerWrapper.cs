@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Tobii.Eyetracking.Sdk;
 using Tobii.Eyetracking.Sdk.Time;
 using AvengersUtd.Odyssey.Utils.Logging;
 using Tobii.Eyetracking.Sdk.Exceptions;
 using System.Windows;
-using AvengersUtd.Odyssey;
 using SlimDX;
-using System.Diagnostics.Contracts;
 
 namespace WpfTest
 {
@@ -17,13 +13,14 @@ namespace WpfTest
     {
         private readonly EyetrackerBrowser trackerBrowser;
         private readonly Clock clock;
-        Window window;
-        IEyetracker tracker;
-        EyetrackerInfo trackerInfo;
-        private string connectionName;
+        private Window window;
+        private IEyetracker tracker;
+        private EyetrackerInfo trackerInfo;
         private SyncManager syncManager;
-        AverageWindow smoother;
-        public bool IsTracking { get; private set;}
+        private string connectionName;
+        private readonly AverageWindow smoother;
+        public bool IsTracking { get; private set; }
+        public bool IsConnected { get; private set; }
 
         public Vector2 GazePoint { get; private set; }
 
@@ -47,9 +44,9 @@ namespace WpfTest
             smoother = new AverageWindow(10);
         }
 
-        public void SetWindow(Window window)
+        public void SetWindow(Window hostWindow)
         {
-            this.window = window;
+            this.window = hostWindow;
         }
 
         public void StartBrowsing()
@@ -96,7 +93,6 @@ namespace WpfTest
         {
             // When an eyetracker is updated we simply create a new 
             // listviewitem and replace the old one
-
         }
 
         public void DisconnectTracker()
@@ -105,7 +101,8 @@ namespace WpfTest
             {
                 tracker.GazeDataReceived -= tracker_GazeDataReceived;
                 tracker.Dispose();
-                //_connectionName = string.Empty;
+                connectionName = string.Empty;
+                IsConnected = IsTracking = false;
                 //_isTracking = false;
 
                 syncManager.Dispose();
@@ -133,7 +130,6 @@ namespace WpfTest
                 tracker = EyetrackerFactory.CreateEyetracker(info);
                 tracker.ConnectionError += HandleConnectionError;
                 connectionName = info.ProductId;
-
                 syncManager = new SyncManager(clock, info);
 
                 tracker.GazeDataReceived += tracker_GazeDataReceived;
@@ -141,19 +137,18 @@ namespace WpfTest
                 LogEvent.Engine.Write(string.Format("Connected to {0} FrameRate {1}.", info.Model, tracker.GetFramerate()));
                 tracker.SetFramerate(60);
                 ListFramerates();
+                IsConnected = true;
             }
             catch (EyetrackerException ee)
             {
                 if (ee.ErrorCode == 0x20000402)
                 {
                     LogEvent.Engine.Write("Failed to upgrade protocol. " +
-                        "This probably means that the firmware needs" +
-                        " to be upgraded to a version that supports the new sdk.");
+                                          "This probably means that the firmware needs" +
+                                          " to be upgraded to a version that supports the new sdk.");
                 }
                 else
-                {
                     LogEvent.Engine.Write("Eyetracker responded with error " + ee);
-                }
 
                 DisconnectTracker();
             }
@@ -164,10 +159,10 @@ namespace WpfTest
             }
         }
 
-        void ListFramerates()
+        private void ListFramerates()
         {
             IList<float> framerates = tracker.EnumerateFramerates();
-            for (int i=0; i<framerates.Count; i++)
+            for (int i = 0; i < framerates.Count; i++)
             {
                 float f = framerates[i];
                 Console.WriteLine(string.Format("Framerate #[{0}] = {1:f2}", i, f));
@@ -175,10 +170,14 @@ namespace WpfTest
         }
 
 
+        /// <summary>
+        /// This is the function that handles the gaze data received from the tracker
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tracker_GazeDataReceived(object sender, GazeDataEventArgs e)
         {
-            // Send the gaze data to the track status control.
-            GazeDataItem gd = e.GazeDataItem;
+            // 'left' and 'right' are the eyes
             Point2D leftGaze = e.GazeDataItem.LeftGazePoint2D;
             Point2D rightGaze = e.GazeDataItem.RightGazePoint2D;
 
@@ -187,14 +186,13 @@ namespace WpfTest
             if (rightGaze.X == -1)
                 rightGaze = leftGaze;
 
-            Point gazePoint = new Point((leftGaze.X + rightGaze.X) / 2, (leftGaze.Y + rightGaze.Y) / 2);
-            Point screenPoint = new Point(gazePoint.X * SystemParameters.PrimaryScreenWidth, gazePoint.Y * SystemParameters.PrimaryScreenHeight);
+            Point gazePoint = new Point((leftGaze.X + rightGaze.X)/2, (leftGaze.Y + rightGaze.Y)/2);
+            Point screenPoint = new Point(gazePoint.X*SystemParameters.PrimaryScreenWidth,
+                                          gazePoint.Y*SystemParameters.PrimaryScreenHeight);
             Point clientPoint = window.PointFromScreen(screenPoint);
 
             Point smoothedPoint = smoother.Smooth(clientPoint);
-            GazePoint = new Vector2((float)smoothedPoint.X, (float)smoothedPoint.Y);
-            //bool leftValid = e.GazeDataItem.LeftValidity == 1 ? true : false;
-            //bool rightValid = e.GazeDataItem.RightValidity == 1 ? true : false;
+            GazePoint = new Vector2((float) smoothedPoint.X, (float) smoothedPoint.Y);
 
             OnGazeDataReceived(this, new GazeEventArgs(GazePoint, e.GazeDataItem.LeftValidity, e.GazeDataItem.RightValidity));
         }
@@ -203,6 +201,5 @@ namespace WpfTest
         {
             LogEvent.Engine.Write(string.Format("Framerate changed to {0}.", e.Framerate));
         }
-
     }
 }
