@@ -205,28 +205,7 @@ namespace WpfTest
             
             Hud.BeginDesign();
 
-            //Game.Logger.Init();
-            //Game.Logger.Log("Prova1");
-            //Game.Logger.Log("Prova2");
-            //Game.Logger.Log("Prova3");
-            //Game.Logger.Log("Prova4");
-            //Game.Logger.Log("Prova5");
-
-            //bConnect = new Button()
-            //{
-            //    Size = new System.Drawing.Size(120, 30),
-            //    Content = "Connect",
-            //    Position = new Vector2(1800, 0)
-            //};
-
-
-            //bTracking = new Button()
-            //{
-            //    Size = new System.Drawing.Size(120, 30),
-            //    Content = "Start",
-            //    Position = new Vector2(1800, 40)
-            //};
-
+           
             bNew = new Button()
             {
                 Size = new System.Drawing.Size(120, 30),
@@ -262,7 +241,7 @@ namespace WpfTest
 
             //rp.Add(bConnect);
             //rp.Add(bTracking);
-            rp.Add(bSession);
+            //rp.Add(bSession);
             rp.Add(bNew);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 
