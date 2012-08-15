@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Path x:Name="Path" Stroke="Red" StrokeThickness="6" >
         <Path.Data>
-            <PathGeometry>
+            <PathGeometry x:Name="PathGeometry">
                 <PathGeometry.Figures>
                     <PathFigureCollection>
                         <PathFigure x:Name="PathFigure" StartPoint="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(StartPoint)}">
