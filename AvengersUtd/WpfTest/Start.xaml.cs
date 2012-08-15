@@ -43,5 +43,12 @@ namespace WpfTest
             window.Show();
             this.Close();
         }
+
+        private void TestTask_Click(object sender, RoutedEventArgs e)
+        {
+            TestWindow window = new TestWindow();
+            window.Show();
+            this.Close();
+        }
     }
 }
