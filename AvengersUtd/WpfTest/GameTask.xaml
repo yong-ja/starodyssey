@@ -24,6 +24,9 @@
                 <TranslateTransform X="4" Y="4"/>
             </Ellipse.RenderTransform>
         </Ellipse>
+            <local:Dot Radius="64" Stroke="Red" Center="960,448" x:Name="eyeArea"/>
+            <local:Marker Side="128" Stroke="Blue" Fill="Transparent" Center="256, 640" x:Name="lFingerArea" />
+            <local:Marker Side="128" Stroke="Green" Fill="Transparent" Center="1664, 640" x:Name="rFingerArea" />
             <Rectangle x:Name="Indicator" Fill="Red" Stroke="Black" StrokeThickness="2" Width="64" Height="64" Visibility="Hidden">
                 <Rectangle.RenderTransform>
                 <TranslateTransform X="4" Y="4"/>

@@ -18,6 +18,8 @@ using Microsoft.Surface.Presentation;
 using Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation.Input;
 using AvengersUtd.Odyssey.Utils.Logging;
+using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace WpfTest
 {
@@ -95,35 +97,68 @@ namespace WpfTest
             //bStart.Click += (sender, e) => tracker.StartTracking();
             bNew.Click += delegate
                           {
-                              CountDownWpf countdownTimer = new CountDownWpf();
-                              countdownTimer.Elapsed += delegate
-                                                        {
-                                                            Dispatcher.BeginInvoke(new Action(delegate
-                                                            {
+                              eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Visible;
+                              Thread thread = new Thread(CheckPreconditions);
+                              thread.SetApartmentState(ApartmentState.STA);
+                              thread.Start();
+                          };
+            Indicator.MouseUp += (sender, e) => CompleteSession();
+        }
+
+        void StartNew()
+        {
+            CountDownWpf countdownTimer = new CountDownWpf();
+            countdownTimer.Elapsed += delegate
+            {
+                Dispatcher.BeginInvoke(new Action(delegate
+                {
+                    eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Hidden;
+                    
+
 #if TRACKER
                                                           tracker.Connect();
                                                           tracker.StartTracking();
 #endif
-                                                                ToggleButtons();
-                                                                                                  NewSession();
-                                                                                                  Canvas.Children.Remove(
-                                                                                                      countdownTimer);
-                                                                                                  countdownTimer.Reset();
-                                                                                                  clock.Start();
-                                                                                                  stopwatch.Start();
-                                                                                              }
-                                                                                       ));
+                    ToggleButtons();
+                    NewSession();
+                    Canvas.Children.Remove(
+                        countdownTimer);
+                    countdownTimer.Reset();
+                    clock.Start();
+                    stopwatch.Start();
+                }));
+            };
+            Canvas.Children.Add(countdownTimer);
+            countdownTimer.Start();
+            if (Canvas.Children.Contains(tComplete))
+                Canvas.Children.Remove(tComplete);
+        }
 
-                                                        };
-                              Canvas.Children.Add(countdownTimer);
-                              countdownTimer.Start();
-                              if (Canvas.Children.Contains(tComplete))
-                                Canvas.Children.Remove(tComplete);
+        void CheckPreconditions()
+        {
+            bool done = false;
+            while (!done)
+            {
+                if (touchPoints.Count != 2)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
 
-                          };
-            Indicator.MouseUp += (sender, e) => CompleteSession();
+                Point[] pArray = touchPoints.Values.ToArray();
+                Point tp1 = pArray[0];
+                Point tp2 = pArray[1];
 
-            NewSession();
+                Dispatcher.BeginInvoke(new Action(delegate
+                {
+
+                    bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
+                    bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
+                    done = lFinger && rFinger;
+                }));
+            }
+
+            Dispatcher.BeginInvoke(new Action(StartNew));
         }
 
         void CompleteSession()

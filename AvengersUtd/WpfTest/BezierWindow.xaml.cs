@@ -124,7 +124,7 @@ namespace WpfTest
             TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
             TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
             TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
-            TrackerEvent.BezierSessionStart.Write("GazeOn: " + gazeOn.ToString() + "\n");
+            TrackerEvent.Misc.Write("GazeOn: " + gazeOn.ToString() + "\n");
 
             prevTime = default(DateTime);
             completionTimer.Start();
@@ -187,6 +187,8 @@ namespace WpfTest
 
         void Init()
         {
+            Bezier.Dispatcher = Dispatcher;
+
             completionTimer = new Timer(250);
             completionTimer.Elapsed += completionTimer_Elapsed;
             

@@ -15,6 +15,7 @@ using AvengersUtd.Odyssey.UserInterface.Controls;
 using AvengersUtd.Odyssey.UserInterface;
 using BoundingBox = AvengersUtd.Odyssey.Graphics.Meshes.BoundingBox;
 using AvengersUtd.Odyssey.Geometry;
+using AvengersUtd.Odyssey.Graphics;
 
 namespace WpfTest
 {
@@ -24,6 +25,7 @@ namespace WpfTest
         static TrackerWrapper tracker;
         FixedNode fNodeBox;
         BoundingBox bbox;
+        Box box;
         ScalingWidget sWidget;
         private Label lCountDown;
         private Timer clock;
@@ -31,49 +33,46 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=0;
+        static int index=1;
+        static int iAxis =2;
         private Button bNew;
+        static bool started;
         bool startingNewSession;
 
 
         private List<float[]> conditions = new List<float[]>
                                                {
-                                                   new[] {3f, 3f, 3f},
-                                                   new[] {2f, 2f, 2f},
-                                                   new[] {2f, 2f, 3.5f},
-                                                   new[] {2f, 2f, 5f},
-                                                   new[] {2f, 3.5f, 2f},
-                                                   new[] {2f, 3.5f, 3.5f},
-                                                   new[] {2f, 3.5f, 5f},
-                                                   new[] {2f, 5f, 2f},
-                                                   new[] {2f, 5f, 3.5f,},
-                                                   new[] {2f, 5f, 5f},
-
-                                                   new[] {3.5f, 2f, 2f},
-                                                   new[] {3.5f, 2f, 3.5f},
-                                                   new[] {3.5f, 2f, 5f},
-                                                   new[] {3.5f, 3.5f, 2f},
-                                                   new[] {3.5f, 3.5f, 3.5f},
-                                                   new[] {3.5f, 3.5f, 5f},
-                                                   new[] {3.5f, 5f, 2f},
-                                                   new[] {3.5f, 5f, 3.5f},
-                                                   new[] {3.5f, 5f, 5f},
-
-                                                   new[] {5f, 2f, 2f},
-                                                   new[] {5f, 2f, 3.5f},
-                                                   new[] {5f, 2f, 5f},
-                                                   new[] {5f, 3.5f, 2f},
-                                                   new[] {5f, 3.5f, 3.5f},
-                                                   new[] {5f, 3.5f, 5f},
-                                                   new[] {5f, 5f, 2f},
-                                                   new[] {5f, 5f, 3.5f},
                                                    new[] {5f, 5f, 5f},
+                                                   new[] {5f, 5f, 1f},
+                                                   new[] {5f, 1f, 5f},
+                                                   //...
+                                                   new[] {1f, 5f, 5f},
+
                                                };
 
-        private Vector3[] povOffset = new Vector3[] {
-            new Vector3(0, 0.5f, 0f),
-            new Vector3(0f, 0.5f, -1.75f),
-            new Vector3(0f, 0f, -2.5f)
+        private List<float[]> boxSizes = new List<float[]>
+        {
+                                                   new[] {1f, 1f, 1f},
+                                                   new[] {1f, 1f, 5f},
+                                                   new[] {1f, 5f, 1f},
+                                                   //...
+                                                   new[] {5f, 1f, 1f}
+        };
+
+        private List<bool[]> arrowConditions = new List<bool[]>
+        {
+            new [] { true, true, true},
+            new [] { true, true, false},
+            new [] { true, false, true},
+            // .. 
+            new [] { false, true, true}
+        };
+
+        private List<float[]> axes = new List<float[]> 
+        {
+            new [] { 0f, 0f, 0f},
+            new [] { -15f, 30f, 0f},
+            new [] {15f, 0f, -30}
         };
 
         static BoxRenderer()
@@ -94,33 +93,44 @@ namespace WpfTest
         void NewSession()
         {
 
-            float[] sizes = conditions[index];
-            float width = sizes[0];
-            float height = sizes[1];
-            float depth = sizes[2];
-            bbox = new BoundingBox(width, height, depth);
+            float[] frameSize = conditions[index];
+
+            bbox = new BoundingBox(frameSize[0], frameSize[1], frameSize[2]);
             //bbox = new BoundingBox(2.5f);
             bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
             sWidget.SetFrame(bbox);
+            bool[] arrowDirections = arrowConditions[index];
+            sWidget.ChooseArrangement(arrowDirections[0], arrowDirections[1], arrowDirections[2]);
             fNodeBox.Position = sWidget.GetBoxOffset();
 
-            TrackerEvent.BoxSessionStart.Log(Session, sizes[0], sizes[1], sizes[2]);
+            TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += sWidget.GetBoxOffset();
-            Camera.PositionV3 += new Vector3(0, 1.5f, 0);
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, box.Height / 2, -bbox.Depth / 2 +0.5f);
+            float offset;
+            switch (iAxis)
+            { 
+                default:
+                case 0:
+                    offset = 0;
+                    break;
+                case 1:
+                    offset=0;
+                    break;
+                case 2: offset = 2f;
+                    break;
+            }
+
+            Camera.PositionV3 += new Vector3(0, 1.5f + offset, 0);
             index++;
+           
         }
 
-
-        Vector3 PointOnLine(Vector3 start, Vector3 dir, float distance)
-        {
-            return start + distance *(dir);
-        }
 
 
 
         void StartNew()
         {
+            started = true;
             Hud.BeginDesign();
 
             bNew.Position = new Vector2(1930, 1090);
@@ -131,6 +141,7 @@ namespace WpfTest
             tracker.Connect();
             tracker.StartTracking();
 #endif
+            
             stopwatch.Start();
 
            
@@ -143,8 +154,11 @@ namespace WpfTest
             //bTracking.IsVisible = true;
             countdown = 3;
             bNew.Position=new Vector2(1760, 0);
+#if TRACKER
             tracker.StopTracking();
+#endif
             TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
+            started = false;
        }
 
         public override void Init()
@@ -165,12 +179,21 @@ namespace WpfTest
                              };
             //Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
 
-            Box box = new Box(1, 1, 1);
+
+            float[] boxSize = boxSizes[index];
+            box = new Box(1, 1, 1);
+            box.ScalingValues = new Vector3(boxSize[0], boxSize[1], boxSize[2]);
             sWidget = new ScalingWidget(box);
 
-           
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            FixedNode fNodeFrame = new FixedNode { Label = "fGrid", Position = Vector3.Zero };
+            float[] axis = axes[iAxis];
+            FixedNode fNodeFrame = new FixedNode { 
+                Label = "fGrid",
+                Position = Vector3.Zero,
+                Rotation = Quaternion.RotationYawPitchRoll(MathHelper.DegreesToRadians(axis[0]),
+                MathHelper.DegreesToRadians(axis[1]),
+                MathHelper.DegreesToRadians(axis[2]))
+            };
 
             fNodeBox = new FixedNode
             {
@@ -237,6 +260,7 @@ namespace WpfTest
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
             rp.SetFrame((IBox)bbox);
+            rp.SetAxis(axis);
             Hud.Add(rp);
 
             //rp.Add(bConnect);
@@ -278,7 +302,10 @@ namespace WpfTest
         public override void Render()
         {
             //Game.Logger.Update();
-            Scene.Display();
+            if (!started)
+                Scene.Display(CommandType.Render);
+            else
+                Scene.Display();
         }
 
         public override void ProcessInput()

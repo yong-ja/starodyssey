@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace WpfTest
 {
     
     public static class Bezier
     {
+        internal static Dispatcher Dispatcher;
+        delegate Point[] CompareOperation(PathGeometry user, PathGeometry target, double progress);
+
         public static double ComputeLength(PathGeometry path)
         {
             PathGeometry flattenedPath = path.GetFlattenedPathGeometry();
@@ -43,6 +47,8 @@ namespace WpfTest
 
             for (int t=1; t<=100; t++)
             {
+                //Dispatcher.BeginInvoke(CompareOperation, new object[]{user,target, (double)t/100 });
+
                 Point[] points = ComparePoints(user, target, (double) t/100);
                 Point pU = points[0];
                 Point pT1 = points[1];

@@ -29,9 +29,11 @@ namespace WpfTest
         readonly Window window;
         readonly Dictionary<TouchDevice, Vector3> points;
         readonly Dictionary<TouchDevice, IRenderable> arrows;
+        float[] axis;
         Vector2 prevEyeLocation;
         private IRenderable box;
         private IRenderable eyeArrow;
+        Vector3 startingSValues;
         static TrackerWrapper tracker;
         TexturedIcon crosshair;
         ScalingWidget sWidget;
@@ -229,8 +231,6 @@ namespace WpfTest
                 DisableArrow(eyeArrow);
                 eyeArrow = null;
             }
-
-            
         }
 
         protected override void OnTouchDown(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -340,8 +340,8 @@ namespace WpfTest
             if (completed) 
                 return;
 
-            if (!(gazeLock && arrows.Count == 2))
-                return;
+            //if (!(gazeLock && arrows.Count == 2))
+            //    return;
 
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
@@ -350,19 +350,38 @@ namespace WpfTest
             const float maxSizeX = 5f;
             const float touchSnapRange = 0.25f;
             const float eyeSnapRange = 0.25f;
+            Matrix rotation = Matrix.RotationYawPitchRoll(MathHelper.DegreesToRadians(axis[0]),
+                MathHelper.DegreesToRadians(axis[1]),
+                MathHelper.DegreesToRadians(axis[2]));
+            Matrix rotationInv = Matrix.Invert(rotation);
+
             Vector3 pIntersection;
+            Vector3 tAxis;
+            Vector3 pTransform;
+            Vector3 vPosRot = Vector3.Transform(box.AbsolutePosition, rotationInv).ToVector3();
             FixedNode fNode = (FixedNode)arrowHead.ParentNode.Parent;
             float delta;
             bool test;
+
+
 
             float snapRange = eyeMove ? eyeSnapRange : touchSnapRange;
             switch (arrow.Name)
             {
                 case "YArrow":
+                    tAxis = Vector3.Transform(-Vector3.UnitZ, rotation).ToVector3();
                     pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
+                    pTransform = Vector3.Transform(pIntersection, rotationInv).ToVector3();
+
                     if (test)
                     {
-                        delta = pIntersection.Y - (box.AbsolutePosition.Y + box.ScalingValues.Y / 2);
+                        delta = pTransform.Y - (vPosRot.Y + box.ScalingValues.Y / 2);
+
+                        if (sWidget.YInverted)
+                            delta = Math.Min(maxSizeY, delta);
+                        else
+                            delta = Math.Min(minSize, delta);
+
                         if (yLock)
                             return;
 
@@ -395,19 +414,26 @@ namespace WpfTest
                                 TrackerEvent.ArrowLock.Log(yArrow.Name, "Touch");
                         }
                         else
-                            fNode.Position = new Vector3(fNode.Position.X, -axisOffset + pIntersection.Y, fNode.Position.Z);
+                            fNode.Position = new Vector3(fNode.Position.X, pTransform.Y - axisOffset, fNode.Position.Z);
 
-                        box.PositionV3 = new Vector3(box.PositionV3.X,box.ScalingValues.Y / 2 - 0.5f, box.PositionV3.Z);
+                        box.PositionV3 = new Vector3(box.PositionV3.X,box.ScalingValues.Y / 2 - startingSValues.Y/2, box.PositionV3.Z);
                     }
                     break;
 
                 case "XArrow":
+                    tAxis = Vector3.Transform(-Vector3.UnitZ, rotation).ToVector3();
                     pIntersection = GetIntersection(location, -Vector3.UnitZ, arrowHead, out test);
+                    pTransform = Vector3.Transform(pIntersection, rotationInv).ToVector3();
+
                     if (test)
                     {
-                        delta = sWidget.XInverted ? - pIntersection.X + (box.AbsolutePosition.X - box.ScalingValues.X/2) :
-                            pIntersection.X - (box.AbsolutePosition.X + box.ScalingValues.X / 2);
-                        delta = Math.Min(minSize, delta);
+                        delta = //sWidget.XInverted ? - pIntersection.X + (box.AbsolutePosition.X - box.ScalingValues.X/2) :
+                            pTransform.X - (vPosRot.X + box.ScalingValues.X / 2);
+
+                        if (sWidget.XInverted)
+                            delta = Math.Min(maxSizeX, delta);
+                        else
+                            delta = Math.Min(minSize, delta);
 
                         if (xLock)
                             return;
@@ -442,27 +468,35 @@ namespace WpfTest
                         }
                         else
                         {
-                            fNode.Position = new Vector3(pIntersection.X - axisOffset, fNode.Position.Y, fNode.Position.Z);
-                            if (sWidget.XInverted)
-                            {
-                                FixedNode fNodeZ = (FixedNode)sWidget.SelectByName("ZArrow").Objects[0].ParentNode.Parent;
-                                FixedNode fNodeY = (FixedNode)sWidget.SelectByName("YArrow").Objects[0].ParentNode.Parent;
-                                fNodeZ.Position = new Vector3(fNode.Position.X, fNodeZ.Position.Y, fNodeZ.Position.Z);
-                                fNodeY.Position = new Vector3(fNode.Position.X, fNodeY.Position.Y, fNodeY.Position.Z);
-                            }
+                            fNode.Position = new Vector3(pTransform.X - axisOffset, fNode.Position.Y, fNode.Position.Z);
+                            //if (sWidget.XInverted)
+                            //{
+                            //    FixedNode fNodeZ = (FixedNode)sWidget.SelectByName("ZArrow").Objects[0].ParentNode.Parent;
+                            //    FixedNode fNodeY = (FixedNode)sWidget.SelectByName("YArrow").Objects[0].ParentNode.Parent;
+                            //    fNodeZ.Position = new Vector3(fNode.Position.X, fNodeZ.Position.Y, fNodeZ.Position.Z);
+                            //    fNodeY.Position = new Vector3(fNode.Position.X, fNodeY.Position.Y, fNodeY.Position.Z);
+                            //}
                         }
-                        box.PositionV3 = sWidget.XInverted ?
-                            new Vector3(-(box.ScalingValues.X / 2 - 0.5f), box.PositionV3.Y, box.PositionV3.Z) :
-                            new Vector3(box.ScalingValues.X / 2 - 0.5f, box.PositionV3.Y, box.PositionV3.Z);
+                        box.PositionV3 = 
+                            //sWidget.XInverted ?
+                        //    new Vector3(-(box.ScalingValues.X / 2 - 0.5f), box.PositionV3.Y, box.PositionV3.Z) :
+                            new Vector3(box.ScalingValues.X / 2 - startingSValues.X/2, box.PositionV3.Y, box.PositionV3.Z);
                     }
                     break;
 
                 case "ZArrow":
-                    pIntersection = GetIntersection(location, Vector3.UnitY, arrowHead, out test);
+
+                    tAxis = Vector3.Transform(Vector3.UnitY, rotation).ToVector3();
+                    pIntersection = GetIntersection(location, tAxis, arrowHead, out test);
+                    pTransform = Vector3.Transform(pIntersection, Matrix.Invert(rotation)).ToVector3();
+       
                     if (test)
                     {
-                        delta = pIntersection.Z - (box.AbsolutePosition.Z + box.ScalingValues.Z / 2);
-                        delta = Math.Min(minSize, delta);
+                        delta = pTransform.Z - (vPosRot.Z + box.ScalingValues.Z/2);// * box.ScalingValues.Z) ;
+                        if (sWidget.ZInverted)
+                            delta = Math.Min(maxSizeZ, delta);
+                        else
+                            delta = Math.Min(minSize, delta);
 
                         if (zLock)
                             return;
@@ -498,8 +532,8 @@ namespace WpfTest
                                 TrackerEvent.ArrowLock.Log(zArrow.Name, "Touch");
                         }
                         else
-                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pIntersection.Z - axisOffset);
-                        box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - 0.5f);
+                            fNode.Position = new Vector3(fNode.Position.X, fNode.Position.Y, pTransform.Z - axisOffset);
+                        box.PositionV3 = new Vector3(box.PositionV3.X, box.PositionV3.Y, box.ScalingValues.Z / 2 - startingSValues.Z/2);
                     }
                     break;
 
@@ -569,6 +603,7 @@ namespace WpfTest
         public void SetBox(IRenderable box)
         {
             this.box = box;
+            startingSValues = box.ScalingValues;
         }
 
         public void Reset()
@@ -579,5 +614,10 @@ namespace WpfTest
             gazeLock = false;
         }
 
+
+        internal void SetAxis(float[] axis)
+        {
+            this.axis = axis;
+        }
     }
 }
