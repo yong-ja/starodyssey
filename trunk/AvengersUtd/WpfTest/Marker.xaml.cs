@@ -87,5 +87,25 @@ new PropertyMetadata(OnSideChanged));
             return (xEvent >= xPos && xEvent <= xPos + side) &&
                    (yEvent >= yPos && yEvent <= yPos + side);
         }
+
+        public static readonly DependencyProperty StrokeProperty =
+            DependencyProperty.Register("Stroke", typeof(Brush), typeof(Marker),
+        new PropertyMetadata(OnStrokeChanged));
+
+        public Brush Stroke
+        {
+            set { SetValue(StrokeProperty, value); }
+            get { return (Brush)GetValue(StrokeProperty); }
+
+        }
+
+        private static void OnStrokeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Marker marker = sender as Marker;
+            if (marker == null)
+                return;
+
+            marker.Rectangle.Stroke = (Brush)e.NewValue;
+        }
     }
 }

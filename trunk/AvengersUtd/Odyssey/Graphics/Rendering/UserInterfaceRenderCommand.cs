@@ -55,6 +55,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             : base(renderer, new UIMaterial(),
                 new RenderableCollection(UIMaterial.ItemsDescription, new [] {rNode}))
         {
+            CommandType = CommandType.UserInterfaceRenderCommand;
             this.hud = hud;
             textMaterial = new TextMaterial();
             this.rNode = rNode;

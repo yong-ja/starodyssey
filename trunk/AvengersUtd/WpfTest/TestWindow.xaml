@@ -7,11 +7,17 @@
   <Canvas Background="DarkGray">
         <Ellipse x:Name="SourceCircle" Width="92" Height="92" Fill="Red"/>
         <Rectangle x:Name="SourceSquare" Width="92" Height="92" Fill="Blue" />
-        <Ellipse x:Name="TargetCircle" Width="92" Height="92" Fill="Transparent" Stroke="Black" StrokeThickness="4"/>
-        <Rectangle x:Name="TargetSquare" Width="92" Height="92" Fill="Transparent" Stroke="Black" StrokeThickness="4" />
+        <Ellipse x:Name="TargetCircle" Width="128" Height="128" 
+                 Fill="Transparent" Stroke="Black" StrokeThickness="4" StrokeDashArray="2"/>
+        <Rectangle x:Name="TargetSquare" Width="128" Height="128" 
+                   Fill="Transparent" Stroke="Black" StrokeThickness="4" StrokeDashArray="2" />
         <Border x:Name="bCopy" Width ="256" Height="64" Canvas.Left="800" Canvas.Top="16" 
                 Background="LightGray" BorderBrush="Gray" BorderThickness="1">
             <TextBlock FontSize="32" Text="Copy" HorizontalAlignment="Center" Foreground="Black"/>
+        </Border>
+        <Border x:Name="bMove" Width ="256" Height="64" Canvas.Left="800" Canvas.Top="92" 
+                Background="LightGray" BorderBrush="Gray" BorderThickness="1">
+            <TextBlock FontSize="32" Text="Move" HorizontalAlignment="Center" Foreground="Black"/>
         </Border>
     </Canvas>
 </s:SurfaceWindow>

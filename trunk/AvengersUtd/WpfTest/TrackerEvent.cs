@@ -27,6 +27,7 @@ namespace WpfTest
         public static TrackerEvent PointSessionStart= new TrackerEvent("TrackerDesc", "Start:PointSession {0}, Size:{1:f2}, Distance:{2:f2}");
         public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerDesc", "End:PointSession {0}, Time:{1:f3}");
         public static TrackerEvent PointIntersection = new TrackerEvent("TrackerDesc", "Point {0} intersected by {1}");
+        public static TrackerEvent Misc = new TrackerEvent("TrackerDesc", "{0}");
         
         protected TrackerEvent(string source, string format)
             : base(source, format)

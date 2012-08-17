@@ -10,7 +10,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     {
         bool disposed;
         
-        public CommandType CommandType { get; private set; }
+        public CommandType CommandType { get; internal set; }
 
         public bool Disposed
         {
