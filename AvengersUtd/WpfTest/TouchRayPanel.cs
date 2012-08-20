@@ -139,6 +139,13 @@ namespace WpfTest
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
+                    //if (!gazeArrow.Name.StartsWith("Y"))
+                    //{
+                    //    DisableArrow(gazeArrow);
+                    //    eyeArrow = null;
+                    //    return;
+                    //}
+
                     if (gazeArrow.Snapped)
                     {
                         gazeEvent = "GazeSnapped" + tempArrow.Name;
@@ -340,8 +347,8 @@ namespace WpfTest
             if (completed) 
                 return;
 
-            //if (!(gazeLock && arrows.Count == 2))
-            //    return;
+            if (!(gazeLock && arrows.Count == 2))
+                return;
 
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
             const float minSize = 1f;
