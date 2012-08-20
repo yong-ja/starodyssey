@@ -103,6 +103,7 @@ namespace WpfTest
                               thread.Start();
                           };
             Indicator.MouseUp += (sender, e) => CompleteSession();
+            eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Hidden;
         }
 
         void StartNew()
@@ -172,6 +173,14 @@ namespace WpfTest
             TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
             tracker.StopTracking();
+
+            if (targets != null && targets.Count > 0)
+            {
+                foreach (UIElement d in targets)
+                    Canvas.Children.Remove(d);
+                targets.Clear();
+            }
+
         }
 
         void clock_Elapsed(object sender, ElapsedEventArgs e)
