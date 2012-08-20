@@ -91,8 +91,8 @@ namespace WpfTest
 
             //Curve 4 Long
             Point c3p0 = CirclePoint(leftDot, 256, 225);
-            Point c3p1 = CirclePoint(middleDot, 256, 225);
-            Point c3p2 = CirclePoint(rightDot, 256, 45);
+            Point c3p1 = CirclePoint(middleDot, 256, 45);
+            Point c3p2 = CirclePoint(rightDot, 256, 315);
 
             userCurves = new List<Point[]>
             {
@@ -118,9 +118,9 @@ namespace WpfTest
             Point rC2p2 = CirclePoint(rightDot, 256, 90);
 
             //Curve 4 Long
-            Point rC3p0 = CirclePoint(leftDot, 256, 0);
-            Point rC3p1 = CirclePoint(middleDot, 256, 0);
-            Point rC3p2 = CirclePoint(rightDot, 256, 180);
+            Point rC3p0 = CirclePoint(leftDot, 256, 90);
+            Point rC3p1 = CirclePoint(middleDot, 256, 270);
+            Point rC3p2 = CirclePoint(rightDot, 256, 90);
 
             refCurves = new List<Point[]>
             {
@@ -534,7 +534,7 @@ namespace WpfTest
                 return;
             }
 
-            if (knotPoints.Count < 2) return;
+            if (gazeOn && knotPoints.Count < 2) return;
 
             IDot dot = knotPoints[e.TouchDevice];
             Point newLocation = e.GetTouchPoint(this).Position;

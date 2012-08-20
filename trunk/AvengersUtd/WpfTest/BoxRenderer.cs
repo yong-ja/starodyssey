@@ -34,7 +34,7 @@ namespace WpfTest
         TouchRayPanel rp;
         private static int countdown = 3;
         static int index=0;
-        static int iAxis =0;
+        static int iAxis =2;
         private Button bNew;
         static bool started = true;
         bool startingNewSession;
@@ -231,7 +231,7 @@ namespace WpfTest
            
             bNew = new Button()
             {
-                Size = new System.Drawing.Size(120, 30),
+                Size = new System.Drawing.Size(120, 60),
                 Content = "New Session",
                 Position = new Vector2(1760, 0)
             };
