@@ -33,30 +33,60 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=2;
-        static int iAxis =2;
+        static int index=0;
         private Button bNew;
-        static bool started = true;
+        static bool started = false;
         bool startingNewSession;
 
+        float[] frameSize;
+        float[] boxSize;
 
-        private List<float[]> conditions = new List<float[]>
-                                               {
-                                                   new[] {5f, 5f, 5f},
-                                                   new[] {5f, 5f, 1f},
-                                                   new[] {5f, 1f, 5f},
-                                                   //...
-                                                   new[] {1f, 5f, 5f},
 
-                                               };
+        //private List<float[]> conditions = new List<float[]>
+        //                                       {
+        //                                           new[] {5f, 5f, 5f},
+        //                                           new[] {5f, 5f, 1f},
+        //                                           new[] {5f, 1f, 5f},
+        //                                           //...
+        //                                           new[] {1f, 5f, 5f},
 
-        private List<float[]> boxSizes = new List<float[]>
-        {
-                                                   new[] {1f, 1f, 1f},
-                                                   new[] {1f, 1f, 5f},
-                                                   new[] {1f, 5f, 1f},
-                                                   //...
-                                                   new[] {5f, 1f, 1f}
+        //                                       };
+
+        //private List<float[]> boxSizes = new List<float[]>
+        //{
+        //                                           new[] {1f, 1f, 1f},
+        //                                           new[] {1f, 1f, 5f},
+        //                                           new[] {1f, 5f, 1f},
+        //                                           //...
+        //                                           new[] {5f, 1f, 1f}
+        //};
+
+        float[] offsets = new[] { 
+            2.5f,
+            2.5f,
+            3.5f,
+            2.5f,
+            1.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f, //9
+            2.5f,
+            1.5f,
+            3.5f,
+            2.5f,
+            2.5f,
+            1.5f,
+            2.5f,
+            1.5f,
+            1.5f, //18
+            2.5f,
+            2.5f,
+            1.5f,
+            2.5f,
+            1.5f,
+            1.5f,//24
+
         };
 
         private List<bool[]> arrowConditions = new List<bool[]>
@@ -64,9 +94,14 @@ namespace WpfTest
             new [] { true, true, true},
             new [] { true, true, false},
             new [] { true, false, true},
-            // .. 
-            new [] { false, true, true}
+            new [] { true, false, false},
+            new [] { false, true, true},
+            new [] { false, true, false},
+            new [] { false, false, true},
+            new [] { false, false, false}
         };
+
+        private List<int[]> conditions = new List<int[]>();
 
         private List<float[]> axes = new List<float[]> 
         {
@@ -77,6 +112,7 @@ namespace WpfTest
 
         static BoxRenderer()
         {
+            
 #if TRACKER
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
@@ -88,45 +124,45 @@ namespace WpfTest
 
         public BoxRenderer(IDeviceContext deviceContext)
             : base(deviceContext)
-        { }
+        {
+            InitConditions();
+        }
+
+        public void InitConditions()
+        {
+
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < arrowConditions.Count; j++)
+                    for (int k = 0; k < axes.Count; k++)
+                        conditions.Add(new int[] { i, j, k });
+        }
 
         void NewSession()
         {
+            int[] condition = conditions[index];
+            bool[] arrowCondition = arrowConditions[condition[1]];
 
-            float[] frameSize = conditions[index];
+            frameSize = new float[]
+            {
+                arrowCondition[0] ? 5.0f : 1f,
+                arrowCondition[1] ? 5.0f : 1f,
+                arrowCondition[2] ? 5.0f : 1f
+            };
 
             bbox = new BoundingBox(frameSize[0], frameSize[1], frameSize[2]);
             //bbox = new BoundingBox(2.5f);
             bbox.PositionV3 = new Vector3(0, bbox.Height / 2 - BoundingBox.DefaultThickness,  0);
             sWidget.SetFrame(bbox);
-            bool[] arrowDirections = arrowConditions[index];
+            bool[] arrowDirections = arrowConditions[condition[1]];
             sWidget.ChooseArrangement(arrowDirections[0], arrowDirections[1], arrowDirections[2]);
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, 0.5f, -bbox.Depth / 2 +0.5f);
-            float offset;
-            switch (iAxis)
-            { 
-                default:
-                case 0:
-                    offset = 0;
-                    break;
-                case 1:
-                    offset=1;
-                    break;
-                case 2: offset = 1f;
-                    break;
-            }
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[index%24], -bbox.Depth / 2 +0.5f);
 
-            Camera.PositionV3 += new Vector3(0, 1.5f + offset, 0);
-            index++;
-           
+            //Camera.PositionV3 += new Vector3(0, 1.5f + , 0);
         }
-
-
-
 
         void StartNew()
         {
@@ -144,7 +180,6 @@ namespace WpfTest
             
             stopwatch.Start();
 
-           
         }
 
         private void Stop()
@@ -159,6 +194,7 @@ namespace WpfTest
 #endif
             TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
             started = false;
+            index++;
        }
 
         public override void Init()
@@ -178,15 +214,21 @@ namespace WpfTest
                                  }
                              };
             //Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
-
-
-            float[] boxSize = boxSizes[index];
+            int[] condition = conditions[index];
+            bool[] arrowCondition = arrowConditions[condition[1]];
+            boxSize = new float[]
+            {
+                arrowCondition[0] ? 1.0f : 5f,
+                arrowCondition[1] ? 1.0f : 5f,
+                arrowCondition[2] ? 1.0f : 5f
+            };
             box = new Box(1, 1, 1);
             box.ScalingValues = new Vector3(boxSize[0], boxSize[1], boxSize[2]);
             sWidget = new ScalingWidget(box);
 
             RenderableNode rNodeBox = new RenderableNode(box) { Label = "RBox" };
-            float[] axis = axes[iAxis];
+            float[] axis = axes[condition[2]];
+            
             FixedNode fNodeFrame = new FixedNode { 
                 Label = "fGrid",
                 Position = Vector3.Zero,
@@ -236,17 +278,19 @@ namespace WpfTest
                 Position = new Vector2(1760, 0)
             };
 
-            //Button bSession = new Button()
-            //{
-            //    Size = new System.Drawing.Size(120, 30),
-            //    Content = "Next",
-            //    Position = new Vector2(1760, 40)
-            //};
-            //bSession.MouseClick += (sender, e) =>
-            //{
-            //    BoxRenderer boxR = new BoxRenderer(Game.Context);
-            //    Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR); boxR.StartNew(); }));
-            //};
+            Button bSession = new Button()
+            {
+                Size = new System.Drawing.Size(120, 30),
+                Content = "Next",
+                Position = new Vector2(1760, 40)
+            };
+            bSession.MouseClick += (sender, e) =>
+            {
+                index++;
+                BoxRenderer boxR = new BoxRenderer(Game.Context);
+                Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR); boxR.StartNew(); }));
+            };
+            
 
             lCountDown = new Label()
                          {
@@ -262,10 +306,10 @@ namespace WpfTest
             rp.SetFrame((IBox)bbox);
             rp.SetAxis(axis);
             Hud.Add(rp);
-
+            //rp.Add(bSession);
             //rp.Add(bConnect);
             //rp.Add(bTracking);
-            //rp.Add(bSession);
+            //
             rp.Add(bNew);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 
@@ -317,6 +361,8 @@ namespace WpfTest
         protected override void OnDisposing(object sender, System.EventArgs e)
         {
             base.OnDisposing(sender, e);
+            foreach (TraceListener tl in Trace.Listeners)
+                tl.Dispose();
 #if TRACKER
             tracker.DisconnectTracker();
 #endif
