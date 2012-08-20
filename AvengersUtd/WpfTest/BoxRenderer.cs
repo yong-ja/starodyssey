@@ -33,7 +33,7 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=0;
+        static int index=2;
         static int iAxis =2;
         private Button bNew;
         static bool started = true;
@@ -105,7 +105,7 @@ namespace WpfTest
 
             TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, box.Height / 2, -bbox.Depth / 2 +0.5f);
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, 0.5f, -bbox.Depth / 2 +0.5f);
             float offset;
             switch (iAxis)
             { 
@@ -114,9 +114,9 @@ namespace WpfTest
                     offset = 0;
                     break;
                 case 1:
-                    offset=0;
+                    offset=1;
                     break;
-                case 2: offset = 2f;
+                case 2: offset = 1f;
                     break;
             }
 
