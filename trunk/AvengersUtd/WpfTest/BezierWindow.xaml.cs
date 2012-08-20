@@ -355,7 +355,9 @@ namespace WpfTest
             double delta = (now - prevTime).TotalMilliseconds;
 
             if (delta > 333)
-                CompleteSession();
+            {
+                Dispatcher.BeginInvoke(new Action( delegate {CompleteSession();}));
+            }
         }
 
         static float ComputeDistance(Point p1, Point p2)
@@ -368,13 +370,15 @@ namespace WpfTest
         {
             stopwatch.Stop();
             completionTimer.Stop();
-            ToggleButtons();
-            TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
-            TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
-            TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
-            TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
-            
-            TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+            Dispatcher.BeginInvoke(new Action(delegate
+            {
+                ToggleButtons();
+                TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
+                TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
+                TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
+                TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
+                TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+            }));
             stopwatch.Reset();
 #if TRACKER
             if (gazeOn)
