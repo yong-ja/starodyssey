@@ -332,7 +332,7 @@ namespace WpfTest
             //test
             bStop.Click += delegate
                            {
-                               //if (stopwatch.IsRunning)
+                               if (stopwatch.IsRunning)
                                    CompleteSession();
                                NewSession();
                            };
