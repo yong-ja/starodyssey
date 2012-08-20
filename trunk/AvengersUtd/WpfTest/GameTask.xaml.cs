@@ -45,7 +45,7 @@ namespace WpfTest
         // Radii 8, 64, 128
         // Distances 256, 512, 768
 
-        private float[] sizes = new[] { 8f, 64f, 128f };
+        private float[] sizes = new[] { 4f, 16f, 32f };
         private float[] distances = new[] { 256f, 512f, 768f };
 
         private readonly List<int[]> conditions = new List<int[]>();
@@ -225,7 +225,7 @@ namespace WpfTest
             }
 
             Point[] points = GeoHelper.ChooseTrianglePoints(new Point(960, 540), maxDistance, radius);
-            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = radius, Center = points[0], Tag = 1 };
+            Dot target1 = new Dot() { Fill = Brushes.Red, Radius = 32, Center = points[0], Tag = 1 };
             Marker target2 = new Marker() { Fill = Brushes.Blue, Side= radius*2, Center = points[1], Tag = 2 };
             Marker target3 = new Marker() { Fill = Brushes.Green, Side = radius* 2, Center = points[2], Tag = 3 };
 
