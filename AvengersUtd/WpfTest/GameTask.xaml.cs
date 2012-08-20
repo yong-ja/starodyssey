@@ -36,6 +36,7 @@ namespace WpfTest
         Dictionary<TouchDevice, Point> touchPoints;
         List<IDot> targets;
         TrackerWrapper tracker;
+        Point lastGaze;
 
         // Radii 8, 64, 128
         // Distances 256, 512, 768
@@ -97,6 +98,12 @@ namespace WpfTest
             //bStart.Click += (sender, e) => tracker.StartTracking();
             bNew.Click += delegate
                           {
+                              if (Canvas.Children.Contains(tComplete))
+                                  Canvas.Children.Remove(tComplete);
+#if TRACKER
+                              tracker.Connect();
+                              tracker.StartTracking();
+#endif
                               eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Visible;
                               Thread thread = new Thread(CheckPreconditions);
                               thread.SetApartmentState(ApartmentState.STA);
@@ -116,10 +123,7 @@ namespace WpfTest
                     eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Hidden;
                     
 
-#if TRACKER
-                                                          tracker.Connect();
-                                                          tracker.StartTracking();
-#endif
+
                     ToggleButtons();
                     NewSession();
                     Canvas.Children.Remove(
@@ -131,8 +135,7 @@ namespace WpfTest
             };
             Canvas.Children.Add(countdownTimer);
             countdownTimer.Start();
-            if (Canvas.Children.Contains(tComplete))
-                Canvas.Children.Remove(tComplete);
+            
         }
 
         void CheckPreconditions()
@@ -149,13 +152,16 @@ namespace WpfTest
                 Point[] pArray = touchPoints.Values.ToArray();
                 Point tp1 = pArray[0];
                 Point tp2 = pArray[1];
+                Point gaze = lastGaze;
 
                 Dispatcher.BeginInvoke(new Action(delegate
                 {
 
                     bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
                     bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
-                    done = lFinger && rFinger;
+                    bool eyes = eyeArea.IntersectsWith(gaze);
+                    done = lFinger && rFinger && eyes;
+
                 }));
             }
 
@@ -271,6 +277,8 @@ namespace WpfTest
             TranslateTransform transform = (TranslateTransform)CrossHair.RenderTransform;
             transform.X = e.GazePoint.X - gazeRadius;
             transform.Y = e.GazePoint.Y - gazeRadius;
+
+            lastGaze = new Point(transform.X, transform.Y);
 
             //if (knotPoints.Count < 2)
             //    return;
