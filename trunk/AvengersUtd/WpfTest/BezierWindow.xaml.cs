@@ -129,10 +129,10 @@ namespace WpfTest
                 new Point[] { rC3p0, rC3p1, rC3p2}
             };
 
-            for (int t = 0; t < 2; t++)
-                for (int k = 0; k < 2; k++)
-                  for (int j = 0; j < 6; j++)
-                    for (int i = 0; i < 4; i++)
+            for (int t = 0; t < 2; t++) // Gaze On/off
+                for (int k = 0; k < 2; k++) // Show Ref Points
+                  for (int j = 0; j < 6; j++) // EP rotation
+                    for (int i = 0; i < 4; i++) // Curves
                          conditions.Add(new int[] {i, j, k, t });
 
         }
@@ -461,7 +461,12 @@ namespace WpfTest
             else
                 TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
 
-            int eyeIndex = GetEyeIndex(knotPoints.Values);
+            //int eyeIndex = GetEyeIndex(knotPoints.Values);
+            int[] condition = conditions[index];
+            int cpIndex = condition[2];
+            int[] cpCondition = cpConditions[cpIndex];
+            int eyeIndex = cpCondition[1] + 1;
+
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 
