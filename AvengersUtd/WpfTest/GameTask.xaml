@@ -32,7 +32,7 @@
                 <TranslateTransform X="4" Y="4"/>
                 </Rectangle.RenderTransform>
         </Rectangle>
-            <TextBlock x:Name="ClockLabel" Canvas.Left="1650" Canvas.Top="920" FontSize="64" Text="000.0" Foreground="Black"/>
+            <TextBlock x:Name="ClockLabel" Canvas.Left="1650" Canvas.Top="920" FontSize="64" Text="000.0" Foreground="Black" Visibility="Hidden"/>
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>
