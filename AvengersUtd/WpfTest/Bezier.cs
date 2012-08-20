@@ -47,9 +47,9 @@ namespace WpfTest
 
             for (int t=1; t<=100; t++)
             {
-                //Dispatcher.BeginInvoke(CompareOperation, new object[]{user,target, (double)t/100 });
+                Point[] points = (Point[])Dispatcher.Invoke(new CompareOperation(ComparePoints), new object[] { user, target, (double)t / 100 });
 
-                Point[] points = ComparePoints(user, target, (double) t/100);
+                //Point[] points = ComparePoints(user, target, (double) t/100);
                 Point pU = points[0];
                 Point pT1 = points[1];
                 Point pT2 = points[2];

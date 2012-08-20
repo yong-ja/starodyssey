@@ -21,7 +21,7 @@ namespace WpfTest
     {
         private Timer completionTimer;
         private DateTime prevTime;
-        private const double Threshold = 100;
+        private const double Threshold = 32;
         Dictionary<TouchDevice, IDot> knotPoints;
         List<IDot> userDots;
         List<IDot> refDots;
@@ -39,39 +39,22 @@ namespace WpfTest
         private readonly Point middleDot = new Point(960,448);
         private readonly Point rightDot = new Point(1664, 640);
 
-        private readonly List<int[]> conditions = new List<int[]>
-                                           {
-                                                new[] {320, 0, 0, 1 },
-                                                  new[] {320, 1, 1, 1 },
-                                                  new[] {320, 2, 0, 1 },
-                                                  new[] {320, 3, 0, 1 },
+        private readonly List<int[]> cpConditions = new List<int[]>
+        {
+            new[] { 0, 1,2},
+            new[] {0 , 2,1},
+            new[] {1, 0, 2},
+            new[] {1, 2, 0},
+            new[] { 2, 0, 1},
+            new[] {2, 1, 0}
+        };
 
-                                               // minDistance, cpRotation, dotsOnOff
-                                               new[] {128, 0, 0, 0 },
-                                               new[] {128, 1, 0, 0 },
-                                               new[] {128, 2, 0, 0 },
-                                               new[] {128, 3, 0, 0 },
-                                               new[] {128, 4, 0, 0  },
-                                               new[] {128, 5, 0, 0 },
-                                               new[] {128, 0, 1, 0 },
-                                               new[] {128, 1, 1, 0 },
-                                               new[] {128, 2, 1, 0 },
-                                               new[] {128, 3, 1, 0 },
-                                               new[] {128, 4, 1, 0},
-                                               new[] {128, 5, 1, 0},
-                                               new[] {256, 0, 0, 0},
-                                               new[] {256, 1, 0, 0},
-                                               new[] {256, 2, 0, 0},
-                                               new[] {256, 3, 0, 0},
-                                               new[] {256, 4, 0, 0},
-                                               new[] {256, 5, 0, 0},
-                                               new[] {256, 0, 1, 0},
-                                               new[] {256, 1, 1, 0},
-                                               new[] {256, 2, 1, 0},
-                                               new[] {256, 3, 1, 0},
-                                               new[] {256, 4, 1, 0},
-                                               new[] {256, 5, 1, 0},
-                                           };
+        private List<Point[]> userCurves;
+        private List<Point[]> refCurves;
+
+        readonly bool[] gazeActivated = new[] { true, false};
+
+        private readonly List<int[]> conditions = new List<int[]>(96);
 
         /// <summary>
         /// Default constructor.
@@ -82,9 +65,84 @@ namespace WpfTest
 
             // Add handlers for window availability events
             AddWindowAvailabilityHandlers();
+            InitConditions();
             Init();
             NewSession();
             
+        }
+
+        void InitConditions()
+        {
+            // Curve 1 short
+            Point c0p0 = CirclePoint(leftDot, 128, 315);
+            Point c0p1 = CirclePoint(middleDot, 128, 45);
+            Point c0p2 = CirclePoint(rightDot, 128, 225);
+
+            //Curve 2 short
+            Point c1p0 = CirclePoint(leftDot, 128, 45);
+            Point c1p1 = CirclePoint(middleDot, 128, 225);
+            Point c1p2 = CirclePoint(rightDot, 128, 135);
+
+            //Curve 3 Long
+            Point c2p0 = CirclePoint(leftDot, 256, 135);
+            Point c2p1 = CirclePoint(middleDot, 256, 315);
+            Point c2p2 = CirclePoint(rightDot, 256, 225);
+
+            //Curve 4 Long
+            Point c3p0 = CirclePoint(leftDot, 256, 225);
+            Point c3p1 = CirclePoint(middleDot, 256, 225);
+            Point c3p2 = CirclePoint(rightDot, 256, 45);
+
+            userCurves = new List<Point[]>
+            {
+                new Point[] { c0p0, c0p1, c0p2},
+                new Point[] { c1p0, c1p1, c1p2},
+                new Point[] { c2p0, c2p1, c2p2},
+                new Point[] { c3p0, c3p1, c3p2}
+            };
+
+            // Curve 1 short
+            Point rC0p0 = CirclePoint(leftDot, 128, 90);
+            Point rC0p1 = CirclePoint(middleDot, 128, 180);
+            Point rC0p2 = CirclePoint(rightDot, 128, 0);
+
+            //Curve 2 short
+            Point rC1p0 = CirclePoint(leftDot, 128, 180);
+            Point rC1p1 = CirclePoint(middleDot, 128, 90);
+            Point rC1p2 = CirclePoint(rightDot, 128, 270);
+
+            //Curve 3 Long
+            Point rC2p0 = CirclePoint(leftDot, 256, 270);
+            Point rC2p1 = CirclePoint(middleDot, 256, 180);
+            Point rC2p2 = CirclePoint(rightDot, 256, 90);
+
+            //Curve 4 Long
+            Point rC3p0 = CirclePoint(leftDot, 256, 0);
+            Point rC3p1 = CirclePoint(middleDot, 256, 0);
+            Point rC3p2 = CirclePoint(rightDot, 256, 180);
+
+            refCurves = new List<Point[]>
+            {
+                new Point[] { rC0p0, rC0p1, rC0p2},
+                new Point[] { rC1p0, rC1p1, rC1p2},
+                new Point[] { rC2p0, rC2p1, rC2p2},
+                new Point[] { rC3p0, rC3p1, rC3p2}
+            };
+
+            for (int t = 0; t < 2; t++)
+                for (int k = 0; k < 2; k++)
+                  for (int j = 0; j < 6; j++)
+                    for (int i = 0; i < 4; i++)
+                         conditions.Add(new int[] {i, j, k, t });
+
+        }
+
+        static Point CirclePoint(Point center, float radius, float angle)
+        {
+            double x = center.X + radius * Math.Cos(MathHelper.DegreesToRadians(angle));
+            double y = center.Y + radius * Math.Sin(MathHelper.DegreesToRadians(angle));
+
+            return new Point(x,y);
         }
 
 
@@ -104,18 +162,44 @@ namespace WpfTest
             if (endPoint != null)
                 Canvas.Children.Remove(endPoint);
 
-            int[] condition = conditions[index];
-            int radius = condition[0];
+            if (Canvas.Children.Contains(tComplete))
+                Canvas.Children.Remove(tComplete);
 
-            AssignDots(condition[1], radius);
+            int[] condition = conditions[index];
+
+            Point[] userPoints = userCurves[condition[0]];
+            Point[] refPoints = refCurves[condition[0]];
+            int[] cpIndex = cpConditions[condition[1]];
+
+            UserCurve.ControlPoint1 = userPoints[cpIndex[0]];
+            UserCurve.ControlPoint2 = userPoints[cpIndex[1]];
+            UserCurve.EndPoint = userPoints[cpIndex[2]];
+
+            RefCurve.ControlPoint1 = refPoints[cpIndex[0]];
+            RefCurve.ControlPoint2 = refPoints[cpIndex[1]];
+            RefCurve.EndPoint = refPoints[cpIndex[2]];
+
             ShowUserDots();
 
             if (condition[2] == 0)
                 ShowRefDots();
 
-            gazeOn = condition[3] == 0;
+            gazeOn = gazeActivated[condition[3]];
 
-            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2]);
+            //int radius = condition[0];
+
+            //AssignDots(condition[1], radius);
+            //ShowUserDots();
+
+            //if (condition[2] == 0)
+            //    ShowRefDots();
+
+            //gazeOn = condition[3] == 0;
+
+            //lCondition.Text += string.Format("\nShowRef: {0} GazeOn: {1} C: {2} Er:{3}",
+            //    condition[2], condition[3], condition[0], condition[1]);
+
+            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2], condition[3]);
             TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
             TrackerEvent.BezierPoint.Log("RefCP1", RefCurve.ControlPoint1.X, RefCurve.ControlPoint1.Y);
             TrackerEvent.BezierPoint.Log("RefCP2", RefCurve.ControlPoint2.X, RefCurve.ControlPoint2.Y);
@@ -124,7 +208,6 @@ namespace WpfTest
             TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
             TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
             TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
-            TrackerEvent.Misc.Write("GazeOn: " + gazeOn.ToString() + "\n");
 
             prevTime = default(DateTime);
             completionTimer.Start();
@@ -247,10 +330,11 @@ namespace WpfTest
             };
 
             //test
-            bStop.TouchUp += delegate
+            bStop.Click += delegate
                            {
-                               if (stopwatch.IsRunning)
+                               //if (stopwatch.IsRunning)
                                    CompleteSession();
+                               NewSession();
                            };
 
         }
@@ -292,10 +376,28 @@ namespace WpfTest
             
             TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
             stopwatch.Reset();
+#if TRACKER
             if (gazeOn)
                 tracker.StopTracking();
+#endif
             Canvas.Children.Add(tComplete);
             index++;
+
+            if (index == 96)
+            {
+                lCondition.Text = "Thanks, this task is now complete.";
+                return;
+            }
+
+            if (index % 24 == 0)
+            {
+
+                int[] condition = conditions[index + 1];
+                lCondition.Text = string.Format("Please have a break\nNext Block[{2}]: Gaze {0} Dots {1}",
+                    condition[3] == 0 ? "On" : "Off", condition[2] == 0 ? "Visible" : "NOT visible", index);
+            }
+            else
+                lCondition.Text = string.Empty;
         }
 
         void ToggleButtons()

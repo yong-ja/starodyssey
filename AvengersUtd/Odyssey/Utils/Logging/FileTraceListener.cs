@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
             return Path.Combine(Path.GetDirectoryName(fileName),
                Path.GetFileNameWithoutExtension(fileName) + "_" +
-               timeStamp.ToString("yyyymmdd") + Path.GetExtension(fileName));
+               timeStamp.ToString("yyyyMMdd") + Path.GetExtension(fileName));
         }
 
         protected override void Dispose(bool disposing)
