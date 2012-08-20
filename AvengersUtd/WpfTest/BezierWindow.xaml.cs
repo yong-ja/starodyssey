@@ -21,7 +21,7 @@ namespace WpfTest
     {
         private Timer completionTimer;
         private DateTime prevTime;
-        private const double Threshold = 32;
+        private static double Threshold = 32;
         Dictionary<TouchDevice, IDot> knotPoints;
         List<IDot> userDots;
         List<IDot> refDots;
@@ -31,6 +31,7 @@ namespace WpfTest
         const double RadiusSize = 4 * Dot.DefaultRadius;
         int gazeRadius;
         int index;
+        int eyeIndex;
         Marker endPoint;
         TrackerWrapper tracker;
         bool gazeOn;
@@ -179,12 +180,23 @@ namespace WpfTest
             RefCurve.ControlPoint2 = refPoints[cpIndex[1]];
             RefCurve.EndPoint = refPoints[cpIndex[2]];
 
+            if (cpIndex[0] == 1)
+                eyeIndex = 1;
+            else if (cpIndex[1] == 1)
+                eyeIndex = 2;
+            else if (cpIndex[2] == 1)
+                eyeIndex = 3;
+
             ShowUserDots();
 
-            if (condition[2] == 0)
-                ShowRefDots();
+            //if (condition[2] == 0)
+            //    ShowRefDots();
 
             gazeOn = gazeActivated[condition[3]];
+
+            //if (!gazeOn)
+            //    Threshold = 8;
+            //else Threshold = 32;
 
             //int radius = condition[0];
 
@@ -342,7 +354,7 @@ namespace WpfTest
         void completionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             double distance = Bezier.FindError(UserCurve.PathGeometry, RefCurve.PathGeometry);
-            TrackerEvent.BezierDistance.Log("CvEr", distance);
+            TrackerEvent.BezierDistance.Log("CvErFinal", distance);
             bool check = distance < Threshold;
 
             if (!check)
@@ -369,6 +381,7 @@ namespace WpfTest
         void CompleteSession()
         {
             stopwatch.Stop();
+            index++;
             completionTimer.Stop();
             Dispatcher.BeginInvoke(new Action(delegate
             {
@@ -377,7 +390,7 @@ namespace WpfTest
                 TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
                 TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
                 TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
-                TrackerEvent.BezierSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+                TrackerEvent.BezierSessionEnd.Log(index-1, stopwatch.ElapsedMilliseconds / 1000d);
             }));
             stopwatch.Reset();
 #if TRACKER
@@ -385,7 +398,7 @@ namespace WpfTest
                 tracker.StopTracking();
 #endif
             Canvas.Children.Add(tComplete);
-            index++;
+            
 
             if (index == 96)
             {
@@ -463,9 +476,9 @@ namespace WpfTest
 
             //int eyeIndex = GetEyeIndex(knotPoints.Values);
             int[] condition = conditions[index];
-            int cpIndex = condition[2];
+            int cpIndex = condition[1];
             int[] cpCondition = cpConditions[cpIndex];
-            int eyeIndex = cpCondition[1] + 1;
+            //int eyeIndex = cpCondition.ToList().IndexOf(1);
 
 
             Point newLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
