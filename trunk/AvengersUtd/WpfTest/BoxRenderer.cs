@@ -21,6 +21,7 @@ namespace WpfTest
 {
     public class BoxRenderer : Renderer
     {
+        public static DateTime startTime, endTime;
         public static int Session { get { return index; } }
         static TrackerWrapper tracker;
         FixedNode fNodeBox;
@@ -157,6 +158,7 @@ namespace WpfTest
             sWidget.ChooseArrangement(arrowDirections[0], arrowDirections[1], arrowDirections[2]);
             fNodeBox.Position = sWidget.GetBoxOffset();
 
+            startTime = DateTime.Now;
             TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[index%24], -bbox.Depth / 2 +0.5f);
@@ -184,6 +186,7 @@ namespace WpfTest
 
         private void Stop()
         {
+            endTime = DateTime.Now;
             stopwatch.Stop();
             //bConnect.IsVisible = true;
             //bTracking.IsVisible = true;

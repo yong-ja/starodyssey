@@ -202,6 +202,9 @@
     <Compile Include="BezierCurve.xaml.cs">
       <DependentUpon>BezierCurve.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoxPerformance.xaml.cs">
+      <DependentUpon>BoxPerformance.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoxRenderer.cs" />
     <Compile Include="CanonicalSpline.cs" />
     <Compile Include="CanonicalSplineHelper.cs" />
@@ -259,6 +262,10 @@
     <Page Include="BezierWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoxPerformance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CountDownWpf.xaml">
       <SubType>Designer</SubType>
