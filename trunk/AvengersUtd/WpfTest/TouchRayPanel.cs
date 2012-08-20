@@ -79,9 +79,12 @@ namespace WpfTest
             {
                 Position = new Vector2(400, 300),
                 TextDescriptionClass = "Large",
-                Content = BoxRenderer.Session % 24 == 0 ?
-                "Session complete" : "Session complete\nPlease have a break."
+                Content = "Session complete"
             };
+
+            if (BoxRenderer.Session > 0 && BoxRenderer.Session % 24 == 0) 
+                label.Content += "\nPlease have a break.";
+
 
             if (BoxRenderer.Session == 96)
                 label.Content = "Thanks, this task is now complete"; 
@@ -512,7 +515,7 @@ namespace WpfTest
                         //if (zLock)
                         //    return;
 
-                        zLock = false;
+                        //zLock = false;
 
                         box.ScalingValues += new Vector3(0, 0, delta);
                         float axisOffset = sWidget.GetBoxOffset().Z;
