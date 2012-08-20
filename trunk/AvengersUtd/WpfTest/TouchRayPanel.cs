@@ -389,8 +389,8 @@ namespace WpfTest
                         else
                             delta = Math.Min(minSize, delta);
 
-                        if (yLock)
-                            return;
+                        //if (yLock)
+                        //    return;
 
                         box.ScalingValues += new Vector3(0, delta, 0);
                         float axisOffset = sWidget.GetBoxOffset().Y;
@@ -442,8 +442,8 @@ namespace WpfTest
                         else
                             delta = Math.Min(minSize, delta);
 
-                        if (xLock)
-                            return;
+                        //if (xLock)
+                        //    return;
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         float axisOffset = sWidget.GetBoxOffset().X;
@@ -505,8 +505,8 @@ namespace WpfTest
                         else
                             delta = Math.Min(minSize, delta);
 
-                        if (zLock)
-                            return;
+                        //if (zLock)
+                        //    return;
 
                         zLock = false;
 
