@@ -79,8 +79,12 @@ namespace WpfTest
             {
                 Position = new Vector2(400, 300),
                 TextDescriptionClass = "Large",
-                Content = "Session complete"
+                Content = BoxRenderer.Session % 24 == 0 ?
+                "Session complete" : "Session complete\nPlease have a break."
             };
+
+            if (BoxRenderer.Session == 96)
+                label.Content = "Thanks, this task is now complete"; 
 
             completed = true;
 
