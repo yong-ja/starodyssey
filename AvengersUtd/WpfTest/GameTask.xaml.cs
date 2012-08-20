@@ -150,14 +150,14 @@ namespace WpfTest
                 Point gaze = lastGaze;
 
                 Vector2D vTp1 = new Vector2D(tp1.X, tp1.Y);
-                Vector2D vtp2 = new Vector2D(tp2.X, tp2.Y);
+                Vector2D vTp2 = new Vector2D(tp2.X, tp2.Y);
                 Vector2D vGaze = new Vector2D(gaze.X, gaze.Y);
 
                 //Dispatcher.BeginInvoke(new Action(delegate
                 //{
                 bool lFinger = Intersection.CirclePointTest(new Vector2D(leftDot.X, leftDot.Y), 64, vTp1);
-                bool rFinger = Intersection.CirclePointTest(new Vector2D(rightDot.X, rightDot.Y), 64, vTp1);
-                bool eyes = Intersection.CirclePointTest(new Vector2D(middleDot.X, middleDot.Y), 64, vTp1);
+                bool rFinger = Intersection.CirclePointTest(new Vector2D(rightDot.X, rightDot.Y), 64, vTp2);
+                bool eyes = Intersection.CirclePointTest(new Vector2D(middleDot.X, middleDot.Y), 64, vGaze);
 
                     //bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
                     //bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
@@ -213,8 +213,11 @@ namespace WpfTest
         {
             if (index == conditions.Count)
                 return;
-            float radius = conditions[index][1];
-            float maxDistance = conditions[index][2];
+
+            int rIndex = conditions[index][1];
+            int dIndex = conditions[index][2];
+            float radius = sizes[rIndex];
+            float maxDistance = distances[dIndex];
             Indicator.Fill = Brushes.Red;
 
             if (targets != null && targets.Count > 0)
