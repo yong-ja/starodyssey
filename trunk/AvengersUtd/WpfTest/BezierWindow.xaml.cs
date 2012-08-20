@@ -76,7 +76,7 @@ namespace WpfTest
         {
             // Curve 1 short
             Point c0p0 = CirclePoint(leftDot, 128, 315);
-            Point c0p1 = CirclePoint(middleDot, 128, 45);
+            Point c0p1 = CirclePoint(middleDot, 128, 225);
             Point c0p2 = CirclePoint(rightDot, 128, 225);
 
             //Curve 2 short
@@ -104,7 +104,7 @@ namespace WpfTest
 
             // Curve 1 short
             Point rC0p0 = CirclePoint(leftDot, 128, 90);
-            Point rC0p1 = CirclePoint(middleDot, 128, 180);
+            Point rC0p1 = CirclePoint(middleDot, 128, 90);
             Point rC0p2 = CirclePoint(rightDot, 128, 0);
 
             //Curve 2 short
@@ -189,8 +189,8 @@ namespace WpfTest
 
             ShowUserDots();
 
-            //if (condition[2] == 0)
-            //    ShowRefDots();
+            if (condition[2] == 0)
+                ShowRefDots();
 
             gazeOn = gazeActivated[condition[3]];
 
@@ -425,14 +425,14 @@ namespace WpfTest
 
         private void ShowUserDots()
         {
-            Dot cp1 = BuildControlPoint(UserCurve.ControlPoint1, 1, Brushes.Blue);
-            Dot cp2 = BuildControlPoint(UserCurve.ControlPoint2, 2, Brushes.Red);
-            Marker cp3 = BuildEndPoint(UserCurve.EndPoint, Brushes.Yellow);
+            Dot cp1 = BuildControlPoint(UserCurve.ControlPoint1, 1, Brushes.Blue, true);
+            Dot cp2 = BuildControlPoint(UserCurve.ControlPoint2, 2, Brushes.Red,true);
+            Marker cp3 = BuildEndPoint(UserCurve.EndPoint, Brushes.Yellow, true);
             Canvas.Children.Add(cp1);
             Canvas.Children.Add(cp2);
             Canvas.Children.Add(cp3);
 
-            endPoint = BuildEndPoint(UserCurve.StartPoint, Brushes.Black);
+            endPoint = BuildEndPoint(UserCurve.StartPoint, Brushes.Black, false);
             userDots.AddRange(new List<IDot> { cp1, cp2, cp3 });
 
             Canvas.Children.Add(endPoint);
@@ -440,9 +440,9 @@ namespace WpfTest
 
         private void ShowRefDots()
         {
-            Dot cp1 = BuildControlPoint(RefCurve.ControlPoint1, 1, Brushes.Cyan);
-            Dot cp2 = BuildControlPoint(RefCurve.ControlPoint2, 2, Brushes.Purple);
-            Marker cp3 = BuildEndPoint(RefCurve.EndPoint, Brushes.Orange);
+            Dot cp1 = BuildControlPoint(RefCurve.ControlPoint1, 1, Brushes.Cyan, false);
+            Dot cp2 = BuildControlPoint(RefCurve.ControlPoint2, 2, Brushes.Purple,false);
+            Marker cp3 = BuildEndPoint(RefCurve.EndPoint, Brushes.Orange, false);
             Canvas.Children.Add(cp1);
             Canvas.Children.Add(cp2);
             Canvas.Children.Add(cp3);
@@ -571,9 +571,9 @@ namespace WpfTest
             return null;
         }
 
-        static Marker BuildEndPoint(Point location, Brush color)
+        static Marker BuildEndPoint(Point location, Brush color, bool isUser)
         {
-            const int width = 16;
+             int width = isUser ? 32: 16;
             Marker marker = new Marker()
             {
                 Center = location,
@@ -586,9 +586,9 @@ namespace WpfTest
             return marker;
         }
 
-        Dot BuildControlPoint(Point location, int index, Brush color)
+        Dot BuildControlPoint(Point location, int index, Brush color, bool isUser)
         {
-            Dot knotPoint = new Dot() { Center = location, Fill = color};
+            Dot knotPoint = new Dot() { Center = location, Fill = color, Radius = isUser? 16 : 8};
             knotPoint.Tag = index;
             return knotPoint;
         }
