@@ -20,6 +20,7 @@ using Microsoft.Surface.Presentation.Input;
 using AvengersUtd.Odyssey.Utils.Logging;
 using System.Threading;
 using Timer = System.Timers.Timer;
+using AvengersUtd.Odyssey.Geometry;
 
 namespace WpfTest
 {
@@ -28,6 +29,9 @@ namespace WpfTest
     /// </summary>
     public partial class GameTask : SurfaceWindow
     {
+        private readonly Point leftDot = new Point(256, 640);
+        private readonly Point middleDot = new Point(960, 448);
+        private readonly Point rightDot = new Point(1664, 640);
         int gazeRadius;
         bool gazeOn;
         private Timer clock;
@@ -145,15 +149,22 @@ namespace WpfTest
                 Point tp2 = pArray[1];
                 Point gaze = lastGaze;
 
-                Dispatcher.BeginInvoke(new Action(delegate
-                {
+                Vector2D vTp1 = new Vector2D(tp1.X, tp1.Y);
+                Vector2D vtp2 = new Vector2D(tp2.X, tp2.Y);
+                Vector2D vGaze = new Vector2D(gaze.X, gaze.Y);
 
-                    bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
-                    bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
-                    bool eyes = eyeArea.IntersectsWith(gaze);
+                //Dispatcher.BeginInvoke(new Action(delegate
+                //{
+                bool lFinger = Intersection.CirclePointTest(new Vector2D(leftDot.X, leftDot.Y), 64, vTp1);
+                bool rFinger = Intersection.CirclePointTest(new Vector2D(rightDot.X, rightDot.Y), 64, vTp1);
+                bool eyes = Intersection.CirclePointTest(new Vector2D(middleDot.X, middleDot.Y), 64, vTp1);
+
+                    //bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
+                    //bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
+                    //bool eyes = eyeArea.IntersectsWith(gaze);
                     done = lFinger && rFinger && eyes;
 
-                }));
+                //}));
             }
 
             Dispatcher.BeginInvoke(new Action(StartNew));
