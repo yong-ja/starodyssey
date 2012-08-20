@@ -1,0 +1,13 @@
+﻿<Window x:Class="WpfTest.BoxPerformance"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BoxPerformance" Height="256" Width="534">
+    <Canvas Background="DarkGray" x:Name="Canvas">
+        <Line Y1="64" Y2="64" StrokeThickness="2" X2="512" Stroke="Black" />
+        <TextBlock Text="Eyes" FontSize="14" Canvas.Top="68"/>
+        <Line Y1="128" Y2="128" StrokeThickness="2" X2="512" Stroke="Black" />
+        <Line Y1="192" Y2="192" StrokeThickness="2" X2="512" Stroke="Black" />
+        <TextBlock Text="Touch1" FontSize="14" Canvas.Top="132"/>
+        <TextBlock Text="Touch2" FontSize="14" Canvas.Top="196"/>
+    </Canvas>
+</Window>

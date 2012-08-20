@@ -23,6 +23,8 @@ namespace WpfTest
 {
     public class TouchRayPanel : Panel
     {
+        List<DateTime> gazeEvents = new List<DateTime>();
+        Dictionary<TouchDevice, List<DateTime>> touchEvents = new Dictionary<TouchDevice, List<DateTime>>();
         const string ControlTag = "TouchRayPanel";
         const int dwellInterval = 500;
         const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius)/2;
@@ -73,8 +75,23 @@ namespace WpfTest
             Add(crosshair);
         }
 
+        void EstimateParallelism()
+        {
+            DateTime firstEyeMove = gazeEvents.First();
+            DateTime lastEyeMove = gazeEvents.Last();
+
+            List<DateTime> t1Events = touchEvents.Values.First();
+            List<DateTime> t2Events = touchEvents.Values.Last();
+
+            DateTime firstT1Move = t1Events.First();
+            DateTime lastT1Move = t1Events.Last();
+            DateTime firstT2Move = t2Events.First();
+            DateTime lastT2Move = t2Events.Last();
+        }
+
         protected void OnCompleted(object sender, EventArgs e)
         {
+            DateTime end = DateTime.Now;
             Label label = new Label
             {
                 Position = new Vector2(400, 300),
@@ -94,6 +111,12 @@ namespace WpfTest
             OdysseyUI.CurrentHud.BeginDesign();
             OdysseyUI.CurrentHud.Controls.Add(label);
             OdysseyUI.CurrentHud.EndDesign();
+
+            BoxPerformance bp = new BoxPerformance();
+            bp.SetData(BoxRenderer.startTime, gazeEvents,
+                touchEvents.Values.First(), touchEvents.Values.Last(), end);
+
+            bp.Show();
 
             if (Completed != null)
                 Completed(sender, e);
@@ -188,7 +211,7 @@ namespace WpfTest
                     {
                         sWidget.SetColor(tempArrow, Color.Red);
                         EyeMoveArrow(e.GazePoint);
-
+                        
                         if (!tempArrow.GazeLock)
                         {
                             TrackerEvent.ArrowMoveStart.Log(tempArrow.Name);
@@ -237,6 +260,7 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
+                gazeEvents.Add(DateTime.Now);
                 // Session Id, gpX, gpY, valL, valR, GazeOn
                 
             }
@@ -259,9 +283,12 @@ namespace WpfTest
             // Session Id, tpX, tpY, tdId, eventType
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
+            
+
             if (test)
             {
                 arrows.Add(e.TouchDevice, result);
+          
                 sWidget.Select(result.Name, Color.Cyan);
                 Arrow arrow = (Arrow)result;
                 arrow.IsTouched = true;
@@ -332,6 +359,7 @@ namespace WpfTest
                 ((Arrow)arrows[e.TouchDevice]).IsTouched = false;
             arrows.Remove(e.TouchDevice);
             window.ReleaseTouchCapture(e.TouchDevice);
+           
             IRenderable result;
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
@@ -571,6 +599,9 @@ namespace WpfTest
             IRenderable arrow = arrows[e.TouchDevice];
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
+
+            touchEvents[e.TouchDevice].Add(DateTime.Now);
+            
         }
 
         private IRenderable tempArrow;
