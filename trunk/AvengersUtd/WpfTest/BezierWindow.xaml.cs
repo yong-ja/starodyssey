@@ -77,7 +77,7 @@ namespace WpfTest
             // Curve 1 short
             Point c0p0 = CirclePoint(leftDot, 128, 315);
             Point c0p1 = CirclePoint(middleDot, 128, 225);
-            Point c0p2 = CirclePoint(rightDot, 128, 225);
+            Point c0p2 = CirclePoint(rightDot, 128, 315);
 
             //Curve 2 short
             Point c1p0 = CirclePoint(leftDot, 128, 45);
@@ -105,7 +105,7 @@ namespace WpfTest
             // Curve 1 short
             Point rC0p0 = CirclePoint(leftDot, 128, 90);
             Point rC0p1 = CirclePoint(middleDot, 128, 90);
-            Point rC0p2 = CirclePoint(rightDot, 128, 0);
+            Point rC0p2 = CirclePoint(rightDot, 128, 90);
 
             //Curve 2 short
             Point rC1p0 = CirclePoint(leftDot, 128, 180);
