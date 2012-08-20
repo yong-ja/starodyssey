@@ -29,7 +29,7 @@ namespace WpfTest
         const int dwellInterval = 500;
         const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius)/2;
         readonly Window window;
-        readonly Dictionary<TouchDevice, Vector3> points;
+        readonly Dictionary<TouchDevice, Vector2> points;
         readonly Dictionary<TouchDevice, IRenderable> arrows;
         float[] axis;
         Vector2 prevEyeLocation;
@@ -58,7 +58,7 @@ namespace WpfTest
 
         public TouchRayPanel() : base(ControlTag + ++count, "Empty")
         {
-            points = new Dictionary<TouchDevice, Vector3>();
+            points = new Dictionary<TouchDevice, Vector2>();
             arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
 
@@ -260,6 +260,7 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
+                if (delta > 8)
                 gazeEvents.Add(DateTime.Now);
                 // Session Id, gpX, gpY, valL, valR, GazeOn
                 
@@ -288,7 +289,8 @@ namespace WpfTest
             if (test)
             {
                 arrows.Add(e.TouchDevice, result);
-          
+                if (!points.ContainsKey(e.TouchDevice))
+                    points.Add(e.TouchDevice, e.Location);
                 sWidget.Select(result.Name, Color.Cyan);
                 Arrow arrow = (Arrow)result;
                 arrow.IsTouched = true;
@@ -368,7 +370,8 @@ namespace WpfTest
             {
                 Arrow tempArrow = (Arrow)result;
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
-               
+                if (points.ContainsKey(e.TouchDevice))
+                    points.Remove(e.TouchDevice);
                 if (!tempArrow.Snapped)
                     sWidget.SetColor(tempArrow, Color.Yellow);
             }
@@ -599,9 +602,18 @@ namespace WpfTest
             IRenderable arrow = arrows[e.TouchDevice];
             TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
-
-            touchEvents[e.TouchDevice].Add(DateTime.Now);
-            
+            if (points.ContainsKey(e.TouchDevice))
+            {
+                Vector2 oldLocation = points[e.TouchDevice];
+                Vector2 delta = Vector2.Subtract(e.Location, oldLocation);
+                if (delta.LengthSquared() > 4)
+                {
+                    if (!touchEvents.ContainsKey(e.TouchDevice))
+                        touchEvents.Add(e.TouchDevice, new List<DateTime>());
+                    touchEvents[e.TouchDevice].Add(DateTime.Now);
+                }
+                points[e.TouchDevice] = e.Location;
+            }
         }
 
         private IRenderable tempArrow;
