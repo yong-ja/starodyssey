@@ -41,24 +41,10 @@ namespace WpfTest
         // Radii 8, 64, 128
         // Distances 256, 512, 768
 
-        private readonly List<float[]> conditions = new List<float[]>
-                                           {
-                                               new[] {8f,   256f},
-                                               new[] {8f,   512f},
-                                               new[] {8f,   768f},
-                                               new[] {16f,   256f},
-                                               new[] {16f,   512f},
-                                               new[] {16f,   768f},
-                                               new[] {16f,   256f},
-                                               new[] {16f,   512f},
-                                               new[] {16f,   768f},
-                                               new[] {64f,  256f},
-                                               new[] {64f,  512f},
-                                               new[] {64f,  768f},
-                                               new[] {128f, 256f},
-                                               new[] {128f, 512f},
-                                               new[] {128f, 768f}
-                                           };
+        private float[] sizes = new[] { 8f, 64f, 128f };
+        private float[] distances = new[] { 256f, 512f, 768f };
+
+        private readonly List<int[]> conditions = new List<int[]>();
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -69,6 +55,11 @@ namespace WpfTest
             // Add handlers for window availability events
             AddWindowAvailabilityHandlers();
             Init();
+
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < sizes.Length; j++)
+                    for (int k = 0; k < distances.Length; k++)
+                        conditions.Add(new int[] { i, j, k });
         }
 
         private static int index;
@@ -186,6 +177,7 @@ namespace WpfTest
                     Canvas.Children.Remove(d);
                 targets.Clear();
             }
+            ClockLabel.Visibility = Visibility.Visible;
 
         }
 
@@ -210,8 +202,8 @@ namespace WpfTest
         {
             if (index == conditions.Count)
                 return;
-            float radius = conditions[index][0];
-            float maxDistance = conditions[index][1];
+            float radius = conditions[index][1];
+            float maxDistance = conditions[index][2];
             Indicator.Fill = Brushes.Red;
 
             if (targets != null && targets.Count > 0)
@@ -231,8 +223,8 @@ namespace WpfTest
             Canvas.Children.Add(target2);
             Canvas.Children.Add(target3);
             gazeOn = true;
-            TrackerEvent.PointSessionStart.Log(index,radius, maxDistance);
-
+            TrackerEvent.PointSessionStart.Log(index, radius, maxDistance);
+            ClockLabel.Visibility = Visibility.Hidden;
             index++;
         }
 
