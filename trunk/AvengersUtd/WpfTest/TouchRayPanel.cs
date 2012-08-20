@@ -260,7 +260,7 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
-                if (delta > 8)
+                if (delta > 4)
                 gazeEvents.Add(DateTime.Now);
                 // Session Id, gpX, gpY, valL, valR, GazeOn
                 
