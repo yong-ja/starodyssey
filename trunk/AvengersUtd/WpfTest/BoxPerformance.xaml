@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfTest.BoxPerformance"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BoxPerformance" Height="256" Width="534">
+        Title="BoxPerformance" Height="256" Width="534" Closed="Window_Closed">
     <Canvas Background="DarkGray" x:Name="Canvas">
         <Line Y1="64" Y2="64" StrokeThickness="2" X2="512" Stroke="Black" />
         <TextBlock Text="Eyes" FontSize="14" Canvas.Top="68"/>
