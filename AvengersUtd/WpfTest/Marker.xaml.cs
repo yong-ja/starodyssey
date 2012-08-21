@@ -77,7 +77,7 @@ new PropertyMetadata(OnSideChanged));
 
         public bool IntersectsWith(Point p)
         {
-            double side = Math.Max(32, Side);
+            double side = Side;
 
             double xEvent = p.X;
             double yEvent = p.Y;

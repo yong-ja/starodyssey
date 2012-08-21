@@ -45,8 +45,8 @@ namespace WpfTest
         // Radii 8, 64, 128
         // Distances 256, 512, 768
 
-        private float[] sizes = new[] { 4f, 16f, 32f };
-        private float[] distances = new[] { 256f, 512f, 768f };
+        private float[] sizes = new[] { 8f, 16f, 32f };
+        private float[] distances = new[] { 320f, 512f, 768f };
 
         private readonly List<int[]> conditions = new List<int[]>();
         /// <summary>
@@ -60,7 +60,7 @@ namespace WpfTest
             AddWindowAvailabilityHandlers();
             Init();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
                 for (int j = 0; j < sizes.Length; j++)
                     for (int k = 0; k < distances.Length; k++)
                         conditions.Add(new int[] { i, j, k });
@@ -136,33 +136,58 @@ namespace WpfTest
         void CheckPreconditions()
         {
             bool done = false;
+            Vector2D leftD = new Vector2D(leftDot.X, leftDot.Y);
+            Vector2D rightD = new Vector2D(rightDot.X, rightDot.Y);
+            Vector2D middleD = new Vector2D(middleDot.X, middleDot.Y);
+
             while (!done)
             {
-                if (touchPoints.Count != 2)
+                if (touchPoints.Count < 2)
                 {
                     Thread.Sleep(100);
                     continue;
                 }
 
+                
                 Point[] pArray = touchPoints.Values.ToArray();
-                Point tp1 = pArray[0];
-                Point tp2 = pArray[1];
-                Point gaze = lastGaze;
+                if (pArray.Length < 2)
+                    return;
 
-                Vector2D vTp1 = new Vector2D(tp1.X, tp1.Y);
-                Vector2D vTp2 = new Vector2D(tp2.X, tp2.Y);
-                Vector2D vGaze = new Vector2D(gaze.X, gaze.Y);
+                try
+                {
+                    Point tp1 = pArray[0];
+                    Point tp2 = pArray[1];
+                    Point gaze = lastGaze;
+                    Vector2D vTp1 = new Vector2D(tp1.X, tp1.Y);
+                    Vector2D vTp2 = new Vector2D(tp2.X, tp2.Y);
+                    Vector2D vGaze = new Vector2D(gaze.X, gaze.Y);
 
-                //Dispatcher.BeginInvoke(new Action(delegate
-                //{
-                bool lFinger = Intersection.CirclePointTest(new Vector2D(leftDot.X, leftDot.Y), 64, vTp1);
-                bool rFinger = Intersection.CirclePointTest(new Vector2D(rightDot.X, rightDot.Y), 64, vTp2);
-                bool eyes = Intersection.CirclePointTest(new Vector2D(middleDot.X, middleDot.Y), 64, vGaze);
+                    //Dispatcher.BeginInvoke(new Action(delegate
+                    //{
+                    bool lFinger = Intersection.CirclePointTest(leftD, 64, vTp1)
+                        || Intersection.CirclePointTest(leftD, 64, vTp2);
+                    bool rFinger = Intersection.CirclePointTest(rightD, 64, vTp1)
+                        || Intersection.CirclePointTest(rightD, 64, vTp2);
+                    bool eyes = Intersection.CirclePointTest(middleD, 64, vGaze);
+                    done = lFinger && rFinger && eyes;
+                }
+                catch (Exception ex)
+                {
+                    TrackerEvent.Misc.Write(ex.Message);
+                    foreach (TraceListener tl in System.Diagnostics.Trace.Listeners)
+                    {
+                        tl.Flush();
+                        tl.Dispose();
+                    }
+                    return;
+                }
+
+
 
                     //bool lFinger = lFingerArea.IntersectsWith(tp1) || lFingerArea.IntersectsWith(tp2);
                     //bool rFinger = rFingerArea.IntersectsWith(tp1) || rFingerArea.IntersectsWith(tp2);
                     //bool eyes = eyeArea.IntersectsWith(gaze);
-                    done = lFinger && rFinger && eyes;
+                    
 
                 //}));
             }
@@ -180,7 +205,7 @@ namespace WpfTest
             ToggleButtons();
            
             gazeOn = false;
-            tComplete.Text = index % 18 == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
+            tComplete.Text = index % 9 == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
             if (index == 45)
                 tComplete.Text = "Thanks! This task is now complete";
             Canvas.Children.Add(tComplete);
