@@ -83,7 +83,7 @@ namespace WpfTest
             string filePrefix = "BoxTask.png";
             string filename =  System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePrefix),
                System.IO.Path.GetFileNameWithoutExtension(filePrefix) + "_" +
-               timeStamp.ToString("yyyyMMdd") + BoxRenderer.Session + System.IO.Path.GetExtension(filePrefix));
+               timeStamp.ToString("yyyyMMdd") + '_' + BoxRenderer.Session + System.IO.Path.GetExtension(filePrefix));
             // save file to disk
             FileStream fs = File.Open(filename, FileMode.OpenOrCreate);
             encoder.Save(fs);
