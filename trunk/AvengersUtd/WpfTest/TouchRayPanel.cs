@@ -372,10 +372,15 @@ namespace WpfTest
 
         void Check()
         {
-            //const float snapRange = 0.25f;
+            const float snapRange = 0.3f;
             while (!completed)
             {
-                if (xLock && yLock && zLock)
+                float yOffset = Math.Abs(frame.Height - box.ScalingValues.Y);
+                float xOffset = Math.Abs(frame.Width - box.ScalingValues.X);
+                float zOffset = Math.Abs(frame.Depth - box.ScalingValues.Z);
+
+                float totalOffset = xOffset + yOffset + zOffset;
+                if (totalOffset <= snapRange)
                     completed = true;
                 else
                     Thread.Sleep(100);
