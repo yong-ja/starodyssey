@@ -27,7 +27,7 @@ namespace WpfTest
         Dictionary<TouchDevice, List<DateTime>> touchEvents = new Dictionary<TouchDevice, List<DateTime>>();
         const string ControlTag = "TouchRayPanel";
         const int dwellInterval = 500;
-        const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius)/2;
+        const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
         readonly Window window;
         readonly Dictionary<TouchDevice, Vector2> points;
         readonly Dictionary<TouchDevice, IRenderable> arrows;

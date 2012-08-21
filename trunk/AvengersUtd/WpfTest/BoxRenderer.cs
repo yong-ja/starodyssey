@@ -64,29 +64,36 @@ namespace WpfTest
 
         float[] offsets = new[] { 
             2.5f,
+            3.5f,
+            3.5f,
+
+            2.5f,
+            2.5f,
+            3.5f,
+
+            2.5f,
+            3.5f,
+            3.5f, //8
+
+            2.5f,
+            2.5f,
+            4.0f,
+
             2.5f,
             3.5f,
             2.5f,
-            1.5f,
+
             2.5f,
             2.5f,
+            2.5f, //17
+
             2.5f,
-            2.5f, //9
-            2.5f,
-            1.5f,
             3.5f,
             2.5f,
-            2.5f,
-            1.5f,
-            2.5f,
-            1.5f,
-            1.5f, //18
+
             2.5f,
             2.5f,
-            1.5f,
-            2.5f,
-            1.5f,
-            1.5f,//24
+            2.5f,//23
 
         };
 
@@ -309,7 +316,7 @@ namespace WpfTest
             rp.SetFrame((IBox)bbox);
             rp.SetAxis(axis);
             Hud.Add(rp);
-            //rp.Add(bSession);
+            rp.Add(bSession);
             //rp.Add(bConnect);
             //rp.Add(bTracking);
             //
