@@ -68,7 +68,7 @@ namespace WpfTest
             AddWindowAvailabilityHandlers();
             InitConditions();
             Init();
-            NewSession();
+            //NewSession();
             
         }
 
@@ -186,13 +186,6 @@ namespace WpfTest
                 eyeIndex = 2;
             else if (cpIndex[2] == 1)
                 eyeIndex = 3;
-
-            UserCurve.Visibility = Visibility.Visible;
-            RefCurve.Visibility = Visibility.Visible;
-            ShowUserDots();
-
-            if (condition[2] == 0)
-                ShowRefDots();
 
             gazeOn = gazeActivated[condition[3]];
 
@@ -316,6 +309,7 @@ namespace WpfTest
             bDots.Click += (sender, e) => ShowRefDots();
             bNew.Click += delegate
             {
+                NewSession();
                 CountDownWpf countdownTimer = new CountDownWpf();
                 countdownTimer.Elapsed += delegate
                 {
@@ -327,9 +321,16 @@ namespace WpfTest
                                                                 tracker.Connect();
                                                                 tracker.StartTracking();
                                                           }
+                                                          CrossHair.Visibility = Visibility.Visible;
 #endif
-                        ToggleButtons();
-                        NewSession();
+                                                          UserCurve.Visibility = Visibility.Visible;
+                                                          RefCurve.Visibility = Visibility.Visible;
+                                                          ShowUserDots();
+                                                          int[] condition = conditions[index];
+                                                          if (condition[2] == 0)
+                                                              ShowRefDots();
+                                                          ToggleButtons();
+                        
                         Canvas.Children.Remove(
                             countdownTimer);
                         countdownTimer.Reset();
@@ -346,11 +347,12 @@ namespace WpfTest
             };
 
             //test
-            bStop.Click += delegate
+            bStop.TouchUp += delegate
                            {
                                if (stopwatch.IsRunning)
                                    CompleteSession();
-                               NewSession();
+                               TrackerEvent.Misc.Write("BezierSession aborted");
+                               //NewSession();
                            };
 
         }
@@ -358,11 +360,14 @@ namespace WpfTest
         void completionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             double distance = Bezier.FindError(UserCurve.PathGeometry, RefCurve.PathGeometry);
-            TrackerEvent.BezierDistance.Log("CvErFinal", distance);
+            TrackerEvent.BezierDistance.Log("CvEr", distance);
             bool check = distance < Threshold;
 
             if (!check)
+            {
+                prevTime = DateTime.Now;
                 return;
+            }
 
             if (prevTime == default(DateTime))
                 prevTime = DateTime.Now;
@@ -372,6 +377,7 @@ namespace WpfTest
 
             if (delta > 333)
             {
+                TrackerEvent.BezierDistance.Log("CvErFinal", distance);
                 Dispatcher.BeginInvoke(new Action( delegate {CompleteSession();}));
             }
         }
@@ -403,6 +409,7 @@ namespace WpfTest
 #endif
             UserCurve.Visibility = Visibility.Hidden;
             RefCurve.Visibility = Visibility.Hidden;
+            CrossHair.Visibility = Visibility.Hidden;
             Canvas.Children.Add(tComplete);
             
 

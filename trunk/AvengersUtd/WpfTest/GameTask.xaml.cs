@@ -195,6 +195,7 @@ namespace WpfTest
                 targets.Clear();
             }
             ClockLabel.Visibility = Visibility.Visible;
+            touchPoints.Clear();
 
         }
 
