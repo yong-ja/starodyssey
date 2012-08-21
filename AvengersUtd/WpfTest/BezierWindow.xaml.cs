@@ -187,6 +187,8 @@ namespace WpfTest
             else if (cpIndex[2] == 1)
                 eyeIndex = 3;
 
+            UserCurve.Visibility = Visibility.Visible;
+            RefCurve.Visibility = Visibility.Visible;
             ShowUserDots();
 
             if (condition[2] == 0)
@@ -286,6 +288,8 @@ namespace WpfTest
 
             completionTimer = new Timer(250);
             completionTimer.Elapsed += completionTimer_Elapsed;
+            UserCurve.Visibility = Visibility.Hidden;
+            RefCurve.Visibility = Visibility.Hidden;
             
             stopwatch = new Stopwatch();
             tComplete = new TextBlock
@@ -397,6 +401,8 @@ namespace WpfTest
             if (gazeOn)
                 tracker.StopTracking();
 #endif
+            UserCurve.Visibility = Visibility.Hidden;
+            RefCurve.Visibility = Visibility.Hidden;
             Canvas.Children.Add(tComplete);
             
 

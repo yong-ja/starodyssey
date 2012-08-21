@@ -174,11 +174,17 @@ namespace WpfTest
         {
             clock.Stop();
             stopwatch.Stop();
+            TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+                        index++;
+            
             ToggleButtons();
            
             gazeOn = false;
+            tComplete.Text = index % 18 == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
+            if (index == 45)
+                tComplete.Text = "Thanks! This task is now complete";
             Canvas.Children.Add(tComplete);
-            TrackerEvent.PointSessionEnd.Log(index, stopwatch.ElapsedMilliseconds / 1000d);
+            
             stopwatch.Reset();
             tracker.StopTracking();
 
@@ -239,7 +245,7 @@ namespace WpfTest
             gazeOn = true;
             TrackerEvent.PointSessionStart.Log(index, radius, maxDistance);
             ClockLabel.Visibility = Visibility.Hidden;
-            index++;
+
         }
 
         void Canvas_LostTouchCapture(object sender, TouchEventArgs e)

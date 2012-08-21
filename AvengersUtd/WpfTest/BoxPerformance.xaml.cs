@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace WpfTest
 {
@@ -62,6 +63,30 @@ namespace WpfTest
         {
             Dot knotPoint = new Dot() { Center = location, Fill = color, Radius =  4 };
             return knotPoint;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            RenderTargetBitmap targetBitmap =
+                new RenderTargetBitmap((int)Canvas.ActualWidth,
+                           (int)Canvas.ActualHeight,
+                           96d, 96d,
+                           PixelFormats.Default);
+            targetBitmap.Render(Canvas);
+
+            // add the RenderTargetBitmap to a Bitmapencoder
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            
+            encoder.Frames.Add(BitmapFrame.Create(targetBitmap));
+
+            DateTime timeStamp = System.DateTime.Today;
+            string filePrefix = "BoxTask.png";
+            string filename =  System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePrefix),
+               System.IO.Path.GetFileNameWithoutExtension(filePrefix) + "_" +
+               timeStamp.ToString("yyyyMMdd") + BoxRenderer.Session + System.IO.Path.GetExtension(filePrefix));
+            // save file to disk
+            FileStream fs = File.Open(filename, FileMode.OpenOrCreate);
+            encoder.Save(fs);
         }
     }
 }
