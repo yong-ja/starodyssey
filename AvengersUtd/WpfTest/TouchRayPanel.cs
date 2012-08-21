@@ -389,8 +389,9 @@ namespace WpfTest
         {
             if (completed) 
                 return;
-
-            if (!(gazeLock && arrows.Count == 2))
+            if (arrows.Count < 2)
+                return;
+            if (!gazeLock)
                 return;
 
             IRenderable arrowHead = ((MeshGroup)arrow).Objects[0];
@@ -447,6 +448,7 @@ namespace WpfTest
                             box.ScalingValues = new Vector3(box.ScalingValues.X, frame.Height, box.ScalingValues.Z);
                             fNode.Position = new Vector3(fNode.Position.X, (box.PositionV3.Y + box.ScalingValues.Y / 2), fNode.Position.Z);
                             yLock = true;
+                            gazeLock = true;
                             Arrow yArrow = sWidget.SelectByName("YArrow");
                             sWidget.SetColor(yArrow, Color.Green);
                             yArrow.Snapped = true;
