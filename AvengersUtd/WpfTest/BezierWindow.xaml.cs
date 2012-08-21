@@ -608,7 +608,10 @@ namespace WpfTest
             base.OnClosed(e);
 
             foreach (TraceListener tl in Trace.Listeners)
+            {
+                tl.Flush();
                 tl.Dispose();
+            }
 
             // Remove handlers for window availability events
             RemoveWindowAvailabilityHandlers();

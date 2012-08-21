@@ -159,7 +159,7 @@ namespace WpfTest
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             startTime = DateTime.Now;
-            TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
+            TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2], condition[2], condition[1]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[index%24], -bbox.Depth / 2 +0.5f);
 
@@ -365,7 +365,10 @@ namespace WpfTest
         {
             base.OnDisposing(sender, e);
             foreach (TraceListener tl in Trace.Listeners)
+            {
+                tl.Flush();
                 tl.Dispose();
+            }
 #if TRACKER
             tracker.DisconnectTracker();
 #endif
