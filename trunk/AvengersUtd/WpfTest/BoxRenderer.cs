@@ -132,7 +132,7 @@ namespace WpfTest
         public void InitConditions()
         {
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
                 for (int j = 0; j < arrowConditions.Count; j++)
                     for (int k = 0; k < axes.Count; k++)
                         conditions.Add(new int[] { i, j, k });

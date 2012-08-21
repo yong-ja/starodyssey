@@ -42,12 +42,15 @@ namespace WpfTest
 
         private readonly List<int[]> cpConditions = new List<int[]>
         {
-            new[] { 0, 1,2},
-            new[] {0 , 2,1},
-            new[] {1, 0, 2},
-            new[] {1, 2, 0},
-            new[] { 2, 0, 1},
-            new[] {2, 1, 0}
+            new[] { 0, 1, 2},
+            new[] { 0, 2, 1},
+            new[] { 2, 0, 1}
+            //new[] { 0, 1,2},
+            //new[] {0 , 2,1},
+            //new[] {1, 0, 2},
+            //new[] {1, 2, 0},
+            //new[] { 2, 0, 1},
+            //new[] {2, 1, 0}
         };
 
         private List<Point[]> userCurves;
@@ -132,7 +135,7 @@ namespace WpfTest
 
             for (int t = 0; t < 2; t++) // Gaze On/off
                 for (int k = 0; k < 2; k++) // Show Ref Points
-                  for (int j = 0; j < 6; j++) // EP rotation
+                  for (int j = 0; j < 3; j++) // EP rotation
                     for (int i = 0; i < 4; i++) // Curves
                          conditions.Add(new int[] {i, j, k, t });
 
@@ -401,8 +404,9 @@ namespace WpfTest
                 TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
                 TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
                 TrackerEvent.BezierSessionEnd.Log(index-1, stopwatch.ElapsedMilliseconds / 1000d);
+                stopwatch.Reset();
             }));
-            stopwatch.Reset();
+            
 #if TRACKER
             if (gazeOn)
                 tracker.StopTracking();
@@ -413,13 +417,13 @@ namespace WpfTest
             Canvas.Children.Add(tComplete);
             
 
-            if (index == 96)
+            if (index == 48)
             {
                 lCondition.Text = "Thanks, this task is now complete.";
                 return;
             }
 
-            if (index % 24 == 0)
+            if (index % 12 == 0)
             {
 
                 int[] condition = conditions[index + 1];
