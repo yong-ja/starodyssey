@@ -385,6 +385,11 @@ namespace WpfTest
             if (completed) 
                 return;
 
+            if (xLock && yLock && zLock)
+            {
+                OnCompleted(this, EventArgs.Empty);
+            }
+
             if (!(gazeLock && arrows.Count == 2))
                 return;
 
@@ -408,8 +413,6 @@ namespace WpfTest
             float delta;
             bool test;
 
-
-
             float snapRange = eyeMove ? eyeSnapRange : touchSnapRange;
             switch (arrow.Name)
             {
@@ -426,9 +429,6 @@ namespace WpfTest
                             delta = Math.Min(maxSizeY, delta);
                         else
                             delta = Math.Min(minSize, delta);
-
-                        //if (yLock)
-                        //    return;
 
                         box.ScalingValues += new Vector3(0, delta, 0);
                         float axisOffset = sWidget.GetBoxOffset().Y;
@@ -480,8 +480,6 @@ namespace WpfTest
                         else
                             delta = Math.Min(minSize, delta);
 
-                        //if (xLock)
-                        //    return;
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         float axisOffset = sWidget.GetBoxOffset().X;
@@ -584,11 +582,6 @@ namespace WpfTest
 
             }
 
-
-            if (xLock && yLock && zLock)
-            {
-                OnCompleted(this, EventArgs.Empty);
-            }
 
         }
 
