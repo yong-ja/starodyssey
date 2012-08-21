@@ -14,17 +14,18 @@
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <Button x:Name="bDots" Canvas.Left="1792" Canvas.Top="56" Content="Dots" 
                              Width="128" Height="32" 
-                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Visibility="Hidden"/>
 
-            <local:BezierCurve x:Name="UserCurve" StartPoint="64 64" ControlPoint1="200 600" ControlPoint2="400 50" EndPoint="800 800" Stroke="DarkGreen"/>
-            <local:BezierCurve x:Name="RefCurve" StartPoint="64 64" ControlPoint1="512 512" ControlPoint2="768 50" EndPoint="800 800" Stroke="Black" />
+            <local:BezierCurve x:Name="UserCurve" StartPoint="64 64" ControlPoint1="200 600" ControlPoint2="400 50" EndPoint="800 800" Stroke="DarkGreen" Visibility="Hidden"/>
+            <local:BezierCurve x:Name="RefCurve" StartPoint="64 64" ControlPoint1="512 512" ControlPoint2="768 50" EndPoint="800 800" Stroke="Black" 
+                               Visibility="Hidden"/>
             <Ellipse x:Name="CrossHair" Stroke="Purple" StrokeThickness="6" Width="64" Height="64" Canvas.ZIndex="99">
                 <Ellipse.RenderTransform>
                     <TranslateTransform X="4" Y="4"/>
                 </Ellipse.RenderTransform>
             </Ellipse>
             <!--<Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>-->
-            <Button x:Name="bStop" Canvas.Left="0" Canvas.Top="912" FontSize="32" Content="Stop" Height="128" Width="256"/>
+            <Button x:Name="bStop" Canvas.Left="0" Canvas.Top="952" FontSize="32" Content="Stop" Height="128" Width="128"/>
             <TextBlock Canvas.Left="320" Canvas.Top="912" FontSize="32" x:Name="lCondition" Foreground="Black"/>
         </Canvas>
     </DockPanel>
