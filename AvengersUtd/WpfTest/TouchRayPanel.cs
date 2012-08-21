@@ -121,7 +121,7 @@ namespace WpfTest
             bp.SetData(BoxRenderer.startTime, gazeEvents,
                 touchEvents.Values.First(), touchEvents.Values.Last(), end);
 
-            bp.Show();
+            bp.ShowDialog();
 
             if (Completed != null)
                 Completed(sender, e);
@@ -151,7 +151,7 @@ namespace WpfTest
 
             string gazeEvent = string.Empty;
 
-            if (!gazeOn || yLock)
+            if (!gazeOn || yLock || completed)
                 return;
 
             if (arrows.Count < 2)
@@ -588,7 +588,7 @@ namespace WpfTest
         {
             base.OnTouchMove(e);
 
-            if (!arrows.ContainsKey(e.TouchDevice))
+            if (!arrows.ContainsKey(e.TouchDevice) || completed)
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];

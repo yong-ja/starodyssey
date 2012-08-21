@@ -60,13 +60,13 @@ namespace WpfTest
             AddWindowAvailabilityHandlers();
             Init();
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
                 for (int j = 0; j < sizes.Length; j++)
                     for (int k = 0; k < distances.Length; k++)
                         conditions.Add(new int[] { i, j, k });
         }
 
-        private static int index;
+        private static int index=9;
 
         void Init()
         {
@@ -203,13 +203,14 @@ namespace WpfTest
                         index++;
             
             ToggleButtons();
+            
            
             gazeOn = false;
             tComplete.Text = index % 9 == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
-            if (index == 45)
+            if (index == 36)
                 tComplete.Text = "Thanks! This task is now complete";
             Canvas.Children.Add(tComplete);
-            
+            bNew.Visibility = Visibility.Visible;
             stopwatch.Reset();
             tracker.StopTracking();
 

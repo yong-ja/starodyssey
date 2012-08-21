@@ -30,7 +30,7 @@ namespace WpfTest
         
         const double RadiusSize = 4 * Dot.DefaultRadius;
         int gazeRadius;
-        int index;
+        int index=19;
         int eyeIndex;
         Marker endPoint;
         TrackerWrapper tracker;
@@ -169,6 +169,8 @@ namespace WpfTest
             if (Canvas.Children.Contains(tComplete))
                 Canvas.Children.Remove(tComplete);
 
+            lCondition.Visibility = Visibility.Hidden;
+
             int[] condition = conditions[index];
 
             Point[] userPoints = userCurves[condition[0]];
@@ -191,23 +193,7 @@ namespace WpfTest
                 eyeIndex = 3;
 
             gazeOn = gazeActivated[condition[3]];
-
-            //if (!gazeOn)
-            //    Threshold = 8;
-            //else Threshold = 32;
-
-            //int radius = condition[0];
-
-            //AssignDots(condition[1], radius);
-            //ShowUserDots();
-
-            //if (condition[2] == 0)
-            //    ShowRefDots();
-
-            //gazeOn = condition[3] == 0;
-
-            //lCondition.Text += string.Format("\nShowRef: {0} GazeOn: {1} C: {2} Er:{3}",
-            //    condition[2], condition[3], condition[0], condition[1]);
+            
 
             TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2], condition[3]);
             TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
@@ -324,7 +310,7 @@ namespace WpfTest
                                                                 tracker.Connect();
                                                                 tracker.StartTracking();
                                                           }
-                                                          CrossHair.Visibility = Visibility.Visible;
+                                                          CrossHair.Visibility = gazeOn ? Visibility.Visible : Visibility.Hidden;
 #endif
                                                           UserCurve.Visibility = Visibility.Visible;
                                                           RefCurve.Visibility = Visibility.Visible;
@@ -415,7 +401,7 @@ namespace WpfTest
             RefCurve.Visibility = Visibility.Hidden;
             CrossHair.Visibility = Visibility.Hidden;
             Canvas.Children.Add(tComplete);
-            
+            lCondition.Visibility = Visibility.Visible;
 
             if (index == 48)
             {
