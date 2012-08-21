@@ -57,7 +57,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
             if (disposing)
             {
                 traceWriter.Flush();
-                traceWriter.Close();
+                //traceWriter.Close();
             }
         }
 
