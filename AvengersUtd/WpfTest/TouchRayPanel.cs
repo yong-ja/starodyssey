@@ -51,6 +51,7 @@ namespace WpfTest
         DateTime dwellStart;
         
         static int count;
+        Thread completetionCheck;
 
         public event EventHandler<EventArgs> Completed;
 
@@ -58,6 +59,9 @@ namespace WpfTest
 
         public TouchRayPanel() : base(ControlTag + ++count, "Empty")
         {
+            completetionCheck = new Thread(Check);
+            completetionCheck.SetApartmentState(ApartmentState.STA);
+            completetionCheck.Start();
             points = new Dictionary<TouchDevice, Vector2>();
             arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
@@ -74,6 +78,7 @@ namespace WpfTest
             
             Add(crosshair);
         }
+
 
         void EstimateParallelism()
         {
@@ -132,12 +137,6 @@ namespace WpfTest
             gazeOn = value;
         }
 
-        void DwellLoop()
-        {
-            Thread.Sleep(200);
-            dwellTime.Set();
-        }
-
         public void SetTracker(TrackerWrapper newTracker)
         {
 #if TRACKER
@@ -152,7 +151,7 @@ namespace WpfTest
 
             string gazeEvent = string.Empty;
 
-            if (!gazeOn)
+            if (!gazeOn || yLock)
                 return;
 
             if (arrows.Count < 2)
@@ -169,12 +168,6 @@ namespace WpfTest
                 else
                 {
                     Arrow gazeArrow = (Arrow)tempArrow;
-                    //if (!gazeArrow.Name.StartsWith("Y"))
-                    //{
-                    //    DisableArrow(gazeArrow);
-                    //    eyeArrow = null;
-                    //    return;
-                    //}
 
                     if (gazeArrow.Snapped)
                     {
@@ -375,20 +368,27 @@ namespace WpfTest
                 if (!tempArrow.Snapped)
                     sWidget.SetColor(tempArrow, Color.Yellow);
             }
-
-            
-
         }
+
+        void Check()
+        {
+            //const float snapRange = 0.25f;
+            while (!completed)
+            {
+                if (xLock && yLock && zLock)
+                    completed = true;
+                else
+                    Thread.Sleep(100);
+            }
+
+            OnCompleted(this, EventArgs.Empty);
+        }
+
 
         void MoveArrow(Vector2 location, IRenderable arrow, bool eyeMove = false)
         {
             if (completed) 
                 return;
-
-            if (xLock && yLock && zLock)
-            {
-                OnCompleted(this, EventArgs.Empty);
-            }
 
             if (!(gazeLock && arrows.Count == 2))
                 return;
@@ -479,7 +479,6 @@ namespace WpfTest
                             delta = Math.Min(maxSizeX, delta);
                         else
                             delta = Math.Min(minSize, delta);
-
 
                         box.ScalingValues += new Vector3(delta, 0, 0);
                         float axisOffset = sWidget.GetBoxOffset().X;
