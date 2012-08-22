@@ -318,7 +318,8 @@ namespace WpfTest
             };
             bStop.TouchUp += (sender, e) =>
                 {
-                    Stop();
+                    stopwatch.Stop();
+                    Stop(new BoxEventArgs(startTime, DateTime.Now));
                 };
             
 
