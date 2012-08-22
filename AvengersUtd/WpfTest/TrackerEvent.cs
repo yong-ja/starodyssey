@@ -22,7 +22,7 @@ namespace WpfTest
 
                                                                     // Participant, Rep, Size, Distance, Time
         public static TrackerEvent PointSessionStart = new TrackerEvent("TrackerPointPerf", "{0},{1},{2},{3},{4}");
-        public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerPointPerf", "{0}, {1}, {2}, {3}, {4:3}");
+        public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerPointPerf", "{0}, {1}, {2}, {3}, {4}");
 
         public static TrackerEvent BoxDefinition = new TrackerEvent("TrackerDesc", "START, BoxSession {0}, Width:{1:f2} Depth:{2:f2} Height: {3:f2}");
         
