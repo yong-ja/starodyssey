@@ -369,7 +369,11 @@ namespace WpfTest
             const float snapRange = 0.3f;
             while (!completed)
             {
-
+                if (box == null)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
                 float[] progress = GetArrowProgress();
                 events.Add(new InputEvent(DateTime.Now, progress));
 
@@ -595,16 +599,14 @@ namespace WpfTest
             float[] progress = new float[3];
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
-            progress[0] = frame.Width - currentProgress;
-
-
+            progress[0] = (currentProgress - startingSValues.X) / frame.Width;
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
-            progress[1] = frame.Width - currentProgress;
+            progress[1] = (currentProgress - startingSValues.Y) / frame.Height;
 
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
-            progress[2] = frame.Width - currentProgress;
+            progress[2] = (currentProgress - startingSValues.Z) / frame.Depth;
 
 
 
