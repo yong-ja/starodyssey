@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using WpfTest;
 
-namespace AvengersUtd.Odyssey.Utils.Logging
+namespace TaskStringBuilderListener
 {
-    public class FileTraceListener : System.Diagnostics.TraceListener
+    public class TrialFileTraceListener : System.Diagnostics.TraceListener
     {
         private static string logTag = "{0},{1},";
         string fileName;
         System.DateTime timeStamp;
         System.IO.StreamWriter traceWriter;
 
-        public FileTraceListener(string fileNamePrefix)
+        public TrialFileTraceListener(string fileNamePrefix)
         {
             // Pass in the path of the logfile (ie. C:\Logs\MyAppLog.log)
             // The logfile will actually be created with a yyyymmdd format appended to the filename
@@ -47,8 +48,8 @@ namespace AvengersUtd.Odyssey.Utils.Logging
             timeStamp = System.DateTime.Today;
 
             return Path.Combine(Path.GetDirectoryName(fileName),
-               Path.GetFileNameWithoutExtension(fileName) + "_" +
-               timeStamp.ToString("yyyyMMdd") + Path.GetExtension(fileName));
+               "P" + Test.Participant.ToString("D2") + "T" + Test.Count.ToString("D2") +
+               Path.GetFileNameWithoutExtension(fileName) + "_" + timeStamp.ToString("yyyyMMdd") +  Path.GetExtension(fileName));
         }
 
         protected override void Dispose(bool disposing)

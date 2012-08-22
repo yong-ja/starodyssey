@@ -66,6 +66,7 @@ namespace WpfTest
             TimeSpan duration = endTime - startTime;
 
             double x;
+
             TrackerEvent.BoxData.Write(string.Format("Time, X, Y, Z, {0:hh:mm:ss.fff}, {1:hh:mm:ss.fff}",
                 startTime, endTime));
 
