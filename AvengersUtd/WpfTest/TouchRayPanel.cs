@@ -21,10 +21,22 @@ using AvengersUtd.Odyssey.Geometry;
 
 namespace WpfTest
 {
+
+    public struct InputEvent
+    {
+        public DateTime TimeStamp { get; private set; }
+        public float[] Progress { get; private set; }
+
+        public InputEvent(DateTime timestamp, float[] progress) : this()
+        {
+            TimeStamp = timestamp;
+            Progress = progress;
+        }
+    }
     public class TouchRayPanel : Panel
     {
-        List<DateTime> gazeEvents = new List<DateTime>();
-        Dictionary<TouchDevice, List<DateTime>> touchEvents = new Dictionary<TouchDevice, List<DateTime>>();
+        List<InputEvent> events = new List<InputEvent>();
+       
         const string ControlTag = "TouchRayPanel";
         const int dwellInterval = 500;
         const float maxR = (ScalingWidget.ArrowIntersectionRadius * ScalingWidget.ArrowIntersectionRadius);
@@ -41,13 +53,14 @@ namespace WpfTest
         ScalingWidget sWidget;
         IBox frame;
 
+        private IRenderable tempArrow;
+
         bool gazeOn;
         bool completed;
         bool gazeLock;
         bool xLock, yLock, zLock;
         
         EventWaitHandle dwellTime;
-        DateTime lastLog;
         DateTime dwellStart;
         
         static int count;
@@ -80,20 +93,6 @@ namespace WpfTest
         }
 
 
-        void EstimateParallelism()
-        {
-            DateTime firstEyeMove = gazeEvents.First();
-            DateTime lastEyeMove = gazeEvents.Last();
-
-            List<DateTime> t1Events = touchEvents.Values.First();
-            List<DateTime> t2Events = touchEvents.Values.Last();
-
-            DateTime firstT1Move = t1Events.First();
-            DateTime lastT1Move = t1Events.Last();
-            DateTime firstT2Move = t2Events.First();
-            DateTime lastT2Move = t2Events.Last();
-        }
-
         protected void OnCompleted(object sender, EventArgs e)
         {
             DateTime end = DateTime.Now;
@@ -118,8 +117,7 @@ namespace WpfTest
             OdysseyUI.CurrentHud.EndDesign();
 
             BoxPerformance bp = new BoxPerformance();
-            bp.SetData(BoxRenderer.startTime, gazeEvents,
-                touchEvents.Values.First(), touchEvents.Values.Last(), end);
+            bp.SetData(BoxRenderer.startTime, end, events);
 
             bp.ShowDialog();
 
@@ -253,10 +251,6 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
-                if (delta > 1)
-                    gazeEvents.Add(DateTime.Now);
-                // Session Id, gpX, gpY, valL, valR, GazeOn
-                
             }
             else
             {
@@ -375,12 +369,10 @@ namespace WpfTest
             const float snapRange = 0.3f;
             while (!completed)
             {
-                if (frame == null)
-                {
-                    Thread.Sleep(100);
-                    continue;
-                }
-                 
+
+                float[] progress = GetArrowProgress();
+                events.Add(new InputEvent(DateTime.Now, progress));
+
                 float yOffset = Math.Abs(frame.Height - box.ScalingValues.Y);
                 float xOffset = Math.Abs(frame.Width - box.ScalingValues.X);
                 float zOffset = Math.Abs(frame.Depth - box.ScalingValues.Z);
@@ -593,8 +585,30 @@ namespace WpfTest
                     break;
 
             }
+        }
+
+        float[] GetArrowProgress()
+        {
+
+            float currentProgress;
+
+            float[] progress = new float[3];
+
+            currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
+            progress[0] = frame.Width - currentProgress;
 
 
+
+            currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
+            progress[1] = frame.Width - currentProgress;
+
+
+            currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
+            progress[2] = frame.Width - currentProgress;
+
+
+
+            return progress;
         }
 
         protected override void OnTouchMove(AvengersUtd.Odyssey.UserInterface.Input.TouchEventArgs e)
@@ -611,17 +625,10 @@ namespace WpfTest
             {
                 Vector2 oldLocation = points[e.TouchDevice];
                 Vector2 delta = Vector2.Subtract(e.Location, oldLocation);
-                if (delta.LengthSquared() >= 1)
-                {
-                    if (!touchEvents.ContainsKey(e.TouchDevice))
-                        touchEvents.Add(e.TouchDevice, new List<DateTime>());
-                    touchEvents[e.TouchDevice].Add(DateTime.Now);
-                }
                 points[e.TouchDevice] = e.Location;
             }
         }
 
-        private IRenderable tempArrow;
 
 
         protected override void OnMouseDown(AvengersUtd.Odyssey.UserInterface.Input.MouseEventArgs e)

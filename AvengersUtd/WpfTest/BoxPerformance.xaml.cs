@@ -24,39 +24,69 @@ namespace WpfTest
             InitializeComponent();
         }
 
-        public void SetData(DateTime startTime,
-            List<DateTime> gazeEvents, List<DateTime> touch1Events, List<DateTime> touch2Events,
-            DateTime endTime)
+        //public void SetData(DateTime startTime,
+        //    List<DateTime> gazeEvents, List<DateTime> touch1Events, List<DateTime> touch2Events,
+        //    DateTime endTime)
+        //{
+        //    TimeSpan duration = endTime - startTime;
+
+        //    double y = 64;
+        //    foreach (DateTime t in gazeEvents)
+        //    {
+        //        TimeSpan ts = t - startTime;
+        //        double  x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
+        //        Dot dot = BuildControlPoint(new Point(x, y), Brushes.Red);
+        //        Canvas.Children.Add(dot);
+        //    }
+
+        //    y = 128;
+        //    foreach (DateTime t in touch1Events)
+        //    {
+        //        TimeSpan ts = t - startTime;
+        //        double x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
+        //        Dot dot = BuildControlPoint(new Point(x, y), Brushes.Blue);
+        //        Canvas.Children.Add(dot);
+        //    }
+
+        //    y = 192;
+        //    foreach (DateTime t in touch2Events)
+        //    {
+        //        TimeSpan ts = t - startTime;
+        //        double x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
+        //        Dot dot = BuildControlPoint(new Point(x, y), Brushes.Green);
+        //        Canvas.Children.Add(dot);
+        //    }
+            
+        //}
+
+      
+
+        public void SetData(DateTime startTime, DateTime endTime, List<InputEvent> events)
         {
             TimeSpan duration = endTime - startTime;
 
-            double y = 64;
-            foreach (DateTime t in gazeEvents)
+            double x, y;
+            foreach (InputEvent eventData in events)
             {
-                TimeSpan ts = t - startTime;
-                double  x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
-                Dot dot = BuildControlPoint(new Point(x, y), Brushes.Red);
-                Canvas.Children.Add(dot);
-            }
+                DateTime ts = eventData.TimeStamp;
+                TimeSpan t = ts - startTime;
+                float[] progress = eventData.Progress;
+                x = (t.TotalMilliseconds / duration.TotalMilliseconds) * 512;
 
-            y = 128;
-            foreach (DateTime t in touch1Events)
-            {
-                TimeSpan ts = t - startTime;
-                double x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
-                Dot dot = BuildControlPoint(new Point(x, y), Brushes.Blue);
-                Canvas.Children.Add(dot);
-            }
+                Color eyeColor = Colors.Black.Lerp(Colors.Red, progress[0]);
+                Brush eyeBrush = new SolidColorBrush(eyeColor);
+                Canvas.Children.Add(BuildControlPoint(new Point(x, 64), eyeBrush));
 
-            y = 192;
-            foreach (DateTime t in touch2Events)
-            {
-                TimeSpan ts = t - startTime;
-                double x = (ts.TotalMilliseconds / duration.TotalMilliseconds) * 512;
-                Dot dot = BuildControlPoint(new Point(x, y), Brushes.Green);
-                Canvas.Children.Add(dot);
+                Color leftColor = Colors.Black.Lerp(Colors.Blue, progress[1]);
+                Brush leftBrush = new SolidColorBrush(eyeColor);
+                
+                Canvas.Children.Add(BuildControlPoint(new Point(x, 128), leftBrush));
+
+                Color rightColor = Colors.Black.Lerp(Colors.Green, progress[2]);
+                Brush rightBrush = new SolidColorBrush(eyeColor);
+                
+                Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
             }
-            
         }
 
         public Dot BuildControlPoint(Point location, Brush color)
