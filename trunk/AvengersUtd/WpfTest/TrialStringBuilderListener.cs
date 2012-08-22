@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using WpfTest;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
-    public class FileTraceListener : System.Diagnostics.TraceListener
+    public class TrialStringBuilderListener : System.Diagnostics.TraceListener
     {
         private static string logTag = "{0},{1},";
         string fileName;
-        System.DateTime timeStamp;
+        StringBuilder sb;
         System.IO.StreamWriter traceWriter;
 
-        public FileTraceListener(string fileNamePrefix)
+        public TrialStringBuilderListener(string fileNamePrefix)
         {
-            // Pass in the path of the logfile (ie. C:\Logs\MyAppLog.log)
-            // The logfile will actually be created with a yyyymmdd format appended to the filename
+            sb = new StringBuilder();
             fileName = fileNamePrefix;
             traceWriter = new StreamWriter(GenerateFilename(), true);
         }
@@ -34,30 +34,31 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
         public override void Write(string value)
         {
-            traceWriter.Write(value);
+            sb.Append(value);
         }
 
         public override void WriteLine(string value)
         {
-            traceWriter.WriteLine(value);
-        }
-
-        private string GenerateFilename()
-        {
-            timeStamp = System.DateTime.Today;
-
-            return Path.Combine(Path.GetDirectoryName(fileName),
-               Path.GetFileNameWithoutExtension(fileName) + "_" +
-               timeStamp.ToString("yyyyMMdd") + Path.GetExtension(fileName));
+            sb.AppendLine(value);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                traceWriter.Write(sb.ToString());
                 traceWriter.Flush();
                 //traceWriter.Close();
             }
+        }
+
+        private string GenerateFilename()
+        {
+            DateTime timeStamp = System.DateTime.Today;
+
+            return Path.Combine(Path.GetDirectoryName(fileName),
+               "P" + Test.Participant.ToString("D2") + "T" + Test.Count.ToString("D2") +
+               Path.GetFileNameWithoutExtension(fileName) + "_" + timeStamp.ToString("yyyyMMdd") + Path.GetExtension(fileName));
         }
 
     }

@@ -22,13 +22,10 @@ namespace WpfTest
     public class BoxRenderer : Renderer
     {
         public static DateTime startTime, endTime;
-        static int index;
-        static int participant;
-        
-        
+
+ 
         static int count;
         static int totalConditions;
-
 
         public static int Count { get { return count; } }
         public static int ConditionsCount { get { return totalConditions;}}
@@ -142,7 +139,7 @@ namespace WpfTest
 
         void NewSession()
         {
-            int[] condition = conditions[index % conditions.Count];
+            int[] condition = conditions[Test.BoxIndex % conditions.Count];
             bool[] arrowCondition = arrowConditions[condition[1]];
 
             frameSize = new float[]
@@ -162,7 +159,7 @@ namespace WpfTest
             startTime = DateTime.Now;
             TrackerEvent.BoxSessionStart.Log(Count, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[index%24], -bbox.Depth / 2 +0.5f);
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[Test.BoxIndex%24], -bbox.Depth / 2 +0.5f);
         }
 
         void StartNew()
@@ -194,9 +191,9 @@ namespace WpfTest
 #endif
             //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
 
-            int[] condition = conditions[index % conditions.Count];
+            int[] condition = conditions[Test.BoxIndex % conditions.Count];
             bool[] arrowCondition = arrowConditions[condition[1]];
-            TrackerEvent.BoxSessionEnd.Log(participant,
+            TrackerEvent.BoxSessionEnd.Log(Test.Participant,
                 condition[0], condition[2],
                 arrowCondition[0] ? "Increasing" : "Decreasing",
                 arrowCondition[1] ? "Increasing" : "Decreasing",
@@ -204,7 +201,7 @@ namespace WpfTest
                 e.Duration);
             started = false;
             count++;
-            index++;
+            Test.BoxIndex++;
        }
 
         public override void Init()
@@ -224,7 +221,7 @@ namespace WpfTest
                                  }
                              };
             //Camera.LookAt(new Vector3(3,0f, 3), new Vector3(-6.5f, 5.55f, -6.5f));
-            int[] condition = conditions[index % conditions.Count];
+            int[] condition = conditions[Test.BoxIndex % conditions.Count];
             bool[] arrowCondition = arrowConditions[condition[1]];
             boxSize = new float[]
             {
@@ -296,7 +293,7 @@ namespace WpfTest
             };
             bSession.MouseClick += (sender, e) =>
             {
-                index++;
+                Test.BoxIndex++;
                 BoxRenderer boxR = new BoxRenderer(Game.Context);
                 Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR); boxR.StartNew(); }));
             };
