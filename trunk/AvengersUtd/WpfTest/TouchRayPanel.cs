@@ -635,7 +635,7 @@ namespace WpfTest
             }
             else progress[1] = 0;
 
-            if (arrowY)
+            if (arrowZ)
                 currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
             else
                 currentProgress = MathHelper.Clamp(box.ScalingValues.Z, frame.Depth, startingSValues.Z);
@@ -731,7 +731,7 @@ namespace WpfTest
 
         internal void SetArrowConditions(bool[] arrowConditions)
         {
-            this.arrowConditions = arroConditions;
+            this.arrowConditions = arrowConditions;
         }
     }
 }
