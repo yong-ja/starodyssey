@@ -42,6 +42,8 @@ namespace WpfTest
         TrackerWrapper tracker;
         Point lastGaze;
 
+        DateTime startTime;
+
         // Radii 8, 64, 128
         // Distances 256, 512, 768
 
@@ -64,6 +66,8 @@ namespace WpfTest
                 for (int j = 0; j < sizes.Length; j++)
                     for (int k = 0; k < distances.Length; k++)
                         conditions.Add(new int[] { i, j, k });
+
+            TrackerEvent.PointSessionStart.Log("Participant", "Rep", "Size", "Distance", "Time");
         }
 
         void Init()
@@ -123,6 +127,7 @@ namespace WpfTest
                         countdownTimer);
                     countdownTimer.Reset();
                     clock.Start();
+                    startTime = DateTime.Now;
                     stopwatch.Start();
                 }));
             };
@@ -199,7 +204,8 @@ namespace WpfTest
             stopwatch.Stop();
             // Participant, Rep, Size, Distance, Time
             int[] condition = conditions[Test.SelectionIndex];
-            TrackerEvent.PointSessionEnd.Log(Test.Participant, condition[0], condition[1], condition[2], stopwatch.ElapsedMilliseconds / 1000d);
+            TrackerEvent.PointSessionEnd.Log(Test.Participant, condition[0], condition[1], condition[2],
+                DateTime.Now - startTime);
             
             Test.SelectionIndex++;
             
@@ -276,7 +282,7 @@ namespace WpfTest
             Canvas.Children.Add(target3);
             gazeOn = true;
             // Participant, Rep, Size, Distance, Time
-            TrackerEvent.PointSessionStart.Log("Participant", "Rep", "Size", "Distance", "Time");
+            
             ClockLabel.Visibility = Visibility.Hidden;
 
         }
