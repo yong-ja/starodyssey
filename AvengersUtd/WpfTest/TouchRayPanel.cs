@@ -106,11 +106,11 @@ namespace WpfTest
                 Content = "Session complete"
             };
 
-            if (BoxRenderer.Session > 0 && BoxRenderer.Session % 24 == 0) 
+            if (BoxRenderer.Count > 0 && BoxRenderer.Count % 8 == 0) 
                 label.Content += "\nPlease have a break.";
 
 
-            if (BoxRenderer.Session == 96)
+            if (BoxRenderer.Count == BoxRenderer.ConditionsCount)
                 label.Content = "Thanks, this task is now complete"; 
 
             completed = true;
@@ -228,7 +228,7 @@ namespace WpfTest
             //DateTime now = DateTime.Now;
             //if ((now - lastLog).TotalMilliseconds > 25)
             //{
-                TrackerEvent.Gaze.Log(BoxRenderer.Session, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
+                TrackerEvent.Gaze.Log(BoxRenderer.Count, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
             //    lastLog = now;
             //}
 
@@ -272,7 +272,7 @@ namespace WpfTest
             if (test)
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
             // Session Id, tpX, tpY, tdId, eventType
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
+            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
             
 
@@ -353,7 +353,7 @@ namespace WpfTest
             window.ReleaseTouchCapture(e.TouchDevice);
            
             IRenderable result;
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
+            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
             if (test)
@@ -377,8 +377,10 @@ namespace WpfTest
                     Thread.Sleep(100);
                     continue;
                 }
+
                 float[] progress = GetArrowProgress();
-                events.Add(new InputEvent(DateTime.Now, progress));
+                if (progress[0]!=0 || progress[1] !=0 || progress[2] ==0)
+                    events.Add(new InputEvent(DateTime.Now, progress));
 
                 float yOffset = Math.Abs(frame.Height - box.ScalingValues.Y);
                 float xOffset = Math.Abs(frame.Width - box.ScalingValues.X);
@@ -607,7 +609,6 @@ namespace WpfTest
             {
                 progress[0] = 
                     Math.Abs(currentProgress - startingSValues.X) / Math.Abs(frame.Width - startingSValues.X);
-                //if (1 - progress[0] < 0.01)
                 if (progress[0] == 1)
                     lastX = true;
             }
@@ -618,7 +619,7 @@ namespace WpfTest
             if (!lastY)
             {
                 progress[1] = Math.Abs(currentProgress - startingSValues.Y) / Math.Abs(frame.Height - startingSValues.Y);
-                if (progress[1] == 1)//if (1 - progress[1] < 0.01)
+                if (progress[1] == 1)
                     lastY = true;
             }
             else progress[1] = 0;
@@ -628,7 +629,7 @@ namespace WpfTest
             if (!lastZ)
             {
                 progress[2] = Math.Abs(currentProgress - startingSValues.Z) / Math.Abs(frame.Depth - startingSValues.Z);
-                if (progress[2] == 1)//if (1 - progress[2] < 0.01)
+                if (progress[2] == 1)
                     lastZ = true;
             }
             else progress[2] = 0;
@@ -643,7 +644,7 @@ namespace WpfTest
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];
-            TrackerEvent.Touch.Log(BoxRenderer.Session, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
             if (points.ContainsKey(e.TouchDevice))
             {

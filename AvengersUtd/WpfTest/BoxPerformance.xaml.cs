@@ -66,6 +66,9 @@ namespace WpfTest
             TimeSpan duration = endTime - startTime;
 
             double x;
+            TrackerEvent.BoxData.Write(string.Format("Time, X, Y, Z, {0:hh:mm:ss.fff}, {1:hh:mm:ss.fff}",
+                startTime, endTime));
+
             foreach (InputEvent eventData in events)
             {
                 DateTime ts = eventData.TimeStamp;
@@ -88,6 +91,8 @@ namespace WpfTest
                 Brush rightBrush = new SolidColorBrush(rightColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
+
+                TrackerEvent.BoxData.Log(t.ToString("ss.fff"), progress[0], progress[1], progress[2]);
             }
         }
 
@@ -115,7 +120,7 @@ namespace WpfTest
             string filePrefix = "BoxTask.png";
             string filename =  System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePrefix),
                System.IO.Path.GetFileNameWithoutExtension(filePrefix) + "_" +
-               timeStamp.ToString("yyyyMMdd") + '_' + BoxRenderer.Session + System.IO.Path.GetExtension(filePrefix));
+               timeStamp.ToString("yyyyMMdd") + '_' + BoxRenderer.Count + System.IO.Path.GetExtension(filePrefix));
             // save file to disk
             FileStream fs = File.Open(filename, FileMode.OpenOrCreate);
             encoder.Save(fs);
