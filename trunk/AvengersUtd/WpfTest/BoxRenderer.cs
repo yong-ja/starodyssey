@@ -34,7 +34,7 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=1;
+        static int index=0;
         private Button bNew;
         static bool started = false;
         bool startingNewSession;
