@@ -605,7 +605,8 @@ namespace WpfTest
 
             if (!lastX)
             {
-                progress[0] = (currentProgress - startingSValues.X) / (frame.Width - startingSValues.X);
+                progress[0] = 
+                    Math.Abs(currentProgress - startingSValues.X) / Math.Abs(frame.Width - startingSValues.X);
                 //if (1 - progress[0] < 0.01)
                 if (progress[0] == 1)
                     lastX = true;
@@ -616,7 +617,7 @@ namespace WpfTest
 
             if (!lastY)
             {
-                progress[1] = (currentProgress - startingSValues.Y) / (frame.Height - startingSValues.Y);
+                progress[1] = Math.Abs(currentProgress - startingSValues.Y) / Math.Abs(frame.Height - startingSValues.Y);
                 if (progress[1] == 1)//if (1 - progress[1] < 0.01)
                     lastY = true;
             }
@@ -626,7 +627,7 @@ namespace WpfTest
 
             if (!lastZ)
             {
-                progress[2] = (currentProgress - startingSValues.Z) / (frame.Depth - startingSValues.Z);
+                progress[2] = Math.Abs(currentProgress - startingSValues.Z) / Math.Abs(frame.Depth - startingSValues.Z);
                 if (progress[2] == 1)//if (1 - progress[2] < 0.01)
                     lastZ = true;
             }
