@@ -79,12 +79,12 @@ namespace WpfTest
                 Brush eyeBrush = new SolidColorBrush(eyeColor);
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 64), eyeBrush));
 
-                Color leftColor = progress[1] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, (byte)(progress[0] * 255), 0);
+                Color leftColor = progress[1] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, (byte)(progress[1] * 255), 0);
                 Brush leftBrush = new SolidColorBrush(leftColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 128), leftBrush));
 
-                Color rightColor = progress[2] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, 0, (byte)(progress[0] * 255));
+                Color rightColor = progress[2] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, 0, (byte)(progress[2] * 255));
                 Brush rightBrush = new SolidColorBrush(rightColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
