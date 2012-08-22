@@ -36,6 +36,9 @@ namespace WpfTest
     public class TouchRayPanel : Panel
     {
         List<InputEvent> events = new List<InputEvent>();
+
+
+        bool lastX, lastY, lastZ;
        
         const string ControlTag = "TouchRayPanel";
         const int dwellInterval = 500;
@@ -599,23 +602,35 @@ namespace WpfTest
             float[] progress = new float[3];
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
-            progress[0] = (currentProgress - startingSValues.X) / frame.Width;
 
-            if (xLock)
-                progress[0] = 0;
+            if (!lastX)
+            {
+                progress[0] = (currentProgress - startingSValues.X) / frame.Width;
+                //if (1 - progress[0] < 0.01)
+                if (progress[0] == 1)
+                    lastX = true;
+            }
+            else progress[0] = 0;
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
-            progress[1] = (currentProgress - startingSValues.Y) / frame.Height;
 
-            if (yLock)
-                progress[1] = 0;
+            if (!lastY)
+            {
+                progress[1] = (currentProgress - startingSValues.Y) / frame.Height;
+                if (progress[1] == 1)//if (1 - progress[1] < 0.01)
+                    lastX = true;
+            }
+            else progress[1] = 0;
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
-            progress[2] = (currentProgress - startingSValues.Z) / frame.Depth;
 
-            if (yLock)
-                progress[2] = 0;
-
+            if (!lastY)
+            {
+                progress[2] = (currentProgress - startingSValues.Z) / frame.Depth;
+                if (progress[2] == 1)//if (1 - progress[2] < 0.01)
+                    lastX = true;
+            }
+            else progress[2] = 0;
             return progress;
         }
 
