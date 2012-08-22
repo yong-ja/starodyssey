@@ -34,7 +34,7 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=0;
+        static int index=1;
         private Button bNew;
         static bool started = false;
         bool startingNewSession;
@@ -114,8 +114,10 @@ namespace WpfTest
         private List<float[]> axes = new List<float[]> 
         {
             new [] { 0f, 0f, 0f},
-            new [] { -22.5f, 45f, 0f},
-            new [] {22.5f, 0f, -45}
+            new [] { -15f, 30f, 0f},
+            new [] { 15f, 0f, -30f},
+            //new [] { -22.5f, 45f, 0f},
+            //new [] {22.5f, 0f, -45}
         };
 
         static BoxRenderer()
