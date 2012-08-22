@@ -30,14 +30,14 @@ namespace WpfTest
         
         const double RadiusSize = 4 * Dot.DefaultRadius;
         int gazeRadius;
-        int index=19;
+        int index=20;
         int eyeIndex;
         Marker endPoint;
         TrackerWrapper tracker;
         bool gazeOn;
 
         private readonly Point leftDot = new Point(256, 640);
-        private readonly Point middleDot = new Point(960,448);
+        private readonly Point middleDot = new Point(960,540);
         private readonly Point rightDot = new Point(1664, 640);
 
         private readonly List<int[]> cpConditions = new List<int[]>

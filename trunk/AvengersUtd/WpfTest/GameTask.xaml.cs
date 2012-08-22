@@ -45,7 +45,7 @@ namespace WpfTest
         // Radii 8, 64, 128
         // Distances 256, 512, 768
 
-        private float[] sizes = new[] { 8f, 16f, 32f };
+        private float[] sizes = new[] { 12f,22f, 32f };
         private float[] distances = new[] { 320f, 512f, 768f };
 
         private readonly List<int[]> conditions = new List<int[]>();
