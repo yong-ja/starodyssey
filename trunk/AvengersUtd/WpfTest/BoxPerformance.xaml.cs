@@ -73,16 +73,16 @@ namespace WpfTest
                 float[] progress = eventData.Progress;
                 x = (t.TotalMilliseconds / duration.TotalMilliseconds) * 512;
 
-                Color eyeColor = Colors.Black.Lerp(Colors.Red, progress[0]);
+                Color eyeColor = Color.FromArgb(255, (byte)(progress[0] * 255), 0, 0);
                 Brush eyeBrush = new SolidColorBrush(eyeColor);
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 64), eyeBrush));
 
-                Color leftColor = Colors.Black.Lerp(Colors.Blue, progress[1]);
+                Color leftColor = Color.FromArgb(255, 0, (byte)(progress[0] * 255), 0);
                 Brush leftBrush = new SolidColorBrush(eyeColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 128), leftBrush));
 
-                Color rightColor = Colors.Black.Lerp(Colors.Green, progress[2]);
+                Color rightColor = Color.FromArgb(255, 0, 0,  (byte)(progress[0] * 255));
                 Brush rightBrush = new SolidColorBrush(eyeColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
