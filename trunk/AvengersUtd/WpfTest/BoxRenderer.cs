@@ -321,6 +321,7 @@ namespace WpfTest
             rp.SetScalingWidget(sWidget);
             rp.SetBox(box);
             rp.SetFrame((IBox)bbox);
+            rp.SetArrowConditions(arrowCondition);
             rp.SetAxis(axis);
             Hud.Add(rp);
             //rp.Add(bSession);
