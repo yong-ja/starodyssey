@@ -166,7 +166,7 @@ namespace WpfTest
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             startTime = DateTime.Now;
-            TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2], condition[2], condition[1]);
+            TrackerEvent.BoxSessionStart.Log(Session, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[index%24], -bbox.Depth / 2 +0.5f);
 
@@ -202,7 +202,16 @@ namespace WpfTest
 #if TRACKER
             tracker.StopTracking();
 #endif
-            TrackerEvent.BoxSessionEnd.Log(Session, stopwatch.ElapsedMilliseconds/1000d);
+            //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
+
+            int[] condition = conditions[index];
+            bool[] arrowCondition = arrowConditions[condition[1]];
+            TrackerEvent.BoxSessionEnd.Log(0, //Participant
+                condition[0], condition[2],
+                arrowCondition[0] ? "Increasing" : "Decreasing",
+                arrowCondition[1] ? "Increasing" : "Decreasing",
+                arrowCondition[2] ? "Increasing" : "Decreasing",
+                stopwatch.ElapsedMilliseconds/1000d);
             started = false;
             index++;
        }
