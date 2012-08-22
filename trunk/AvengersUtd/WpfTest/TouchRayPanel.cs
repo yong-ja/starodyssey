@@ -66,7 +66,7 @@ namespace WpfTest
         static int count;
         Thread completetionCheck;
 
-        public event EventHandler<EventArgs> Completed;
+        public event EventHandler<BoxEventArgs> Completed;
 
 
 
@@ -93,7 +93,7 @@ namespace WpfTest
         }
 
 
-        protected void OnCompleted(object sender, EventArgs e)
+        protected void OnCompleted(object sender, BoxEventArgs e)
         {
             DateTime end = DateTime.Now;
             Label label = new Label
@@ -388,7 +388,7 @@ namespace WpfTest
                     Thread.Sleep(50);
             }
 
-            OnCompleted(this, EventArgs.Empty);
+            OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now);
         }
 
 
