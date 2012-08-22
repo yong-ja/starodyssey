@@ -36,7 +36,7 @@ namespace WpfTest
     public class TouchRayPanel : Panel
     {
         List<InputEvent> events = new List<InputEvent>();
-
+        bool[] arrowConditions;
 
         bool lastX, lastY, lastZ;
        
@@ -603,7 +603,14 @@ namespace WpfTest
 
             float[] progress = new float[3];
 
-            currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
+            bool arrowX = arrowConditions[0];
+            bool arrowY = arrowConditions[1];
+            bool arrowZ = arrowConditions[2];
+
+            if (arrowX)
+                currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
+            else
+                currentProgress = MathHelper.Clamp(box.ScalingValues.X, frame.Width, startingSValues.X);
 
             if (!lastX)
             {
@@ -614,7 +621,11 @@ namespace WpfTest
             }
             else progress[0] = 0;
 
-            currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
+            if (arrowY)
+                currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
+            else
+                currentProgress = MathHelper.Clamp(box.ScalingValues.Y, frame.Height, startingSValues.Y);
+            
 
             if (!lastY)
             {
@@ -624,7 +635,10 @@ namespace WpfTest
             }
             else progress[1] = 0;
 
-            currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
+            if (arrowY)
+                currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
+            else
+                currentProgress = MathHelper.Clamp(box.ScalingValues.Z, frame.Depth, startingSValues.Z);
 
             if (!lastZ)
             {
@@ -713,6 +727,11 @@ namespace WpfTest
         internal void SetAxis(float[] axis)
         {
             this.axis = axis;
+        }
+
+        internal void SetArrowConditions(bool[] arrowConditions)
+        {
+            this.arrowConditions = arroConditions;
         }
     }
 }
