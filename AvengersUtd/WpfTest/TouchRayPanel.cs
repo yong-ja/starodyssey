@@ -253,7 +253,7 @@ namespace WpfTest
             if (delta < maxR)
             {
                 MoveArrow(gazePoint, eyeArrow, true);
-                if (delta > 4)
+                if (delta > 1)
                     gazeEvents.Add(DateTime.Now);
                 // Session Id, gpX, gpY, valL, valR, GazeOn
                 
@@ -375,6 +375,12 @@ namespace WpfTest
             const float snapRange = 0.3f;
             while (!completed)
             {
+                if (frame == null)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
+                 
                 float yOffset = Math.Abs(frame.Height - box.ScalingValues.Y);
                 float xOffset = Math.Abs(frame.Width - box.ScalingValues.X);
                 float zOffset = Math.Abs(frame.Depth - box.ScalingValues.Z);
@@ -605,7 +611,7 @@ namespace WpfTest
             {
                 Vector2 oldLocation = points[e.TouchDevice];
                 Vector2 delta = Vector2.Subtract(e.Location, oldLocation);
-                if (delta.LengthSquared() > 4)
+                if (delta.LengthSquared() >= 1)
                 {
                     if (!touchEvents.ContainsKey(e.TouchDevice))
                         touchEvents.Add(e.TouchDevice, new List<DateTime>());

@@ -34,7 +34,7 @@ namespace WpfTest
 
         TouchRayPanel rp;
         private static int countdown = 3;
-        static int index=0;
+        static int index=1;
         private Button bNew;
         static bool started = false;
         bool startingNewSession;
@@ -68,7 +68,7 @@ namespace WpfTest
             3.5f,
 
             2.5f,
-            2.5f,
+            2.0f,
             3.5f,
 
             2.5f,
@@ -114,8 +114,8 @@ namespace WpfTest
         private List<float[]> axes = new List<float[]> 
         {
             new [] { 0f, 0f, 0f},
-            new [] { -15f, 30f, 0f},
-            new [] {15f, 0f, -30}
+            new [] { -22.5f, 45f, 0f},
+            new [] {22.5f, 0f, -45}
         };
 
         static BoxRenderer()
@@ -300,6 +300,17 @@ namespace WpfTest
                 BoxRenderer boxR = new BoxRenderer(Game.Context);
                 Global.Window.Dispatcher.BeginInvoke(new Action(delegate { Game.ChangeRenderer(boxR); boxR.StartNew(); }));
             };
+
+            Button bStop = new Button
+            {
+                Size = new System.Drawing.Size(120, 60),
+                Content = "Stop",
+                Position = new Vector2(0, 1020)
+            };
+            bStop.TouchUp += (sender, e) =>
+                {
+                    Stop();
+                };
             
 
             lCountDown = new Label()
@@ -316,10 +327,11 @@ namespace WpfTest
             rp.SetFrame((IBox)bbox);
             rp.SetAxis(axis);
             Hud.Add(rp);
-            rp.Add(bSession);
+            //rp.Add(bSession);
             //rp.Add(bConnect);
             //rp.Add(bTracking);
             //
+            rp.Add(bStop);
             rp.Add(bNew);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
 

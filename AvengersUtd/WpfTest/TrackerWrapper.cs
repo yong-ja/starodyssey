@@ -6,6 +6,7 @@ using AvengersUtd.Odyssey.Utils.Logging;
 using Tobii.Eyetracking.Sdk.Exceptions;
 using System.Windows;
 using SlimDX;
+using System.Diagnostics;
 
 namespace WpfTest
 {
@@ -141,6 +142,12 @@ namespace WpfTest
             }
             catch (EyetrackerException ee)
             {
+                foreach (TraceListener tl in Trace.Listeners)
+                {
+                    tl.Flush();
+                    tl.Dispose();
+                }
+
                 if (ee.ErrorCode == 0x20000402)
                 {
                     LogEvent.Engine.Write("Failed to upgrade protocol. " +
@@ -154,6 +161,11 @@ namespace WpfTest
             }
             catch (Exception)
             {
+                foreach (TraceListener tl in Trace.Listeners)
+                {
+                    tl.Flush();
+                    tl.Dispose();
+                }
                 LogEvent.Engine.Write("Could not connect to eyetracker.");
                 DisconnectTracker();
             }
