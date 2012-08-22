@@ -191,7 +191,7 @@ namespace WpfTest
 
         }
 
-        private void Stop()
+        private void Stop(BoxEventArgs e)
         {
             endTime = DateTime.Now;
             stopwatch.Stop();
@@ -211,7 +211,7 @@ namespace WpfTest
                 arrowCondition[0] ? "Increasing" : "Decreasing",
                 arrowCondition[1] ? "Increasing" : "Decreasing",
                 arrowCondition[2] ? "Increasing" : "Decreasing",
-                stopwatch.ElapsedMilliseconds/1000d);
+                e.Duration);
             started = false;
             index++;
        }
@@ -342,7 +342,7 @@ namespace WpfTest
             //
             rp.Add(bStop);
             rp.Add(bNew);
-            rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop();
+            rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop(e);
 
             //bConnect.TouchUp += (sender, e) =>
             //{

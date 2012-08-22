@@ -65,7 +65,7 @@ namespace WpfTest
         {
             TimeSpan duration = endTime - startTime;
 
-            double x, y;
+            double x;
             foreach (InputEvent eventData in events)
             {
                 DateTime ts = eventData.TimeStamp;
@@ -78,12 +78,12 @@ namespace WpfTest
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 64), eyeBrush));
 
                 Color leftColor = Color.FromArgb(255, 0, (byte)(progress[0] * 255), 0);
-                Brush leftBrush = new SolidColorBrush(eyeColor);
+                Brush leftBrush = new SolidColorBrush(leftColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 128), leftBrush));
 
                 Color rightColor = Color.FromArgb(255, 0, 0,  (byte)(progress[0] * 255));
-                Brush rightBrush = new SolidColorBrush(eyeColor);
+                Brush rightBrush = new SolidColorBrush(rightColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
             }
