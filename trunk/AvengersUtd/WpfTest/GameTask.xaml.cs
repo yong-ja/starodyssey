@@ -213,7 +213,7 @@ namespace WpfTest
             
            
             gazeOn = false;
-            tComplete.Text = Test.Count % 9 == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
+            tComplete.Text = (Test.Count > 0 && Test.Count % 9) == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
             if (Test.Count == 36)
                 tComplete.Text = "Thanks! This task\n is now complete";
             Canvas.Children.Add(tComplete);

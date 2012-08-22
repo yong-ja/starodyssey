@@ -24,6 +24,11 @@ namespace WpfTest
         public static TrackerEvent PointSessionStart = new TrackerEvent("TrackerPointPerf", "{0},{1},{2},{3},{4}");
         public static TrackerEvent PointSessionEnd = new TrackerEvent("TrackerPointPerf", "{0}, {1}, {2}, {3}, {4}");
 
+                                                                    // Participant, Curve, EPR, Ref, GazeOn, Time
+        public static TrackerEvent BezierSessionStart = new TrackerEvent("TrackerBezierPerf", "{0}, {1}, {2}, {3}, {4}, {5}");
+        public static TrackerEvent BezierSessionEnd = new TrackerEvent("TrackerDesc", "{0}, {1}, {2}, {3}, {4}, {5}");
+
+
         public static TrackerEvent BoxDefinition = new TrackerEvent("TrackerDesc", "START, BoxSession {0}, Width:{1:f2} Depth:{2:f2} Height: {3:f2}");
         
         public static TrackerEvent ArrowLock = new TrackerEvent("TrackerDesc", "{0},{1},Locked");
@@ -32,10 +37,10 @@ namespace WpfTest
         public static TrackerEvent ArrowMoveStart = new TrackerEvent("TrackerDesc", "{0},GazeMovement");
         public static TrackerEvent ArrowDeselection = new TrackerEvent("TrackerDesc", "{0},Deselected,{1}");
 
-        public static TrackerEvent BezierSessionStart = new TrackerEvent("TrackerDesc", "START, BezierSession {0}, ShowRef: {1} GazeOn: {2} C: {3} Er:{4}");
+        
         public static TrackerEvent BezierPoint = new TrackerEvent("TrackerDesc","{0}, ({1:f2},{2:f2})");
         public static TrackerEvent BezierDistance = new TrackerEvent("TrackerDesc", "{0}, distance: {1:f2}");
-        public static TrackerEvent BezierSessionEnd = new TrackerEvent("TrackerDesc", "End, BezierSession {0}, Time:{1:f3}");
+        
        
         public static TrackerEvent PointIntersection = new TrackerEvent("TrackerDesc", "Point {0} intersected by {1}");
         public static TrackerEvent Misc = new TrackerEvent("TrackerDesc", "{0}");
