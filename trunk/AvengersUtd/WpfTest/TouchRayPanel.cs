@@ -601,14 +601,20 @@ namespace WpfTest
             currentProgress = MathHelper.Clamp(box.ScalingValues.X, startingSValues.X, frame.Width);
             progress[0] = (currentProgress - startingSValues.X) / frame.Width;
 
+            if (xLock)
+                progress[0] = 0;
+
             currentProgress = MathHelper.Clamp(box.ScalingValues.Y, startingSValues.Y, frame.Height);
             progress[1] = (currentProgress - startingSValues.Y) / frame.Height;
 
+            if (yLock)
+                progress[1] = 0;
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
             progress[2] = (currentProgress - startingSValues.Z) / frame.Depth;
 
-
+            if (yLock)
+                progress[2] = 0;
 
             return progress;
         }
