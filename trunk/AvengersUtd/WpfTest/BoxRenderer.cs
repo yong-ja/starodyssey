@@ -132,7 +132,7 @@ namespace WpfTest
 
             totalConditions = conditions.Count;
             //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
-            TrackerEvent.BoxSessionEnd.Log("Participant", "Rep", "Axis", "Arrow1", "Arrow2", "Arrow3", "Time");
+            TrackerEvent.BoxSessionStart.Log("Participant", "Rep", "Axis", "Arrow1", "Arrow2", "Arrow3", "Time");
         }
 
         void NewSession()
@@ -155,7 +155,7 @@ namespace WpfTest
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             startTime = DateTime.Now;
-            TrackerEvent.BoxSessionStart.Log(Test.BoxIndex, frameSize[0], frameSize[1], frameSize[2]);
+            TrackerEvent.BoxDefinition.Log(Test.BoxIndex, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[Test.BoxIndex%24], -bbox.Depth / 2 +0.5f);
         }

@@ -7,7 +7,7 @@ namespace WpfTest
 {
     public class Test
     {
-        static int boxIndex, selectionIndex, bezierIndex;
+        static int boxIndex=3, selectionIndex, bezierIndex;
         static int participant;
 
         public static int BoxIndex { get { return boxIndex; } set { boxIndex = value; } }

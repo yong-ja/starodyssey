@@ -6,7 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using WpfTest;
 
-namespace TaskStringBuilderListener
+namespace WpfTest
 {
     public class TrialFileTraceListener : System.Diagnostics.TraceListener
     {

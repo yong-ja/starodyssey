@@ -67,8 +67,7 @@ namespace WpfTest
 
             double x;
 
-            TrackerEvent.BoxData.Write(string.Format("Time, X, Y, Z, {0:hh:mm:ss.fff}, {1:hh:mm:ss.fff}",
-                startTime, endTime));
+            TrackerEvent.BoxDataHeader.Log("Time, X, Y, Z", startTime, endTime);
 
             foreach (InputEvent eventData in events)
             {
@@ -78,22 +77,22 @@ namespace WpfTest
                 x = (t.TotalMilliseconds / duration.TotalMilliseconds) * 512;
 
 
-                Color eyeColor = progress[0] == 0 ? Colors.Transparent :
-                    Color.FromArgb(255, (byte)(progress[0] * 255), 0, 0);
+                Color eyeColor = progress[1] == 0 ? Colors.Transparent :
+                    Color.FromArgb(255, (byte)(progress[1] * 255), 0, 0);
                 Brush eyeBrush = new SolidColorBrush(eyeColor);
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 64), eyeBrush));
 
-                Color leftColor = progress[1] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, (byte)(progress[1] * 255), 0);
+                Color leftColor = progress[2] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, (byte)(progress[2] * 255), 0);
                 Brush leftBrush = new SolidColorBrush(leftColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 128), leftBrush));
 
-                Color rightColor = progress[2] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, 0, (byte)(progress[2] * 255));
+                Color rightColor = progress[0] == 0 ? Colors.Transparent : Color.FromArgb(255, 0, 0, (byte)(progress[0] * 255));
                 Brush rightBrush = new SolidColorBrush(rightColor);
                 
                 Canvas.Children.Add(BuildControlPoint(new Point(x, 192), rightBrush));
 
-                TrackerEvent.BoxData.Log(t.ToString("ss.fff"), progress[0], progress[1], progress[2]);
+                TrackerEvent.BoxData.Log(t, progress[0], progress[1], progress[2]);
             }
         }
 

@@ -6,7 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using WpfTest;
 
-namespace AvengersUtd.Odyssey.Utils.Logging
+namespace WpfTest
 {
     public class TrialStringBuilderListener : System.Diagnostics.TraceListener
     {

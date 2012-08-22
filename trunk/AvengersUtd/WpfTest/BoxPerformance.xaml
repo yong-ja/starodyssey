@@ -7,7 +7,7 @@
         <TextBlock Text="Eyes" FontSize="14" Canvas.Top="68"/>
         <Line Y1="128" Y2="128" StrokeThickness="2" X2="512" Stroke="Black" />
         <Line Y1="192" Y2="192" StrokeThickness="2" X2="512" Stroke="Black" />
-        <TextBlock Text="Touch1" FontSize="14" Canvas.Top="132"/>
-        <TextBlock Text="Touch2" FontSize="14" Canvas.Top="196"/>
+        <TextBlock Text="Left Hand" FontSize="14" Canvas.Top="132"/>
+        <TextBlock Text="Right Hand" FontSize="14" Canvas.Top="196"/>
     </Canvas>
 </Window>
