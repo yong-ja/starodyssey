@@ -24,10 +24,8 @@ namespace WpfTest
         public static DateTime startTime, endTime;
 
  
-        static int count;
         static int totalConditions;
 
-        public static int Count { get { return count; } }
         public static int ConditionsCount { get { return totalConditions;}}
         static TrackerWrapper tracker;
         FixedNode fNodeBox;
@@ -157,7 +155,7 @@ namespace WpfTest
             fNodeBox.Position = sWidget.GetBoxOffset();
 
             startTime = DateTime.Now;
-            TrackerEvent.BoxSessionStart.Log(Count, frameSize[0], frameSize[1], frameSize[2]);
+            TrackerEvent.BoxSessionStart.Log(Test.BoxIndex, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[Test.BoxIndex%24], -bbox.Depth / 2 +0.5f);
         }
@@ -200,7 +198,7 @@ namespace WpfTest
                 arrowCondition[2] ? "Increasing" : "Decreasing",
                 e.Duration);
             started = false;
-            count++;
+            Test.Count++;
             Test.BoxIndex++;
        }
 

@@ -106,11 +106,11 @@ namespace WpfTest
                 Content = "Session complete"
             };
 
-            if (BoxRenderer.Count > 0 && BoxRenderer.Count % 8 == 0) 
+            if (Test.Count > 0 && Test.Count % 8 == 0) 
                 label.Content += "\nPlease have a break.";
 
 
-            if (BoxRenderer.Count == BoxRenderer.ConditionsCount)
+            if (Test.Count == BoxRenderer.ConditionsCount)
                 label.Content = "Thanks, this task is now complete"; 
 
             completed = true;
@@ -228,7 +228,7 @@ namespace WpfTest
             //DateTime now = DateTime.Now;
             //if ((now - lastLog).TotalMilliseconds > 25)
             //{
-                TrackerEvent.Gaze.Log(BoxRenderer.Count, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
+                TrackerEvent.Gaze.Log(Test.BoxIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
             //    lastLog = now;
             //}
 
@@ -272,7 +272,7 @@ namespace WpfTest
             if (test)
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
             // Session Id, tpX, tpY, tdId, eventType
-            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
+            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
             
 
@@ -353,7 +353,7 @@ namespace WpfTest
             window.ReleaseTouchCapture(e.TouchDevice);
            
             IRenderable result;
-            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
+            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
             if (test)
@@ -644,7 +644,7 @@ namespace WpfTest
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];
-            TrackerEvent.Touch.Log(BoxRenderer.Count, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
             if (points.ContainsKey(e.TouchDevice))
             {
