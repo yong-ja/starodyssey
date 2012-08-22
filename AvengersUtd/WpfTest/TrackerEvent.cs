@@ -26,7 +26,7 @@ namespace WpfTest
 
                                                                     // Participant, Curve, EPR, Ref, GazeOn, Time
         public static TrackerEvent BezierSessionStart = new TrackerEvent("TrackerBezierPerf", "{0}, {1}, {2}, {3}, {4}, {5}");
-        public static TrackerEvent BezierSessionEnd = new TrackerEvent("TrackerDesc", "{0}, {1}, {2}, {3}, {4}, {5}");
+        public static TrackerEvent BezierSessionEnd = new TrackerEvent("TrackerBezierPerf", "{0}, {1}, {2}, {3}, {4}, {5}");
 
 
         public static TrackerEvent BoxDefinition = new TrackerEvent("TrackerDesc", "START, BoxSession {0}, Width:{1:f2} Depth:{2:f2} Height: {3:f2}");

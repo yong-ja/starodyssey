@@ -21,7 +21,7 @@ namespace WpfTest
     {
         private Timer completionTimer;
         private DateTime prevTime;
-        private static double Threshold = 32;
+        private const double Threshold = 32;
         Dictionary<TouchDevice, IDot> knotPoints;
         List<IDot> userDots;
         List<IDot> refDots;
@@ -30,11 +30,13 @@ namespace WpfTest
         
         const double RadiusSize = 4 * Dot.DefaultRadius;
         int gazeRadius;
-        int index=20;
+        //int index=20;
         int eyeIndex;
         Marker endPoint;
         TrackerWrapper tracker;
         bool gazeOn;
+
+        private DateTime startTime;
 
         private readonly Point leftDot = new Point(256, 640);
         private readonly Point middleDot = new Point(960,540);
@@ -137,6 +139,7 @@ namespace WpfTest
                 for (int k = 0; k < 2; k++) // Show Ref Points
                   for (int j = 0; j < 3; j++) // EP rotation
                     for (int i = 0; i < 4; i++) // Curves
+                        // curve, epr, ref, gaze
                          conditions.Add(new int[] {i, j, k, t });
             //Participant, Curve, EPR, Ref, GazeOn, Time
             TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "REF", "GazeOn", "Time");
@@ -154,7 +157,7 @@ namespace WpfTest
 
         void NewSession()
         {
-            if (index == conditions.Count)
+            if (Test.Count == conditions.Count)
                 return;
 
             foreach (IDot dot in userDots.Where(dot => Canvas.Children.Contains((UIElement)dot)))
@@ -173,7 +176,7 @@ namespace WpfTest
 
             lCondition.Visibility = Visibility.Hidden;
 
-            int[] condition = conditions[index];
+            int[] condition = conditions[Test.BezierIndex % conditions.Count];
 
             Point[] userPoints = userCurves[condition[0]];
             Point[] refPoints = refCurves[condition[0]];
@@ -197,74 +200,21 @@ namespace WpfTest
             gazeOn = gazeActivated[condition[3]];
             
 
-            TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2], condition[3]);
-            TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
-            TrackerEvent.BezierPoint.Log("RefCP1", RefCurve.ControlPoint1.X, RefCurve.ControlPoint1.Y);
-            TrackerEvent.BezierPoint.Log("RefCP2", RefCurve.ControlPoint2.X, RefCurve.ControlPoint2.Y);
-            TrackerEvent.BezierPoint.Log("RefEnd", RefCurve.EndPoint.X, RefCurve.EndPoint.Y);
-            TrackerEvent.BezierPoint.Log("UserStart", UserCurve.StartPoint.X, UserCurve.StartPoint.Y);
-            TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
-            TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
-            TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
+            //TrackerEvent.BezierSessionStart.Log(index, condition[0], condition[1], condition[2], condition[3]);
+            //TrackerEvent.BezierPoint.Log("RefStart", RefCurve.StartPoint.X, RefCurve.StartPoint.Y);
+            //TrackerEvent.BezierPoint.Log("RefCP1", RefCurve.ControlPoint1.X, RefCurve.ControlPoint1.Y);
+            //TrackerEvent.BezierPoint.Log("RefCP2", RefCurve.ControlPoint2.X, RefCurve.ControlPoint2.Y);
+            //TrackerEvent.BezierPoint.Log("RefEnd", RefCurve.EndPoint.X, RefCurve.EndPoint.Y);
+            //TrackerEvent.BezierPoint.Log("UserStart", UserCurve.StartPoint.X, UserCurve.StartPoint.Y);
+            //TrackerEvent.BezierPoint.Log("UserCP1", UserCurve.ControlPoint1.X, UserCurve.ControlPoint1.Y);
+            //TrackerEvent.BezierPoint.Log("UserCP2", UserCurve.ControlPoint2.X, UserCurve.ControlPoint2.Y);
+            //TrackerEvent.BezierPoint.Log("UserEnd", UserCurve.EndPoint.X, UserCurve.EndPoint.Y);
 
             prevTime = default(DateTime);
             completionTimer.Start();
+            startTime = DateTime.Now;
         }
 
-        void AssignDots(int condition, float radius)
-        {
-            Point cp1= new Point(), cp2= new Point(), cp3= new Point();
-            bool cp1DoTest = false, cp2DoTest = false, cp3DoTest = false;
-            switch (condition)
-            {
-                case 0:
-                    cp1 = leftDot;
-                    cp2 = middleDot;
-                    cp3 = rightDot;
-                    cp2DoTest = true;
-                    break;
-                case 1:
-                    cp1 = leftDot;
-                    cp2 = rightDot;
-                    cp3 = middleDot;
-                    cp3DoTest = true;
-                    break;
-                case 2:
-                    cp1 = middleDot;
-                    cp2 = leftDot;
-                    cp3 = rightDot;
-                    cp1DoTest = true;
-                    break;
-                case 3:
-                    cp1 = middleDot;
-                    cp1DoTest = true;
-                    cp2 = rightDot;
-                    cp3 = leftDot;
-                    break;
-                case 4:
-                    cp1 = rightDot;
-                    cp2 = middleDot;
-                    cp3 = leftDot;
-                    cp2DoTest = true;
-                    break;
-                case 5:
-                    cp1 = rightDot;
-                    cp2 = leftDot;
-                    cp3 = middleDot;
-                    cp3DoTest = true;
-                    break;
-            }
-            RefCurve.StartPoint = GeoHelper.ChooseRandomPointWithinBounds(1920, 952);
-            RefCurve.EndPoint = GeoHelper.ChooseRandomPointInsideCircle(cp3, radius, cp3DoTest);
-            RefCurve.ControlPoint1 = GeoHelper.ChooseRandomPointInsideCircle(cp1, radius, cp1DoTest);
-            RefCurve.ControlPoint2 = GeoHelper.ChooseRandomPointInsideCircle(cp2, radius, cp2DoTest);
-
-            UserCurve.StartPoint = RefCurve.StartPoint;
-            UserCurve.EndPoint = GeoHelper.ChooseRandomPointOnCircle(RefCurve.EndPoint, radius, cp3DoTest);
-            UserCurve.ControlPoint1 = GeoHelper.ChooseRandomPointOnCircle(RefCurve.ControlPoint1, radius, cp1DoTest);
-            UserCurve.ControlPoint2 = GeoHelper.ChooseRandomPointOnCircle(RefCurve.ControlPoint2, radius, cp2DoTest);
-        }
-        
 
         void Init()
         {
@@ -317,7 +267,7 @@ namespace WpfTest
                                                           UserCurve.Visibility = Visibility.Visible;
                                                           RefCurve.Visibility = Visibility.Visible;
                                                           ShowUserDots();
-                                                          int[] condition = conditions[index];
+                                                          int[] condition = conditions[Test.BezierIndex % conditions.Count];
                                                           if (condition[2] == 0)
                                                               ShowRefDots();
                                                           ToggleButtons();
@@ -366,34 +316,33 @@ namespace WpfTest
             DateTime now = DateTime.Now;
             double delta = (now - prevTime).TotalMilliseconds;
 
-            if (delta > 333)
-            {
-                TrackerEvent.BezierDistance.Log("CvErFinal", distance);
-                Dispatcher.BeginInvoke(new Action( delegate {CompleteSession();}));
-            }
-        }
+            if (delta <= 333) return;
 
-        static float ComputeDistance(Point p1, Point p2)
-        {
-            Vector d = Point.Subtract(p1, p2);
-            return (float)Math.Abs(d.Length);
+            TrackerEvent.BezierDistance.Log("CvErFinal", distance);
+            Dispatcher.BeginInvoke(new Action( CompleteSession));
         }
 
         void CompleteSession()
         {
             stopwatch.Stop();
-            Test.BezierIndex++;
+            
             completionTimer.Stop();
             Dispatcher.BeginInvoke(new Action(delegate
             {
                 ToggleButtons();
-                TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
-                TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
-                TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
-                TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
-                //Participant, Curve, EPR, Ref, GazeOn, Time
+                //TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
+                //TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
+                //TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
+                //TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
+
+                    // curve, epr, ref, gaze
                 int[] condition = conditions[Test.BezierIndex];
-                TrackerEvent.BezierSessionEnd.Log(Test.Participant, , stopwatch.ElapsedMilliseconds / 1000d);
+                //Participant, Curve, EPR, Ref, GazeOn, Time
+
+                TrackerEvent.BezierSessionEnd.Log(Test.Participant,
+                                                  condition[0], condition[1], condition[2], condition[3],
+                                                  DateTime.Now - startTime);
+                     //stopwatch.ElapsedMilliseconds / 1000d);
                 stopwatch.Reset();
             }));
             
@@ -407,21 +356,25 @@ namespace WpfTest
             Canvas.Children.Add(tComplete);
             lCondition.Visibility = Visibility.Visible;
 
-            if (index == 48)
+            Test.Count++;
+            if (Test.Count == conditions.Count)
             {
                 lCondition.Text = "Thanks, this task is now complete.";
                 return;
             }
 
-            if (index % 12 == 0)
+            if (Test.Count % 12 == 0 && Test.Count > 0)
             {
 
-                int[] condition = conditions[index + 1];
+                int[] condition = conditions[Test.BezierIndex];
                 lCondition.Text = string.Format("Please have a break\nNext Block[{2}]: Gaze {0} Dots {1}",
-                    condition[3] == 0 ? "On" : "Off", condition[2] == 0 ? "Visible" : "NOT visible", index);
+                    condition[3] == 0 ? "On" : "Off", condition[2] == 0 ? "Visible" : "NOT visible", Test.BezierIndex);
             }
             else
                 lCondition.Text = string.Empty;
+
+            Test.BezierIndex++;
+            
         }
 
         void ToggleButtons()
@@ -475,16 +428,16 @@ namespace WpfTest
 
             if (knotPoints.Count < 2)
             {
-                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
+                TrackerEvent.Gaze.Log(Test.BezierIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
                 return;
             }
             else
-                TrackerEvent.Gaze.Log(index, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
+                TrackerEvent.Gaze.Log(Test.BezierIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
 
             //int eyeIndex = GetEyeIndex(knotPoints.Values);
-            int[] condition = conditions[index];
-            int cpIndex = condition[1];
-            int[] cpCondition = cpConditions[cpIndex];
+            //int[] condition = conditions[Test.BezierIndex % conditions.Count];
+            //int cpIndex = condition[1];
+            //int[] cpCondition = cpConditions[cpIndex];
             //int eyeIndex = cpCondition.ToList().IndexOf(1);
 
 
@@ -512,30 +465,28 @@ namespace WpfTest
             return indices[0];
         }
 
-        void SplineTask_Loaded(object sender, RoutedEventArgs e)
-        {
-            WpfTextTraceListener.SetTextOutput(Status);
-            WindowState = WindowState.Maximized;
-            tracker = new TrackerWrapper();
-            tracker.SetWindow(this);
-            tracker.StartBrowsing();
-            tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
+        //void SplineTask_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    WpfTextTraceListener.SetTextOutput(Status);
+        //    WindowState = WindowState.Maximized;
+        //    tracker = new TrackerWrapper();
+        //    tracker.SetWindow(this);
+        //    tracker.StartBrowsing();
+        //    tracker.GazeDataReceived += tracker_GazeDataReceived;
             
-        }
-
-
+        //}
 
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
             Point location = e.GetTouchPoint(this).Position;
             knotPoints.Remove(e.TouchDevice);
-            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchUp");
+            TrackerEvent.Touch.Log(Test.BezierIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchUp");
         }
 
         void ellipse_TouchMove(object sender, TouchEventArgs e)
         {
             Point location = e.GetTouchPoint(this).Position;
-            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(Test.BezierIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
             if (!knotPoints.ContainsKey(e.TouchDevice))
             {
                 return;
@@ -557,7 +508,7 @@ namespace WpfTest
             TouchDevice touchDevice = e.TouchDevice;
             Point location = e.GetTouchPoint(this).Position;
             IDot dot = FindKnotPoint(location);
-            TrackerEvent.Touch.Log(index, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
+            TrackerEvent.Touch.Log(Test.BezierIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
 
             if (dot == null)
                 return;

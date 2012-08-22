@@ -77,7 +77,7 @@ namespace WpfTest
         {
             completetionCheck = new Thread(Check);
             completetionCheck.SetApartmentState(ApartmentState.STA);
-            completetionCheck.Start();
+            //completetionCheck.Start();
             points = new Dictionary<TouchDevice, Vector2>();
             arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
@@ -105,6 +105,8 @@ namespace WpfTest
                 TextDescriptionClass = "Large",
                 Content = "Session complete"
             };
+
+            Test.Count++;
 
             if (Test.Count > 0 && Test.Count % 8 == 0) 
                 label.Content += "\nPlease have a break.";
@@ -150,7 +152,7 @@ namespace WpfTest
         {
             crosshair.Position = e.GazePoint;
 
-            string gazeEvent = string.Empty;
+            string gazeEvent;
 
             if (!gazeOn || yLock || completed)
                 return;
@@ -172,10 +174,9 @@ namespace WpfTest
 
                     if (gazeArrow.Snapped)
                     {
-                        gazeEvent = "GazeSnapped" + tempArrow.Name;
                         return;
                     }
-                    else if (!gazeArrow.IsTouched)
+                    if (!gazeArrow.IsTouched)
                     {
                         gazeEvent = "GazeDwelling" + gazeArrow.Name;
                         TrackerEvent.ArrowDwell.Log(gazeArrow.Name);
@@ -225,12 +226,9 @@ namespace WpfTest
             }
 
             prevEyeLocation = e.GazePoint;
-            //DateTime now = DateTime.Now;
-            //if ((now - lastLog).TotalMilliseconds > 25)
-            //{
-                TrackerEvent.Gaze.Log(Test.BoxIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
-            //    lastLog = now;
-            //}
+
+            TrackerEvent.Gaze.Log(Test.BoxIndex % BoxRenderer.ConditionsCount, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, gazeEvent);
+
 
         }
 
@@ -272,7 +270,7 @@ namespace WpfTest
             if (test)
                 TrackerEvent.ArrowIntersection.Log(result.Name, e.TouchDevice.Id);
             // Session Id, tpX, tpY, tdId, eventType
-            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
+            TrackerEvent.Touch.Log(Test.BoxIndex % BoxRenderer.ConditionsCount, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
             
 
@@ -353,7 +351,7 @@ namespace WpfTest
             window.ReleaseTouchCapture(e.TouchDevice);
            
             IRenderable result;
-            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
+            TrackerEvent.Touch.Log(Test.BoxIndex % BoxRenderer.ConditionsCount, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchUp");
             bool test = IntersectsArrow(sWidget, GetRay(e.Location), out result);
 
             if (test)
@@ -658,7 +656,7 @@ namespace WpfTest
                 return;
 
             IRenderable arrow = arrows[e.TouchDevice];
-            TrackerEvent.Touch.Log(Test.BoxIndex, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(Test.BoxIndex % BoxRenderer.ConditionsCount, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchMove");
             MoveArrow(e.Location, arrow);
             if (points.ContainsKey(e.TouchDevice))
             {
