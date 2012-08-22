@@ -14,8 +14,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         System.DateTime timeStamp;
         System.IO.StreamWriter traceWriter;
 
-        public FileTraceListener(string fileNamePrefix
-            )
+        public FileTraceListener(string fileNamePrefix)
         {
             // Pass in the path of the logfile (ie. C:\Logs\MyAppLog.log)
             // The logfile will actually be created with a yyyymmdd format appended to the filename
@@ -49,7 +48,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
 
             return Path.Combine(Path.GetDirectoryName(fileName),
                Path.GetFileNameWithoutExtension(fileName) + "_" +
-               timeStamp.ToString("yyyyMMdd") + Path.GetExtension(fileName));
+               timeStamp.ToString("yyyyMMdd") + '_'  Path.GetExtension(fileName));
         }
 
         protected override void Dispose(bool disposing)

@@ -137,7 +137,7 @@ namespace WpfTest
 
             totalConditions = conditions.Count;
             //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
-            TrackerEvent.BoxSessionEnd.Log("Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time\n");
+            TrackerEvent.BoxSessionEnd.Log("Participant", "Rep", "Axis", "Arrow1", "Arrow2", "Arrow3", "Time");
         }
 
         void NewSession()
