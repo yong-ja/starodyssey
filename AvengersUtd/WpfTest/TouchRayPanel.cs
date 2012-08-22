@@ -369,7 +369,7 @@ namespace WpfTest
 
         void Check()
         {
-            const float snapRange = 0.3f;
+            const float snapRange = 0.25f;
             while (!completed)
             {
                 if (box == null)
@@ -379,7 +379,7 @@ namespace WpfTest
                 }
 
                 float[] progress = GetArrowProgress();
-                if (progress[0]!=0 || progress[1] !=0 || progress[2] ==0)
+                if (progress[0]!=0 || progress[1] !=0 || progress[2] !=0)
                     events.Add(new InputEvent(DateTime.Now, progress));
 
                 float yOffset = Math.Abs(frame.Height - box.ScalingValues.Y);
@@ -390,7 +390,7 @@ namespace WpfTest
                 if (totalOffset <= snapRange)
                     completed = true;
                 else
-                    Thread.Sleep(50);
+                    Thread.Sleep(25);
             }
 
             OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now));

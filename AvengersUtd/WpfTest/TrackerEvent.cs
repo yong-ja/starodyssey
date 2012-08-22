@@ -15,10 +15,13 @@ namespace WpfTest
                                                                         
         
                                                                     //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
+        public static TrackerEvent BoxSessionStart = new TrackerEvent("TrackerBoxPerf", "{0}, {1}, {2}, {3}, {4}, {5}, {6}");
         public static TrackerEvent BoxSessionEnd = new TrackerEvent("TrackerBoxPerf", "{0}, {1}, {2}, {3}, {4}, {5}, {6:f3}");
+        public static TrackerEvent BoxDataHeader = new TrackerEvent("TrackerBoxData", "{0}, {1:hh:mm:ss.fff}, {2:hh:mm:ss.fff}");
+        public static TrackerEvent BoxData = new TrackerEvent("TrackerBoxData", "{0}, {1:f3}, {2:f3}, {3:f3}");
 
-        public static TrackerEvent BoxSessionStart = new TrackerEvent("TrackerDesc", "START, BoxSession {0}, Width:{1:f2} Depth:{2:f2} Height: {3:f2}");
-        public static TrackerEvent BoxData = new TrackerEvent("TrackerBoxData", "{0,{1:f3},{2:f3},{3:f3}");
+        public static TrackerEvent BoxDefinition = new TrackerEvent("TrackerDesc", "START, BoxSession {0}, Width:{1:f2} Depth:{2:f2} Height: {3:f2}");
+        
         public static TrackerEvent ArrowLock = new TrackerEvent("TrackerDesc", "{0},{1},Locked");
         public static TrackerEvent ArrowDwell = new TrackerEvent("TrackerDesc", "{0},Dwelling");
         public static TrackerEvent ArrowIntersection = new TrackerEvent("TrackerDesc", "{0},Intersected,{1}");
