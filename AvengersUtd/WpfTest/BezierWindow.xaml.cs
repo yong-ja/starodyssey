@@ -138,6 +138,8 @@ namespace WpfTest
                   for (int j = 0; j < 3; j++) // EP rotation
                     for (int i = 0; i < 4; i++) // Curves
                          conditions.Add(new int[] {i, j, k, t });
+            //Participant, Curve, EPR, Ref, GazeOn, Time
+            TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "REF", "GazeOn", "Time");
 
         }
 
@@ -380,7 +382,7 @@ namespace WpfTest
         void CompleteSession()
         {
             stopwatch.Stop();
-            index++;
+            Test.BezierIndex++;
             completionTimer.Stop();
             Dispatcher.BeginInvoke(new Action(delegate
             {
@@ -389,7 +391,9 @@ namespace WpfTest
                 TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
                 TrackerEvent.BezierDistance.Log("CP2", ComputeDistance(RefCurve.ControlPoint2, UserCurve.ControlPoint2));
                 TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
-                TrackerEvent.BezierSessionEnd.Log(index-1, stopwatch.ElapsedMilliseconds / 1000d);
+                //Participant, Curve, EPR, Ref, GazeOn, Time
+                int[] condition = conditions[Test.BezierIndex];
+                TrackerEvent.BezierSessionEnd.Log(Test.Participant, , stopwatch.ElapsedMilliseconds / 1000d);
                 stopwatch.Reset();
             }));
             
