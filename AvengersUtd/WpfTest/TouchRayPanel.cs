@@ -385,7 +385,7 @@ namespace WpfTest
                 if (totalOffset <= snapRange)
                     completed = true;
                 else
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
             }
 
             OnCompleted(this, EventArgs.Empty);
