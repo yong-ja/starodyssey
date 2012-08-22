@@ -46,9 +46,7 @@ namespace WpfTest
         {
             if (disposing)
             {
-                traceWriter.Write(sb.ToString());
                 traceWriter.Flush();
-                //traceWriter.Close();
             }
         }
 
@@ -63,9 +61,11 @@ namespace WpfTest
 
         public void StopAndGo()
         {
+            traceWriter.Write(sb.ToString());
             traceWriter.Flush();
             traceWriter.Close();
             traceWriter.Dispose();
+            sb.Clear();
             traceWriter = new StreamWriter(GenerateFilename(), true);
         }
 
