@@ -213,8 +213,9 @@ namespace WpfTest
             
            
             gazeOn = false;
-            tComplete.Text = (Test.Count > 0 && Test.Count % 9) == 0 ? "Session complete!\nPlease have a break." : "Session complete!";
-            if (Test.Count == 36)
+            Test.Count++;
+            tComplete.Text = (Test.Count > 0 && Test.Count % 9 == 0) ? "Session complete!\nPlease have a break." : "Session complete!";
+            if (Test.Count == conditions.Count)
                 tComplete.Text = "Thanks! This task\n is now complete";
             Canvas.Children.Add(tComplete);
             bNew.Visibility = Visibility.Visible;
@@ -230,7 +231,7 @@ namespace WpfTest
             ClockLabel.Visibility = Visibility.Visible;
             touchPoints.Clear();
 
-            Test.Count++;
+            
 
         }
 
@@ -291,7 +292,7 @@ namespace WpfTest
         {
             Point location = e.GetTouchPoint(this).Position;
             touchPoints.Remove(e.TouchDevice);
-            TrackerEvent.Touch.Log(Test.SelectionIndex, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(Test.SelectionIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
         }
 
         void Canvas_TouchMove(object sender, TouchEventArgs e)
@@ -299,7 +300,7 @@ namespace WpfTest
             Point location = e.GetTouchPoint(this).Position;
             touchPoints[e.TouchDevice] = location;
             
-            TrackerEvent.Touch.Log(Test.SelectionIndex, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
+            TrackerEvent.Touch.Log(Test.SelectionIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchMove");
         }
 
         void Canvas_TouchDown(object sender, TouchEventArgs e)
@@ -310,18 +311,18 @@ namespace WpfTest
             //touchDevice.Capture(Canvas);
             touchPoints.Add(touchDevice, location);
 
-            TrackerEvent.Touch.Log(Test.SelectionIndex, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
+            TrackerEvent.Touch.Log(Test.SelectionIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
         }
 
-        void GameTask_Loaded(object sender, RoutedEventArgs e)
-        {
-            WpfTextTraceListener.SetTextOutput(Status);
-            WindowState = WindowState.Maximized;
-            tracker = new TrackerWrapper();
-            tracker.SetWindow(this);
-            tracker.StartBrowsing();
-            tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
-        }
+        //void GameTask_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    WpfTextTraceListener.SetTextOutput(Status);
+        //    WindowState = WindowState.Maximized;
+        //    tracker = new TrackerWrapper();
+        //    tracker.SetWindow(this);
+        //    tracker.StartBrowsing();
+        //    tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
+        //}
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
@@ -344,11 +345,11 @@ namespace WpfTest
 
             if (touchPoints.Count < 2)
             {
-                TrackerEvent.Gaze.Log(Test.SelectionIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
+                TrackerEvent.Gaze.Log(Test.SelectionIndex % conditions.Count, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeNotEngaged");
                 return;
             }
             else
-                TrackerEvent.Gaze.Log(Test.SelectionIndex, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
+                TrackerEvent.Gaze.Log(Test.SelectionIndex % conditions.Count, e.GazePoint.X, e.GazePoint.Y, e.LeftValid, e.RightValid, "GazeEngaged");
 
             Point gazeLocation = new Point(e.GazePoint.X, e.GazePoint.Y);
 

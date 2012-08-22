@@ -198,7 +198,7 @@ namespace WpfTest
                 arrowCondition[2] ? "Increasing" : "Decreasing",
                 e.Duration);
             started = false;
-            Test.Count++;
+
             Test.BoxIndex++;
 
             foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
