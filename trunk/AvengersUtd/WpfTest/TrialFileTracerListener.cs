@@ -8,7 +8,13 @@ using WpfTest;
 
 namespace WpfTest
 {
-    public class TrialFileTraceListener : System.Diagnostics.TraceListener
+
+    public interface IStopAndGo
+    {
+        void StopAndGo();
+    }
+
+    public class TrialFileTraceListener : System.Diagnostics.TraceListener, IStopAndGo
     {
         private static string logTag = "{0},{1},";
         string fileName;
@@ -59,6 +65,14 @@ namespace WpfTest
                 traceWriter.Flush();
                 //traceWriter.Close();
             }
+        }
+
+        public void StopAndGo()
+        {
+            traceWriter.Flush();
+            traceWriter.Close();
+            traceWriter.Dispose();
+            traceWriter = new StreamWriter(GenerateFilename(), true);
         }
 
     }

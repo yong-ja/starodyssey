@@ -200,6 +200,11 @@ namespace WpfTest
             started = false;
             Test.Count++;
             Test.BoxIndex++;
+
+            foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
+            {
+                tl.StopAndGo();
+            }
        }
 
         public override void Init()
