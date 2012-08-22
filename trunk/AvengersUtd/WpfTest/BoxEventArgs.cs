@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WpfTest
 {
-    public class BoxEventArgs
+    public class BoxEventArgs : EventArgs
     {
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }

@@ -391,7 +391,7 @@ namespace WpfTest
                     Thread.Sleep(50);
             }
 
-            OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now);
+            OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now));
         }
 
 
@@ -605,7 +605,7 @@ namespace WpfTest
 
             if (!lastX)
             {
-                progress[0] = (currentProgress - startingSValues.X) / frame.Width;
+                progress[0] = (currentProgress - startingSValues.X) / (frame.Width - startingSValues.X);
                 //if (1 - progress[0] < 0.01)
                 if (progress[0] == 1)
                     lastX = true;
@@ -616,19 +616,19 @@ namespace WpfTest
 
             if (!lastY)
             {
-                progress[1] = (currentProgress - startingSValues.Y) / frame.Height;
+                progress[1] = (currentProgress - startingSValues.Y) / (frame.Height - startingSValues.Y);
                 if (progress[1] == 1)//if (1 - progress[1] < 0.01)
-                    lastX = true;
+                    lastY = true;
             }
             else progress[1] = 0;
 
             currentProgress = MathHelper.Clamp(box.ScalingValues.Z, startingSValues.Z, frame.Depth);
 
-            if (!lastY)
+            if (!lastZ)
             {
-                progress[2] = (currentProgress - startingSValues.Z) / frame.Depth;
+                progress[2] = (currentProgress - startingSValues.Z) / (frame.Depth - startingSValues.Z);
                 if (progress[2] == 1)//if (1 - progress[2] < 0.01)
-                    lastX = true;
+                    lastZ = true;
             }
             else progress[2] = 0;
             return progress;
@@ -704,6 +704,7 @@ namespace WpfTest
             xLock = yLock = zLock = false;
             gazeOn = false;
             gazeLock = false;
+            lastX = lastY = lastZ;
         }
 
 
