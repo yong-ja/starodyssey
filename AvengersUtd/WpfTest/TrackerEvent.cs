@@ -39,7 +39,7 @@ namespace WpfTest
 
         
         public static TrackerEvent BezierPoint = new TrackerEvent("TrackerDesc","{0}, ({1:f2},{2:f2})");
-        public static TrackerEvent BezierDistance = new TrackerEvent("TrackerDesc", "{0}, distance: {1:f2}");
+        public static TrackerEvent BezierDistance = new TrackerEvent("TrackerDesc", "{0}, {1:f2}");
         
        
         public static TrackerEvent PointIntersection = new TrackerEvent("TrackerDesc", "Point {0} intersected by {1}");

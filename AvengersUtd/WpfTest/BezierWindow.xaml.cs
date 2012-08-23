@@ -327,8 +327,8 @@ namespace WpfTest
             stopwatch.Stop();
             
             completionTimer.Stop();
-            Dispatcher.BeginInvoke(new Action(delegate
-            {
+            //Dispatcher.BeginInvoke(new Action(delegate
+            //{
                 ToggleButtons();
                 //TrackerEvent.BezierDistance.Log("Start", ComputeDistance(RefCurve.StartPoint, UserCurve.StartPoint));
                 //TrackerEvent.BezierDistance.Log("CP1", ComputeDistance(RefCurve.ControlPoint1, UserCurve.ControlPoint1));
@@ -344,7 +344,7 @@ namespace WpfTest
                                                   DateTime.Now - startTime);
                      //stopwatch.ElapsedMilliseconds / 1000d);
                 stopwatch.Reset();
-            }));
+            //}));
             
 #if TRACKER
             if (gazeOn)
@@ -366,7 +366,7 @@ namespace WpfTest
             if (Test.Count % 12 == 0 && Test.Count > 0)
             {
 
-                int[] condition = conditions[Test.BezierIndex];
+                //int[] condition = conditions[Test.BezierIndex];
                 lCondition.Text = string.Format("Please have a break\nNext Block[{2}]: Gaze {0} Dots {1}",
                     condition[3] == 0 ? "On" : "Off", condition[2] == 0 ? "Visible" : "NOT visible", Test.BezierIndex);
             }
@@ -374,6 +374,11 @@ namespace WpfTest
                 lCondition.Text = string.Empty;
 
             Test.BezierIndex++;
+
+            foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
+            {
+                tl.StopAndGo();
+            }
             
         }
 
@@ -465,16 +470,16 @@ namespace WpfTest
             return indices[0];
         }
 
-        //void SplineTask_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    WpfTextTraceListener.SetTextOutput(Status);
-        //    WindowState = WindowState.Maximized;
-        //    tracker = new TrackerWrapper();
-        //    tracker.SetWindow(this);
-        //    tracker.StartBrowsing();
-        //    tracker.GazeDataReceived += tracker_GazeDataReceived;
-            
-        //}
+        void SplineTask_Loaded(object sender, RoutedEventArgs e)
+        {
+            WpfTextTraceListener.SetTextOutput(Status);
+            WindowState = WindowState.Maximized;
+            tracker = new TrackerWrapper();
+            tracker.SetWindow(this);
+            tracker.StartBrowsing();
+            tracker.GazeDataReceived += tracker_GazeDataReceived;
+
+        }
 
         void ellipse_LostTouchCapture(object sender, TouchEventArgs e)
         {
