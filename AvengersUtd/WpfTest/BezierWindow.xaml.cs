@@ -130,19 +130,20 @@ namespace WpfTest
             refCurves = new List<Point[]>
             {
                 new Point[] { rC0p0, rC0p1, rC0p2},
-                new Point[] { rC1p0, rC1p1, rC1p2},
-                new Point[] { rC2p0, rC2p1, rC2p2},
+                //new Point[] { rC1p0, rC1p1, rC1p2},
+                //new Point[] { rC2p0, rC2p1, rC2p2},
                 new Point[] { rC3p0, rC3p1, rC3p2}
             };
 
-            for (int t = 0; t < 2; t++) // Gaze On/off
-                for (int k = 0; k < 2; k++) // Show Ref Points
-                  for (int j = 0; j < 3; j++) // EP rotation
-                    for (int i = 0; i < 4; i++) // Curves
+                for (int t = 0; t < 2; t++) // Gaze On/off
+                    for (int k = 0; k < 5; k++) // Show Ref Points - Repetitions
+                        //for (int r =0; r < 5; r++)
+                            for (int j = 0; j < 3; j++) // EP rotation
+                                for (int i = 0; i < 2; i++) // Curves
                         // curve, epr, ref, gaze
                          conditions.Add(new int[] {i, j, k, t });
             //Participant, Curve, EPR, Ref, GazeOn, Time
-            TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "REF", "GazeOn", "Time");
+            TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "Rep", "GazeOn", "Time");
 
         }
 
@@ -268,8 +269,8 @@ namespace WpfTest
                                                           RefCurve.Visibility = Visibility.Visible;
                                                           ShowUserDots();
                                                           int[] condition = conditions[Test.BezierIndex % conditions.Count];
-                                                          if (condition[2] == 0)
-                                                              ShowRefDots();
+                                                          //if (condition[2] == 0)
+                                                          //    ShowRefDots();
                                                           ToggleButtons();
                         
                         Canvas.Children.Remove(
