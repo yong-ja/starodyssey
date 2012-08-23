@@ -62,9 +62,10 @@ namespace WpfTest
             AddWindowAvailabilityHandlers();
             Init();
 
-            for (int i = 0; i < 4; i++)
+            
                 for (int j = 0; j < sizes.Length; j++)
                     for (int k = 0; k < distances.Length; k++)
+                        for (int i = 0; i < 5; i++) // reps
                         conditions.Add(new int[] { i, j, k });
 
             TrackerEvent.PointSessionStart.Log("Participant", "Rep", "Size", "Distance", "Time");
@@ -314,15 +315,15 @@ namespace WpfTest
             TrackerEvent.Touch.Log(Test.SelectionIndex % conditions.Count, location.X, location.Y, e.TouchDevice.Id, "TouchDown");
         }
 
-        //void GameTask_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    WpfTextTraceListener.SetTextOutput(Status);
-        //    WindowState = WindowState.Maximized;
-        //    tracker = new TrackerWrapper();
-        //    tracker.SetWindow(this);
-        //    tracker.StartBrowsing();
-        //    tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
-        //}
+        void GameTask_Loaded(object sender, RoutedEventArgs e)
+        {
+            WpfTextTraceListener.SetTextOutput(Status);
+            WindowState = WindowState.Maximized;
+            tracker = new TrackerWrapper();
+            tracker.SetWindow(this);
+            tracker.StartBrowsing();
+            tracker.GazeDataReceived += new EventHandler<GazeEventArgs>(tracker_GazeDataReceived);
+        }
 
         void tracker_GazeDataReceived(object sender, GazeEventArgs e)
         {
