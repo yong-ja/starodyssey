@@ -39,7 +39,7 @@ namespace WpfTest
         private DateTime startTime;
 
         private readonly Point leftDot = new Point(256, 640);
-        private readonly Point middleDot = new Point(960,540);
+        private readonly Point middleDot = new Point(960,640);
         private readonly Point rightDot = new Point(1664, 640);
 
         private readonly List<int[]> cpConditions = new List<int[]>
@@ -60,7 +60,7 @@ namespace WpfTest
 
         readonly bool[] gazeActivated = new[] { true, false};
 
-        private readonly List<int[]> conditions = new List<int[]>(96);
+        private readonly List<int[]> conditions = new List<int[]>();
 
         /// <summary>
         /// Default constructor.
@@ -80,24 +80,24 @@ namespace WpfTest
         void InitConditions()
         {
             // Curve 1 short
-            Point c0p0 = CirclePoint(leftDot, 128, 315);
-            Point c0p1 = CirclePoint(middleDot, 128, 225);
-            Point c0p2 = CirclePoint(rightDot, 128, 315);
+            Point c0p0 = CirclePoint(leftDot, 96, 315);
+            Point c0p1 = CirclePoint(middleDot, 96, 225);
+            Point c0p2 = CirclePoint(rightDot, 96, 315);
 
             //Curve 2 short
-            Point c1p0 = CirclePoint(leftDot, 128, 45);
-            Point c1p1 = CirclePoint(middleDot, 128, 225);
-            Point c1p2 = CirclePoint(rightDot, 128, 135);
+            Point c1p0 = CirclePoint(leftDot, 96, 45);
+            Point c1p1 = CirclePoint(middleDot, 96, 225);
+            Point c1p2 = CirclePoint(rightDot, 96, 135);
 
             //Curve 3 Long
-            Point c2p0 = CirclePoint(leftDot, 256, 135);
-            Point c2p1 = CirclePoint(middleDot, 256, 315);
-            Point c2p2 = CirclePoint(rightDot, 256, 225);
+            Point c2p0 = CirclePoint(leftDot, 224, 135);
+            Point c2p1 = CirclePoint(middleDot, 224, 315);
+            Point c2p2 = CirclePoint(rightDot, 224, 225);
 
             //Curve 4 Long
-            Point c3p0 = CirclePoint(leftDot, 256, 225);
-            Point c3p1 = CirclePoint(middleDot, 256, 45);
-            Point c3p2 = CirclePoint(rightDot, 256, 315);
+            Point c3p0 = CirclePoint(leftDot, 224, 225);
+            Point c3p1 = CirclePoint(middleDot, 224, 45);
+            Point c3p2 = CirclePoint(rightDot, 224, 315);
 
             userCurves = new List<Point[]>
             {
@@ -136,14 +136,13 @@ namespace WpfTest
             };
 
                 for (int t = 0; t < 2; t++) // Gaze On/off
-                    for (int k = 0; k < 5; k++) // Show Ref Points - Repetitions
-                        //for (int r =0; r < 5; r++)
-                            for (int j = 0; j < 3; j++) // EP rotation
+                            for (int j = 0; j < 3 ; j++) // EP rotation
                                 for (int i = 0; i < 2; i++) // Curves
+                                    for (int k = 0; k < 4; k++) // Show Ref Points - Repetitions 4
                         // curve, epr, ref, gaze
                          conditions.Add(new int[] {i, j, k, t });
             //Participant, Curve, EPR, Ref, GazeOn, Time
-            TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "Rep", "GazeOn", "Time");
+            TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "Rep", "GazeOn", "Time", "CvEr");
 
         }
 
@@ -175,7 +174,8 @@ namespace WpfTest
             if (Canvas.Children.Contains(tComplete))
                 Canvas.Children.Remove(tComplete);
 
-            lCondition.Visibility = Visibility.Hidden;
+            //
+            //lCondition.Visibility = Visibility.Hidden;
 
             int[] condition = conditions[Test.BezierIndex % conditions.Count];
 
@@ -251,7 +251,12 @@ namespace WpfTest
             bDots.Click += (sender, e) => ShowRefDots();
             bNew.Click += delegate
             {
+                int[] condition = conditions[Test.BezierIndex % conditions.Count];
                 NewSession();
+                lCondition.Visibility = Visibility.Visible;
+                lCondition.Text = gazeOn ? "Manual + Gaze condition" : "Manual only";
+                lCondition.Text += "\nTrial: " + (Test.Count + 1);
+                
                 CountDownWpf countdownTimer = new CountDownWpf();
                 countdownTimer.Elapsed += delegate
                 {
@@ -268,9 +273,11 @@ namespace WpfTest
                                                           UserCurve.Visibility = Visibility.Visible;
                                                           RefCurve.Visibility = Visibility.Visible;
                                                           ShowUserDots();
-                                                          int[] condition = conditions[Test.BezierIndex % conditions.Count];
+                                                          
+                                                          
                                                           //if (condition[2] == 0)
                                                           //    ShowRefDots();
+                                                          lCondition.Visibility = Visibility.Hidden;
                                                           ToggleButtons();
                         
                         Canvas.Children.Remove(
@@ -293,15 +300,16 @@ namespace WpfTest
                            {
                                if (stopwatch.IsRunning)
                                    CompleteSession();
-                               TrackerEvent.Misc.Write("BezierSession aborted");
+                               TrackerEvent.Misc.Write(string.Format("BezierSession {0} aborted", Test.BezierIndex));
                                //NewSession();
                            };
 
         }
 
+        double distance;
         void completionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            double distance = Bezier.FindError(UserCurve.PathGeometry, RefCurve.PathGeometry);
+             distance = Bezier.FindError(UserCurve.PathGeometry, RefCurve.PathGeometry);
             TrackerEvent.BezierDistance.Log("CvEr", distance);
             bool check = distance < Threshold;
 
@@ -337,12 +345,12 @@ namespace WpfTest
                 //TrackerEvent.BezierDistance.Log("End", ComputeDistance(RefCurve.EndPoint, UserCurve.EndPoint));
 
                     // curve, epr, ref, gaze
-                int[] condition = conditions[Test.BezierIndex];
+                int[] condition = conditions[Test.BezierIndex % conditions.Count ];
                 //Participant, Curve, EPR, Ref, GazeOn, Time
 
                 TrackerEvent.BezierSessionEnd.Log(Test.Participant,
                                                   condition[0], condition[1], condition[2], condition[3],
-                                                  DateTime.Now - startTime);
+                                                  DateTime.Now - startTime, distance);
                      //stopwatch.ElapsedMilliseconds / 1000d);
                 stopwatch.Reset();
             //}));
@@ -368,8 +376,7 @@ namespace WpfTest
             {
 
                 //int[] condition = conditions[Test.BezierIndex];
-                lCondition.Text = string.Format("Please have a break\nNext Block[{2}]: Gaze {0} Dots {1}",
-                    condition[3] == 0 ? "On" : "Off", condition[2] == 0 ? "Visible" : "NOT visible", Test.BezierIndex);
+                lCondition.Text = "Please have a break";
             }
             else
                 lCondition.Text = string.Empty;
@@ -379,6 +386,11 @@ namespace WpfTest
             foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
             {
                 tl.StopAndGo();
+            }
+
+            foreach (ISave tl in Trace.Listeners.OfType<ISave>())
+            {
+                tl.Save();
             }
             
         }

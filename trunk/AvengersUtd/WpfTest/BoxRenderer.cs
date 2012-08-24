@@ -99,15 +99,15 @@ namespace WpfTest
         private List<float[]> axes = new List<float[]> 
         {
             new [] { 0f, 0f, 0f},
-            new [] { -15f, 30f, 0f},
-            new [] { 15f, 0f, -30f},
+            new [] { -7.5f, 15f, 0f},
+            new [] { 7.5f, 0f, -15f},
             //new [] { -22.5f, 45f, 0f},
             //new [] {22.5f, 0f, -45}
         };
 
         static BoxRenderer()
         {
-            
+            TrackerEvent.BoxSessionStart.Log("Participant", "Rep", "Axis", "Arrow1", "Arrow2", "Arrow3", "Time");
 #if TRACKER
             tracker = new TrackerWrapper();
             tracker.StartBrowsing();
@@ -125,14 +125,14 @@ namespace WpfTest
         public void InitConditions()
         {
 
-            for (int i = 0; i < 2; i++)
-                for (int j = 0; j < arrowConditions.Count; j++)
-                    for (int k = 0; k < axes.Count; k++)
+                for (int k = 0; k < axes.Count; k++)
+                    for (int i = 0; i < 2; i++)
+                                for (int j = 0; j < arrowConditions.Count; j++)
                         conditions.Add(new int[] { i, j, k });
 
             totalConditions = conditions.Count;
             //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
-            TrackerEvent.BoxSessionStart.Log("Participant", "Rep", "Axis", "Arrow1", "Arrow2", "Arrow3", "Time");
+            
         }
 
         void NewSession()
@@ -157,7 +157,7 @@ namespace WpfTest
             startTime = DateTime.Now;
             TrackerEvent.BoxDefinition.Log(Test.BoxIndex, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[Test.BoxIndex%24], -bbox.Depth / 2 +0.5f);
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, 3f, -bbox.Depth / 2 +0.5f);
         }
 
         void StartNew()
@@ -204,6 +204,11 @@ namespace WpfTest
             foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
             {
                 tl.StopAndGo();
+            }
+
+            foreach (ISave tl in Trace.Listeners.OfType<ISave>())
+            {
+                tl.Save();
             }
        }
 

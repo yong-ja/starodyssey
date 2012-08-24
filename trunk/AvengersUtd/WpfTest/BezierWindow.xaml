@@ -26,7 +26,7 @@
             </Ellipse>
             <!--<Ellipse Width="1920" Height="2160" Canvas.Left="0" Canvas.Top="192" Stroke="Purple" StrokeThickness="8"/>-->
             <Button x:Name="bStop" Canvas.Left="0" Canvas.Top="952" FontSize="32" Content="Stop" Height="128" Width="128"/>
-            <TextBlock Canvas.Left="320" Canvas.Top="912" FontSize="32" x:Name="lCondition" Foreground="Black"/>
+            <TextBlock Canvas.Left="512" Canvas.Top="912" FontSize="48" x:Name="lCondition" Foreground="Black"/>
         </Canvas>
     </DockPanel>
 </s:SurfaceWindow>

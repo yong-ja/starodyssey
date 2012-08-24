@@ -106,6 +106,8 @@ namespace WpfTest
                               Thread thread = new Thread(CheckPreconditions);
                               thread.SetApartmentState(ApartmentState.STA);
                               thread.Start();
+                              lCondition.Visibility = Visibility.Visible;
+                              lCondition.Text = "Trial " + (Test.Count+1);
                           };
             Indicator.MouseUp += (sender, e) => CompleteSession();
             eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Hidden;
@@ -119,8 +121,8 @@ namespace WpfTest
                 Dispatcher.BeginInvoke(new Action(delegate
                 {
                     eyeArea.Visibility = lFingerArea.Visibility = rFingerArea.Visibility = Visibility.Hidden;
-                    
 
+                    lCondition.Visibility = Visibility.Hidden;
 
                     ToggleButtons();
                     NewSession();
@@ -153,8 +155,8 @@ namespace WpfTest
                 }
 
                 
-                Point[] pArray = touchPoints.Values.ToArray();
-                if (pArray.Length < 2)
+                List<Point> pArray = touchPoints.Values.ToList();
+                if (pArray.Count != 2)
                     return;
 
                 try
@@ -204,7 +206,7 @@ namespace WpfTest
             clock.Stop();
             stopwatch.Stop();
             // Participant, Rep, Size, Distance, Time
-            int[] condition = conditions[Test.SelectionIndex];
+            int[] condition = conditions[Test.SelectionIndex % conditions.Count];
             TrackerEvent.PointSessionEnd.Log(Test.Participant, condition[0], condition[1], condition[2],
                 DateTime.Now - startTime);
             
@@ -232,7 +234,10 @@ namespace WpfTest
             ClockLabel.Visibility = Visibility.Visible;
             touchPoints.Clear();
 
-            
+            foreach (ISave tl in Trace.Listeners.OfType<ISave>())
+            {
+                tl.Save();
+            }
 
         }
 
@@ -258,7 +263,7 @@ namespace WpfTest
             if (Test.Count == conditions.Count)
                 return;
 
-            int[] condition = conditions[Test.SelectionIndex];
+            int[] condition = conditions[Test.SelectionIndex % conditions.Count];
 
             int rIndex = condition[1];
             int dIndex = condition[2];
@@ -317,7 +322,7 @@ namespace WpfTest
 
         void GameTask_Loaded(object sender, RoutedEventArgs e)
         {
-            WpfTextTraceListener.SetTextOutput(Status);
+            //WpfTextTraceListener.SetTextOutput(Status);
             WindowState = WindowState.Maximized;
             tracker = new TrackerWrapper();
             tracker.SetWindow(this);

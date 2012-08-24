@@ -77,7 +77,7 @@ namespace WpfTest
         {
             completetionCheck = new Thread(Check);
             completetionCheck.SetApartmentState(ApartmentState.STA);
-            //completetionCheck.Start();
+            completetionCheck.Start();
             points = new Dictionary<TouchDevice, Vector2>();
             arrows = new Dictionary<TouchDevice, IRenderable>();
             window = Global.Window;
@@ -103,7 +103,7 @@ namespace WpfTest
             {
                 Position = new Vector2(400, 300),
                 TextDescriptionClass = "Large",
-                Content = "Session complete"
+                Content = "Session complete\nTrial " + (Test.Count+1)
             };
 
             Test.Count++;
