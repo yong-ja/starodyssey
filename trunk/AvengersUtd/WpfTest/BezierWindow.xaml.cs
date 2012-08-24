@@ -137,10 +137,11 @@ namespace WpfTest
 
                 for (int t = 0; t < 2; t++) // Gaze On/off
                             for (int j = 0; j < 3 ; j++) // EP rotation
-                                for (int i = 0; i < 2; i++) // Curves
-                                    for (int k = 0; k < 4; k++) // Show Ref Points - Repetitions 4
+                                for (int k = 0; k < 4; k++) // Show Ref Points - Repetitions 4
+                                    for (int i = 0; i < 2; i++) // Curves
+                                    
                         // curve, epr, ref, gaze
-                         conditions.Add(new int[] {i, j, k, t });
+            conditions.Add(new int[] {i, j, k, t });
             //Participant, Curve, EPR, Ref, GazeOn, Time
             TrackerEvent.BezierSessionStart.Log("Participant", "Curve", "EPR", "Rep", "GazeOn", "Time", "CvEr");
 

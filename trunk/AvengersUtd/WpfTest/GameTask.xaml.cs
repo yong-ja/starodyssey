@@ -66,7 +66,7 @@ namespace WpfTest
                 for (int j = 0; j < sizes.Length; j++)
                     for (int k = 0; k < distances.Length; k++)
                         for (int i = 0; i < 5; i++) // reps
-                        conditions.Add(new int[] { i, j, k });
+                            conditions.Add(new int[] { i, j, k });
 
             TrackerEvent.PointSessionStart.Log("Participant", "Rep", "Size", "Distance", "Time");
         }

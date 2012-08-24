@@ -391,7 +391,7 @@ namespace WpfTest
                     Thread.Sleep(25);
             }
 
-            OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now));
+            OnCompleted(this, new BoxEventArgs(BoxRenderer.startTime, DateTime.Now,false));
         }
 
 
