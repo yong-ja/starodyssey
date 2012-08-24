@@ -6,9 +6,9 @@
                   Height="1080" Width="1920"
     Title="WpfTest" ResizeMode="NoResize" WindowStyle="None">
     <DockPanel LastChildFill="True">
-        <StatusBar DockPanel.Dock="Bottom">
+        <!--<StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="Status" FontSize="14" Text="Test"/>
-        </StatusBar>
+        </StatusBar>-->
     <Canvas  x:Name="Canvas" Background="DarkGray">
         <!--<Button x:Name="bConnect" Canvas.Left="1792" Canvas.Top="8" Content="Connect" 
                              Width="128" Height="32" 
@@ -32,6 +32,7 @@
                 <TranslateTransform X="4" Y="4"/>
                 </Rectangle.RenderTransform>
         </Rectangle>
+            <TextBlock Canvas.Left="512" Canvas.Top="912" FontSize="48" x:Name="lCondition" Foreground="Black"/>
             <TextBlock x:Name="ClockLabel" Canvas.Left="1650" Canvas.Top="920" FontSize="64" Text="000.0" Foreground="Black" 
                        Visibility="Hidden"/>
         </Canvas>

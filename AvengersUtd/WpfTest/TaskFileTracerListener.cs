@@ -8,7 +8,12 @@ using WpfTest;
 
 namespace WpfTest
 {
-    public class TaskFileTraceListener : System.Diagnostics.TraceListener
+    public interface ISave
+    {
+        void Save();
+    }
+
+    public class TaskFileTraceListener : System.Diagnostics.TraceListener, ISave
     {
         private static string logTag = "{0},{1},";
         string fileName;
@@ -59,6 +64,11 @@ namespace WpfTest
                 traceWriter.Flush();
                 //traceWriter.Close();
             }
+        }
+
+        public void Save()
+        {
+            traceWriter.Flush();
         }
 
     }
