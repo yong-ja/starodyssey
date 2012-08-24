@@ -48,37 +48,57 @@ namespace WpfTest
    
 
         float[] offsets = new[] { 
+            2.5f, //0
             2.5f,
-            3.5f,
-            3.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
 
+            2.5f, //8
             2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f,
+            2.5f, 
+
+            3f, // 16
+            2.25f,
+            3f,
             2.0f,
-            3.5f,
-
+            2.75f,
             2.5f,
             3.5f,
-            3.5f, //8
-
-            2.5f,
-            2.5f,
-            4.0f,
-
-            2.5f,
-            3.5f,
-            2.5f,
-
-            2.5f,
-            2.5f,
-            2.5f, //17
-
+            3.0f,
+            3f, // 24
+            2.25f,
+            3f,
+            2.0f,
+            2.75f,
             2.5f,
             3.5f,
+            3.0f,
+            
+            3f, // 32
+            3f,
+            3f,
+            3f,
+            2.25f,
+            2.25f,
+            2.25f,
             2.5f,
-
+            3f, // 40
+            3f,
+            3f,
+            3f,
+            2.25f,
+            2.25f,
+            2.25f,
             2.5f,
-            2.5f,
-            2.5f,//23
 
         };
 
@@ -127,12 +147,11 @@ namespace WpfTest
 
                 for (int k = 0; k < axes.Count; k++)
                     for (int i = 0; i < 2; i++)
-                                for (int j = 0; j < arrowConditions.Count; j++)
-                        conditions.Add(new int[] { i, j, k });
+                         for (int j = 0; j < arrowConditions.Count; j++)
+                         conditions.Add(new int[] { i, j, k });
 
             totalConditions = conditions.Count;
             //Participant, Rep, Axis, Arrow1, Arrow2, Arrow3, Time
-            
         }
 
         void NewSession()
@@ -157,7 +176,8 @@ namespace WpfTest
             startTime = DateTime.Now;
             TrackerEvent.BoxDefinition.Log(Test.BoxIndex, frameSize[0], frameSize[1], frameSize[2]);
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
-            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, 3f, -bbox.Depth / 2 +0.5f);
+            int offsetIndex = (Test.BoxIndex % ConditionsCount);
+            Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[offsetIndex] , -bbox.Depth / 2 +0.5f);
         }
 
         void StartNew()
@@ -196,7 +216,7 @@ namespace WpfTest
                 arrowCondition[0] ? "Increasing" : "Decreasing",
                 arrowCondition[1] ? "Increasing" : "Decreasing",
                 arrowCondition[2] ? "Increasing" : "Decreasing",
-                e.Duration);
+                e.IsAborted ? -1 : e.Duration);
             started = false;
 
             Test.BoxIndex++;
@@ -315,7 +335,7 @@ namespace WpfTest
             bStop.TouchUp += (sender, e) =>
                 {
                     stopwatch.Stop();
-                    Stop(new BoxEventArgs(startTime, DateTime.Now));
+                    Stop(new BoxEventArgs(startTime,DateTime.Now, true));
                 };
             
 
@@ -334,7 +354,7 @@ namespace WpfTest
             rp.SetArrowConditions(arrowCondition);
             rp.SetAxis(axis);
             Hud.Add(rp);
-            //rp.Add(bSession);
+            rp.Add(bSession);
             //rp.Add(bConnect);
             //rp.Add(bTracking);
             //

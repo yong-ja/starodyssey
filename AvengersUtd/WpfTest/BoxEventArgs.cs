@@ -9,6 +9,7 @@ namespace WpfTest
     {
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
+        public bool IsAborted { get; private set; }
 
         public double Duration
         {
@@ -18,10 +19,11 @@ namespace WpfTest
             }
         }
 
-        public BoxEventArgs(DateTime start, DateTime end)
+        public BoxEventArgs(DateTime start, DateTime end, bool isAborted)
         {
             StartTime = start;
             EndTime = end;
+            IsAborted = isAborted;
         }
     }
 }
