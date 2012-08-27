@@ -20,7 +20,7 @@ namespace WpfTest
         const float ArrowLineLength = ArrowUnit/4;
         const float ArrowLineWidth = ArrowUnit/16;
 
-        public const float ArrowIntersectionRadius = 320;
+        public const float ArrowIntersectionRadius = 960;
         IBox box;
         IBox frame;
         Arrow YArrow;
@@ -167,6 +167,8 @@ namespace WpfTest
         {
             foreach (IRenderable rObject in Objects)
             {
+                if (!rObject.Name.StartsWith("Y"))
+                    continue;
                 Vector3 absolutePosition = ((MeshGroup)rObject).Objects[0].AbsolutePosition;
                 Vector3 screenSpace = Vector3.Project(absolutePosition, 0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
                     Game.CurrentRenderer.Camera.NearClip, Game.CurrentRenderer.Camera.FarClip, Game.CurrentRenderer.Camera.WorldViewProjection);

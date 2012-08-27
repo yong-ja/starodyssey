@@ -6,6 +6,7 @@ using System.Text;
 using System.Timers;
 using System.Windows.Documents;
 using AvengersUtd.Odyssey.Graphics.Rendering;
+using AvengersUtd.Odyssey.Utils.Logging;
 using SlimDX;
 using AvengersUtd.Odyssey.Graphics.Meshes;
 using AvengersUtd.Odyssey.Graphics.Rendering.Management;
@@ -67,38 +68,38 @@ namespace WpfTest
             2.5f, 
 
             3f, // 16
-            2.25f,
-            3f,
-            2.0f,
-            2.75f,
             2.5f,
-            3.5f,
+            3f,
+            2.5f,
+            3f,
+            2.5f,
+            3.0f,
             3.0f,
             3f, // 24
-            2.25f,
+             2.5f,
             3f,
-            2.0f,
-            2.75f,
             2.5f,
-            3.5f,
+            3f,
+            2.5f,
+            3.0f,
             3.0f,
             
             3f, // 32
             3f,
             3f,
             3f,
-            2.25f,
-            2.25f,
-            2.25f,
             2.5f,
+            2.5f,
+            2.5f,
+            3f,
             3f, // 40
             3f,
             3f,
             3f,
-            2.25f,
-            2.25f,
-            2.25f,
             2.5f,
+            2.5f,
+            2.5f,
+            3f,
 
         };
 
@@ -161,9 +162,9 @@ namespace WpfTest
 
             frameSize = new float[]
             {
-                arrowCondition[0] ? 5.0f : 1f,
-                arrowCondition[1] ? 5.0f : 1f,
-                arrowCondition[2] ? 5.0f : 1f
+                arrowCondition[0] ? 4.5f : 1.5f,
+                arrowCondition[1] ? 4.5f : 1.5f,
+                arrowCondition[2] ? 4.5f : 1.5f
             };
 
             bbox = new BoundingBox(frameSize[0], frameSize[1], frameSize[2]);
@@ -178,6 +179,7 @@ namespace WpfTest
             Camera.LookAt(new Vector3(0.5f, 0.5f, 0.5f) , new Vector3(-5.5f, 5.5f, -5.5f));
             int offsetIndex = (Test.BoxIndex % ConditionsCount);
             Camera.PositionV3 += new Vector3(-bbox.Width / 2 + 0.5f, offsets[offsetIndex] , -bbox.Depth / 2 +0.5f);
+            LogEvent.Engine.Write(string.Format("Index: {0}", Test.BoxIndex%conditions.Count));
         }
 
         void StartNew()
@@ -219,7 +221,8 @@ namespace WpfTest
                 e.IsAborted ? -1 : e.Duration);
             started = false;
 
-            Test.BoxIndex++;
+            if (!e.IsAborted)
+                Test.BoxIndex++;
 
             foreach (IStopAndGo tl in Trace.Listeners.OfType<IStopAndGo>())
             {
@@ -253,9 +256,9 @@ namespace WpfTest
             bool[] arrowCondition = arrowConditions[condition[1]];
             boxSize = new float[]
             {
-                arrowCondition[0] ? 1.0f : 5f,
-                arrowCondition[1] ? 1.0f : 5f,
-                arrowCondition[2] ? 1.0f : 5f
+                arrowCondition[0] ? 1.5f : 4.5f,
+                arrowCondition[1] ? 1.5f : 4.5f,
+                arrowCondition[2] ? 1.5f : 4.5f
             };
             box = new Box(1, 1, 1);
             box.ScalingValues = new Vector3(boxSize[0], boxSize[1], boxSize[2]);
