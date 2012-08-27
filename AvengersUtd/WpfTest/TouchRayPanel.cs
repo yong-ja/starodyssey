@@ -272,8 +272,6 @@ namespace WpfTest
             // Session Id, tpX, tpY, tdId, eventType
             TrackerEvent.Touch.Log(Test.BoxIndex % BoxRenderer.ConditionsCount, e.Location.X, e.Location.Y, e.TouchDevice.Id, "TouchDown");
 
-            
-
             if (test)
             {
                 arrows.Add(e.TouchDevice, result);
