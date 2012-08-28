@@ -178,9 +178,9 @@ namespace WpfTest
 
             frameSize = new float[]
             {
-                arrowCondition[0] ? 5.0f : 1f,
-                arrowCondition[1] ? 5.0f : 1f,
-                arrowCondition[2] ? 5.0f : 1f
+                arrowCondition[0] ? 4.5f : 1.5f,
+                arrowCondition[1] ? 4.5f : 1.5f,
+                arrowCondition[2] ? 4.5f : 1.5f
             };
 
             bbox = new BoundingBox(frameSize[0], frameSize[1], frameSize[2]);
@@ -270,9 +270,9 @@ namespace WpfTest
             bool[] arrowCondition = arrowConditions[condition[1]];
             boxSize = new float[]
             {
-                arrowCondition[0] ? 1.0f : 5f,
-                arrowCondition[1] ? 1.0f : 5f,
-                arrowCondition[2] ? 1.0f : 5f
+                arrowCondition[0] ? 1.5f : 4.5f,
+                arrowCondition[1] ? 1.5f : 4.5f,
+                arrowCondition[2] ? 1.5f : 4.5f
             };
             box = new Box(1, 1, 1);
             box.ScalingValues = new Vector3(boxSize[0], boxSize[1], boxSize[2]);
