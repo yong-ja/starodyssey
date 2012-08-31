@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="ImgOrdersReceived" UriSource="ordersReceived.png" />
+    <BitmapImage x:Key="ImgSetInventory" UriSource="setInventory.png" />
+    <BitmapImage x:Key="ImgAbout" UriSource="about.png" />
+</ResourceDictionary>
