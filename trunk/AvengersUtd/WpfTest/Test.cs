@@ -10,7 +10,7 @@ namespace WpfTest
         static int boxIndex=15, selectionIndex=15, bezierIndex =2;
         static int participant=6;
 
-        public static int BoxIndex { get { return BoxConditions[Count]; } private set { boxIndex = value; } }
+        public static int BoxIndex { get { return BoxConditions[Count%BoxConditions.Length]; } private set { boxIndex = value; } }
         public static int SelectionIndex { get { return selectionIndex; } set { selectionIndex = value; } }
         public static int BezierIndex { get { return bezierIndex; } set {bezierIndex = value;}}
 
