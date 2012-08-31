@@ -1,0 +1,8 @@
+﻿<Window x:Class="AvengersUtd.BrickLab.DebugWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Net="clr-namespace:System.Net;assembly=System"
+        Title="DebugWindow" Height="600" Width="800">
+    <WebBrowser x:Name="Browser">
+
+    </WebBrowser>
+</Window>
