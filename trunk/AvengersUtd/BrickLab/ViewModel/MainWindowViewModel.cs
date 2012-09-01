@@ -55,7 +55,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             MenuItem preferences = new MenuItem("Preferences")
             {
                 Command = ShowDialogCommand,
-                CommandParameter = new Options()
+                CommandParameter = Options
             };
 
             options.Children.Add(preferences);
@@ -64,9 +64,9 @@ namespace AvengersUtd.BrickLab.ViewModel
         }
 
         #region Commands
-        private DelegateCommand<Window> ShowDialogCommand
+        private DelegateCommand<Type> ShowDialogCommand
         {
-            get { return new DelegateCommand<Window>(param => param.ShowDialog(), null); }
+            get { return new DelegateCommand<Type>(param => ((Window) Activator.CreateInstance(param)).ShowDialog(), null); }
         }
 
         public DelegateCommand<Window> ShowWindowCommand
@@ -79,7 +79,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return new DelegateCommand<UserControl>(window.SwitchTo, null); }
         }
 
-        public Window Options { get { return new Options(); } }
+        public Type Options { get { return typeof(Options); } }
         #endregion
 
         

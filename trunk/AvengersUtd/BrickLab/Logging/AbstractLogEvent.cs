@@ -13,14 +13,13 @@ namespace AvengersUtd.BrickLab.Logging
         LogMessage = 10001,
         // Warnings
         ThreadAbort = 70001,
+        FileDoesNotExist = 70002,
         // Exceptions
         ArgumentException = 80001,
         ArgumentNull = 80002,
         // Critical Errors
         CriticalFault = 90001,
         UnhandledException = 90002,
-        
-        
     }
 
     public abstract class AbstractLogEvent

@@ -17,6 +17,9 @@
     </Window.Resources>
     <DockPanel LastChildFill="True" x:Name="DockPanel" Background="DarkGray" DataContext="{StaticResource mwVM}">
         <Menu DockPanel.Dock="Top" Height="24" ItemsSource="{Binding Path=MenuItems}" />
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="Status" FontSize="12"/>
+        </StatusBar>
         <StackPanel x:Name="SidePanel" Background="DarkGray" DockPanel.Dock="Left" Orientation="Vertical">
             <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
                                 Image="{StaticResource ImgOrdersReceived}" 
@@ -47,10 +50,12 @@
                 </StackPanel>
             </TabItem>
         </TabControl>-->
+
         <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
             <ContentControl x:Name="Container">
                 <Controls:About/>
             </ContentControl>
         </Border>
+
     </DockPanel>
 </Window>
