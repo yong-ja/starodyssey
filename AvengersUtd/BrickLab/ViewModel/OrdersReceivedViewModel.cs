@@ -1,43 +1,63 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Windows.Threading;
 using AvengersUtd.BrickLab.Controls;
 using AvengersUtd.BrickLab.DataAccess;
 using AvengersUtd.BrickLab.Logging;
-using AvengersUtd.BrickLab.Model;
-using AvengersUtd.BrickLab.Settings;
-using HtmlAgilityPack;
 
 namespace AvengersUtd.BrickLab.ViewModel
 {
     public class OrdersReceivedViewModel : ViewModelBase
     {
-        private OrderRepository orderRepository;
+        private readonly OrderRepository orderRepository;
         private ObservableCollection<OrderViewModel> orders;
         private OrderViewModel selectedOrder;
+        private readonly Dispatcher dispatcher;
 
         public OrdersReceivedViewModel()
         {
             orderRepository = new OrderRepository();
             orders = new ObservableCollection<OrderViewModel>();
+            dispatcher = Dispatcher.CurrentDispatcher;
 
-            orderRepository.OrderAdded += OnOrderAddedToRepository;
-        } 
-        
+            orderRepository.OrderAdded +=
+                (sender, e) => dispatcher.BeginInvoke(new Action(() => OnOrderAddedToRepository(sender, e)));
+            orderRepository.OrderChanged += (sender, e) =>
+                dispatcher.BeginInvoke(new Action(() => OnOrderChangedInRepository(sender, e)), DispatcherPriority.Normal);
+        }
+
         public OrdersReceivedViewModel(string filename)
         {
             LoadOrdersFromFile(filename);
         }
 
+        private void OnOrderChangedInRepository(object sender, OrderChangedEventArgs e)
+        {
+            LogEvent.OrderChanged.Log(e.OldOrder.Id);
+            orders.Remove(orders.First(o => o.Id == e.OldOrder.Id));
+            orders.Add(new OrderViewModel(e.NewOrder));
+            
+        }
+
+
+
         private void OnOrderAddedToRepository(object sender, OrderAddedEventArgs e)
         {
             OrderViewModel viewModel = new OrderViewModel(e.NewOrder);
-            orders.Add(viewModel);
+            OrderViewModel ovm = orders.FirstOrDefault(o => o.Id == viewModel.Id);
+            if (ovm != null)
+            {
+                if (!ovm.OrderModelObject.Equals(viewModel.OrderModelObject))
+                {
+                    orders.Remove(ovm);
+                    orders.Add(viewModel);
+                }
+            }
+            else
+                orders.Add(viewModel);
         }
 
         public void LoadOrdersFromFile(string filename)
@@ -71,7 +91,12 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public ICommand UpdateOrder
         {
-            get { return new DelegateCommand<OrderViewModel>(param => param.Update(), param=>param.CanUpdate()); }
+            get
+            {
+                return new DelegateCommand<OrderViewModel>(
+                    param => Dispatcher.CurrentDispatcher.BeginInvoke(new Action(param.Update), DispatcherPriority.Background),
+                    null); // Due to the lack of RowEditEnded
+            }
         }
 
         public ICommand SynchOrders
@@ -81,7 +106,14 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public void DownloadOrders()
         {
-            orderRepository.DownloadOrders();
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork+= (sender, e) =>
+                            {
+                                orderRepository.DownloadOrders();
+                            };
+            Mouse.OverrideCursor = Cursors.Wait;
+            worker.RunWorkerCompleted += (sender, e) => Mouse.OverrideCursor = Cursors.Arrow;
+            worker.RunWorkerAsync();
         }
 
         void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

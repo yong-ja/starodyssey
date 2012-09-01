@@ -9,6 +9,7 @@ using System.Linq;
 using AvengersUtd.BrickLab.Settings;
 using AvengersUtd.BrickLab.ViewModel;
 using MenuItem = AvengersUtd.BrickLab.Controls.MenuItem;
+using AvengersUtd.BrickLab.Logging;
 
 namespace AvengersUtd.BrickLab
 {
@@ -46,13 +47,7 @@ namespace AvengersUtd.BrickLab
         {
             Global.Init();
             Title += Global.Version;
-
-            //InventoryGrid.ItemsSource = bc.DownloadSetInventory("8028-1");
-            string response;
-            //bool result = BrickClient.PerformLogin();
-            //if (result)
-            //    OrderManager.ParseHtml();
-            //OrderManager.GetOrders().First(o => o.Id == 2991284).UpdateShipping(1.51f);
+            LogEvent.System.Log("App started");
         }
 
         

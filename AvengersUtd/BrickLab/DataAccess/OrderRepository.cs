@@ -15,16 +15,17 @@ namespace AvengersUtd.BrickLab.DataAccess
 {
     public class OrderRepository
     {
-        private readonly List<Order> orders;
+        private readonly Dictionary<int,Order> orders;
         private static int orderPages;
         private static int ordersPerPage;
         private static int ordersTotal;
 
         public event EventHandler<OrderAddedEventArgs> OrderAdded;
+        public event EventHandler<OrderChangedEventArgs> OrderChanged;
 
         public OrderRepository()
         {
-            orders = new List<Order>();
+            orders = new Dictionary<int, Order>();
         }
 
         protected void OnOrderAdded(OrderAddedEventArgs e)
@@ -33,15 +34,26 @@ namespace AvengersUtd.BrickLab.DataAccess
                 OrderAdded(this, e);
         }
 
+        protected void OnOrderChanged(OrderChangedEventArgs e)
+        {
+            if (OrderChanged != null)
+                OrderChanged(this, e);
+        }
+
         public List<Order> GetOrders()
         {
-            return new List<Order>(orders);
+            return new List<Order>(orders.Values);
         }
 
 
         public void LoadOrdersFromFile(string ordersReceivedFile)
         {
-            Contract.Requires(File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ordersReceivedFile)));
+            string fullpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ordersReceivedFile);
+            if (!File.Exists(fullpath))
+            {
+                WarningEvent.FileDoesNotExist.Log(fullpath);
+                return;
+            }
 
             var xmlOrders = XmlManager.DeserializeCollection<Order>(Global.OrdersReceivedFile);
 
@@ -51,16 +63,27 @@ namespace AvengersUtd.BrickLab.DataAccess
 
         public void AddOrder(Order order)
         {
-            Contract.Requires(order != null);
-            if (orders.Contains(order)) return;
-            orders.Add(order);
-            OnOrderAdded(new OrderAddedEventArgs(order));
+            if (!ContainsOrder(order))
+            {
+                orders.Add(order.Id, order);
+                OnOrderAdded(new OrderAddedEventArgs(order));
+            }
+            else
+            {
+                Order oldOrder = orders[order.Id];
+                if (!oldOrder.Equals(order))
+                {
+                    orders[order.Id] = order;
+                    OnOrderChanged(new OrderChangedEventArgs(order, oldOrder));
+                }
+            }
+
         }
 
         public bool ContainsOrder(Order order)
         {
             Contract.Requires(order != null);
-            return orders.Contains(order);
+            return orders.ContainsKey(order.Id);
         }
 
         public void DownloadOrders()
@@ -82,8 +105,7 @@ namespace AvengersUtd.BrickLab.DataAccess
             orderPages = Int32.Parse(match.Groups["pages"].Value);
             ordersTotal = Int32.Parse(match.Groups["total"].Value);
             ordersPerPage = Int32.Parse(match.Groups["perPage"].Value);
-            
-
+           
             for (int i = 0; i < orderPages; i++)
             {
                 // Once the first page is complete, navigate to the other ones
@@ -102,12 +124,14 @@ namespace AvengersUtd.BrickLab.DataAccess
                     AddOrder(o);
             }
 
+            LogEvent.Network.Log("Finished downloading order list");
+
             //DebugWindow dWindow = new DebugWindow { HtmlSource = responseHtml };
             //dWindow.Show();
-            XmlManager.Serialize(orders, "orders.xml");
+            XmlManager.Serialize(orders.Values.ToList(), "orders.xml");
         }
 
-        static IEnumerable<Order> ParseTable(HtmlNode table)
+        IEnumerable<Order> ParseTable(HtmlNode table)
         {
             var rows = table.SelectNodes("tr");
             List<Order> parsedOrders = new List<Order>();
@@ -186,8 +210,6 @@ namespace AvengersUtd.BrickLab.DataAccess
                     orderStatus = (OrderStatus)statusId;
                     isComplete = false;
                 }
-
-                LogEvent.Network.Write(cells.Count().ToString());
 
                 Order order = new Order
                 {

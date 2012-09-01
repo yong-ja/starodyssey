@@ -190,12 +190,23 @@ namespace AvengersUtd.BrickLab.ViewModel
                 RaisePropertyChanged("Lots");
             }
         }
+
+        public bool IsDirty { get; set; }
+
+        internal Order OrderModelObject
+        {
+            get { return order; }
+        }
+
         private OrderViewModel GetCopy()
         {
             OrderViewModel ovm = new OrderViewModel
                                  {
                                      Id = Id,
                                      BuyerUserId = BuyerUserId,
+                                     Date = Date,
+                                     Items = Items,
+                                     Lots = Lots,
                                      Shipping = Shipping,
                                      Insurance = Insurance,
                                      AdditionalCharge = AdditionalCharge,
@@ -232,6 +243,8 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public void Update()
         {
+            if (!CanUpdate())
+                return;
             //Contract.Requires(backupCopy != null);
             if (BrickClient.NeedsLogin())
                 BrickClient.PerformLogin();
@@ -246,7 +259,8 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public bool CanUpdate()
         {
-            return !IsComplete;
+            
+            return !IsComplete && IsDirty;
         }
 
         #region IEditableObject
@@ -268,14 +282,17 @@ namespace AvengersUtd.BrickLab.ViewModel
             ExtraCredit = backupCopy.ExtraCredit;
             Status = backupCopy.Status;
             OrderTotal = backupCopy.OrderTotal;
+            IsDirty = false;
         }
 
         public void EndEdit()
         {
             if (!inEdit) return;
+            IsDirty = !order.Equals(backupCopy.order);
             inEdit = false;
-            backupCopy = null;
         }
         #endregion
+
+
     }
 }

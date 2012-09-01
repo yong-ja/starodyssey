@@ -127,7 +127,52 @@ namespace AvengersUtd.BrickLab.Model
 
         }
 
+        #region Equality members
+        public bool Equals(Order other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other.Id == Id && other.Date.Equals(Date) && Equals(other.BuyerUserId, BuyerUserId) && other.Items == Items && other.Insurance.Equals(Insurance) && other.Lots == Lots && other.Shipping.Equals(Shipping) && other.AdditionalCharge.Equals(AdditionalCharge) && other.CouponCredit.Equals(CouponCredit) && other.ExtraCredit.Equals(ExtraCredit) && other.OrderTotal.Equals(OrderTotal) && Equals(other.Status, Status) && other.IsComplete.Equals(IsComplete);
+        }
 
-       
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(Order)) return false;
+            return Equals((Order)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = Id;
+                result = (result * 397) ^ Date.GetHashCode();
+                result = (result * 397) ^ (BuyerUserId != null ? BuyerUserId.GetHashCode() : 0);
+                result = (result * 397) ^ Items;
+                result = (result * 397) ^ Insurance.GetHashCode();
+                result = (result * 397) ^ Lots;
+                result = (result * 397) ^ Shipping.GetHashCode();
+                result = (result * 397) ^ AdditionalCharge.GetHashCode();
+                result = (result * 397) ^ CouponCredit.GetHashCode();
+                result = (result * 397) ^ ExtraCredit.GetHashCode();
+                result = (result * 397) ^ OrderTotal.GetHashCode();
+                result = (result * 397) ^ Status.GetHashCode();
+                result = (result * 397) ^ IsComplete.GetHashCode();
+                return result;
+            }
+        }
+
+        public static bool operator ==(Order left, Order right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Order left, Order right)
+        {
+            return !Equals(left, right);
+        } 
+        #endregion
     }
 }

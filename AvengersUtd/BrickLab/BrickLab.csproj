@@ -109,10 +109,20 @@
     <Compile Include="Controls\AccountingCell.cs" />
     <Compile Include="Controls\CurrencyConverter.cs" />
     <Compile Include="Controls\DataGridAccountingColumn.cs" />
+    <Compile Include="Controls\DataGridCellAttachedProperties.cs" />
     <Compile Include="Controls\DelegateCommand.cs" />
+    <Compile Include="Controls\EditableAmountConverter.cs" />
     <Compile Include="Controls\ImageButton.cs" />
+    <Compile Include="Controls\LogicalTreeWalker.cs" />
     <Compile Include="Controls\MenuItem.cs" />
+    <Compile Include="Controls\SelectAllTextOnFocusBehaviour.cs" />
+    <Compile Include="Controls\SingleClickEditDataGridCellBehavior.cs" />
+    <Compile Include="Controls\TextBoxTemplateColumn.cs" />
+    <Compile Include="Controls\VisualTreeWalker.cs" />
+    <Compile Include="DataAccess\OrderChangedEventArgs.cs" />
     <Compile Include="DataAccess\OrderAddedEventArgs.cs" />
+    <Compile Include="Logging\WarningEvent.cs" />
+    <Compile Include="Logging\WpfTextTraceListener.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\OrdersReceivedView.xaml.cs">
       <DependentUpon>OrdersReceivedView.xaml</DependentUpon>

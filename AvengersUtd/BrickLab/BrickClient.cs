@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,8 +24,8 @@ namespace AvengersUtd
 
         private const string BricklinkAddress = "http://www.bricklink.com";
         private static CookieContainer cookies;
-        private static string UserAgent = "BrickLab" + Global.Version;
-
+        private static readonly string UserAgent = "BrickLab" + Global.Version;
+        private static BackgroundWorker worker;
 
         static BrickClient()
         {

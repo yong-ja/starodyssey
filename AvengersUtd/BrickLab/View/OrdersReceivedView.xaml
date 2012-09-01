@@ -17,18 +17,18 @@
                 <x:Type TypeName="Model:OrderStatus" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <local:EditableAmountConverter x:Key="EditableAmountConverter"/>
     </UserControl.Resources>
         <DataGrid Name="OrdersGrid"
                   DataContext="{Binding Source={StaticResource OrdersReceivedViewModel}}"
                   AutoGenerateColumns="False" RowHeaderWidth="16" 
-                  CurrentItem="{Binding Path=SelectedOrder, Mode=OneWayToSource}" 
+                  SelectedItem="{Binding Path=SelectedOrder, Mode=TwoWay}" 
                   CanUserDeleteRows="False"
-                  ItemsSource="{Binding Path=Orders}">
-            
+                  ItemsSource="{Binding Path=Orders}" VerticalAlignment="Top">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="RowEditEnding">
                     <i:InvokeCommandAction Command="{Binding UpdateOrder}" 
-                                           CommandParameter="{Binding SelectedOrder, Mode=TwoWay}"/>
+                                           CommandParameter="{Binding SelectedOrder}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
@@ -49,18 +49,19 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Shipping" Width="64" IsReadOnly="False" CellStyle="{StaticResource EditableCellStyle}">
+                <local:TextBoxTemplateColumn Header="Shipping" Width="64" IsReadOnly="False" CellStyle="{StaticResource EditableCellStyle}">
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
                             <local:AccountingCell Amount="{Binding Shipping, StringFormat=0.00;;-}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
+                <local:TextBoxTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                        <TextBox Text="{Binding Shipping,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=0.00;;-}" TextAlignment="Right" />
+                        <TextBox Text="{Binding Shipping,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=0.00;;-}" 
+                                 TextAlignment="Right" />
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                </local:TextBoxTemplateColumn.CellEditingTemplate>
+            </local:TextBoxTemplateColumn>
                 <DataGridTemplateColumn Header="Insurance" Width="92" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

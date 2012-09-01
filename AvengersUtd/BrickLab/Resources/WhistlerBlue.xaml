@@ -9,7 +9,7 @@
                     xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:controls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
                     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
-                    >
+                    xmlns:Behaviors="clr-namespace:AvengersUtd.BrickLab.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Resources/WhistlerBlue_brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -159,6 +159,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Cursor" Value="IBeam" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Behaviors:DataGridCellAttachedProperties.IsSingleClickEditMode" Value="True"/>
         <!--Padding hack-->
         <!--<Setter Property="Padding" Value="2 5 2 5" />-->
         <Setter Property="Template">
@@ -172,7 +173,12 @@
                         <Rectangle x:Name="FocusVisual" Margin="0,0,0,0" 
                                    Stroke="#FF000000" Fill="#FFBEEEBE" 
                                    Opacity="0" IsHitTestVisible="false"/>
-                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Cursor="{TemplateBinding Cursor}"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          Content="{TemplateBinding Content}" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                          Cursor="{TemplateBinding Cursor}"/>
                         <Rectangle x:Name="RightGridLine" VerticalAlignment="Stretch" Width="1" Grid.Column="1" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -185,7 +191,8 @@
             </Setter.Value>
         </Setter>
         <Setter Property="IsSelected" 
-                Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:DataGridRow}, Path=IsSelected, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:DataGridRow}, 
+                    Path=IsSelected, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                 />
     </Style>
 
@@ -336,6 +343,9 @@
                                 </BeginStoryboard>
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
+                        <Trigger Property="AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="#FFFAFAFA"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
