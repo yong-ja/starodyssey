@@ -125,10 +125,13 @@ namespace AvengersUtd.BrickLab.DataAccess
             }
 
             LogEvent.Network.Log("Finished downloading order list");
+            SaveToDisk();
+        }
 
-            //DebugWindow dWindow = new DebugWindow { HtmlSource = responseHtml };
-            //dWindow.Show();
-            XmlManager.Serialize(orders.Values.ToList(), "orders.xml");
+        public void SaveToDisk()
+        {
+            XmlManager.Serialize(orders.Values.ToList(), Global.OrdersReceivedFile);
+            LogEvent.System.Log("Saving order list to disk");
         }
 
         IEnumerable<Order> ParseTable(HtmlNode table)

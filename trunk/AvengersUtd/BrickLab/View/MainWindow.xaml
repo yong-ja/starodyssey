@@ -1,0 +1,61 @@
+﻿<Window x:Class="AvengersUtd.BrickLab.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Properties="clr-namespace:AvengersUtd.BrickLab.Properties" 
+        xmlns:Controls="clr-namespace:AvengersUtd.BrickLab.Controls"
+        xmlns:ViewModel="clr-namespace:AvengersUtd.BrickLab.ViewModel"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="BrickLab v" Height="600" Width="1024" WindowState="Normal">
+    <Window.Resources>
+        <ViewModel:MainWindowViewModel x:Key="mwVM"/>
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Header" Value="{Binding Path=Header}"/>
+            <Setter Property="Command" Value="{Binding Path=Command}"/>
+            <Setter Property="CommandParameter" Value="{Binding Path=CommandParameter}"/>
+        </Style>
+        <HierarchicalDataTemplate DataType="{x:Type Controls:MenuItem}" ItemsSource="{Binding Path=Children}"/>
+    </Window.Resources>
+    <DockPanel LastChildFill="True" x:Name="DockPanel" Background="DarkGray" DataContext="{StaticResource mwVM}">
+        <Menu DockPanel.Dock="Top" Height="24" ItemsSource="{Binding Path=MenuItems}" />
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="Status" FontSize="12"/>
+        </StatusBar>
+        <StackPanel x:Name="SidePanel" Background="DarkGray" DockPanel.Dock="Left" Orientation="Vertical">
+            <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
+                                Image="{StaticResource ImgOrdersReceived}" 
+                                Content="{x:Static Properties:Resources.Main_OrdersReceived}" 
+                                Command="{Binding ShowUserControlCommand}" CommandParameter="{Binding OrdersReceivedView}"/>
+            <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
+                                Image="{StaticResource ImgSetInventory}" 
+                                Content="{x:Static Properties:Resources.Main_SetInv}" 
+                                Command="{Binding ShowDialogCommand}" CommandParameter="{Binding SetBrowser}"/>
+            <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
+                                Image="{StaticResource ImgAbout}" 
+                                Content="{x:Static Properties:Resources.Main_About}" 
+                                Command="{Binding ShowUserControlCommand}" />
+        </StackPanel>
+
+        <!--<StackPanel Orientation="Vertical" Background="DarkGray">
+
+                    <Controls:ImageButton Margin="4" 
+                                Image="{StaticResource ImgOrdersReceived}" 
+                                Content="{x:Static Properties:Resources.Main_OrdersReceived}"/> 
+                    <Image="{StaticResource ImgOrdersReceived}" Text="{x:Static Properties:Resources.Main_OrdersReceived}" 
+                                    MouseLeftButtonUp="OrdersReceived_MouseLeftButtonUp"
+                    <Controls:ImageButton2 Image="{StaticResource ImgAbout}" 
+                                    Text="{x:Static Properties:Resources.Main_About}" />
+                    <Controls:ImageButton2 Image="{StaticResource ImgSetInventory}"
+                                        Text="{x:Static Properties:Resources.Main_SetInv}" 
+                                    ButtonCommand="{Binding Path=ShowWindowCommand}" CommandParameter="{Binding Path=Options}"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>-->
+
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+            <ContentControl x:Name="Container">
+                <Controls:About/>
+            </ContentControl>
+        </Border>
+
+    </DockPanel>
+</Window>

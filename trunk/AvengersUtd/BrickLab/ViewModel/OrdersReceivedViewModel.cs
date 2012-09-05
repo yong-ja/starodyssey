@@ -7,11 +7,13 @@ using System.Windows.Threading;
 using AvengersUtd.BrickLab.Controls;
 using AvengersUtd.BrickLab.DataAccess;
 using AvengersUtd.BrickLab.Logging;
+using AvengersUtd.BrickLab.Settings;
 
 namespace AvengersUtd.BrickLab.ViewModel
 {
-    public class OrdersReceivedViewModel : ViewModelBase
+    public class OrdersReceivedViewModel : ViewModelBase, IDisposable
     {
+        private bool disposed;
         private readonly OrderRepository orderRepository;
         private ObservableCollection<OrderViewModel> orders;
         private OrderViewModel selectedOrder;
@@ -26,7 +28,8 @@ namespace AvengersUtd.BrickLab.ViewModel
             orderRepository.OrderAdded +=
                 (sender, e) => dispatcher.BeginInvoke(new Action(() => OnOrderAddedToRepository(sender, e)));
             orderRepository.OrderChanged += (sender, e) =>
-                dispatcher.BeginInvoke(new Action(() => OnOrderChangedInRepository(sender, e)), DispatcherPriority.Normal);
+                                            dispatcher.BeginInvoke(new Action(() => OnOrderChangedInRepository(sender, e)),
+                                                                   DispatcherPriority.Normal);
         }
 
         public OrdersReceivedViewModel(string filename)
@@ -39,7 +42,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             LogEvent.OrderChanged.Log(e.OldOrder.Id);
             orders.Remove(orders.First(o => o.Id == e.OldOrder.Id));
             orders.Add(new OrderViewModel(e.NewOrder));
-            
+
         }
 
 
@@ -67,11 +70,13 @@ namespace AvengersUtd.BrickLab.ViewModel
                                                               select new OrderViewModel(o));
             Orders.CollectionChanged += Orders_CollectionChanged;
         }
-      
+
         public OrderViewModel SelectedOrder
         {
             get { return selectedOrder; }
-            set { selectedOrder = value;
+            set
+            {
+                selectedOrder = value;
                 RaisePropertyChanged("SelectedOrder");
             }
         }
@@ -107,21 +112,40 @@ namespace AvengersUtd.BrickLab.ViewModel
         public void DownloadOrders()
         {
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork+= (sender, e) =>
-                            {
-                                orderRepository.DownloadOrders();
-                            };
+            worker.DoWork += (sender, e) =>
+                             {
+                                 orderRepository.DownloadOrders();
+                             };
             Mouse.OverrideCursor = Cursors.Wait;
             worker.RunWorkerCompleted += (sender, e) => Mouse.OverrideCursor = Cursors.Arrow;
             worker.RunWorkerAsync();
         }
 
-        void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            
+
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-        
+        private void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                orderRepository.SaveToDisk();
+            }
+            disposed = true;
+        }
+
+        ~OrdersReceivedViewModel()
+        {
+            Dispose(false);
+        }
     }
 }
