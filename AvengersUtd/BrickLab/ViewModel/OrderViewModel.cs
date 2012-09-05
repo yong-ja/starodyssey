@@ -12,7 +12,7 @@ namespace AvengersUtd.BrickLab.ViewModel
 {
     public class OrderViewModel : ViewModelBase, IEditableObject
     {
-        private const double Epsilon = 0.001;
+        
 
         private readonly Order order;
         private bool inEdit;
@@ -72,10 +72,11 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.Shipping; }
             set
             {
-                if (Math.Abs(order.Shipping - value) < Epsilon)
+                if (Math.Abs(order.Shipping - value) < Global.Epsilon)
                     return;
                 order.Shipping = value;
                 RaisePropertyChanged("Shipping");
+                RaisePropertyChanged("OrderGrandTotal");
             }
         }
 
@@ -84,10 +85,11 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.Insurance; }
             set
             {
-                if (Math.Abs(order.Insurance - value) < Epsilon)
+                if (Math.Abs(order.Insurance - value) < Global.Epsilon)
                     return;
                 order.Insurance = value;
                 RaisePropertyChanged("Insurance");
+                RaisePropertyChanged("OrderGrandTotal");
             }
         }
 
@@ -96,10 +98,11 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.AdditionalCharge; }
             set
             {
-                if (Math.Abs(order.AdditionalCharge - value) < Epsilon)
+                if (Math.Abs(order.AdditionalCharge - value) < Global.Epsilon)
                     return;
                 order.AdditionalCharge = value;
                 RaisePropertyChanged("AdditionalCharge");
+                RaisePropertyChanged("GrandTotal");
             }
         }
 
@@ -108,7 +111,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.CouponCredit; }
             set
             {
-                if (Math.Abs(order.CouponCredit - value) < Epsilon)
+                if (Math.Abs(order.CouponCredit - value) < Global.Epsilon)
                     return;
                 order.CouponCredit = value;
                 RaisePropertyChanged("CouponCredit");
@@ -120,10 +123,11 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.ExtraCredit; }
             set
             {
-                if (Math.Abs(order.ExtraCredit - value) < Epsilon)
+                if (Math.Abs(order.ExtraCredit - value) < Global.Epsilon)
                     return;
                 order.ExtraCredit = value;
                 RaisePropertyChanged("ExtraCredit");
+                RaisePropertyChanged("GrandTotal");
             }
         }
 
@@ -132,7 +136,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return order.OrderTotal; }
             set
             {
-                if (Math.Abs(order.OrderTotal - value) < Epsilon)
+                if (Math.Abs(order.OrderTotal - value) < Global.Epsilon)
                     return;
                 order.OrderTotal = value;
                 RaisePropertyChanged("OrderTotal");

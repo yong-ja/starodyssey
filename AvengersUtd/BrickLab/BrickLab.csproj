@@ -119,11 +119,37 @@
     <Compile Include="Controls\SingleClickEditDataGridCellBehavior.cs" />
     <Compile Include="Controls\TextBoxTemplateColumn.cs" />
     <Compile Include="Controls\VisualTreeWalker.cs" />
+    <Compile Include="DataAccess\Cache.cs" />
+    <Compile Include="DataAccess\Csv\CachedCsvReader.cs" />
+    <Compile Include="DataAccess\Csv\CachedCsvReader.CsvBindingList.cs" />
+    <Compile Include="DataAccess\Csv\CachedCsvReader.CsvPropertyDescriptor.cs" />
+    <Compile Include="DataAccess\Csv\CachedCsvReader.CsvRecordComparer.cs" />
+    <Compile Include="DataAccess\Csv\CsvReader.cs" />
+    <Compile Include="DataAccess\Csv\CsvReader.DataReaderValidations.cs" />
+    <Compile Include="DataAccess\Csv\CsvReader.RecordEnumerator.cs" />
+    <Compile Include="DataAccess\Csv\Events\ParseErrorEventArgs.cs" />
+    <Compile Include="DataAccess\Csv\Exceptions\MalformedCsvException.cs" />
+    <Compile Include="DataAccess\Csv\Exceptions\MissingFieldCsvException.cs" />
+    <Compile Include="DataAccess\Csv\MissingFieldAction.cs" />
+    <Compile Include="DataAccess\Csv\ParseErrorAction.cs" />
+    <Compile Include="DataAccess\Csv\Resources\ExceptionMessage1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessage.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Csv\ValueTrimmingOptions.cs" />
+    <Compile Include="DataAccess\ImageCache.cs" />
+    <Compile Include="DataAccess\Inventory.cs" />
     <Compile Include="DataAccess\OrderChangedEventArgs.cs" />
     <Compile Include="DataAccess\OrderAddedEventArgs.cs" />
     <Compile Include="Logging\WarningEvent.cs" />
     <Compile Include="Logging\WpfTextTraceListener.cs" />
+    <Compile Include="ViewModel\InventoryViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel.cs" />
+    <Compile Include="View\InventoryView.xaml.cs">
+      <DependentUpon>InventoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\OrdersReceivedView.xaml.cs">
       <DependentUpon>OrdersReceivedView.xaml</DependentUpon>
     </Compile>
@@ -132,7 +158,7 @@
     </Compile>
     <Compile Include="DataAccess\OrderRepository.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="Model\Currency.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Properties\Resources.en.Designer.cs">
       <DependentUpon>Resources.en.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -140,11 +166,18 @@
     </Compile>
     <Compile Include="Settings\XmlManager.cs" />
     <Compile Include="Settings\Preferences.cs" />
+    <Compile Include="View\SetBrowserDialog.xaml.cs">
+      <DependentUpon>SetBrowserDialog.xaml</DependentUpon>
+    </Compile>
     <None Include="ViewModel\ObservableCollection.cs" />
     <Compile Include="ViewModel\OrdersReceivedViewModel.cs" />
     <Compile Include="ViewModel\OrderViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="Controls\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InventoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,7 +213,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -196,21 +229,25 @@
     <Compile Include="Logging\AbstractLogEvent.cs" />
     <Compile Include="Logging\ConsoleTraceListener.cs" />
     <Compile Include="Logging\LogEvent.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Options.xaml">
+    <Page Include="View\OptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SetBrowserDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Options.xaml.cs">
-      <DependentUpon>Options.xaml</DependentUpon>
+    <Compile Include="View\OptionsView.xaml.cs">
+      <DependentUpon>OptionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Order.cs" />
-    <Compile Include="Part.cs" />
+    <Compile Include="Model\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -224,6 +261,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="DataAccess\Csv\Resources\ExceptionMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessage1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>

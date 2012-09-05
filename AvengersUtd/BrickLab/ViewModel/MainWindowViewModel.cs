@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using AvengersUtd.BrickLab.Controls;
+using AvengersUtd.BrickLab.View;
 using MenuItem = AvengersUtd.BrickLab.Controls.MenuItem;
 
 namespace AvengersUtd.BrickLab.ViewModel
@@ -13,6 +15,12 @@ namespace AvengersUtd.BrickLab.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly MainWindow window;
+        private OrdersReceivedView ordersReceivedView;
+        private InventoryView inventoryView;
+
+        public Type Options { get { return typeof(OptionsView); } }
+        public Type SetBrowser { get { return typeof (SetBrowserDialog); } }
+
         public MainWindowViewModel()
         {
             window = (MainWindow)Application.Current.MainWindow;
@@ -34,16 +42,15 @@ namespace AvengersUtd.BrickLab.ViewModel
         }
 
 
-        private OrdersReceived ordersReceived;
 
-        public OrdersReceived OrdersReceived
+        public OrdersReceivedView OrdersReceivedView
         {
-            get
-            {
-                if (ordersReceived == null)
-                    ordersReceived = new OrdersReceived();
-                return ordersReceived;
-            }
+            get { return ordersReceivedView ?? (ordersReceivedView = new OrdersReceivedView()); }
+        }
+
+        public InventoryView InventoryView
+        {
+            get { return inventoryView ?? (inventoryView = new InventoryView()); }
         }
 
         private void CreateMenuItems()
@@ -64,9 +71,23 @@ namespace AvengersUtd.BrickLab.ViewModel
         }
 
         #region Commands
-        private DelegateCommand<Type> ShowDialogCommand
+        public DelegateCommand<Type> ShowDialogCommand
         {
-            get { return new DelegateCommand<Type>(param => ((Window) Activator.CreateInstance(param)).ShowDialog(), null); }
+            get
+            {
+                return new DelegateCommand<Type>(
+                    delegate(Type param)
+                    {
+                        Window dialog = ((Window) Activator.CreateInstance(param));
+                        dialog.DataContext = this;
+                        dialog.Show();
+                    }, null);
+            }
+        }
+
+        public ICommand CloseDialogCommand
+        {
+            get { return new DelegateCommand<Window>(param => param.Close(), param => param.IsVisible); }
         }
 
         public DelegateCommand<Window> ShowWindowCommand
@@ -79,7 +100,19 @@ namespace AvengersUtd.BrickLab.ViewModel
             get { return new DelegateCommand<UserControl>(window.SwitchTo, null); }
         }
 
-        public Type Options { get { return typeof(Options); } }
+        public ICommand ShowInventoryView
+        {
+            get
+            {
+                return new DelegateCommand<string>(delegate(string setId)
+                                                   {
+                                                       InventoryView.SetId = setId;
+                                                       window.SwitchTo(InventoryView);
+                                                   }, null);
+            }
+        }
+
+        
         #endregion
 
         

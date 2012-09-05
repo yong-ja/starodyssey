@@ -21,28 +21,18 @@ namespace AvengersUtd.BrickLab.Controls
     /// <summary>
     /// Interaction logic for OrdersReceived.xaml
     /// </summary>
-    public partial class OrdersReceived : UserControl
+    public partial class OrdersReceivedView : UserControl
     {
-        public OrdersReceived()
+        private OrdersReceivedViewModel vm;
+        public OrdersReceivedView()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
-
-        //private Order selectedOrder;
-
-        //public Order SelectedOrder
-        //{
-        //    get { return selectedOrder; }
-        //    set
-        //    {
-        //        selectedOrder = value;
-        //    }
-        //}
 
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            OrdersReceivedViewModel vm = (OrdersReceivedViewModel)OrdersGrid.DataContext;
+            vm = (OrdersReceivedViewModel)OrdersGrid.DataContext;
             vm.LoadOrdersFromFile(Global.OrdersReceivedFile);
             MainWindowViewModel mwVm = (MainWindowViewModel)DataContext;
             MenuItem actions = new MenuItem("Actions");
@@ -54,11 +44,18 @@ namespace AvengersUtd.BrickLab.Controls
 
             actions.Children.Add(synchOrders);
             mwVm.MenuItems.Add(actions);
+            Dispatcher.ShutdownStarted += (s, args) => vm.Dispose();
         }
 
         private void OrdersGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
             LogEvent.Network.Write("!");
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            OrdersReceivedViewModel vm = (OrdersReceivedViewModel)OrdersGrid.DataContext;
+            vm.Dispose();
         }
 
     }

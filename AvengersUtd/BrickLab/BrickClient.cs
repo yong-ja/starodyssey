@@ -19,7 +19,8 @@ namespace AvengersUtd
         {
             MyBricklink,
             OrdersReceived,
-            OrdersPlaced
+            OrdersPlaced,
+            InventoryDownload
         }
 
         private const string BricklinkAddress = "http://www.bricklink.com";
@@ -35,42 +36,6 @@ namespace AvengersUtd
         public static bool NeedsLogin()
         {
             return (DateTime.Now - Global.LastLogin).TotalMinutes > 15;
-        }
-
-        public static Part[] DownloadSetInventory(string setNumber)
-        {
-            HtmlWeb htmlWeb = new HtmlWeb();
-            string downloadURL = string.Format("http://www.bricklink.com/catalogItemInv.asp?S={0}", setNumber);
- 
-            // Creates an HtmlDocument object from an URL
-            HtmlDocument document = htmlWeb.Load(downloadURL);
-            HtmlNode root = document.DocumentNode;
-
-            // Targets a specific node
-            var tableNodes = from table in root.SelectNodes("//table[@class='ta']") select table;
-            HtmlNode[] nodes = tableNodes.ToArray();
-
-            return ParseTable(nodes[0]);
-        }
-
-        static Part[] ParseTable(HtmlNode table)
-        {
-            var rows = table.SelectNodes("tr");
-            List<Part> parts = new List<Part>();
-            foreach (HtmlNode row in rows.Skip(2))
-            {
-                var cells = from cell in row.SelectNodes("td") select cell;
-                HtmlNode[] cellArray = cells.ToArray();
-                if (cellArray.Length < 3)
-                    continue;
-                string imageUrl = cellArray[0].Descendants("img").First().Attributes["src"].Value;
-                int quantity = int.Parse(HtmlEntity.DeEntitize(cellArray[1].FirstChild.InnerText).Trim());
-                string itemNr = cellArray[2].InnerText;
-                Part part = new Part(imageUrl, itemNr, quantity, string.Empty);
-                parts.Add(part);
-            }
-
-            return parts.ToArray();
         }
 
         public static HttpWebResponse PerformRequest(Page page, string args, byte[] data)
@@ -93,6 +58,7 @@ namespace AvengersUtd
 
             return (HttpWebResponse) request.GetResponse();
         }
+
 
         public static bool PerformLogin()
         {
@@ -146,9 +112,48 @@ namespace AvengersUtd
             return sr.ReadToEnd();
         }
 
+        public static bool RemoteFileExists(Uri uri)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                request.Timeout = 1000; //set the timeout to 5 seconds to keep the user from waiting too long for the page to load
+                request.Method = "HEAD"; //Get only the header information -- no need to download any content
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                int statusCode = (int)response.StatusCode;
+                if (statusCode >= 100 && statusCode < 400) //Good requests
+                {
+                    return true;
+                }
+                else if (statusCode >= 500 && statusCode <= 510) //Server Errors
+                {
+                    LogEvent.Network.Log(String.Format("The remote server has thrown an internal error. Url is not valid: {0}", uri.AbsolutePath));
+                    return false;
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError) //400 errors
+                {
+                    return false;
+                }
+                else
+                {
+                    LogEvent.Network.Log(String.Format("Unhandled status [{0}] returned for url: {1}", ex.Status, uri.AbsolutePath), ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogEvent.Network.Log(String.Format("Could not test url {0}.", uri.AbsolutePath), ex);
+            }
+            return false;
+        }
+
         static string GetUrl(Page page)
         {
-            string address = "http://www.bricklink.com//";
+            string address = "http://www.bricklink.com/";
             switch (page)
             {
 
@@ -163,6 +168,10 @@ namespace AvengersUtd
 
                 case Page.OrdersPlaced:
                     address += "orderPlaced.asp";
+                    break;
+
+                case Page.InventoryDownload:
+                    address += "catalogDownload.asp";
                     break;
             }
 
