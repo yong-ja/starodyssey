@@ -1,7 +1,11 @@
 ﻿<Window x:Class="AvengersUtd.BrickLab.View.OptionsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Properties="clr-namespace:AvengersUtd.BrickLab.Properties" Title="Options" Height="300" Width="384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" WindowStyle="SingleBorderWindow" ShowInTaskbar="True" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
+        xmlns:Properties="clr-namespace:AvengersUtd.BrickLab.Properties"
+        xmlns:controls="clr-namespace:AvengersUtd.BrickLab.Controls"
+        xmlns:Model="clr-namespace:AvengersUtd.BrickLab.Model" xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:BrickLab="clr-namespace:AvengersUtd.BrickLab"
+        xmlns:Settings="clr-namespace:AvengersUtd.BrickLab.Settings" Title="Options" Height="300" Width="384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" WindowStyle="SingleBorderWindow" ShowInTaskbar="True" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
     <DockPanel LastChildFill="True" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <StackPanel Height="32" DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="170 0 0 0" Content="{x:Static Properties:Resources.Std_Ok}" IsDefault="True" Width="90" Click="Ok_Click" />
@@ -9,26 +13,73 @@
         </StackPanel>
         <TabControl Name="tabControl1" VerticalAlignment="Top">
             <TabItem Header="{x:Static Properties:Resources.Opt_Network}" Name="tabItem1" >
-            <GroupBox Header="Login" Padding="8">
+                <StackPanel Orientation="Vertical">
+                    <GroupBox Header="Login" Padding="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="32" />
+                                <RowDefinition Height="32" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="64" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock 
+                        Text="{x:Static Properties:Resources.Opt_Username}" 
+                                Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                                Margin="4 0 0 0"/>
+                            <TextBlock 
+                        Text="{x:Static Properties:Resources.Opt_Password}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                            <TextBox x:Name="tUsername" Grid.Row="0" Grid.Column="1" Margin="4" Text="{Binding UserId}"/>
+                            <PasswordBox x:Name="tPassword" Grid.Row="1" Grid.Column="1" Margin="4" />
+                        </Grid>
+                    </GroupBox>
+                    <controls:GroupBox Padding="8" Margin="0 8 0 0" >
+                        <controls:GroupBox.Header>
+                            <CheckBox x:Name="cbProxy" Content="{x:Static Properties:Resources.Opt_Proxy}"/>
+                        </controls:GroupBox.Header>
+                        <StackPanel Orientation="Horizontal" Height="32" IsEnabled="{Binding ElementName=cbProxy, Path=IsChecked}">
+                            <TextBlock Text="Proxy" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                            <TextBox x:Name="tbProxyServer" Margin="4" Width="192" Text="{Binding ProxyAddress}">
+                                <controls:WatermarkService.Watermark>
+                                    <TextBlock>Type your proxy address</TextBlock>
+                                </controls:WatermarkService.Watermark>
+                            </TextBox>
+                            <TextBlock Text="Port"  VerticalAlignment="Center"/>
+                            <TextBox x:Name="tbProxyPort" Margin="4" Width="62" Text="{Binding ProxyPort}">
+                                <controls:WatermarkService.Watermark>
+                                    <TextBlock>e.g.: 8080</TextBlock>
+                                </controls:WatermarkService.Watermark>
+                            </TextBox>
+                        </StackPanel>
+                    </controls:GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Misc">
                 <Grid>
+                    <Grid.Resources>
+                        <ObjectDataProvider x:Key="EnumCurrency" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                            <ObjectDataProvider.MethodParameters>
+                                <x:Type TypeName="Model:Currency" />
+                            </ObjectDataProvider.MethodParameters>
+                        </ObjectDataProvider>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="32" />
-                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock 
-                        Text="{x:Static Properties:Resources.Opt_Username}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="4 0 0 0"/>
-                    <TextBlock 
-                        Text="{x:Static Properties:Resources.Opt_Password}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="4 0 0 0"/>
-                        <TextBox x:Name="tUsername" Grid.Row="0" Grid.Column="1" Margin="4"/>
-                        <PasswordBox x:Name="tPassword" Grid.Row="1" Grid.Column="1" Margin="4"/>
+                        <TextBlock Text="Currency" Grid.Row="0" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                    <ComboBox x:Name="cbCurrency"
+                        Grid.Row="0" Grid.Column="1" Margin="4" ItemsSource="{Binding Source={StaticResource EnumCurrency}}"
+                              SelectedItem="{Binding Currency}"/>
+
                 </Grid>
-            </GroupBox>
-        </TabItem>
-    </TabControl>
-        
+                
+            </TabItem>
+        </TabControl>
+
     </DockPanel>
 </Window>

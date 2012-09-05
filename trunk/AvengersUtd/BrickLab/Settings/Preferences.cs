@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
+using AvengersUtd.BrickLab.Data;
 using AvengersUtd.BrickLab.Model;
 
 namespace AvengersUtd.BrickLab.Settings
@@ -21,6 +23,17 @@ namespace AvengersUtd.BrickLab.Settings
         public string Password { get; set; }
 
         [XmlElement]
+        public string ProxyAddress { get; set; }
+
+        [XmlElement]
+        public int ProxyPort { get; set; }
+
+        [XmlElement]
         public Currency Currency { get; set; }
+
+        public bool HasProxy
+        {
+            get { return !string.IsNullOrEmpty(ProxyAddress) && ProxyPort != 0; }
+        }
     }
 }

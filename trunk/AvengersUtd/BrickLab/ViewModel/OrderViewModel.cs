@@ -255,6 +255,8 @@ namespace AvengersUtd.BrickLab.ViewModel
             string queryString = CreateUpdateString(this, backupCopy);
             byte[] data = Encoding.UTF8.GetBytes(queryString);
             HttpWebResponse response = BrickClient.PerformRequest(BrickClient.Page.OrdersReceived, "?a=a&pg=1&orderFiled=N&srtAsc=DESC", data);
+            if (response.StatusCode != HttpStatusCode.OK)
+                return;
             DebugWindow dWindow = new DebugWindow();
             StreamReader reader = new StreamReader(response.GetResponseStream());
             dWindow.HtmlSource = reader.ReadToEnd();

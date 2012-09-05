@@ -47,7 +47,16 @@ namespace AvengersUtd.BrickLab.View
 
         public void SwitchTo(UserControl control)
         {
-            Container.Content = control;
+            //UserControl prevControl = (UserControl) Container.Content;
+            if (Container.Children.Contains(control))
+                control.Visibility = Visibility.Visible;
+            else
+                Container.Children.Add(control);
+
+            foreach (UIElement ctl in Container.Children)
+                if (ctl != control)
+                    ctl.Visibility = Visibility.Collapsed;
+
             foreach (ImageButton imgButton in SidePanel.Children)
                 if (imgButton.CommandParameter != control)
                     imgButton.IsChecked = false;

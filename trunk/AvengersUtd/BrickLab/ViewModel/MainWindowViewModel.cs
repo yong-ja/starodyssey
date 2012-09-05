@@ -80,7 +80,7 @@ namespace AvengersUtd.BrickLab.ViewModel
                     {
                         Window dialog = ((Window) Activator.CreateInstance(param));
                         dialog.DataContext = this;
-                        dialog.Show();
+                        dialog.ShowDialog();
                     }, null);
             }
         }
@@ -97,7 +97,7 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public DelegateCommand<UserControl> ShowUserControlCommand
         {
-            get { return new DelegateCommand<UserControl>(window.SwitchTo, null); }
+            get { return new DelegateCommand<UserControl>(window.SwitchTo, (ctl)=> !BrickClient.IsBusy); }
         }
 
         public ICommand ShowInventoryView

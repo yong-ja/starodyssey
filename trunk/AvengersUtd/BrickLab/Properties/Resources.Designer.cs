@@ -133,6 +133,15 @@ namespace AvengersUtd.BrickLab.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use a proxy for Internet connections.
+        /// </summary>
+        public static string Opt_Proxy {
+            get {
+                return ResourceManager.GetString("Opt_Proxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Opt_Username {
