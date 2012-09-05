@@ -20,7 +20,7 @@ namespace AvengersUtd.BrickLab.Controls
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.PreviewMouseLeftButtonDown += DataGridCellPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseLeftButtonDown -= DataGridCellPreviewMouseLeftButtonDown;
         }
 
         void DataGridCellPreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

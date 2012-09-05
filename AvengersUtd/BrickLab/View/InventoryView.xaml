@@ -17,14 +17,14 @@
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding ImageUri}" Height="32"/>
+                        <Image Source="{Binding ImageUri}" MaxHeight="32"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
                 
             </DataGridTemplateColumn>
             <DataGridTextColumn Header="Item #" Width="64" IsReadOnly="True" Binding="{Binding ItemNr}"/>
-            <DataGridTextColumn Header="Description" Width="256" IsReadOnly="True" Binding="{Binding Description}"/>
-            <!--<DataGridTextColumn Header="Color" Width="64" IsReadOnly="True" Binding="{Binding Color}"/>-->
+            <DataGridTextColumn Header="Description" Width="320" IsReadOnly="True" Binding="{Binding Description}"/>
+            <DataGridTextColumn Header="Color" Width="64" IsReadOnly="True" Binding="{Binding ColorId}"/>
             <DataGridTemplateColumn Header="Quantity">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>

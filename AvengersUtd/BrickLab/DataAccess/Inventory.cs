@@ -33,6 +33,9 @@ namespace AvengersUtd.BrickLab.DataAccess
             string queryString = string.Format("itemType=S&viewType=4&itemTypeInv=S&itemNo={0}&downloadType=T", setNumber);
             byte[] data = Encoding.UTF8.GetBytes(queryString);
             HttpWebResponse responseHtml = BrickClient.PerformRequest(BrickClient.Page.InventoryDownload, "?a=a", data);
+            if (responseHtml == null || responseHtml.StatusCode != HttpStatusCode.OK)
+                return;
+
             partList.AddRange(ParseTabInventory(responseHtml.GetResponseStream()));
 
             Dictionary<string, Uri> imageList = DownloadImageList(setNumber);
@@ -119,6 +122,8 @@ namespace AvengersUtd.BrickLab.DataAccess
                 string imageUrl = cellArray[indexImage].Descendants("img").First().Attributes["src"].Value;
                 //int quantity = Int32.Parse(HtmlEntity.DeEntitize(cellArray[indexQty].FirstChild.InnerText).Trim());
                 string itemNr = HtmlEntity.DeEntitize(cellArray[indexItemNr].InnerText).Trim();
+                if (itemNr.Contains("Inv"))
+                    itemNr = itemNr.Split(' ')[0];
                 //string description = HtmlEntity.DeEntitize(cellArray[indexDescription].InnerText);
                 //Item item = new Item
                 //            {

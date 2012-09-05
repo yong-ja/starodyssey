@@ -52,9 +52,9 @@
         </TabControl>-->
 
         <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
-            <ContentControl x:Name="Container">
+            <Grid x:Name="Container">
                 <Controls:About/>
-            </ContentControl>
+            </Grid>
         </Border>
 
     </DockPanel>

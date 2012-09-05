@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Windows;
 using AvengersUtd.BrickLab;
 using AvengersUtd.BrickLab.Data;
 using AvengersUtd.BrickLab.Logging;
@@ -28,6 +29,8 @@ namespace AvengersUtd
         private static readonly string UserAgent = "BrickLab" + Global.Version;
         private static BackgroundWorker worker;
 
+        public static bool IsBusy { get; private set; }
+
         static BrickClient()
         {
             cookies = new CookieContainer();
@@ -48,15 +51,35 @@ namespace AvengersUtd
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.UserAgent = UserAgent;
+            request.Timeout = 5000;
+            if (Global.CurrentPreferences.HasProxy)
+                request.Proxy = new WebProxy(Global.CurrentPreferences.ProxyAddress, Global.CurrentPreferences.ProxyPort);
             request.CookieContainer = cookies;
 
             request.ContentLength = data.Length;
-            Stream newStream = request.GetRequestStream();
-            // Send the data.
-            newStream.Write(data, 0, data.Length);
-            newStream.Close();
+            try
+            {
+                IsBusy = true;
+                Stream newStream = request.GetRequestStream();
+                // Send the data.
+                newStream.Write(data, 0, data.Length);
+                newStream.Close();
+                response = (HttpWebResponse) request.GetResponse();
+            }
+            catch (WebException ex)
+            {
+                response = (HttpWebResponse)ex.Response;
+                MessageBox.Show(Application.Current.MainWindow,
+                    "Could not reach host. Check your internet connection. Exception message:\n\n" +
+                                ex.Message,
+                                "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            IsBusy = false;
 
-            return (HttpWebResponse) request.GetResponse();
+
+            return response;
+            
         }
 
 
@@ -67,26 +90,23 @@ namespace AvengersUtd
             postData += ("&frmPassword=" + DataProtector.DecryptData(prefs.Password));
             byte[] data = Encoding.UTF8.GetBytes(postData);
 
-            HttpWebResponse response;
+            HttpWebResponse response = PerformRequest(Page.MyBricklink, string.Empty, data);
 
-            try
-            {
-                response = PerformRequest(Page.MyBricklink, string.Empty, data);
+            if (response.StatusCode != HttpStatusCode.OK)
+                return false;
+
                 if (response.ResponseUri.LocalPath.Contains("oops"))
                 {
                     LogEvent.Network.Log("Login failed");
                     return false;
                 }
                 cookies.Add(response.Cookies);
-            }
-            catch (WebException ex)
-            {
-                response = (HttpWebResponse)ex.Response;
-            }
+
             
             StreamReader reader = new StreamReader(response.GetResponseStream());
             Global.LastLogin = DateTime.Now;
             LogEvent.Network.Log("Login successful");
+            response.Close();
             //DebugWindow dWindow = new DebugWindow {HtmlSource = reader.ReadToEnd()};
             //dWindow.Show();
 
@@ -107,8 +127,11 @@ namespace AvengersUtd
             request.Method = "Get";
             request.CookieContainer = cookies;
             request.UserAgent = UserAgent;
+            if (Global.CurrentPreferences.HasProxy)
+                request.Proxy = new WebProxy(Global.CurrentPreferences.ProxyAddress, Global.CurrentPreferences.ProxyPort);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             StreamReader sr = new StreamReader(response.GetResponseStream());
+            response.Close();
             return sr.ReadToEnd();
         }
 
@@ -132,6 +155,7 @@ namespace AvengersUtd
                     LogEvent.Network.Log(String.Format("The remote server has thrown an internal error. Url is not valid: {0}", uri.AbsolutePath));
                     return false;
                 }
+                response.Close();
             }
             catch (WebException ex)
             {

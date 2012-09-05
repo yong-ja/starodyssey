@@ -47,6 +47,7 @@ namespace AvengersUtd.BrickLab.Controls
             Dispatcher.ShutdownStarted += (s, args) => vm.Dispose();
         }
 
+
         private void OrdersGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
             LogEvent.Network.Write("!");

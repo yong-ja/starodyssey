@@ -141,6 +141,9 @@
   <data name="Opt_Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Opt_Proxy" xml:space="preserve">
+    <value>Use a proxy for Internet connections</value>
+  </data>
   <data name="Opt_Username" xml:space="preserve">
     <value>Username</value>
   </data>

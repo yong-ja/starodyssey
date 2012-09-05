@@ -112,6 +112,7 @@
     <Compile Include="Controls\DataGridCellAttachedProperties.cs" />
     <Compile Include="Controls\DelegateCommand.cs" />
     <Compile Include="Controls\EditableAmountConverter.cs" />
+    <Compile Include="Controls\GroupBox.cs" />
     <Compile Include="Controls\ImageButton.cs" />
     <Compile Include="Controls\LogicalTreeWalker.cs" />
     <Compile Include="Controls\MenuItem.cs" />
@@ -119,6 +120,8 @@
     <Compile Include="Controls\SingleClickEditDataGridCellBehavior.cs" />
     <Compile Include="Controls\TextBoxTemplateColumn.cs" />
     <Compile Include="Controls\VisualTreeWalker.cs" />
+    <Compile Include="Controls\WatermarkAdorner.cs" />
+    <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="DataAccess\Cache.cs" />
     <Compile Include="DataAccess\Csv\CachedCsvReader.cs" />
     <Compile Include="DataAccess\Csv\CachedCsvReader.CsvBindingList.cs" />

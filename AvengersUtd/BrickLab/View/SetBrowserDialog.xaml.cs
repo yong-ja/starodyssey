@@ -16,5 +16,10 @@ namespace AvengersUtd.BrickLab.View
         {
             this.Close();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            tSet.Focus();
+        }
     }
 }
