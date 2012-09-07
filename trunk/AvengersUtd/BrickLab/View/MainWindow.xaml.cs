@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using AvengersUtd.BrickLab.Controls;
@@ -13,7 +14,6 @@ namespace AvengersUtd.BrickLab.View
     public partial class MainWindow : Window
     {
         
-
         private readonly ObservableCollection<MenuItem> applicationMenu;
 
 
@@ -26,8 +26,6 @@ namespace AvengersUtd.BrickLab.View
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
 
         }
-
-        
 
         public ObservableCollection<MenuItem> MenuItems
         {

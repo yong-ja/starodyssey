@@ -28,7 +28,7 @@
             <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
                                 Image="{StaticResource ImgSetInventory}" 
                                 Content="{x:Static Properties:Resources.Main_SetInv}" 
-                                Command="{Binding ShowDialogCommand}" CommandParameter="{Binding SetBrowser}"/>
+                                Command="{Binding ShowInputDialogCommand}" CommandParameter="{Binding ChooseSetVM}"/>
             <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
                                 Image="{StaticResource ImgAbout}" 
                                 Content="{x:Static Properties:Resources.Main_About}" 

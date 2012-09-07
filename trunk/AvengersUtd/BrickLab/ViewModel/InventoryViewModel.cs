@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Input;
 using AvengersUtd.BrickLab.Controls;
 using AvengersUtd.BrickLab.DataAccess;
+using AvengersUtd.BrickLab.Model.XmlWrappers;
+using AvengersUtd.BrickLab.Settings;
 
 namespace AvengersUtd.BrickLab.ViewModel
 {
@@ -16,6 +18,11 @@ namespace AvengersUtd.BrickLab.ViewModel
         private readonly Inventory inventory;
         private ObservableCollection<ItemViewModel> partList;
         public ICommand DownloadSetCommand { get { return new DelegateCommand<string>(DownloadSet, null); } }
+        public ICommand ExportInventoryToWantedListCommand { get
+        {
+            return new DelegateCommand<string>(ExportToWantedList, null);
+        } }
+        //public ICommand ExportToWantedList { get { return }}
 
         public InventoryViewModel()
         {
@@ -48,6 +55,12 @@ namespace AvengersUtd.BrickLab.ViewModel
             Mouse.OverrideCursor = Cursors.Wait;
             worker.RunWorkerCompleted += (sender, e) => Mouse.OverrideCursor = Cursors.Arrow;
             worker.RunWorkerAsync();
+        }
+
+        public void ExportToWantedList(string wantedListId)
+        {
+            XmlWantedListInventory xmlInventory = new XmlWantedListInventory(inventory, wantedListId);
+            XmlManager.Serialize(xmlInventory, "wantedList.xml");
         }
     }
 }

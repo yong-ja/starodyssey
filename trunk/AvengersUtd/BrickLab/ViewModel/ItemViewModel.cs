@@ -80,16 +80,6 @@ namespace AvengersUtd.BrickLab.ViewModel
             }
         }
 
-        
-        //public Color Color
-        //{
-        //    get { return Item.Color; }
-        //    set { if (Item.Color == value)
-        //        return;
-        //        Item.Color = value;
-        //        RaisePropertyChanged("Color");
-        //    }
-        //}
 
 
         public string Description
@@ -102,6 +92,39 @@ namespace AvengersUtd.BrickLab.ViewModel
                 item.Description = value;
                 RaisePropertyChanged("Description");
             }
+        }
+
+        public int ColorId
+        {
+            get { return item.ColorId; }
+            set
+            {
+                if (item.ColorId == value)
+                    return;
+                item.ColorId = value;
+                RaisePropertyChanged("ColorId");
+            }
+        }
+
+        public static Color ColorFromCode(int code)
+        {
+            string hexCode = "#00000000";
+            switch (code)
+            {
+
+                case 11: // Black
+                    hexCode = "#FF212121";
+                    break;
+
+                case 85: // DBG
+                    hexCode = "#FF595D60";
+                    break;
+                case 86: // LBG
+                    hexCode = "#FFAFB5C7";
+                    break;
+            }
+
+            return (Color)ColorConverter.ConvertFromString(hexCode);
         }
     }
 }
