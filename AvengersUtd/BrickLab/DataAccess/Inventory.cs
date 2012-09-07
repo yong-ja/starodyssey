@@ -77,7 +77,8 @@ namespace AvengersUtd.BrickLab.DataAccess
                         Description = itemDesc,
                         Quantity = Int32.Parse(itemQty),
                         ColorId = Int32.Parse(colorId),
-                        ImageUri = imageUri
+                        ImageUri = imageUri,
+                        Condition = Condition.New
                     });
                 }
             }
@@ -140,39 +141,7 @@ namespace AvengersUtd.BrickLab.DataAccess
             //return parts.ToArray();
         }
 
-        static Color ColorFromDescription(string desc)
-        {
-            string[] descArray = desc.Split(' ');
-            string colorText = descArray[0];
-
-
-            switch (colorText)
-            {
-                default:
-                case "Black":
-                    return Colors.Black;
-
-                case "White":
-                    return Colors.White;
-
-                case "Yellow":
-                    return Colors.Yellow;
-
-                case "Red":
-                    return Colors.Red;
-
-                case "Blue":
-                    return Colors.Blue;
-
-                case "Green":
-                    return Colors.Green;
-
-                case "LBG":
-                    return Colors.LightGray;
-
-                case "DBG":
-                    return Colors.DarkGray;
-            }
-        }
+        
+        
     }
 }

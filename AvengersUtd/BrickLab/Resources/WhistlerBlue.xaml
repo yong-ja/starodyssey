@@ -156,7 +156,7 @@
         <Setter Property="Foreground" Value="{StaticResource ThemeForegroundBrush}" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="IBeam" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Behaviors:DataGridCellAttachedProperties.IsSingleClickEditMode" Value="True"/>
@@ -201,7 +201,7 @@
         <Setter Property="Foreground" Value="{StaticResource ThemeForegroundBrush}" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Arrow" />
         <Setter Property="BorderThickness" Value="1" />
         <!--Padding hack-->

@@ -42,7 +42,7 @@ namespace AvengersUtd.BrickLab.Settings
 
         public static void Serialize<T>(T obj, string filename)
         {
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings {Indent = true};
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings {Indent = true, OmitXmlDeclaration= true};
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof (T));
             using (XmlWriter xmlWriter = XmlWriter.Create(filename, xmlWriterSettings))
@@ -55,7 +55,7 @@ namespace AvengersUtd.BrickLab.Settings
                     string.Format(
                         "This file stores the settings for BrickLab.\n" +
                         "Please do not modify it if you do not know what you are doing. " +
-                        "Visit the BrickLab website at http://www.avengersutd.com/wiki/ for more information.\n"));
+                        "Visit the BrickLab website at http://www.avengersutd.com/blog/ for more information.\n"));
                 xmlSerializer.Serialize(xmlWriter, obj, ns);
                 xmlWriter.WriteEndDocument();
                 xmlWriter.Flush();

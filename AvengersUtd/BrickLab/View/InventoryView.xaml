@@ -4,31 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:AvengersUtd.BrickLab.ViewModel"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Controls="clr-namespace:AvengersUtd.BrickLab.Controls" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800"
              Background="{StaticResource DefaultBackground}" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <vm:InventoryViewModel x:Key="InventoryViewModel"/>
+        <Controls:ColorIdConverter x:Key="ColorIdConverter"/>
+        <Controls:ColorIdNameConverter x:Key="ColorIdNameConverter"/>
     </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:InventoryViewModel/>
+    </UserControl.DataContext>
     <DataGrid Name="InventoryGrid" 
-              DataContext="{Binding Source={StaticResource InventoryViewModel}}"
               AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding PartList}">
         <DataGrid.Columns>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding ImageUri}" MaxHeight="32"/>
+                        <Image Source="{Binding ImageUri}" Height="24" Margin="-2"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
                 
             </DataGridTemplateColumn>
-            <DataGridTextColumn Header="Item #" Width="64" IsReadOnly="True" Binding="{Binding ItemNr}"/>
+            <DataGridTextColumn Header="Item #" Width="64" IsReadOnly="True" Binding="{Binding ItemNr}" />
             <DataGridTextColumn Header="Description" Width="320" IsReadOnly="True" Binding="{Binding Description}"/>
-            <DataGridTextColumn Header="Color" Width="64" IsReadOnly="True" Binding="{Binding ColorId}"/>
+            <DataGridTemplateColumn Header="Color" Width="128">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="32" Fill="{Binding ColorId, Converter={StaticResource ColorIdConverter}}"/>
+                            <TextBlock Margin="4 0 0 0" Text="{Binding ColorId, Converter={StaticResource ColorIdNameConverter}}"
+                                       Width="88" TextTrimming="WordEllipsis" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTemplateColumn Header="Quantity">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Quantity}"/>
+                        <TextBlock Text="{Binding Quantity}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
                 <DataGridTemplateColumn.CellEditingTemplate>

@@ -18,5 +18,6 @@ namespace AvengersUtd
         public int ColorId { get; set; }
         public string Description { get;  set; }
         public ItemType ItemType { get; set; }
+        public int WantedListId { get; set; }
     }
 }

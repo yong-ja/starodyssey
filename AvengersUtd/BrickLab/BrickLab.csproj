@@ -107,6 +107,8 @@
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AccountingCell.cs" />
+    <Compile Include="Controls\ColorIdConverter.cs" />
+    <Compile Include="Controls\ColorIdNameConverter.cs" />
     <Compile Include="Controls\CurrencyConverter.cs" />
     <Compile Include="Controls\DataGridAccountingColumn.cs" />
     <Compile Include="Controls\DataGridCellAttachedProperties.cs" />
@@ -147,9 +149,15 @@
     <Compile Include="DataAccess\OrderAddedEventArgs.cs" />
     <Compile Include="Logging\WarningEvent.cs" />
     <Compile Include="Logging\WpfTextTraceListener.cs" />
+    <Compile Include="Model\XmlWrappers\XmlWantedListInventory.cs" />
+    <Compile Include="Model\XmlWrappers\XmlWantedListItem.cs" />
+    <Compile Include="ViewModel\InputDialogViewModel.cs" />
     <Compile Include="ViewModel\InventoryViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel.cs" />
+    <Compile Include="View\InputDialogView.xaml.cs">
+      <DependentUpon>InputDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\InventoryView.xaml.cs">
       <DependentUpon>InventoryView.xaml</DependentUpon>
     </Compile>
@@ -177,6 +185,10 @@
     <Compile Include="ViewModel\OrderViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="Controls\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InputDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
