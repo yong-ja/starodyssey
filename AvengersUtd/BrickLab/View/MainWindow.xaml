@@ -5,7 +5,9 @@
         xmlns:Controls="clr-namespace:AvengersUtd.BrickLab.Controls"
         xmlns:ViewModel="clr-namespace:AvengersUtd.BrickLab.ViewModel"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="BrickLab v" Height="600" Width="1024" WindowState="Normal">
+        Icon="{StaticResource AppIcon}"
+        Title="BrickLab v" Height="600" Width="1024" WindowState="Normal"
+        >
     <Window.Resources>
         <ViewModel:MainWindowViewModel x:Key="mwVM"/>
         <Style TargetType="{x:Type MenuItem}">
@@ -31,8 +33,8 @@
                                 Command="{Binding ShowInputDialogCommand}" CommandParameter="{Binding ChooseSetVM}"/>
             <Controls:ImageButton Margin="4 4 0 0" Width="64" Height="96"
                                 Image="{StaticResource ImgAbout}" 
-                                Content="{x:Static Properties:Resources.Main_About}" 
-                                Command="{Binding ShowUserControlCommand}" />
+                                Content="{x:Static Properties:Resources.Main_About}"
+                                Command="{Binding ShowUserControlCommand}" CommandParameter="{Binding AboutView}"/>
         </StackPanel>
 
         <!--<StackPanel Orientation="Vertical" Background="DarkGray">

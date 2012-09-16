@@ -4,8 +4,7 @@
         xmlns:Properties="clr-namespace:AvengersUtd.BrickLab.Properties"
         xmlns:controls="clr-namespace:AvengersUtd.BrickLab.Controls"
         xmlns:Model="clr-namespace:AvengersUtd.BrickLab.Model" xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:BrickLab="clr-namespace:AvengersUtd.BrickLab"
-        xmlns:Settings="clr-namespace:AvengersUtd.BrickLab.Settings" Title="Options" Height="300" Width="384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" WindowStyle="SingleBorderWindow" ShowInTaskbar="True" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
+        Title="Options" Height="300" Width="384" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" WindowStyle="SingleBorderWindow" ShowInTaskbar="False" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" Topmost="False">
     <DockPanel LastChildFill="True" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <StackPanel Height="32" DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Margin="170 0 0 0" Content="{x:Static Properties:Resources.Std_Ok}" IsDefault="True" Width="90" Click="Ok_Click" />
@@ -74,7 +73,7 @@
                         <TextBlock Text="Currency" Grid.Row="0" VerticalAlignment="Center" Margin="4 0 0 0"/>
                     <ComboBox x:Name="cbCurrency"
                         Grid.Row="0" Grid.Column="1" Margin="4" ItemsSource="{Binding Source={StaticResource EnumCurrency}}"
-                              SelectedItem="{Binding Currency}"/>
+                              SelectedIndex="0" SelectedItem="{Binding Currency}" />
 
                 </Grid>
                 

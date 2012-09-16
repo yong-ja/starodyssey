@@ -7,7 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AvengersUtd.BrickLab.Controls;
+using AvengersUtd.BrickLab.Model;
 using AvengersUtd.BrickLab.View;
+using Condition = AvengersUtd.BrickLab.Model.Condition;
 using MenuItem = AvengersUtd.BrickLab.Controls.MenuItem;
 
 namespace AvengersUtd.BrickLab.ViewModel
@@ -15,13 +17,12 @@ namespace AvengersUtd.BrickLab.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly MainWindow window;
-        private Type currentView;
         private OrdersReceivedView ordersReceivedView;
         private InventoryView inventoryView;
+        private AboutView aboutView;
 
         public Type Options { get { return typeof(OptionsView); } }
-        public Type SetBrowser { get { return typeof (SetBrowserDialog); } }
-
+       
         public MainWindowViewModel()
         {
             window = (MainWindow)Application.Current.MainWindow;
@@ -43,7 +44,7 @@ namespace AvengersUtd.BrickLab.ViewModel
             }
         }
 
-
+        public string Version { get { return Global.Version; } }
 
         public OrdersReceivedView OrdersReceivedView
         {
@@ -53,6 +54,11 @@ namespace AvengersUtd.BrickLab.ViewModel
         public InventoryView InventoryView
         {
             get { return inventoryView ?? (inventoryView = new InventoryView()); }
+        }
+
+        public AboutView AboutView
+        {
+            get { return aboutView ?? (aboutView = new AboutView()); }
         }
 
         private void CreateMenuItems()
@@ -72,16 +78,44 @@ namespace AvengersUtd.BrickLab.ViewModel
                 CommandParameter = Options
             };
 
-            file.Children.Add(exportToWantedList);
+            var orVm = ((OrdersReceivedViewModel) OrdersReceivedView.ViewModel);
+            MenuItem actions = new MenuItem("Actions");
+            MenuItem synchOrders = new MenuItem("Synchronize orders")
+            {
+                Command = orVm.SynchOrders,
+                CommandParameter = orVm
+            };
 
+            var iVm = ((InventoryViewModel) InventoryView.ViewModel);
+            MenuItem edit = new MenuItem("Edit");
+            MenuItem setPrice = new MenuItem("Set price to...");
+            MenuItem last6Min = new MenuItem("Last 6 months minimum price")
+                                {
+                                    Command = iVm.SetPriceCommand,
+                                    CommandParameter = new PriceInfo(Condition.New, PriceInfoType.Min)
+                                };
+            MenuItem last6Avg= new MenuItem("Last 6 months average price")
+            {
+                Command = iVm.SetPriceCommand,
+                CommandParameter = new PriceInfo(Condition.New, PriceInfoType.Average)
+            };
+            
+
+            file.Children.Add(exportToWantedList);
+            actions.Children.Add(synchOrders);
             options.Children.Add(preferences);
+            edit.Children.Add(setPrice);
+            setPrice.Children.Add(last6Min);
+            setPrice.Children.Add(last6Avg);
             applicationMenu.Add(file);
+            applicationMenu.Add(edit);
+            applicationMenu.Add(actions);
             applicationMenu.Add(options);
         }
 
         void RequestSwitch(UserControl control)
         {
-            currentView = control.GetType();
+            Global.CurrentView = ((IView) control).ViewType;
             window.SwitchTo(control);
         }
 
@@ -158,8 +192,8 @@ namespace AvengersUtd.BrickLab.ViewModel
                        {
                            Label = "Wanted List Id",
                            Description = "Please Enter a Wanted List Id",
-                           CanExecuteMethod = () => currentView == typeof (InventoryView),
-                           DefaultCommand = ((InventoryViewModel)InventoryView.DataContext).ExportInventoryToWantedListCommand
+                           CanExecuteMethod = () => Global.CurrentView == ViewType.InventoryView,
+                           DefaultCommand = ((InventoryViewModel)InventoryView.ViewModel).ExportInventoryToWantedListCommand
                        };
             }
         }

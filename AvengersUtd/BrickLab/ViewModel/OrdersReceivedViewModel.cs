@@ -8,6 +8,7 @@ using AvengersUtd.BrickLab.Controls;
 using AvengersUtd.BrickLab.DataAccess;
 using AvengersUtd.BrickLab.Logging;
 using AvengersUtd.BrickLab.Settings;
+using AvengersUtd.BrickLab.View;
 
 namespace AvengersUtd.BrickLab.ViewModel
 {
@@ -17,18 +18,16 @@ namespace AvengersUtd.BrickLab.ViewModel
         private readonly OrderRepository orderRepository;
         private ObservableCollection<OrderViewModel> orders;
         private OrderViewModel selectedOrder;
-        private readonly Dispatcher dispatcher;
 
         public OrdersReceivedViewModel()
         {
             orderRepository = new OrderRepository();
             orders = new ObservableCollection<OrderViewModel>();
-            dispatcher = Dispatcher.CurrentDispatcher;
 
             orderRepository.OrderAdded +=
-                (sender, e) => dispatcher.BeginInvoke(new Action(() => OnOrderAddedToRepository(sender, e)));
+                (sender, e) => Dispatcher.BeginInvoke(new Action(() => OnOrderAddedToRepository(sender, e)));
             orderRepository.OrderChanged += (sender, e) =>
-                                            dispatcher.BeginInvoke(new Action(() => OnOrderChangedInRepository(sender, e)),
+                                            Dispatcher.BeginInvoke(new Action(() => OnOrderChangedInRepository(sender, e)),
                                                                    DispatcherPriority.Normal);
         }
 
@@ -45,8 +44,6 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         }
 
-
-
         private void OnOrderAddedToRepository(object sender, OrderAddedEventArgs e)
         {
             OrderViewModel viewModel = new OrderViewModel(e.NewOrder);
@@ -56,7 +53,7 @@ namespace AvengersUtd.BrickLab.ViewModel
                 if (!ovm.OrderModelObject.Equals(viewModel.OrderModelObject))
                 {
                     orders.Remove(ovm);
-                    orders.Add(viewModel);
+                    orders.Insert(0, viewModel);
                 }
             }
             else
@@ -106,16 +103,22 @@ namespace AvengersUtd.BrickLab.ViewModel
 
         public ICommand SynchOrders
         {
-            get { return new DelegateCommand<OrdersReceivedViewModel>(param => param.DownloadOrders(), null); }
+            get
+            {
+                return new DelegateCommand<OrdersReceivedViewModel>(
+                    param => param.DownloadOrders(), delegate
+                                                     {
+                                                         return Global.CurrentView == ViewType.OrdersReceived &&
+                                                             Global.CurrentPreferences.HasAccountInfo;
+                                                     });
+            }
         }
+
 
         public void DownloadOrders()
         {
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += (sender, e) =>
-                             {
-                                 orderRepository.DownloadOrders();
-                             };
+            worker.DoWork += (sender, e) => orderRepository.DownloadOrders();
             Mouse.OverrideCursor = Cursors.Wait;
             worker.RunWorkerCompleted += (sender, e) => Mouse.OverrideCursor = Cursors.Arrow;
             worker.RunWorkerAsync();

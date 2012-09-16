@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using AvengersUtd.BrickLab.Controls;
@@ -19,12 +20,29 @@ namespace AvengersUtd.BrickLab.View
 
         public MainWindow()
         {
+            BrickClient.Dispatcher = Dispatcher;
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             InitializeComponent();
-            //applicationMenu = new ObservableCollection<MenuItem>();
-            //applicationMenu.CollectionChanged += (sender, e) => OnPropertyChanged(new DependencyPropertyChangedEventArgs("MenuItems"));
-            //CreateMenuItems();
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            //Dispatcher.ShutdownStarted += (s, args) => FlushLog();
 
+        }
+
+        private void FlushLog()
+        {
+            foreach (TraceListener tl in Trace.Listeners)
+            {
+                tl.Flush();
+                tl.Close();
+            }
+        }
+
+        void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.InnerException + "\n\n"+
+                e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            LogEvent.System.Log(string.Format("{0}\n{1}\nStackTrace:\n{2}", e.Exception.GetType(),
+                e.Exception.Message, e.Exception.StackTrace));
         }
 
         public ObservableCollection<MenuItem> MenuItems
@@ -60,6 +78,8 @@ namespace AvengersUtd.BrickLab.View
                     imgButton.IsChecked = false;
 
         }
+
+
 
     }
 }

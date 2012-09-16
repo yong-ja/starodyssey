@@ -11,7 +11,8 @@
     <RootNamespace>AvengersUtd.BrickLab</RootNamespace>
     <AssemblyName>BrickLab</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -80,17 +81,15 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -147,14 +146,20 @@
     <Compile Include="DataAccess\Inventory.cs" />
     <Compile Include="DataAccess\OrderChangedEventArgs.cs" />
     <Compile Include="DataAccess\OrderAddedEventArgs.cs" />
+    <Compile Include="Logging\FileTracerListener.cs" />
     <Compile Include="Logging\WarningEvent.cs" />
     <Compile Include="Logging\WpfTextTraceListener.cs" />
+    <Compile Include="Model\Structs.cs" />
     <Compile Include="Model\XmlWrappers\XmlWantedListInventory.cs" />
     <Compile Include="Model\XmlWrappers\XmlWantedListItem.cs" />
+    <Compile Include="View\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\InputDialogViewModel.cs" />
     <Compile Include="ViewModel\InventoryViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ItemViewModel.cs" />
+    <Compile Include="View\Interfaces.cs" />
     <Compile Include="View\InputDialogView.xaml.cs">
       <DependentUpon>InputDialogView.xaml</DependentUpon>
     </Compile>
@@ -177,14 +182,15 @@
     </Compile>
     <Compile Include="Settings\XmlManager.cs" />
     <Compile Include="Settings\Preferences.cs" />
-    <Compile Include="View\SetBrowserDialog.xaml.cs">
-      <DependentUpon>SetBrowserDialog.xaml</DependentUpon>
-    </Compile>
     <None Include="ViewModel\ObservableCollection.cs" />
     <Compile Include="ViewModel\OrdersReceivedViewModel.cs" />
     <Compile Include="ViewModel\OrderViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="Controls\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,10 +258,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SetBrowserDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="View\OptionsView.xaml.cs">
@@ -296,12 +298,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libraries\HtmlAgilityPack.dll" />
-    <Content Include="Libraries\HtmlAgilityPack.pdb" />
+    <None Include="Libraries\HtmlAgilityPack.dll" />
+    <None Include="Libraries\HtmlAgilityPack.pdb" />
     <Resource Include="Resources\setInventory.png" />
     <Resource Include="Resources\about.png" />
     <Resource Include="Resources\ordersReceived.png" />
     <Resource Include="Libraries\HtmlAgilityPack.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
