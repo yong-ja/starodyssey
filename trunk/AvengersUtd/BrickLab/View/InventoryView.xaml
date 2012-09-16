@@ -12,11 +12,15 @@
         <Controls:ColorIdConverter x:Key="ColorIdConverter"/>
         <Controls:ColorIdNameConverter x:Key="ColorIdNameConverter"/>
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <vm:InventoryViewModel/>
-    </UserControl.DataContext>
     <DataGrid Name="InventoryGrid" 
-              AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding PartList}">
+              AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding PartList}" CanUserDeleteRows="True" SelectionMode="Extended" SelectionChanged="InventoryGrid_SelectionChanged">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SelectionChanged">
+                <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                       CommandParameter="{Binding SelectedItems,
+                            ElementName=InventoryGrid}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
         <DataGrid.Columns>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
@@ -51,6 +55,19 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellEditingTemplate>
             </DataGridTemplateColumn>
+            <Controls:TextBoxTemplateColumn Header="Price" Width="64" IsReadOnly="False" CellStyle="{StaticResource EditableCellStyle}">
+                <DataGridTemplateColumn.CellTemplate >
+                    <DataTemplate>
+                        <Controls:AccountingCell Amount="{Binding Price, StringFormat=0.00;;-}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+                <Controls:TextBoxTemplateColumn.CellEditingTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Price,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=0.00;;-}" 
+                                 TextAlignment="Right" />
+                    </DataTemplate>
+                </Controls:TextBoxTemplateColumn.CellEditingTemplate>
+            </Controls:TextBoxTemplateColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

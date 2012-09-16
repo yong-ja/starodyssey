@@ -35,5 +35,10 @@ namespace AvengersUtd.BrickLab.Settings
         {
             get { return !string.IsNullOrEmpty(ProxyAddress) && ProxyPort != 0; }
         }
+
+        public bool HasAccountInfo
+        {
+            get { return !(string.IsNullOrEmpty(UserId) && string.IsNullOrEmpty(Password)); }
+        }
     }
 }

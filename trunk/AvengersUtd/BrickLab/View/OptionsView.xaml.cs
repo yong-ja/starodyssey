@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Net;
+using System.Windows;
 using AvengersUtd.BrickLab.Data;
 using AvengersUtd.BrickLab.Model;
 using AvengersUtd.BrickLab.Settings;
@@ -21,14 +23,17 @@ namespace AvengersUtd.BrickLab.View
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             //string encryptedPwd = DataProtector.EncryptData(tPassword.Password);
+            Currency currency = cbCurrency.SelectedItem == null ? Currency.Unknown : (Currency) cbCurrency.SelectedItem;
+            
             Preferences preferences = new Preferences{
                 UserId = tUsername.Text,
                 Password = string.IsNullOrEmpty(encryptedPassword) ? Global.CurrentPreferences.Password : encryptedPassword,
-                Currency = (Currency)cbCurrency.SelectedItem,
+                Currency = currency,
                 ProxyAddress = tbProxyServer.Text,
                 ProxyPort = int.Parse(tbProxyPort.Text)
             };
-            XmlManager.Serialize(preferences, Global.SettingsFile );
+
+            XmlManager.Serialize(preferences, Path.Combine(Global.CurrentDir, Global.SettingsFile));
             Global.CurrentPreferences = preferences;
             Close();
         }
@@ -37,6 +42,8 @@ namespace AvengersUtd.BrickLab.View
         {
             //tUsername.Text = preferencesData.UserId;
             preferencesData = Global.CurrentPreferences;
+            if (preferencesData == null)
+                return;
             this.DataContext = preferencesData;
             tPassword.Password = string.IsNullOrEmpty(preferencesData.Password) ? string.Empty : "12345678";
             tPassword.PasswordChanged += (s, args) => encryptedPassword = DataProtector.EncryptData(tPassword.Password);

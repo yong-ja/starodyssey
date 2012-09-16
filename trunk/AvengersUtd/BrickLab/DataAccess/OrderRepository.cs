@@ -88,7 +88,7 @@ namespace AvengersUtd.BrickLab.DataAccess
 
         public void DownloadOrders()
         {
-            string responseHtml = BrickClient.NavigateTo(BrickClient.Page.OrdersReceived);
+            string responseHtml = BrickClient.NavigateTo(BrickClient.Page.OrdersReceived, true);
 
             if (String.IsNullOrEmpty(responseHtml))
                 throw new InvalidOperationException();
@@ -111,8 +111,7 @@ namespace AvengersUtd.BrickLab.DataAccess
                 // Once the first page is complete, navigate to the other ones
                 if (i > 0)
                 {
-                    responseHtml = BrickClient.NavigateTo(BrickClient.Page.OrdersReceived,
-                                                          String.Format("?pg={0}&orderFiled=N&srtAsc=DESC", i + 1));
+                    responseHtml = BrickClient.NavigateTo(BrickClient.Page.OrdersReceived, true, new[] { (i+1).ToString()});
                     document.LoadHtml(responseHtml);
                 }
 
@@ -130,7 +129,7 @@ namespace AvengersUtd.BrickLab.DataAccess
 
         public void SaveToDisk()
         {
-            XmlManager.Serialize(orders.Values.ToList(), Global.OrdersReceivedFile);
+            XmlManager.Serialize(orders.Values.ToList(), Path.Combine(Global.CurrentDir, Global.OrdersReceivedFile));
             LogEvent.System.Log("Saving order list to disk");
         }
 

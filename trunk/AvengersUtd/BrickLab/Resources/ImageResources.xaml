@@ -3,4 +3,5 @@
     <BitmapImage x:Key="ImgOrdersReceived" UriSource="ordersReceived.png" />
     <BitmapImage x:Key="ImgSetInventory" UriSource="setInventory.png" />
     <BitmapImage x:Key="ImgAbout" UriSource="about.png" />
+    <BitmapImage x:Key="AppIcon" UriSource="logo.png" />
 </ResourceDictionary>

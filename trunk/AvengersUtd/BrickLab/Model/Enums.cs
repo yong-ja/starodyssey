@@ -12,6 +12,14 @@ namespace AvengersUtd.BrickLab.Model
         New
     }
 
+    public enum PriceInfoType
+    {
+        Min,
+        Max,
+        Average,
+        QuantityAverage,
+    }
+
     public enum ItemType
     {
         Unknown,

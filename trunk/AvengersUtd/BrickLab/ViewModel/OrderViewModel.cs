@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Windows.Input;
 using AvengersUtd.BrickLab.Model;
 
 namespace AvengersUtd.BrickLab.ViewModel
@@ -249,18 +250,33 @@ namespace AvengersUtd.BrickLab.ViewModel
         {
             if (!CanUpdate())
                 return;
-            //Contract.Requires(backupCopy != null);
-            if (BrickClient.NeedsLogin())
-                BrickClient.PerformLogin();
-            string queryString = CreateUpdateString(this, backupCopy);
-            byte[] data = Encoding.UTF8.GetBytes(queryString);
-            HttpWebResponse response = BrickClient.PerformRequest(BrickClient.Page.OrdersReceived, "?a=a&pg=1&orderFiled=N&srtAsc=DESC", data);
-            if (response.StatusCode != HttpStatusCode.OK)
-                return;
-            DebugWindow dWindow = new DebugWindow();
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-            dWindow.HtmlSource = reader.ReadToEnd();
-            dWindow.Show();
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate
+                             {
+                                 //Contract.Requires(backupCopy != null);
+
+                                 bool loggedIn = BrickClient.Authenticate();
+                                 if (!loggedIn)
+                                     return;
+                                 string queryString = CreateUpdateString(this, backupCopy);
+                                 byte[] data = Encoding.UTF8.GetBytes(queryString);
+                                 HttpWebResponse response = BrickClient.PerformRequest(BrickClient.Page.UpdateOrder,
+                                                                                       new[] {"1"}, data);
+                                 if (response.StatusCode == HttpStatusCode.OK)
+                                     Logging.LogEvent.Network.Log(string.Format("Order [{0}] updated", Id));
+                                 else
+                                 {
+                                     Logging.LogEvent.Network.Log(string.Format("Failed to update Order [{0}]", Id));
+                                     return;
+                                 }
+                             };
+
+            Mouse.OverrideCursor = Cursors.Wait;
+            worker.RunWorkerCompleted += (sender, e) => Dispatcher.BeginInvoke(new Action(delegate
+                                                                                          { Mouse.OverrideCursor = Cursors.Arrow;
+                                                                                          }));
+            worker.RunWorkerAsync();
         }
 
         public bool CanUpdate()

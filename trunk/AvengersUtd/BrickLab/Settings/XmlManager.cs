@@ -1,6 +1,7 @@
 #region Using directives
 
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -48,7 +49,7 @@ namespace AvengersUtd.BrickLab.Settings
             using (XmlWriter xmlWriter = XmlWriter.Create(filename, xmlWriterSettings))
             {
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                ns.Add("Settings", "http://www.avengersutd.com");
+                ns.Add("BrickLab", "http://www.avengersutd.com");
 
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteComment(
@@ -60,6 +61,30 @@ namespace AvengersUtd.BrickLab.Settings
                 xmlWriter.WriteEndDocument();
                 xmlWriter.Flush();
             }
+        }
+
+        public static string Serialize<T>(T obj)
+        {
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings { Indent = false, OmitXmlDeclaration = true };
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            StringBuilder sb = new StringBuilder();
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb, xmlWriterSettings))
+            {
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("BrickLab", "http://www.avengersutd.com");
+
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteComment(
+                    string.Format(
+                        "This file stores the settings for BrickLab.\n" +
+                        "Please do not modify it if you do not know what you are doing. " +
+                        "Visit the BrickLab website at http://www.avengersutd.com/blog/ for more information.\n"));
+                xmlSerializer.Serialize(xmlWriter, obj, ns);
+                xmlWriter.WriteEndDocument();
+                xmlWriter.Flush();
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
