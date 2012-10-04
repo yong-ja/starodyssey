@@ -9,16 +9,8 @@ using SlimDX.Direct3D11;
 
 namespace AvengersUtd.Odyssey
 {
-    enum StereoSide
-    {
-        Left, Right
-    }
-
     public class QuaternionCam : ICamera
     {
-        private readonly EventHandlerList eventHandlerList;
-        private static readonly object EventCameraMoved;
-
         //BoundingFrustum frustum;
         Vector3 vPosition;
         Quaternion qOrientation;
@@ -29,8 +21,6 @@ namespace AvengersUtd.Odyssey
         Matrix mView;
         Matrix mProjection;
         private Matrix mOrthoProjection;
-        private Matrix mStereoLeftProjection;
-        private Matrix mStereoRightProjection;
 
         public const float DefaultSpeed = 10f;
         public const float DefaultRotationSpeed = 1f;
@@ -41,18 +31,22 @@ namespace AvengersUtd.Odyssey
         static Vector3 ZAxis = new Vector3(0f, 0f, 1f);
         
         #region Events
-        public event EventHandler CameraMoved
-        {
-            add { eventHandlerList.AddHandler(EventCameraMoved, value); }
-            remove { eventHandlerList.RemoveHandler(EventCameraMoved, value); }
-        }
+        public event EventHandler CameraMoved;
+        public event EventHandler CameraReset;
 
         protected virtual void OnCameraMoved(object sender, EventArgs e)
         {
-            EventHandler handler = (EventHandler)eventHandlerList[EventCameraMoved];
+            EventHandler handler = CameraMoved;
             if (handler != null)
                 handler(this, e);
-        } 
+        }
+
+        protected virtual void OnCameraReset(object sender, EventArgs e)
+        {
+            EventHandler handler = CameraReset;
+            if (handler != null)
+                handler(this, e);
+        }
         #endregion
 
         #region Properties
@@ -122,6 +116,7 @@ namespace AvengersUtd.Odyssey
         public Matrix Projection
         {
             get { return mProjection; }
+            protected set { mProjection = value; }
         }
 
         public Vector3 ViewVector
@@ -153,42 +148,30 @@ namespace AvengersUtd.Odyssey
 
         #endregion
 
-        static QuaternionCam()
-        {
-            EventCameraMoved  = new object();
-        }
-
         public QuaternionCam()
         {
-            eventHandlerList = new EventHandlerList();
             ZoomLevel = 0;
             nearClip = 0.1f;
             farClip = 100.0f;
             mProjection = Matrix.PerspectiveFovLH((float) Math.PI/4, Game.Context.Settings.AspectRatio, nearClip, farClip);
             
             mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
-            //mOrthoProjection = Matrix.OrthoLH(1920, 1080, nearClip, farClip);
-            //frustum = new BoundingFrustum();
             Viewport = new SlimDX.Direct3D11.Viewport(0, 0, Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight,
                                                       nearClip, farClip);
-            Reset();
         }
 
         public void Reset()
         {
             vPosition = new Vector3();
             qOrientation = Quaternion.Identity;
-            //mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, Game.Context.Settings.AspectRatio, nearClip, farClip);
-           // mOrthoProjection = Matrix.OrthoLH(Game.Context.Settings.ScreenWidth, Game.Context.Settings.ScreenHeight, nearClip, farClip);
             mWorld = mView = Matrix.Identity;
+            OnCameraReset(this, EventArgs.Empty);
         }
 
         public void SetCamera(Vector3 vNewPos)
         {
             vPosition = vNewPos;
         }
-
-        
 
         /// <summary>
         /// Updates the camera view matrix. Should be called once per frame.
@@ -268,61 +251,6 @@ namespace AvengersUtd.Odyssey
             mProjection = Matrix.PerspectiveFovLH((float)Math.PI / 4, width/height, nearClip, farClip);
         }
 
-        void BuildStereoProjectionMatrices(float separation, float convergence)
-        {
-            float m11 = mProjection.M11;
-            float m13 = mProjection.M13;
-            float m22 = mProjection.M22;
-            float m32 = mProjection.M32;
-            float m33 = mProjection.M33;
-            float m34 = mProjection.M34;
-
-            mStereoLeftProjection = new Matrix
-                                        {
-                                            M11 = m11,
-                                            M13 = m13 - separation,
-                                            M14 = separation*convergence,
-                                            M22 = m22,
-                                            M32 = m32,
-                                            M33 = m33,
-                                            M34 = m34,
-                                            M43 = 1
-                                        };
-
-            mStereoRightProjection = new Matrix
-            {
-                M11 = m11,
-                M13 = m13 + separation,
-                M14 = -separation * convergence,
-                M22 = m22,
-                M32 = m32,
-                M33 = m33,
-                M34 = m34,
-                M43 = 1
-            };
-
-        }
-
-
-        //public void SetState(CameraAction action, bool state)
-        //{
-        //    shouldUpdateFrustum = true;
-        //    actions[(int) action] = state;
-        //}
-
-        //public void FirstPersonCameraWithGamepad(XBox360Controller gamepad)
-        //{
-        //    Vector3 vView = ViewVector;
-        //    Vector3 vDelta = new Vector3(vView.X*gamepad.LeftThumbstick.X,
-        //                                 vView.Y, vView.Z*gamepad.LeftThumbstick.Y);
-        //    vPosition += vDelta*DefaultSpeed*(float) Game.FrameTime;
-        //}
-
-        //public void Slerp(Quaternion targetOrientation)
-        //{
-        //    qOrientation = Quaternion.Slerp(qOrientation, targetOrientation, DefaultSlerpSpeed);
-        //    qOrientation = Quaternion.Normalize(qOrientation);
-        //}
     }
 
 

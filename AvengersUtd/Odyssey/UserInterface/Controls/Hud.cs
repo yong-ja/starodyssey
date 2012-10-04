@@ -97,15 +97,15 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
 
             if (description.CameraEnabled)
             {
-                QuaternionCam camera = Game.CurrentRenderer.Camera;
-                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Keys.A, delegate() { camera.Strafe(-QuaternionCam.DefaultSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Keys.D, delegate() { camera.Strafe(QuaternionCam.DefaultSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Keys.W, delegate() { camera.Move(QuaternionCam.DefaultSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Keys.S, delegate() { camera.Move(-QuaternionCam.DefaultSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Keys.Z, delegate() { camera.RotateY(QuaternionCam.DefaultRotationSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Keys.C, delegate() { camera.RotateY(-QuaternionCam.DefaultRotationSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Keys.Q, delegate() { camera.Hover(QuaternionCam.DefaultSpeed); }));
-                hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Keys.E, delegate() { camera.Hover(-QuaternionCam.DefaultSpeed); }));
+                ICamera camera = Game.CurrentRenderer.Camera;
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeLeft, Keys.A, delegate() { camera.Strafe(-StereoCamera.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.StrafeRight, Keys.D, delegate() { camera.Strafe(StereoCamera.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveForward, Keys.W, delegate() { camera.Move(StereoCamera.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.MoveBackward, Keys.S, delegate() { camera.Move(-StereoCamera.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateLeft, Keys.Z, delegate() { camera.RotateY(StereoCamera.DefaultRotationSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.RotateRight, Keys.C, delegate() { camera.RotateY(-StereoCamera.DefaultRotationSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverUp, Keys.Q, delegate() { camera.Hover(StereoCamera.DefaultSpeed); }));
+                hud.SetBinding(new KeyBinding(KeyAction.HoverDown, Keys.E, delegate() { camera.Hover(-StereoCamera.DefaultSpeed); }));
             }
 
             return hud;

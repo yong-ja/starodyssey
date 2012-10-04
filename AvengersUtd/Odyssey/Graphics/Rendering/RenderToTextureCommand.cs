@@ -11,11 +11,12 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RenderToTextureCommand : BaseCommand
     {
-        private readonly SceneManager sceneTree;
-        private readonly Texture2D texture;
+        private Texture2D texture;
 
-        private readonly RenderTargetView rTargetView;
-        private readonly DepthStencilView dStencilView;
+        protected RenderTargetView RenderTargetView { get; set; }
+        protected DepthStencilView DepthStencilView { get; set; }
+        protected Texture2DDescription RenderTextureDesc { get; set; }
+        protected SceneManager SceneTree { get; set; }
 
         public Bitmap BitmapImage
         {
@@ -25,12 +26,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public Texture2D Texture
         {
             get { return texture; }
+            protected set { texture = value; }
         }
 
         public RenderToTextureCommand(int width, int height, SceneManager sceneTree) : base(CommandType.Action)
         {
-            this.sceneTree = sceneTree;
-            Texture2DDescription textureDesc = new Texture2DDescription
+            SceneTree = sceneTree;
+            RenderTextureDesc = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
@@ -44,7 +46,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 Usage = ResourceUsage.Default
             };
             
-            texture = new Texture2D(Game.Context.Device, textureDesc);
+            texture = new Texture2D(Game.Context.Device, RenderTextureDesc);
 
             Texture2DDescription depthBufferDesc = new Texture2DDescription
             {
@@ -63,23 +65,23 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
            
             using (Texture2D depthBuffer = new Texture2D(Game.Context.Device, depthBufferDesc))
             {
-                dStencilView = new DepthStencilView(Game.Context.Device, depthBuffer);
+                DepthStencilView = new DepthStencilView(Game.Context.Device, depthBuffer);
             }
 
-            rTargetView = new RenderTargetView(Game.Context.Device, texture);
+            RenderTargetView = new RenderTargetView(Game.Context.Device, texture);
         }
 
         public override void Execute()
         {
-            Game.RenderEvent.Wait();
+            //Game.RenderEvent.Wait();
 
             DeviceContext immediateContext = Game.Context.Immediate;
-            immediateContext.OutputMerger.SetTargets(dStencilView, rTargetView);
+            immediateContext.OutputMerger.SetTargets(DepthStencilView, RenderTargetView);
             immediateContext.Rasterizer.SetViewports(new Viewport(0, 0, texture.Description.Width,
                                                                   texture.Description.Height, 0.0f, 1.0f));
-            immediateContext.ClearRenderTargetView(rTargetView, Color.CornflowerBlue);
-            immediateContext.ClearDepthStencilView(dStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            sceneTree.Display();
+            immediateContext.ClearRenderTargetView(RenderTargetView, Color.CornflowerBlue);
+            immediateContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            SceneTree.Display();
             //Game.Context.SwapChain.Present(0, PresentFlags.None);
             //immediateContext.OutputMerger.SetTargets(Game.Context.DepthStencilView, Game.Context.RenderTargetView);
 
@@ -89,8 +91,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected override void OnDispose()
         {
             texture.Dispose();
-            rTargetView.Dispose();
-            dStencilView.Dispose();
+            RenderTargetView.Dispose();
+            DepthStencilView.Dispose();
         }
     }
 }
