@@ -142,10 +142,10 @@ namespace AvengersUtd.Odyssey
             SwapChainDescription swapChainDesc = new SwapChainDescription
                                                      {
                                                          BufferCount = 1,
+                                                         IsWindowed = Settings.IsWindowed,
                                                          ModeDescription =
                                                              new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight,
                                                                                  new Rational(120, 1), Settings.Format),
-                                                         IsWindowed = Settings.IsWindowed,
                                                          OutputHandle = handle,
                                                          SampleDescription = Settings.SampleDescription,
                                                          SwapEffect = SwapEffect.Discard,

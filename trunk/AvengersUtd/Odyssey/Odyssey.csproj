@@ -194,6 +194,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\Rendering\RenderStereoTextureCommand.cs" />
+    <Compile Include="StereoCamera.cs" />
     <Compile Include="DeviceContext11.cs" />
     <Compile Include="D3DImageSlimDX.cs" />
     <Compile Include="DeviceContextWpf.cs" />

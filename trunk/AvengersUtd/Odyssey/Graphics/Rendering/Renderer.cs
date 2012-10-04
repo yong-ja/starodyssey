@@ -22,7 +22,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         //LightManager lightManager;
         public Hud Hud { get; set; }
-        public QuaternionCam Camera { get; private set; }
+        public ICamera Camera { get; protected set; }
         public SceneManager Scene { get; private set; }
         public bool IsInited { get; protected set; }
 
@@ -52,6 +52,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             Scene = new SceneManager();
             Camera = new QuaternionCam();
             buffers = new List<SlimDX.Direct3D11.Buffer>();
+            Camera.Reset();
         }
 
         public void Reset()

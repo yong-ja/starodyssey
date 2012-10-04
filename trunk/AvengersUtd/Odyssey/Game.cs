@@ -68,8 +68,8 @@ namespace AvengersUtd.Odyssey
                                               ScreenHeight = 1080,
                                               SampleDescription = new SampleDescription(1,0),
                                               Format = Format.R8G8B8A8_UNorm,
-                                              IsStereo = false,
-                                              IsWindowed = true
+                                              IsStereo = true,
+                                              IsWindowed = false
                                           };
 
             RenderForm form = new RenderForm

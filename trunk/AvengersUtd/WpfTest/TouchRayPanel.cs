@@ -296,7 +296,7 @@ namespace WpfTest
 
         static Ray GetRay(Vector2 location)
         {
-            QuaternionCam camera = Game.CurrentRenderer.Camera;
+            QuaternionCam camera = (QuaternionCam)Game.CurrentRenderer.Camera;
 
 
             Viewport viewport = camera.Viewport;
@@ -311,7 +311,7 @@ namespace WpfTest
 
         Vector3 GetIntersection(Vector2 location, Vector3 axis, IRenderable reference, out bool result)
         {
-            QuaternionCam camera = Game.CurrentRenderer.Camera;
+            QuaternionCam camera = (QuaternionCam)Game.CurrentRenderer.Camera;
            
 
             Viewport viewport = camera.Viewport;

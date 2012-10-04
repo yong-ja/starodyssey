@@ -380,7 +380,7 @@ namespace WpfTest
             rp.Add(bNew);
             rp.Completed += (sender, e) => ((BoxRenderer)Game.CurrentRenderer).Stop(e);
 
-            bNew.TouchUp += delegate
+            bNew.MouseUp += delegate
                                {
                                    if (startingNewSession)
                                        return;

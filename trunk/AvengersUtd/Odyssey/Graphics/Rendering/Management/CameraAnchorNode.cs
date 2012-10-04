@@ -8,14 +8,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
     public class CameraAnchorNode : TransformNode
     {
         private static int count;
-        private readonly QuaternionCam camera;
+        private readonly ICamera camera;
 
         public CameraAnchorNode()
             : this(Game.CurrentRenderer.Camera)
         {
         }
 
-        public CameraAnchorNode(QuaternionCam camera)
+        public CameraAnchorNode(ICamera camera)
             : base(Text.GetCapitalLetters(typeof(CameraAnchorNode).GetType().Name) + '_' + ++count, true)
         {
             this.camera = camera;

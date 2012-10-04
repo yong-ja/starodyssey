@@ -10,10 +10,10 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering.Management
     public class CameraOverlayNode : TransformNode
     {
         private static int count;
-        private readonly QuaternionCam camera;
+        private readonly ICamera camera;
 
 
-        public CameraOverlayNode(QuaternionCam camera)
+        public CameraOverlayNode(ICamera camera)
             : base(Text.GetCapitalLetters(typeof(CameraOverlayNode).GetType().Name) + '_' + ++count, true)
         {
             this.camera = camera;
