@@ -10,21 +10,26 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 {
     public class RenderStereoTextureCommand : RenderToTextureCommand
     {
+        readonly StereoRenderer stereoRenderer;
         readonly StereoCamera stereoCamera;
-        private readonly Texture2D lTexture;
-        private readonly Texture2D rTexture;
+        readonly SceneManager sceneManager;
+        private Texture2D lTexture;
+        private Texture2D rTexture;
 
-        private readonly RenderTargetView rTargetViewLeft;
-        private readonly RenderTargetView rTargetViewRight;
-        private readonly DepthStencilView dStencilView;
+        private RenderTargetView rTargetViewLeft;
+        private RenderTargetView rTargetViewRight;
+
+        private bool isDirty;
 
 
-        public RenderStereoTextureCommand(int width, int height, SceneManager sceneTree, StereoCamera stereoCamera)
-            : base(width, height, sceneTree)
+        public RenderStereoTextureCommand(int width, int height, StereoRenderer stereoRenderer)
+            : base(width, height, stereoRenderer.Scene)
         {
-            this.stereoCamera = stereoCamera;
-            lTexture = new Texture2D(Game.Context.Device, RenderTextureDesc);
-            rTexture = new Texture2D(Game.Context.Device, RenderTextureDesc);
+            this.sceneManager = stereoRenderer.Scene;
+            this.stereoRenderer = stereoRenderer;
+            this.stereoCamera = (StereoCamera)stereoRenderer.Camera;
+            this.stereoCamera.StereoParametersChanged += RequestUpdate;
+            
 
             Texture2DDescription StereoTextureDesc = new Texture2DDescription
             {
@@ -40,23 +45,56 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 Usage = ResourceUsage.Default
             };
 
-            rTargetViewLeft = new SlimDX.Direct3D11.RenderTargetView(Game.Context.Device, lTexture);
-            rTargetViewRight = new SlimDX.Direct3D11.RenderTargetView(Game.Context.Device, rTexture);
+            
 
             Texture = new Texture2D(Game.Context.Device, StereoTextureDesc);
         }
 
+        private void RequestUpdate(object sender, EventArgs e)
+        {
+            isDirty = true;
+        }
+
+        //void Update()
+        //{
+        //    stereoCamera.Update();
+        //    SceneTree.Update();
+        //    isDirty = false;
+        //}
+
         public override void Execute()
         {
             //Game.RenderEvent.Wait();
-            stereoCamera.Update();
-            SceneTree.Update();
+
+            //if (isDirty)
+            //    Update();
+
+            //stereoCamera.Update();
+            //SceneTree.Update();
+
+            lTexture = new Texture2D(Game.Context.Device, RenderTextureDesc);
+            rTexture = new Texture2D(Game.Context.Device, RenderTextureDesc);
+
+            rTargetViewLeft = new SlimDX.Direct3D11.RenderTargetView(Game.Context.Device, lTexture);
+            rTargetViewRight = new SlimDX.Direct3D11.RenderTargetView(Game.Context.Device, rTexture);
 
             stereoCamera.EnableLeftStereoProjection();
             RenderSceneImage(lTexture, rTargetViewLeft);
             stereoCamera.EnableRightStereoProjection();
             RenderSceneImage(rTexture, rTargetViewRight);
-            Texture = Stereo.Make3D(lTexture, rTexture);
+            Texture2D newTexture = Stereo.Make3D(lTexture, rTexture);
+
+            FreeResources();
+            Texture = newTexture;
+        }
+
+        internal void FreeResources()
+        {
+            lTexture.Dispose();
+            rTexture.Dispose();
+            rTargetViewLeft.Dispose();
+            rTargetViewRight.Dispose();
+            Texture.Dispose();
         }
 
         void RenderSceneImage(Texture2D texture, RenderTargetView rTargetView)
@@ -67,7 +105,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                                                                   texture.Description.Height, 0.0f, 1.0f));
             immediateContext.ClearRenderTargetView(rTargetView, Color.CornflowerBlue);
             immediateContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            SceneTree.Display();
+            SceneTree.Display(CommandAttributes.RequiredForSceneRender);
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            FreeResources();
         }
 
     }

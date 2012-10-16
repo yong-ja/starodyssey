@@ -55,6 +55,7 @@ namespace AvengersUtd.Odyssey
         /// </summary>
         public static void Init()
         {
+            Global.ExecutingDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             ResourceManager.PerformIntegrityCheck();
             ResourceManager.LoadDefaultStyles();
 
@@ -69,7 +70,7 @@ namespace AvengersUtd.Odyssey
                                               SampleDescription = new SampleDescription(1,0),
                                               Format = Format.R8G8B8A8_UNorm,
                                               IsStereo = true,
-                                              IsWindowed = false
+                                              IsWindowed = true
                                           };
 
             RenderForm form = new RenderForm
@@ -159,7 +160,8 @@ namespace AvengersUtd.Odyssey
         public static void ChangeRenderer(Renderer renderer)
         {
             CurrentRenderer = renderer;
-            renderer.Init();
+            renderer.BeginInit();
+            renderer.EndInit();
         }
 
 

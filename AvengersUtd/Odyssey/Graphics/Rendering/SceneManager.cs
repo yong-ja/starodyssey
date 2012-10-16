@@ -109,11 +109,15 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             }
         }
 
-        public void Display(CommandType type)
+        public void Display(CommandAttributes commandAttributes)
         {
-            foreach (ICommand command in CommandManager.Commands.Where(c => c.CommandType != type))
+            foreach (ICommand command in CommandManager.Commands.Where(command => command.Supports(commandAttributes)))
+            {
                 command.Execute();
+            }
         }
+
+
 
         public void Dispose()
         {

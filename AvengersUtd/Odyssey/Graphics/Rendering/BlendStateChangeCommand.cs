@@ -15,6 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public BlendStateChangeCommand(RenderTargetBlendDescription bStateDesc)
             : base(CommandType.BlendStateChange)
         {
+            CommandAttributes |= CommandAttributes.RequiredForSceneRender;
             Description = bStateDesc;
             blendStateDescription = new BlendStateDescription();
             blendStateDescription.RenderTargets[0] = Description;

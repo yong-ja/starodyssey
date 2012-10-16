@@ -18,7 +18,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         private readonly List<SlimDX.Direct3D11.Buffer> buffers;
 
         private bool disposed;
-        private readonly IDeviceContext deviceContext;
+        protected readonly IDeviceContext DeviceContext;
 
         //LightManager lightManager;
         public Hud Hud { get; set; }
@@ -31,10 +31,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         //    get { return lightManager; }
         //}
 
-        public IDeviceContext DeviceContext
-        {
-            get { return deviceContext; }
-        }
+        public event EventHandler<EventArgs> Init;
 
         static Renderer()
         {
@@ -44,36 +41,49 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         protected Renderer(IDeviceContext deviceContext)
         {
-            this.deviceContext = deviceContext;
-            deviceContext.DeviceDisposing += OnDisposing;
-            deviceContext.DeviceResize += OnDeviceResize;
-            deviceContext.DeviceSuspend += OnDeviceSuspend;
-            deviceContext.DeviceResume += OnDeviceResume;
+            DeviceContext = deviceContext;
+            DeviceContext.DeviceDisposing += OnDisposing;
+            DeviceContext.DeviceResize += OnDeviceResize;
+            DeviceContext.DeviceSuspend += OnDeviceSuspend;
+            DeviceContext.DeviceResume += OnDeviceResume;
             Scene = new SceneManager();
             Camera = new QuaternionCam();
             buffers = new List<SlimDX.Direct3D11.Buffer>();
-            Camera.Reset();
         }
 
         public void Reset()
         {
+            Camera.Reset();
         }
 
-        public abstract void Init();
+        public virtual void BeginInit()
+        {
+            OnInit(this, EventArgs.Empty);
+        }
+        public virtual void EndInit()
+        {
+            Scene.BuildRenderScene();
+            if (Hud != null) 
+                Hud.AddToScene(this, Scene);
+            DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            IsInited = true;
+        }
+
         public abstract void Render();
         public abstract void ProcessInput();
 
         public void Begin()
         {
-            deviceContext.Immediate.OutputMerger.SetTargets(deviceContext.DepthStencilView, deviceContext.RenderTargetView);
-            deviceContext.Immediate.Rasterizer.SetViewports(new Viewport(0, 0, deviceContext.Settings.ScreenWidth, deviceContext.Settings.ScreenHeight, 0.0f, 1.0f));
-            deviceContext.Immediate.ClearRenderTargetView(deviceContext.RenderTargetView, ClearColor);
-            deviceContext.Immediate.ClearDepthStencilView(deviceContext.DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
+            DeviceContext immediate = DeviceContext.Immediate;
+            immediate.OutputMerger.SetTargets(DeviceContext.DepthStencilView, DeviceContext.RenderTargetView);
+            immediate.Rasterizer.SetViewports(new Viewport(0, 0, DeviceContext.Settings.ScreenWidth, DeviceContext.Settings.ScreenHeight, 0.0f, 1.0f));
+            immediate.ClearRenderTargetView(DeviceContext.RenderTargetView, ClearColor);
+            immediate.ClearDepthStencilView(DeviceContext.DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
         }
 
-        public void Present()
+        public virtual void Present()
         {
-            deviceContext.Present();            
+            DeviceContext.Present();            
         }
 
         public void RegisterBuffer(SlimDX.Direct3D11.Buffer buffer)
@@ -90,6 +100,13 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 //if (!buffer.Disposed)
                 //LogEvent.BufferDisposed.Log((string)buffer.Tag, buffer.Disposed.ToString());
             }
+        }
+
+        protected virtual void OnInit(object sender, EventArgs e)
+        {
+            EventHandler<EventArgs> handler = Init;
+            if (handler != null)
+                handler(this, e);
         }
 
         protected virtual void OnDeviceResize(object sender,ResizeEventArgs e)

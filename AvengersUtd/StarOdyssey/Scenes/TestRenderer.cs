@@ -14,40 +14,21 @@ using AvengersUtd.Odyssey.Utils.Logging;
 using AvengersUtd.Odyssey.Network;
 using AvengersUtd.Odyssey.UserInterface;
 using AvengersUtd.Odyssey.Settings;
+using System;
 
 namespace AvengersUtd.StarOdyssey.Scenes
 {
-    public class TestRenderer : Renderer
+    public class TestRenderer : StereoRenderer
     {
-        RenderToTextureCommand cStereoRenderer;
-        Texture2D backBuffer;
-        Texture2D stereoTexture;
-        ResourceRegion stereoSourceBox;
-        StereoCamera stereoCamera;
+       
        
         public TestRenderer(AvengersUtd.Odyssey.IDeviceContext deviceContext) : base(deviceContext)
         {
-            backBuffer = Game.Context.GetBackBuffer();
-
-            stereoSourceBox = new ResourceRegion
-            {
-                Front = 0,
-                Back = 1,
-                Top = 0,
-                Bottom = Game.Context.Settings.ScreenHeight,
-                Left = 0,
-                Right = Game.Context.Settings.ScreenWidth
-            };
-
-            stereoCamera = new StereoCamera();
-            Camera = stereoCamera;
         }
 
-        public override void Init()
+        protected override void OnInit(object sender, EventArgs e)
         {
             //AvengersUtd.Odyssey.Text.TextManager.DrawText("prova");
-            DeviceSettings settings = Game.Context.Settings;
-            cStereoRenderer = new RenderStereoTextureCommand(settings.ScreenWidth, settings.ScreenHeight, Scene, stereoCamera);
 
             Camera.LookAt(Vector3.Zero, new Vector3(0,5,-10f));
 
@@ -120,36 +101,18 @@ namespace AvengersUtd.StarOdyssey.Scenes
 
 
             Hud.Add(new RayPickingPanel { Size = Hud.Size, Camera = this.Camera });
-            //Game.Logger.Activate();
+            Game.Logger.Activate();
             Hud.Init();
             Hud.EndDesign();
 
-            Scene.BuildRenderScene();
+            //Scene.BuildRenderScene();
             //Hud.AddToScene(this, Scene);
             //
             //lightSphere.SetBehaviour(new FreeMovementGamepadBehaviour(50));
             
             IsInited = true;
-            //EyeTrackerServer server = new Odyssey.Network.EyeTrackerServer();
-            //server.Start();
-
-            //server.DataReceived += (sender, e) => crosshair.Position = new Vector2(server.LastGazeData.ScreenX - crosshair.Width/2, 
-            //    server.LastGazeData.ScreenY - crosshair.Height/2);
-            cStereoRenderer.Execute();
-            //RenderToTextureCommand cRenderTexture = new RenderToTextureCommand(1920, 1080, Scene);
-            //cRenderTexture.Execute();
-
         }
 
-        public override void Render()
-        {
-            //Game.Logger.Update();
-            //stereoCamera.EnableRightStereoProjection();
-            //Scene.Display();
-            //RenderToTextureCommand cRenderTexture = new RenderToTextureCommand(1920, 1080, Scene);
-            //cRenderTexture.Execute();
-            Game.Context.Device.ImmediateContext.CopySubresourceRegion(cStereoRenderer.Texture, 0, stereoSourceBox, backBuffer, 0, 0, 0, 0);
-        }
 
         public override void ProcessInput()
         {

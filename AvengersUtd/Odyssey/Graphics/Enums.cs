@@ -21,6 +21,14 @@ namespace AvengersUtd.Odyssey.Graphics
         Action
     }
 
+    [Flags]
+    public enum CommandAttributes
+    {
+        None = 0,
+        RequiredForSceneRender =1,
+
+    }
+
     public enum TaskType
     {
         SceneTreeUpdate
@@ -99,6 +107,7 @@ namespace AvengersUtd.Odyssey.Graphics
 
     public enum KeyAction
     {
+        None,
         MoveForward,
         MoveBackward,
         RotateLeft,
@@ -107,7 +116,10 @@ namespace AvengersUtd.Odyssey.Graphics
         StrafeRight,
         HoverUp,
         HoverDown,
-        None
+        IncreaseConvergence,
+        DecreaseConvergence,
+        IncreaseSeparation,
+        DecreaseSeparation
     }
 
     public enum ScaleOp

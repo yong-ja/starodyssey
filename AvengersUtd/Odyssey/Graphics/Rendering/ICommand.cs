@@ -9,9 +9,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
     public interface ICommand
     {
+        CommandAttributes CommandAttributes { get; }
         CommandType CommandType { get; }
         void Execute();
         void Dispose();
+        bool Supports(CommandAttributes commandAttributes);
     }
 
     public interface IUpdateCommand: ICommand

@@ -81,8 +81,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 Format = SlimDX.DXGI.Format.R8G8B8A8_UNorm,
                 OptionFlags = ResourceOptionFlags.None,
                 Usage = ResourceUsage.Dynamic,
-                MipLevels = 1,
-                SampleDescription = new SampleDescription(1, 0)
+                MipLevels = 1, 
+                SampleDescription = new SampleDescription(1, 0), 
             };
 
             // Copy the staging texture on a new texture to be used as a shader resource

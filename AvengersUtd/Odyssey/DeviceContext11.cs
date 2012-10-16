@@ -246,7 +246,9 @@ namespace AvengersUtd.Odyssey
 
                     RenderTargetView.Dispose();
                     DepthStencilView.Dispose();
-                    swapChain.Dispose();
+                    if (Settings.IsWindowed)
+                        swapChain.Dispose();
+                    
                     factory.Dispose();
 
                     device.ImmediateContext.ClearState();

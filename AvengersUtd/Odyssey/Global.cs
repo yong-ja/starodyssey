@@ -1,6 +1,7 @@
 using System.Windows.Forms;
 using SlimDX.Windows;
 using System.Windows;
+using System.Reflection;
 
 namespace AvengersUtd.Odyssey
 {
@@ -18,5 +19,10 @@ namespace AvengersUtd.Odyssey
 
         public static Form Form { get; internal set; }
         public static Window Window { get; internal set; }
+
+        public static string ExecutingDir
+        {
+            get; internal set; 
+        }
     }
 }
