@@ -14,6 +14,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public DepthStencilStateChangeCommand(DepthStencilStateDescription dStateDesc)
             : base(CommandType.DepthStencilStateChange)
         {
+            CommandAttributes |= CommandAttributes.RequiredForSceneRender;
             Description = dStateDesc;
         }
 

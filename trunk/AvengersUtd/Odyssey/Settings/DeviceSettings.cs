@@ -41,7 +41,10 @@ namespace AvengersUtd.Odyssey.Settings
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Adapter[{0}]: {1}\n", AdapterOrdinal, AdapterName);
-            sb.AppendFormat("\tResolution: {0}x{1} Format: {2} M{3}Q{4}", ScreenWidth, ScreenHeight, Format, SampleDescription.Count, SampleDescription.Quality);
+            sb.AppendFormat("\tResolution: {0}x{1} Format: {2} M{3}Q{4}\n", ScreenWidth, ScreenHeight, Format, SampleDescription.Count, SampleDescription.Quality);
+            sb.AppendFormat("\tRendering is {0}\n", IsWindowed ? "Windowed" : "Full Screen");
+            sb.AppendFormat("\tStereo is {0}", IsStereo ? "Enabled" : "Disabled");
+            
             return sb.ToString();
         }
         

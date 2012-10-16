@@ -19,7 +19,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Input
 
         public void Apply(bool state)
         {
-                State = state;
+            State = state;
         }
 
         public KeyBinding(KeyAction action, Keys key, KeyOperation operation)

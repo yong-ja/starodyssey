@@ -73,7 +73,7 @@ namespace AvengersUtd.Odyssey.Utils.Xml
         /// <exception cref="FileNotFoundException">The specified filename cannot be found.</exception>
         public static T[] DeserializeCollection<T>(string filename)
         {
-            if (!File.Exists(filename))
+            if (!File.Exists(Path.Combine(Global.ExecutingDir, filename)))
                 throw new FileNotFoundException("The specified filename cannot be found.", filename);
 
             T[] collection;

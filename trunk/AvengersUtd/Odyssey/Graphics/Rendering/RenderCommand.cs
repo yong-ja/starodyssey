@@ -26,12 +26,14 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             Contract.Requires<NullReferenceException>(renderer != null);
             Contract.Requires<NullReferenceException>(material != null);
+            CommandAttributes |= CommandAttributes.RequiredForSceneRender;
             Renderer = renderer;
             Items = sceneNodeCollection;
             Material = material;
             Technique = Material.EffectDescription.Technique;
             Pass = Technique.GetPassByIndex(Material.EffectDescription.Pass);
             InputLayout = new InputLayout(Game.Context.Device, Pass.Description.Signature, Items.Description.InputElements);
+            
         }
 
         public RenderCommand(IMaterial material, RenderableCollection sceneNodeCollection)

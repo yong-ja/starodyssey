@@ -21,7 +21,7 @@ namespace AvengersUtd.StarOdyssey
             : base(deviceContext)
         { }
 
-        public override void Init()
+        protected override void OnInit(object sender, EventArgs e)
         {
 
             Camera.LookAt(Vector3.Zero, new Vector3(0, 0, -10f));
@@ -96,8 +96,8 @@ namespace AvengersUtd.StarOdyssey
             Hud.Init();
             Hud.EndDesign();
 
-            Scene.BuildRenderScene();
-            Hud.AddToScene(this, Scene);
+            //Scene.BuildRenderScene();
+            //Hud.AddToScene(this, Scene);
             IsInited = true;
             //tracker.StartBrowsing();
         }

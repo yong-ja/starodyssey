@@ -59,7 +59,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         }
 
-        public override void Init()
+        protected override void OnInit(object sender, EventArgs e)
         {
             
             Hud.BeginDesign();
@@ -71,9 +71,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             button.Position = Layout.CenterControl(button, Hud);
             Hud.Controls.Add(button);
             Hud.EndDesign();
-            Scene.BuildRenderScene();
-            Hud.AddToScene(this,Scene);
-            DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            
             //Camera.Update();
             Scene.Update();
 

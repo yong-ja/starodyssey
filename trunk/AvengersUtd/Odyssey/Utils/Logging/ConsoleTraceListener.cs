@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace AvengersUtd.Odyssey.Utils.Logging
 {
     public class ConsoleTraceListener : TraceListener
     {
         private const string LogTag = "[{0:HH:mm:ss.fff]}:\t{1}({2})";
+        TraceEventType eventType;
+        int id;
+        string source;
+        TextWriter tw;
 
         public ConsoleTraceListener(string name) : base(name)
         {
+            tw = System.Console.Out;
         }
 
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id)
         {
+            this.source = source;
+            this.eventType = eventType;
+            this.id = id;
             TraceEvent(eventCache, source, eventType, id, "No additional information.");
         }
 
@@ -31,7 +40,7 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         /// <param name="message">A message to write.</param>
         public override void Write(string message)
         {
-            Console.Write(message);
+            Debugger.Log(id, source, message);
         }
 
         /// <summary>
@@ -40,7 +49,8 @@ namespace AvengersUtd.Odyssey.Utils.Logging
         /// <param name="message">A message to write.</param>
         public override void WriteLine(string message)
         {
-            Console.WriteLine(message);
+            Debugger.Log(id, source, message + "\n");
+            //base.WriteLine(message);
         }
         
         static string GetCode(TraceEventType eventType, int eventCode)

@@ -20,7 +20,7 @@ namespace AvengersUtd.StarOdyssey.Scenes
         }
 
 
-        public override void Init()
+        protected override void OnInit(object sender, EventArgs e)
         {
             //OdysseyUI.RemoveHooks(Global.FormOwner);
 

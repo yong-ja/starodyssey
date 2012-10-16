@@ -9,7 +9,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
     public abstract class BaseCommand : ICommand, IDisposable, IEquatable<BaseCommand>
     {
         bool disposed;
-        
+
+        public CommandAttributes CommandAttributes { get; protected set; }
         public CommandType CommandType { get; internal set; }
 
         public bool Disposed
@@ -31,6 +32,11 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         protected BaseCommand(CommandType commandType)
         {
             CommandType = commandType;
+        }
+
+        public bool Supports(CommandAttributes commandAttributes)
+        {
+            return (CommandAttributes & commandAttributes) == commandAttributes;
         }
 
          #region IDisposable Members
