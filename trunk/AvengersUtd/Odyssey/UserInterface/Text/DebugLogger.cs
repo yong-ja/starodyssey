@@ -131,7 +131,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Text
 
                 //frameStats = "FPS: " +
                 //             fps.ToString("f2") + " FrameTime: " + framerate.ToString("f6");
-                frameStats = "FPS: " + fps.ToString("f2");
+                frameStats = string.Format("FPS: {0:F2} t: {1:f4}", fps, framerate);
             }
         }
 

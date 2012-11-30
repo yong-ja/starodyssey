@@ -15,7 +15,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public RasterizerStateChangeCommand(RasterizerStateDescription rStateDesc)
             : base(CommandType.RasterizerStateChange)
         {
-            CommandAttributes |= CommandAttributes.RequiredForSceneRender;
+            CommandAttributes |= CommandAttributes.MonoRendering;
             Description = rStateDesc;
             rasterizerState = RasterizerState.FromDescription(Game.Context.Device, Description);
         }

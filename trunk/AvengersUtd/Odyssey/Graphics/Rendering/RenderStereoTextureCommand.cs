@@ -25,6 +25,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public RenderStereoTextureCommand(int width, int height, StereoRenderer stereoRenderer)
             : base(width, height, stereoRenderer.Scene)
         {
+            this.CommandAttributes |= CommandAttributes.StereoRendering;
             this.sceneManager = stereoRenderer.Scene;
             this.stereoRenderer = stereoRenderer;
             this.stereoCamera = (StereoCamera)stereoRenderer.Camera;
@@ -105,7 +106,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                                                                   texture.Description.Height, 0.0f, 1.0f));
             immediateContext.ClearRenderTargetView(rTargetView, Color.CornflowerBlue);
             immediateContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1.0f, 0);
-            SceneTree.Display(CommandAttributes.RequiredForSceneRender);
+            SceneTree.Display(CommandAttributes.MonoRendering);
         }
 
         protected override void OnDispose()

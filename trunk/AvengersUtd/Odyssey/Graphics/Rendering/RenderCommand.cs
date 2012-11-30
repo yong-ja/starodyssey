@@ -26,7 +26,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         {
             Contract.Requires<NullReferenceException>(renderer != null);
             Contract.Requires<NullReferenceException>(material != null);
-            CommandAttributes |= CommandAttributes.RequiredForSceneRender;
+            CommandAttributes |= CommandAttributes.MonoRendering;
             Renderer = renderer;
             Items = sceneNodeCollection;
             Material = material;
