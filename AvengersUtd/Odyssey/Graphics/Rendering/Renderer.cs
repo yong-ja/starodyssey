@@ -63,7 +63,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public virtual void EndInit()
         {
             Scene.BuildRenderScene();
-            if (Hud != null) 
+            if (Hud != null && !Hud.Controls.IsEmpty) 
                 Hud.AddToScene(this, Scene);
             DeviceContext.Immediate.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             IsInited = true;

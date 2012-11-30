@@ -69,15 +69,17 @@ namespace AvengersUtd.Odyssey
                                               ScreenHeight = 1080,
                                               SampleDescription = new SampleDescription(1,0),
                                               Format = Format.R8G8B8A8_UNorm,
-                                              IsStereo = true,
+                                              IsStereo = false,
                                               IsWindowed = true
                                           };
 
             RenderForm form = new RenderForm
                                   {
                                       ClientSize = new Size(deviceSettings.ScreenWidth, deviceSettings.ScreenHeight),
-                                      Text = "Odyssey11 Demo" 
+                                      WindowState = FormWindowState.Maximized,
+                                      Text = "Odyssey11 Demo" ,
                                   };
+
             form.Activated += delegate { IsInputEnabled = true; };
             Global.Form = form;
             Context = new DeviceContext11(form.Handle, deviceSettings);

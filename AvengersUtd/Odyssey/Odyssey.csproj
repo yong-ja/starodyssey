@@ -194,6 +194,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geometry\ITorus.cs" />
+    <Compile Include="Geometry\Torus.cs" />
+    <Compile Include="Graphics\Meshes\Quad.cs" />
     <Compile Include="Graphics\Rendering\RenderStereoTextureCommand.cs" />
     <Compile Include="Graphics\Rendering\StereoRenderer.cs" />
     <Compile Include="StereoCamera.cs" />

@@ -12,10 +12,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTest", "WpfTest\WpfTest.csproj", "{03B16ED8-19FA-4002-B6CF-0D563E3C23C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1135EEB-D506-4AF4-B15E-D0260D8B5492}"
+	ProjectSection(SolutionItems) = preProject
+		Performance6.psess = Performance6.psess
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeTracker", "EyeTracker\EyeTracker.csproj", "{DB7151DD-A7AA-4309-B74E-34E5CACC320D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurfaceOverlay", "SurfaceOverlay\SurfaceOverlay.csproj", "{A9313BE5-273D-4BA7-98AF-A3B98A192744}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeVis", "TreeVis\TreeVis.csproj", "{D268F317-5E53-4C97-BA2E-0769ECAC2660}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -44,6 +49,7 @@ Global
 		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|x64.ActiveCfg = Release|x86
+		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|x64.Build.0 = Release|x86
 		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|x86.ActiveCfg = Release|x86
 		{6CB4F25C-2817-40C0-9513-0127E65A2006}.Release|x86.Build.0 = Release|x86
 		{B343E52E-51F3-4667-ACE1-15ABE72EBDFA}.Debug|Any CPU.ActiveCfg = Debug|x86
@@ -123,6 +129,19 @@ Global
 		{A9313BE5-273D-4BA7-98AF-A3B98A192744}.Release|x64.ActiveCfg = Release|x86
 		{A9313BE5-273D-4BA7-98AF-A3B98A192744}.Release|x86.ActiveCfg = Release|x86
 		{A9313BE5-273D-4BA7-98AF-A3B98A192744}.Release|x86.Build.0 = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|x64.ActiveCfg = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|x64.Build.0 = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|x86.ActiveCfg = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Debug|x86.Build.0 = Debug|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|Any CPU.ActiveCfg = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|x64.ActiveCfg = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|x86.ActiveCfg = Release|x86
+		{D268F317-5E53-4C97-BA2E-0769ECAC2660}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

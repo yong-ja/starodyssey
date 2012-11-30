@@ -118,6 +118,9 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
                         delegate() { stereoCamera.ModifyConvergence(-StereoCamera.DefaultIncrement); }));
                     hud.SetBinding(new KeyBinding(KeyAction.IncreaseConvergence, Keys.Multiply,
                         delegate() { stereoCamera.ModifyConvergence(StereoCamera.DefaultIncrement); }));
+                    hud.SetBinding( new KeyBinding(KeyAction.None, Keys.F,
+                    delegate() { Game.Context.ResizeDevice(new Size(1920,1080), true); }));
+
                 }
             }
 
@@ -591,7 +594,7 @@ namespace AvengersUtd.Odyssey.UserInterface.Controls
             base.OnDisposing(e);
             // dispose managed components
 
-            if (!InterfaceMesh.Disposed)
+            if (InterfaceMesh != null && !InterfaceMesh.Disposed)
             {
                 InterfaceMesh.Dispose();
             }

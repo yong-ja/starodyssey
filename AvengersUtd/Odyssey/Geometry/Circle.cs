@@ -69,6 +69,16 @@ namespace AvengersUtd.Odyssey.Geometry
             return new Circle(center, radius);
         }
 
+        public static Vector2D PointOnCircle(Circle circle, double theta)
+        {
+            Vector2D center = circle.Center;
+            double x = center.X;
+            double y = center.Y;
+
+            return new Vector2D(x + Math.Cos(theta) * circle.Radius,
+                y - Math.Sin(theta) * circle.Radius);
+
+        }
        
 
         #region Equality

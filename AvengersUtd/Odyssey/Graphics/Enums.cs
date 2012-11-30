@@ -25,8 +25,8 @@ namespace AvengersUtd.Odyssey.Graphics
     public enum CommandAttributes
     {
         None = 0,
-        RequiredForSceneRender =1,
-
+        MonoRendering = 1,
+        StereoRendering = 2,
     }
 
     public enum TaskType

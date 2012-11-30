@@ -144,16 +144,26 @@ namespace AvengersUtd.Odyssey
                                                          BufferCount = 1,
                                                          IsWindowed = Settings.IsWindowed,
                                                          ModeDescription =
-                                                             new ModeDescription(Settings.ScreenWidth, Settings.ScreenHeight,
-                                                                                 new Rational(120, 1), Settings.Format),
+                                                             new ModeDescription{
+                                                                 Width = Settings.ScreenWidth,
+                                                                 Height = Settings.ScreenHeight,
+                                                                 RefreshRate= new Rational(0, 1),
+                                                                 Format = Settings.Format,
+                                                                 Scaling = DisplayModeScaling.Unspecified,
+                                                                 ScanlineOrdering = DisplayModeScanlineOrdering.Unspecified,
+                                                             },
+
+                                                         //new Rational(120, 1), Settings.Format),
                                                          OutputHandle = handle,
                                                          SampleDescription = Settings.SampleDescription,
+                                                         Flags = SwapChainFlags.AllowModeSwitch,
                                                          SwapEffect = SwapEffect.Discard,
                                                          Usage = Usage.RenderTargetOutput,
                                                      };
 
+            FeatureLevel[] featureLevels = new FeatureLevel[] { FeatureLevel.Level_11_0, FeatureLevel.Level_10_1, FeatureLevel.Level_10_0 };
             LogEvent.Engine.Log(Resources.INFO_OE_DeviceCreating);
-            Device.CreateWithSwapChain(DriverType.Hardware, Settings.CreationFlags, swapChainDesc, out device, out swapChain);
+            Device.CreateWithSwapChain(DriverType.Hardware, Settings.CreationFlags, featureLevels, swapChainDesc, out device, out swapChain);
 
             factory = swapChain.GetParent<Factory>();
             factory.SetWindowAssociation(handle, WindowAssociationFlags.IgnoreAltEnter | WindowAssociationFlags.IgnoreAll);

@@ -26,6 +26,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
 
         private static readonly NvStereoImageHeader nvHeader = new NvStereoImageHeader(0x4433564e, 3840, 1080, 32, 0x00000002);
 
+        static Texture2D staging;
+
         public static Texture2D Make3D(Texture2D leftTexture, Texture2D rightTexture)
         {
             SlimDX.Direct3D11.Device device = Game.Context.Device;
@@ -43,7 +45,8 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
                 MipLevels = 1,
                 SampleDescription = new SampleDescription(1, 0)
             };
-            Texture2D staging = new Texture2D(device, stagingDesc);
+            if (staging == null)
+                staging = new Texture2D(device, stagingDesc);
             ResourceRegion stereoSrcBoxLeft = new ResourceRegion
             {
                 Front = 0,
@@ -88,7 +91,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
             // Copy the staging texture on a new texture to be used as a shader resource
             Texture2D final = new Texture2D(device, finalDesc);
             device.ImmediateContext.CopyResource(staging, final);
-            staging.Dispose();
+            //staging.Dispose();
             return final;
         }
 

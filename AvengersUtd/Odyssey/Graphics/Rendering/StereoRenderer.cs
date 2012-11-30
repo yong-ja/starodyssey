@@ -49,7 +49,7 @@ namespace AvengersUtd.Odyssey.Graphics.Rendering
         public override void Render()
         {
             Game.Logger.Update();
-            Scene.Display();
+            Scene.Display(CommandAttributes.StereoRendering);
             
         }
 

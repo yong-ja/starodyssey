@@ -161,6 +161,7 @@
     <Compile Include="Scenes\BoxRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenes\TreeTest.cs" />
     <None Include="Scenes\ImageRenderer.cs" />
     <Compile Include="Scenes\StereoImageRenderer.cs" />
     <Compile Include="Scenes\TestRenderer.cs" />
