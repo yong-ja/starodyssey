@@ -1,0 +1,1 @@
+This project is a repository for the source code of the Odyssey Engine and all other libraries pertaning to the project. Such as the Multiversal Rules System which contains among other code, a C# inmplementation of Dole's 1969 ACCRETE program which simulates planetary formation and random star system generation.
